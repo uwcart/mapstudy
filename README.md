@@ -1,4 +1,4 @@
-# MapStudy
+# <img src="mapstudy.png"> MapStudy
 
 ## What is MapStudy?
 
