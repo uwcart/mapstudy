@@ -1,6 +1,9 @@
 Included library versions:
 
 jQuery 1.11.3
+Underscorejs 1.8.3
+Backbonejs 1.2.3
 modernizr 2.8.3
-
-Plugins:
+Leaflet 1.0 beta 2
+Mapbox-GL 0.11.1
+D3 3.5.6

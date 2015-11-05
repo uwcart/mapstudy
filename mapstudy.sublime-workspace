@@ -1,0 +1,923 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"swit",
+				"switchInput"
+			],
+			[
+				"values",
+				"valuesString"
+			],
+			[
+				"checkedVals",
+				"checkedValsNames"
+			],
+			[
+				"select",
+				"selectVal"
+			],
+			[
+				"inline",
+				"inline-block"
+			],
+			[
+				"fonti",
+				"font-weight"
+			],
+			[
+				"info",
+				"infolabel"
+			],
+			[
+				"move",
+				"moveLabel"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"inlin",
+				"inline-block"
+			],
+			[
+				"stroke",
+				"stroke-width"
+			],
+			[
+				"color",
+				"colorScale"
+			],
+			[
+				"csv",
+				"csvData"
+			],
+			[
+				"s",
+				"box-shadow"
+			],
+			[
+				"font-",
+				"font-size"
+			],
+			[
+				"create",
+				"createDropdown"
+			],
+			[
+				"left",
+				"leftMargin"
+			],
+			[
+				"top",
+				"topBottomMargin"
+			],
+			[
+				"domain",
+				"domainArray"
+			],
+			[
+				"france",
+				"franceRegions"
+			],
+			[
+				"europe",
+				"europeCountries"
+			],
+			[
+				"transfor",
+				"transformOrigin"
+			],
+			[
+				"mapT",
+				"mapTransform"
+			],
+			[
+				"mapTran",
+				"mapTransform"
+			],
+			[
+				"prev",
+				"previewHeight"
+			],
+			[
+				"max",
+				"max-height"
+			],
+			[
+				"mapTrans",
+				"mapTransform2"
+			],
+			[
+				"mapTra",
+				"mapTransform2"
+			],
+			[
+				"coordi",
+				"coordinateArray"
+			],
+			[
+				"circle",
+				"circleNames"
+			],
+			[
+				"table-c",
+				"table-cell"
+			],
+			[
+				"se",
+				"sequenceControl"
+			],
+			[
+				"scale",
+				"scaleFactor"
+			],
+			[
+				"geo",
+				"geojsonMarkerOptions"
+			],
+			[
+				"on",
+				"onEachFeature"
+			],
+			[
+				"proper",
+				"property"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"read",
+				"readyState"
+			],
+			[
+				"ajax",
+				"ajaxRequest"
+			],
+			[
+				"jQuery",
+				"jQueryAjax"
+			],
+			[
+				"city",
+				"cityHeader"
+			],
+			[
+				"additional",
+				"additionalInfo"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 911,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 922,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": ".gitignore",
+			"settings":
+			{
+				"buffer_size": 148,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/main.js",
+			"settings":
+			{
+				"buffer_size": 375,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/project_files/mbtiles/Senegal.tm2/project.xml",
+			"settings":
+			{
+				"buffer_size": 9670,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/modules/m-section.js",
+			"settings":
+			{
+				"buffer_size": 65,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "doc/architecture.md",
+			"settings":
+			{
+				"buffer_size": 2651,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/lib/VERSIONS.txt",
+			"settings":
+			{
+				"buffer_size": 112,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/mapboxgl/mapbox-gl.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet/leaflet.js",
+		"/C/Users/Carl/Downloads/leaflet/leaflet.js",
+		"/C/Users/Carl/Downloads/mapbox-gl-js-master/mapbox-gl-js-master/js/mapbox-gl.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/plugins.js",
+		"/C/Users/Carl/Downloads/html5-boilerplate_v5.2.0/robots.txt",
+		"/C/Users/Carl/Downloads/html5-boilerplate_v5.2.0/humans.txt",
+		"/C/Users/Carl/Downloads/html5-boilerplate_v5.2.0/css/main.css",
+		"/C/Users/Carl/Downloads/html5-boilerplate_v5.2.0/doc/html.md",
+		"/C/Users/Carl/Downloads/html5-boilerplate_v5.2.0/img/.gitignore",
+		"/C/Users/Carl/Downloads/html5-boilerplate_v5.2.0/js/plugins.js",
+		"/C/Users/Carl/Downloads/html5-boilerplate_v5.2.0/js/main.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/php/query.php",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/css/style.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/index.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/data/tables.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/messages.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/TODO.txt",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/lib/leaflet/core/leaflet7/leaflet.0.7.3-src.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap1.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap.bak.js",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v7.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Resources/formatspec.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Resources/formatspec.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module1/Module1.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module2/Module2.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module3/Module3.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module4/Module4.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/Module5.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/Module6.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/Module7.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module8/Module8.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module9/Module9.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module10/Module10.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module10/Module10.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Resources/links.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Resources/links.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module9/Module9.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module8/Module8.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/Module7.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/Module6.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/Module5.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module4/Module4.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module3/Module3.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module2/Module2.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module1/Module1.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2014_Fall/Labs/Lab2-D3/coordinated_viz_example_code/css/style.css",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2014_Fall/Labs/Lab2-D3/coordinated_viz_example_code/js/main.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/css/style.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/js/main.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/index.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/js/main_noaxis.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/css/style_noaxis.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/lib/ss2.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/lib/ss.js",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v6.md",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/interactive-multivariate-choropleth-map-d3/js/main.js",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module8/files/figures/figure2.1.svg",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/css/actual_style.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/login.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/Features.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/createaccount.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/project_files/To_translate_complete.txt",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/testmap.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/resetpassword.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/messages_fr.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/data/tables.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/php/login.php",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/php/createAccount.php",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/php/confirmaccount.php",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/data/MegaCities.geojson",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-demo/css/style.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-demo/index.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-demo/js/main.js",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/markdown.css",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v3.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v2.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v5.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v4.md",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/README.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/files/d3-demo/index.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/files/d3-demo/js/main.js",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module3/files/unit-1(module_3)/js/main.js",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/files/leaflet-lab/data/MegaCities.geojson",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module4/files/leaflet-lab/js/main.js",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/js/main.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-lab/index.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/files/D3 Demo.html",
+		"/E/files/Documents/School/UW/Teaching/Geog575/2014_Fall/Labs/Week7/index.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2014_Fall/Labs/Week7/index.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/lib/leaflet-0.7.3/leaflet.js",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/Module5_L.control.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/js/main_flannery.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/css/style.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main_finishedLegend.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/index.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/files/leaflet-lab/index.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/files/circle.svg",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/ModuleOutline.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/ModuleOutline_v5.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/files/circle_from_browser.svg",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main_info.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main_a.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/boilerplate/index.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/css/style_a.css",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/css/style_a.css",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/css/style.css",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/index.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/js/geojson.js",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/js/main_a.js",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/js/tutorials.js",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/ModuleOutline_v4.md",
+		"/C/my_website/index.html",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/ModuleOutline_v3.md",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/refactoring.md",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main_flannery.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/css/style2.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/geojson.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/tutorials.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/markercluster.js",
+		"/C/Users/Carl/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet_lab/css/style.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet_lab/data/MegaCities.geojson",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/php/getFeatures.php"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			");\n",
+			"photos",
+			"250",
+			"addQueryDiv",
+			"Livestock",
+			"messages.eee",
+			"Associated With",
+			"checkbox",
+			"panelP",
+			"legendName",
+			"Water point",
+			"Resting-point",
+			".replace",
+			"legendname",
+			"iconName",
+			"addToLegend",
+			"query",
+			"processFeatures",
+			"resultsTitle",
+			"query",
+			"zoom",
+			"8",
+			"map.options.minZoom",
+			"valuesString",
+			"$value",
+			"Add and",
+			"and",
+			"or",
+			"_resetView",
+			"setView",
+			"fitBOundsTrigger",
+			"zoom",
+			"processFeatures",
+			"resultsTitle",
+			"parent",
+			"parents",
+			"title",
+			"Within",
+			"changeLang",
+			"searchTags",
+			"distSelect",
+			"console.log",
+			"{\n",
+			"div",
+			"searchTags",
+			"searchTags.name",
+			"autocomplete",
+			"searchTags",
+			"query",
+			"searchTags[fieldTitle]",
+			"attr",
+			"searchTags",
+			"attSelect",
+			"attVal",
+			"#searching",
+			"$(\"#searching\")",
+			"search",
+			"#searchform",
+			"#search",
+			"query",
+			"search",
+			"photo",
+			"the bolded words",
+			"deploying your",
+			"visual affordance",
+			"geovisualization",
+			"Quiz",
+			".on",
+			"dehighligh",
+			"blue",
+			".on",
+			"dehigh",
+			"desc",
+			"setEnu",
+			"console.",
+			".attr(\"class\", \"titleOption\")",
+			"colorScale",
+			"innerWidth",
+			"innerHeight",
+			"innerWidth",
+			"leftPadding",
+			"updateChart",
+			"changeAttribute",
+			"createDropdown",
+			"topBottomMargin",
+			"rightMargin",
+			"leftMargin",
+			"bar",
+			"set bars ",
+			"function choropleth",
+			"Number",
+			"numbars",
+			"selectAll",
+			".selectAll",
+			"setMap",
+			"chartWidth",
+			"setEnumerationUnits",
+			"colorScale",
+			"csvData",
+			"colorize",
+			"equal-",
+			"quiz",
+			"d.properties.adm1_code",
+			"natural breaks",
+			"colorScale",
+			"junk",
+			"visble",
+			"expressed",
+			"Geodata",
+			"Figure 2.2",
+			"figure2.2",
+			"figure2.3",
+			"Figure 2.3",
+			"Figure 2.4",
+			"figure2.4",
+			"figure2.5",
+			"Figure 2.5",
+			"geographies",
+			"geometries",
+			"10",
+			"ten",
+			"10",
+			"geography",
+			"topojson.feature",
+			"string",
+			"`d`",
+			"generator",
+			"geography"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"ms",
+			"0",
+			"valString",
+			"searchTags[field]",
+			"coordinated visualization",
+			"yellow",
+			"chartInnerWidth",
+			"chartInnerHeight",
+			"chartInnerWidth",
+			"topBottomPadding",
+			"rightPadding",
+			"leftPadding",
+			"bars",
+			"parseFloat",
+			"data",
+			"colorScale",
+			"Spatial Data",
+			"Figure 2.3",
+			"figure2.3",
+			"figure2.4",
+			"Figure 2.4",
+			"Figure 2.5",
+			"figure2.5",
+			"figure2.6",
+			"Figure 2.6",
+			"spatial",
+			"spatial data",
+			"spatial",
+			"spatial data",
+			"spatial",
+			"spatial data",
+			"spatial",
+			"strokeDasharray",
+			"Figure 3.2",
+			"Figure 3.3",
+			"Figure 3.4",
+			"Figure 3.5",
+			"Figure 3.6",
+			"Figure 3.7",
+			"Figure 3.8",
+			"Figure 3.9",
+			"Figure 3.10",
+			"Figure 3.11",
+			"Figure 3.12",
+			"Figure 3.13",
+			"figure3.2",
+			"figure3.3",
+			"figure3.4",
+			"figure3.5",
+			"figure3.6",
+			"figure3.7",
+			"figure3.8",
+			"figure3.9",
+			"figure3.10",
+			"figure3.11",
+			"figure3.12",
+			"figure3.13",
+			"Example 3.5",
+			"Example 3.4",
+			"Example 3.3",
+			"Example 3.2",
+			"Figure 3.1",
+			"Example 3.1",
+			"dataArray",
+			"Irrelevant",
+			"updateLegend",
+			"info",
+			"Example",
+			"files/figures/",
+			"pseudo-code",
+			": ",
+			":",
+			"*index.html*",
+			"*main.js*",
+			"decrement",
+			"*Using GeoJSON with Leaflet*",
+			"*Leaflet Quick Start Guide*",
+			"unit-1",
+			"unit_1",
+			"js_practice",
+			"Aire-protegé",
+			"Protected-Area",
+			"Commune",
+			"Céannes",
+			"resting point",
+			"Resting Point"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "README.md",
+					"settings":
+					{
+						"buffer_size": 911,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								911,
+								911
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 922,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								901,
+								844
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": ".gitignore",
+					"settings":
+					{
+						"buffer_size": 148,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								148,
+								148
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "js/main.js",
+					"settings":
+					{
+						"buffer_size": 375,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								205,
+								192
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/project_files/mbtiles/Senegal.tm2/project.xml",
+					"settings":
+					{
+						"buffer_size": 9670,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1026,
+								1026
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1800.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "js/modules/m-section.js",
+					"settings":
+					{
+						"buffer_size": 65,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								65,
+								65
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "doc/architecture.md",
+					"settings":
+					{
+						"buffer_size": 2651,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2041,
+								2041
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2100.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "js/lib/VERSIONS.txt",
+					"settings":
+					{
+						"buffer_size": 112,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								112,
+								112
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}
