@@ -1,0 +1,17 @@
+[
+	{
+		"sectionId": "header",
+		"cssAttributes": {
+			"background-color": "rgb(247,154,66)"
+		},
+		"logo-url": "img/logo.png",
+		"content": "MapStudy Template"
+	},
+	{
+		"sectionId": "footer",
+		"cssAttributes": {
+			"background-color": "rgb(247,154,66)"
+		},
+		"content": "I'm some credits, maybe a Twitter or Facebook share button."
+	}
+]

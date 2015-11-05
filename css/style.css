@@ -11,7 +11,6 @@
    ========================================================================== */
 
 html {
-    color: #222;
     font-size: 1em;
     line-height: 1.4;
 }
@@ -95,20 +94,76 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+html, body {
+    height: 100%;
+    background-color: #ccc;
+    overflow: hidden;
+}
 
+#cover {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+}
 
+#container {
+    margin: 0 5em;
+    min-height: 100vh;
+    background-color: white;
+    box-shadow: 0 0 5px black;
+}
 
+#header, #footer {
+    width: 100%;
+    clear: both;
+}
 
+#header {
+    height: 3em;
+    text-align: right;
+}
 
+#header h1 {
+    float: left;
+    margin: 0 1em;
+}
 
+#header img {
+    max-height: 4em;
+    margin: 5px 5px 0 0;
+}
 
+#wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -1em;
+}
 
+#footer {
+    position: absolute;
+    bottom: 0;
+}
 
+#footer span {
+    font-size: 0.8em;
+    line-height: 1.5em;
+    margin-left: 1em;
+}
 
+#m, #q {
+    margin: 0;
+    padding: 1em;
+    display: inline-block;
+    width: 45%;
+    clear: both;
+}
 
-
-
-
+#m {
+    text-align: center;
+    border-right: 10px solid #ccc;
+}
 
 
 /* ==========================================================================
