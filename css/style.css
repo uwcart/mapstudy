@@ -158,11 +158,19 @@ html, body {
     display: inline-block;
     width: 45%;
     clear: both;
+    vertical-align: top;
 }
 
 #m {
     text-align: center;
     border-right: 10px solid #ccc;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #ccc;
+    display: inline-block;
 }
 
 

@@ -40,14 +40,22 @@
 	var styles = new Styles();
 	styles.fetch();
 
-	//dynamic styles
+	//dynamic element sizes
 	$(window).resize(function(){
+		$("#container").css({
+			//		whatever this is   -  5em for header + footer
+			height: $(window).height() - (5/3 * $("#header").height())
+		})
 		$("#footer").css({
 			width: $("#header").width(),
-			height: "1.5em"
+			height: "2em"
 		});
 		$("#m").css({
-			height: $("#container").height() - (2* $("#header").height())
+			//		whatever this is		 -	7em for header + footer + padding
+			height: $("#container").height() - (7/3 * $("#header").height())
 		});
+		$("#map").css({
+			height: $("#m").height()
+		})
 	});
 })();

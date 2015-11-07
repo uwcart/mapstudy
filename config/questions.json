@@ -1,0 +1,51 @@
+{
+	"sets": [
+		{
+			"page": 1,
+			"blocks": [
+				{
+					"reset-numbering": true,
+					"title": "",
+					"ask": "",
+					"description": "",
+					"input": {
+						"type": "text",
+						"prompt": ""
+					}
+				},
+				{
+					"title": "",
+					"ask": "",
+					"description": "",
+					"input": {
+						"type": "matrix",
+						"options": [],
+						"items": [],
+					}
+				}
+			],
+			"buttons": [
+				"next"
+			]
+		},
+		{
+			"page": 2,
+			"blocks": [
+				{
+					"title": "",
+					"ask": "",
+					"description": "",
+					"input": {
+						"type": "checkbox",
+						"label": "",
+						"checked": true
+					}
+				}
+			],
+			"buttons": [
+				"back",
+				"submit"
+			]
+		}
+	]
+}

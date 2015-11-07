@@ -1,0 +1,38 @@
+{
+	"library": "Leaflet",
+	"interactions": [
+		"filter",
+		"pan"
+	],
+	"mapOptions": {
+		"center": [43,-89],
+		"zoom": 12,
+		"minZoom": 12,
+		"maxZoom": 13,
+		"noZoom": false
+	},
+	"dataLayer": {
+		"name": "",
+		"url": "",
+		"postgisTable": "",
+		"attributes": [],
+		"expressedAttribute": "",
+		"layerOptions": {},
+		"isomorph": {
+			"type": "Choropleth",
+			"size": "",
+			"shape": "",
+			"fillColor": "rgb(247,154,66)",
+			"fillOpacity": 0.8,
+			"lineColor": "",
+			"lineOpacity": ""
+		}
+	},
+	"dataOverlays": [],
+	"baseTiles": {
+		"name": "",
+		"url": "",
+		"layerOptions": {}
+	},
+	"altTiles": []
+}
