@@ -162,6 +162,7 @@ html, body {
 }
 
 #m {
+    height: 650px; /* temporary height to allow for map layer placement */
     text-align: center;
     border-right: 10px solid #ccc;
 }

@@ -1,32 +1,43 @@
 {
 	"library": "Leaflet",
-	"interactions": [
-		"filter",
-		"pan"
-	],
+	"interactions": {
+		"filter": {
+			"logging": true,
+			"byAttributes": "all"
+		},
+		"pan": {
+			"logging": true
+		},
+		"zoom": {
+			"logging": false
+		}
+	},
 	"mapOptions": {
 		"center": [39.83,-98.583],
 		"zoom": 3,
 		"minZoom": 3,
-		"maxZoom": 13,
-		"noZoom": false
+		"maxZoom": 13
+	},
+	"baseLayer": {
+		"name": "Acetate",
+		"source": "http://{s}.acetate.geoiq.com/tiles/acetate/{z}/{x}/{y}.png",
+		"layerOptions": {
+			"attribution": "Acetate tileset from ESRI GeoIQ"
+		}
 	},
 	"dataLayer": {
-		"name": "",
-		"url": "example/us-states.geojson",
+		"name": "US States",
+		"source": "data/us-states.geojson",
 		"postgisTable": "",
-		"attributes": [],
-		"expressedAttribute": "",
+		"expressedAttribute": "density",
 		"layerOptions": {
 			"fillOpacity": 0.8,
 			"color": "white",
 			"opacity": 1
 		},
-		"isomorph": {
+		"technique": {
 			"type": "choropleth",
 			"classification": "quantile",
-			"classedAttribute": "density",
-			"sequentialAttributes": [],
 			"classes": [
 				"#D4B9DA",
 				"#C994C7",
@@ -35,14 +46,5 @@
 				"#980043"
 			]
 		}
-	},
-	"dataOverlays": [],
-	"baseTiles": {
-		"name": "Acetate",
-		"url": "http://{s}.acetate.geoiq.com/tiles/acetate/{z}/{x}/{y}.png",
-		"layerOptions": {
-			"attribution": "Acetate tileset from ESRI GeoIQ"
-		}
-	},
-	"altTiles": []
+	}
 }

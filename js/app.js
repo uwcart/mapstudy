@@ -5,7 +5,10 @@
 	var Section = Backbone.View.extend({
 		initialize: function(){
 			this.$el.css(this.model.get('cssAttributes'));
-			this.$el.children('img').attr('src', this.model.get('logo-url'));
+			var logoUrl = this.model.get('logo-url');
+			if (logoUrl !== undefined && logoUrl.length > 0){
+				this.$el.children('img').attr('src', logoUrl);
+			};
 			this.$el.children('.content').html(this.model.get('content'));
 		}
 	});

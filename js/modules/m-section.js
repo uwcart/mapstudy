@@ -80,22 +80,22 @@ var classification = new Backbone.Collection([
 	new Unclassed()
 ]);
 
-/************** M-isomorph ****************/
+/************** M-technique ****************/
 
 //model for choropleth data overlay
 var Choropleth = Backbone.Model.extend({
 	defaults: {
-		isomorphType: 'choropleth',
+		techniqueType: 'choropleth',
 		classificationType: '',
-		classedAttribute: '',
+		expressedAttribute: '',
 		classes: '',
 		data: {}
 	},
 	setClasses: function(){
-		var classedAttribute = this.get('classedAttribute');
+		var expressedAttribute = this.get('expressedAttribute');
 		//get all of the values for the attribute by which the data will be classed
 		var values = _.map(this.get('features'), function(feature){
-			return parseFloat(feature.properties[classedAttribute]);
+			return parseFloat(feature.properties[expressedAttribute]);
 		});
 		//get the d3 scale for the chosen classification scheme
 		var classificationModel = classification.where({type: this.get('classificationType')})[0];
@@ -103,7 +103,7 @@ var Choropleth = Backbone.Model.extend({
 		//set a new fillColor property for each feature with the class color value
 		this.get('features').forEach(function(feature){
 			feature.properties.layerOptions = {
-				fillColor: scale(parseFloat(feature.properties[classedAttribute]))
+				fillColor: scale(parseFloat(feature.properties[expressedAttribute]))
 			};
 		});
 		this.trigger('done');
@@ -113,13 +113,13 @@ var Choropleth = Backbone.Model.extend({
 	}
 });
 
-//a single collection holds all visual isomorphs
-var isomorph = new Backbone.Collection([
+//a single collection holds all visual techniques
+var technique = new Backbone.Collection([
 	new Choropleth()
 ]);
 
 //MODELS NEEDED
-//-layers for each isomorph and each library
+//-layers for each technique and each library
 //-interaction elements and strategies for each interaction
 
 /************** M-library ****************/
@@ -142,7 +142,7 @@ var LeafletMap = Backbone.View.extend({
 	},
 	setMap: function(){
 		//remove default zoom control and interactions if noZoom option is true
-		if (this.model.get('mapOptions.noZoom')){
+		if (!this.model.get('interactions.zoom')){
 			this.model.set('mapOptions.zoomControl', false);
 			this.model.set('mapOptions.touchZoom', false);
 			this.model.set('mapOptions.scrollWheelZoom', false);
@@ -150,26 +150,29 @@ var LeafletMap = Backbone.View.extend({
 			this.model.set('mapOptions.boxZoom', false);
 		};
 
+		if (!this.model.get('interactions.pan')){
+			this.model.set('mapOptions.dragging', false);
+		}
+
 		//instantiate map
 		this.map = L.map('map', this.model.get('mapOptions'));
 
 		//add initial map layers
 		var layers = [];
-		var baseTiles = L.tileLayer(this.model.get('baseTiles.url'), this.model.get('baseTiles.layerOptions')).addTo(this.map);
-		layers.push(baseTiles);
+		var baseLayer = L.tileLayer(this.model.get('baseLayer.source'), this.model.get('baseLayer.layerOptions')).addTo(this.map);
+		layers.push(baseLayer);
 
 		var dataLayerOptions = this.model.get('dataLayer.layerOptions');
-		//get model based on isomorph type
-		var dataLayerModel = isomorph.where({isomorphType: this.model.get('dataLayer.isomorph.type')})[0];
+		//get model based on technique type
+		var dataLayerModel = technique.where({techniqueType: this.model.get('dataLayer.technique.type')})[0];
 		//pass in necessary values
 		dataLayerModel.set({
-			classificationType: this.model.get('dataLayer.isomorph.classification'),
-			classedAttribute: this.model.get('dataLayer.isomorph.classedAttribute'),
-			classes: this.model.get('dataLayer.isomorph.classes')
+			classificationType: this.model.get('dataLayer.technique.classification'),
+			expressedAttribute: this.model.get('dataLayer.expressedAttribute'),
+			classes: this.model.get('dataLayer.technique.classes')
 		});
 		dataLayerModel.on('done', function(){
 			function style(feature){
-				console.log(_.extend(feature.properties.layerOptions, dataLayerOptions));
 				//combine layer options objects from config file and feature properties
 				return _.extend(feature.properties.layerOptions, dataLayerOptions);
 			};
@@ -178,31 +181,31 @@ var LeafletMap = Backbone.View.extend({
 			layers.push(dataLayer);
 		}, this);
 		//go get the data!
-		dataLayerModel.fetch({url: this.model.get('dataLayer.url')});
+		dataLayerModel.fetch({url: this.model.get('dataLayer.source')});
 
-		// this.model.set('mapOptions.layers', layers); //can't do this because AJAX in isomorph model
+		// this.model.set('mapOptions.layers', layers); //can't do this because AJAX in technique model
 
-		//layers control
-		var baseLayers = {}, overlays = {};
-		//add any additional base layers
-		if (this.model.get('altTiles') && this.model.get('altTiles').length > 0){
-			_.each(this.model.get('altTiles'), function(layerProps){
-				baseLayers[layerProps.name] = L.tileLayer(layerProps.url, layerProps.layerOptions);
-			});
-		};
-		if ($.isEmptyObject(baseLayers)){ baseLayers = null };
-		//add any additional data layers
-		if (this.model.get('dataOverlays') && this.model.get('dataOverlays').length > 0){
-			_.each(this.model.get('dataOverlays'), function(layerProps){
-				var dataOverlayModel = new eval(layerProps.isomorph.type);
-				overlays[layerProps.name] = dataOverlayModel.get('layer');
-			});
-		};
-		if ($.isEmptyObject(overlays)){ overlays = null };
-		//add layers control if needed
-		if (baseLayers || overlays){
-			L.control.layers(baseLayers, overlays).addTo(this.map);
-		};
+		// //layers control--NEEDS REWRITE
+		// var baseLayers = {}, overlays = {};
+		// //add any additional base layers
+		// if (this.model.get('altTiles') && this.model.get('altTiles').length > 0){
+		// 	_.each(this.model.get('altTiles'), function(layerProps){
+		// 		baseLayers[layerProps.name] = L.tileLayer(layerProps.source, layerProps.layerOptions);
+		// 	});
+		// };
+		// if ($.isEmptyObject(baseLayers)){ baseLayers = null };
+		// //add any additional data layers
+		// if (this.model.get('dataOverlays') && this.model.get('dataOverlays').length > 0){
+		// 	_.each(this.model.get('dataOverlays'), function(layerProps){
+		// 		var dataOverlayModel = new eval(layerProps.technique.type);
+		// 		overlays[layerProps.name] = dataOverlayModel.get('layer');
+		// 	});
+		// };
+		// if ($.isEmptyObject(overlays)){ overlays = null };
+		// //add layers control if needed
+		// if (baseLayers || overlays){
+		// 	L.control.layers(baseLayers, overlays).addTo(this.map);
+		// };
 	},
 	recordInteraction: function(interaction){
 		console.log(interaction);

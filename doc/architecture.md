@@ -14,7 +14,7 @@
 - [MapboxGL]
 - [D3]
 
-### M-isomorph
+### M-technique
 
 - **Choropleth**
 - Dot

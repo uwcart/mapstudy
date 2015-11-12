@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"dataLayer",
+				"dataLayerModel"
+			],
+			[
+				"prop",
+				"properties"
+			],
+			[
+				"range",
+				"rangeArray"
+			],
+			[
+				"dataOver",
+				"dataOverlayModel"
+			],
+			[
 				"swit",
 				"switchInput"
 			],
@@ -187,7 +203,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 922,
+				"buffer_size": 2731,
 				"line_ending": "Unix"
 			}
 		},
@@ -200,30 +216,6 @@
 			}
 		},
 		{
-			"file": "js/main.js",
-			"settings":
-			{
-				"buffer_size": 375,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/project_files/mbtiles/Senegal.tm2/project.xml",
-			"settings":
-			{
-				"buffer_size": 9670,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "js/modules/m-section.js",
-			"settings":
-			{
-				"buffer_size": 65,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "doc/architecture.md",
 			"settings":
 			{
@@ -232,10 +224,51 @@
 			}
 		},
 		{
-			"file": "js/lib/VERSIONS.txt",
+			"file": "js/lib/VERSIONS.md",
 			"settings":
 			{
-				"buffer_size": 112,
+				"buffer_size": 377,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/app.js",
+			"settings":
+			{
+				"buffer_size": 1465,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "css/style.css",
+			"settings":
+			{
+				"buffer_size": 6765,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "config/map.json",
+			"settings":
+			{
+				"buffer_size": 873,
+				"line_ending": "Windows",
+				"name": "["
+			}
+		},
+		{
+			"file": "js/modules/m-section.js",
+			"settings":
+			{
+				"buffer_size": 6930,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "example/us-states.geojson",
+			"settings":
+			{
+				"buffer_size": 89263,
 				"line_ending": "Windows"
 			}
 		}
@@ -264,8 +297,19 @@
 	},
 	"file_history":
 	[
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/mapboxgl/mapbox-gl.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/example/us-states.geojson",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/LICENSE.txt",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/questions.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/styles.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/CONFIG.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/api.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/q-section.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/main.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet/leaflet.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/jquery.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/project_files/mbtiles/Senegal.tm2/project.xml",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/mapboxgl/mapbox-gl.js",
 		"/C/Users/Carl/Downloads/leaflet/leaflet.js",
 		"/C/Users/Carl/Downloads/mapbox-gl-js-master/mapbox-gl-js-master/js/mapbox-gl.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/plugins.js",
@@ -380,18 +424,7 @@
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/js/main_a.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/js/tutorials.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/ModuleOutline_v4.md",
-		"/C/my_website/index.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/ModuleOutline_v3.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/refactoring.md",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main_flannery.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/css/style2.css",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/geojson.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/tutorials.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/markercluster.js",
-		"/C/Users/Carl/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet_lab/css/style.css",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet_lab/data/MegaCities.geojson",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/php/getFeatures.php"
+		"/C/my_website/index.html"
 	],
 	"find":
 	{
@@ -409,6 +442,14 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"console",
+			"colorClasses",
+			"colorScale",
+			"colorClasses",
+			"rangeArray",
+			"colorScale",
+			"console",
+			"this.options",
 			");\n",
 			"photos",
 			"250",
@@ -528,15 +569,7 @@
 			"Figure 2.5",
 			"geographies",
 			"geometries",
-			"10",
-			"ten",
-			"10",
-			"geography",
-			"topojson.feature",
-			"string",
-			"`d`",
-			"generator",
-			"geography"
+			"10"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -544,6 +577,11 @@
 		"regex": false,
 		"replace_history":
 		[
+			"classes",
+			"scale",
+			"classes",
+			"scale",
+			"this.model",
 			"ms",
 			"0",
 			"valString",
@@ -640,7 +678,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 8,
 			"sheets":
 			[
 				{
@@ -674,15 +712,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 922,
+						"buffer_size": 2731,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								901,
-								844
+								1149,
+								1149
 							]
 						],
 						"settings":
@@ -692,7 +730,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 320.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -725,88 +763,6 @@
 				},
 				{
 					"buffer": 3,
-					"file": "js/main.js",
-					"settings":
-					{
-						"buffer_size": 375,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								205,
-								192
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/project_files/mbtiles/Senegal.tm2/project.xml",
-					"settings":
-					{
-						"buffer_size": 9670,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1026,
-								1026
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/XML/XML.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1800.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "js/modules/m-section.js",
-					"settings":
-					{
-						"buffer_size": 65,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								65,
-								65
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
 					"file": "doc/architecture.md",
 					"settings":
 					{
@@ -828,25 +784,162 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2100.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "js/lib/VERSIONS.txt",
+					"buffer": 4,
+					"file": "js/lib/VERSIONS.md",
 					"settings":
 					{
-						"buffer_size": 112,
+						"buffer_size": 377,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								112,
-								112
+								377,
+								377
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "js/app.js",
+					"settings":
+					{
+						"buffer_size": 1465,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								996,
+								996
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 600.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "css/style.css",
+					"settings":
+					{
+						"buffer_size": 6765,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2767,
+								2767
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2280.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "config/map.json",
+					"settings":
+					{
+						"buffer_size": 873,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								841,
+								841
+							]
+						],
+						"settings":
+						{
+							"auto_name": "[",
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 300.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "js/modules/m-section.js",
+					"settings":
+					{
+						"buffer_size": 6930,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3624,
+								3624
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3000.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "example/us-states.geojson",
+					"settings":
+					{
+						"buffer_size": 89263,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								89263,
+								89263
 							]
 						],
 						"settings":
@@ -854,7 +947,7 @@
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 15123.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
