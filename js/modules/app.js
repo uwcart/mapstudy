@@ -1,5 +1,8 @@
 //main application script
 
+var userId = Math.round(Math.random() * 1000000);
+var question = 0;
+
 (function(){
 	//view for each page section
 	var Section = Backbone.View.extend({

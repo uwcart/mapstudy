@@ -2,7 +2,7 @@
 
 (function(){
 
-/************** M-classification ****************/
+/************** map.dataLayer.techique.classification ****************/
 
 var Quantile = Backbone.Model.extend({
 	defaults: {
@@ -80,7 +80,7 @@ var classification = new Backbone.Collection([
 	new Unclassed()
 ]);
 
-/************** M-technique ****************/
+/************** map.dataLayer.technique ****************/
 
 //model for choropleth data overlay
 var Choropleth = Backbone.Model.extend({
@@ -118,11 +118,38 @@ var technique = new Backbone.Collection([
 	new Choropleth()
 ]);
 
-//MODELS NEEDED
-//-layers for each technique and each library
-//-interaction elements and strategies for each interaction
+/************** map.interactions ****************/
 
-/************** M-library ****************/
+//basic interaction model
+var Interaction = Backbone.Model.extend({
+	defaults: {
+		interaction: "",
+		timestamp: "",
+		userId: userId,
+		question: 0
+	},
+	url: "php/interactions.php",
+	record: function(){
+		var date = new Date();
+		this.set({
+			timestamp: date.toUTCString(),
+			question: question
+		});
+		this.save();
+	},
+	create: function(events){
+		//events is an object in the form of {event1: context1, event2: context2}
+		for (var e in events){
+			var context = events[e];
+			var model = this;
+			context.on(e, function(){
+				model.record();
+			});
+		}
+	}
+});
+
+/************** map.library ****************/
 
 //Leaflet
 var LeafletMap = Backbone.View.extend({
@@ -141,7 +168,7 @@ var LeafletMap = Backbone.View.extend({
 		return this;
 	},
 	setMap: function(){
-		//remove default zoom control and interactions if noZoom option is true
+		//remove default zoom control and interactions if no zoom interaction
 		if (!this.model.get('interactions.zoom')){
 			this.model.set('mapOptions.zoomControl', false);
 			this.model.set('mapOptions.touchZoom', false);
@@ -172,16 +199,69 @@ var LeafletMap = Backbone.View.extend({
 			classes: this.model.get('dataLayer.technique.classes')
 		});
 		dataLayerModel.on('done', function(){
+			var model = this.model, view = this;
+			var className = model.get('dataLayer.name').replace(/\s|\:/g, '-');
 			function style(feature){
 				//combine layer options objects from config file and feature properties
 				return _.extend(feature.properties.layerOptions, dataLayerOptions);
 			};
+			//implement retrieve interaction if listed in config file
+			function onEachFeature(feature, layer){
+				if (model.get('interactions.retrieve')){
+					var popupContent = "<table>";
+					if (model.get('interactions.retrieve.attributes')){
+						var retrieveAttributes = model.get('interactions.retrieve.attributes');
+						retrieveAttributes.forEach(function(attr){
+							popupContent += "<tr><td class='attr'>"+attr+":</td><td>"+feature.properties[attr]+"</td></tr>";
+						});
+					} else {
+						var attr = dataLayerModel.get('expressedAttribute');
+						popupContent += "<tr><td class='attr'>"+attr+":</td><td>"+feature.properties[attr]+"</td></tr>";
+					};
+					popupContent += "</table>";
+					layer.bindPopup(popupContent);
+					if (model.get('interactions.retrieve.event') == 'hover'){
+						layer.on({
+							mouseover: function(){ this.openPopup() },
+							mouseout: function(){ this.closePopup() }
+						});
+					};
+					layer.on('popupopen', function(){
+						view.trigger('popupopen');
+					});
+				};
+			};
 			//add Leaflet overlay
-			var dataLayer = L.geoJson(dataLayerModel.get('features'), {style: style}).addTo(this.map);
+			var dataLayer = L.geoJson(dataLayerModel.get('features'), {
+				style: style,
+				onEachFeature: onEachFeature,
+				className: className
+			}).addTo(this.map);
+			//reset cursor if needed
+			if (!model.get('interactions.retrieve') && model.get('interactions.pan')){
+				$("."+className).css('cursor', "grab");
+			};
+			//add to layers
 			layers.push(dataLayer);
 		}, this);
 		//go get the data!
 		dataLayerModel.fetch({url: this.model.get('dataLayer.source')});
+
+		//designate events to listen to with contexts for each interaction
+		var interactionCreation = {
+			zoom: {zoomstart: this.map},
+			pan: {dragend: this.map},
+			retrieve: {popupopen: this}
+		};
+
+		//create a new interaction object for each interaction with logging
+		var interactions = this.model.get('interactions');
+		for (var interaction in interactionCreation){
+			if (interactions[interaction].logging){
+				var i = new Interaction({interaction: interaction});
+				i.create(interactionCreation[interaction]);
+			};
+		};
 
 		// this.model.set('mapOptions.layers', layers); //can't do this because AJAX in technique model
 
@@ -206,10 +286,6 @@ var LeafletMap = Backbone.View.extend({
 		// if (baseLayers || overlays){
 		// 	L.control.layers(baseLayers, overlays).addTo(this.map);
 		// };
-	},
-	recordInteraction: function(interaction){
-		console.log(interaction);
-		//send the interaction, timestamp, etc. to the interactions database table
 	}
 });
 
@@ -220,15 +296,15 @@ function setMapView(options){
 	mapView.render().setMap();
 };
 
-/************** M-options ****************/
+/************** map config ****************/
 
-var MapOptions = Backbone.DeepModel.extend({
+var MapConfig = Backbone.DeepModel.extend({
 	url: "config/map.json"
 });
 
-//get options
-var options = new MapOptions();
-options.on('sync', setMapView);
-options.fetch();
+//get map configuration options
+var mapConfig = new MapConfig();
+mapConfig.on('sync', setMapView);
+mapConfig.fetch();
 
 })();

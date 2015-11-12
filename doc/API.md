@@ -154,9 +154,9 @@ Overlay interaction. Must be included to allow the user to change base tiles or 
 
 An array containing `dataLayer` objects for additional data layers to allow users to add to the map.
 
-#### map.interactions.overlay.tileLayers
+#### map.interactions.overlay.baseLayers
 
-		-"tileLayers"-: []
+		-"baseLayers"-: []
 
 An array containing `tileLayer` objects for additional base layers to allow users to choose from. The difference between this array and `dataLayers` is that users will only be able to view a single `tileLayer` at a time, but can overlay any number of `dataLayers` on top of it.
 

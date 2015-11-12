@@ -1,15 +1,14 @@
 {
 	"library": "Leaflet",
 	"interactions": {
-		"filter": {
-			"logging": true,
-			"byAttributes": "all"
+		"retrieve": {
+			"logging": true
 		},
 		"pan": {
 			"logging": true
 		},
 		"zoom": {
-			"logging": false
+			"logging": true
 		}
 	},
 	"mapOptions": {
@@ -39,11 +38,11 @@
 			"type": "choropleth",
 			"classification": "quantile",
 			"classes": [
-				"#D4B9DA",
-				"#C994C7",
-				"#DF65B0",
-				"#DD1C77",
-				"#980043"
+				"#FEEDDE",
+				"#FDBE85",
+				"#FD8D3C",
+				"#E6550D",
+				"#A63603"
 			]
 		}
 	}
