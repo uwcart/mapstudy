@@ -89,7 +89,7 @@ var Choropleth = Backbone.Model.extend({
 		classificationType: '',
 		expressedAttribute: '',
 		classes: '',
-		data: {}
+		dataLayer: {}
 	},
 	setClasses: function(){
 		var expressedAttribute = this.get('expressedAttribute');
@@ -114,7 +114,7 @@ var Choropleth = Backbone.Model.extend({
 });
 
 //a single collection holds all visual techniques
-var technique = new Backbone.Collection([
+var techniques = new Backbone.Collection([
 	new Choropleth()
 ]);
 
@@ -158,49 +158,36 @@ var LeafletMap = Backbone.View.extend({
 		//DOM events--not sure I'll use this
 	},
 	initialize: function(){
-		//attach an event for each interaction--remember to have user interaction trigger on map
-		_.each(this.model.get('interactions'), function(interaction){
-			this.on(interaction, this.recordInteraction);
-		}, this);
+
 	},
 	render: function(){
 		this.$el.html("<div id='map'>");
 		return this;
 	},
-	setMap: function(){
-		//remove default zoom control and interactions if no zoom interaction
-		if (!this.model.get('interactions.zoom')){
-			this.model.set('mapOptions.zoomControl', false);
-			this.model.set('mapOptions.touchZoom', false);
-			this.model.set('mapOptions.scrollWheelZoom', false);
-			this.model.set('mapOptions.doubleClickZoom', false);
-			this.model.set('mapOptions.boxZoom', false);
-		};
-
-		if (!this.model.get('interactions.pan')){
-			this.model.set('mapOptions.dragging', false);
-		}
-
-		//instantiate map
-		this.map = L.map('map', this.model.get('mapOptions'));
-
-		//add initial map layers
-		var layers = [];
-		var baseLayer = L.tileLayer(this.model.get('baseLayer.source'), this.model.get('baseLayer.layerOptions')).addTo(this.map);
-		layers.push(baseLayer);
-
-		var dataLayerOptions = this.model.get('dataLayer.layerOptions');
+	setBaseLayer: function(baseLayer, i){
+		//create leaflet tile layer
+		var leafletBaseLayer = L.tileLayer(baseLayer.source, baseLayer.layerOptions);
+		//only add first base layer to the map
+		if (i==0){ leafletBaseLayer.addTo(this.map); };
+		//add to array of base layers
+		this.model.attributes.leafletBaseLayers.push(baseLayer);
+	},
+	setDataLayer: function(dataLayer){
+		//get layer options
+		var dataLayerOptions = dataLayer.layerOptions;
 		//get model based on technique type
-		var dataLayerModel = technique.where({techniqueType: this.model.get('dataLayer.technique.type')})[0];
+		var dataLayerModel = techniques.where({techniqueType: dataLayer.technique.type})[0];
 		//pass in necessary values
 		dataLayerModel.set({
-			classificationType: this.model.get('dataLayer.technique.classification'),
-			expressedAttribute: this.model.get('dataLayer.expressedAttribute'),
-			classes: this.model.get('dataLayer.technique.classes')
+			classificationType: dataLayer.technique.classification,
+			expressedAttribute: dataLayer.expressedAttribute,
+			classes: dataLayer.technique.classes,
+			dataLayer: dataLayer
 		});
+		//set up AJAX callback
 		dataLayerModel.on('done', function(){
 			var model = this.model, view = this;
-			var className = model.get('dataLayer.name').replace(/\s|\:/g, '-');
+			var className = dataLayerModel.get('dataLayer').name.replace(/\s|\:/g, '-');
 			function style(feature){
 				//combine layer options objects from config file and feature properties
 				return _.extend(feature.properties.layerOptions, dataLayerOptions);
@@ -222,7 +209,13 @@ var LeafletMap = Backbone.View.extend({
 					layer.bindPopup(popupContent);
 					if (model.get('interactions.retrieve.event') == 'hover'){
 						layer.on({
-							mouseover: function(){ this.openPopup() },
+							mouseover: function(){
+								//fix for popup flicker
+								var bounds = this.getBounds();
+								var maxLat = bounds.getNorth();
+								var midLng = bounds.getCenter().lng;
+								this.openPopup([maxLat, midLng]);
+							},
 							mouseout: function(){ this.closePopup() }
 						});
 					};
@@ -232,20 +225,54 @@ var LeafletMap = Backbone.View.extend({
 				};
 			};
 			//add Leaflet overlay
-			var dataLayer = L.geoJson(dataLayerModel.get('features'), {
+			var leafletDataLayer = L.geoJson(dataLayerModel.get('features'), {
 				style: style,
 				onEachFeature: onEachFeature,
 				className: className
-			}).addTo(this.map);
-			//reset cursor if needed
-			if (!model.get('interactions.retrieve') && model.get('interactions.pan')){
-				$("."+className).css('cursor', "grab");
+			});
+			//render immediately by default
+			if (typeof dataLayer.renderOnLoad === 'undefined' || dataLayer.renderOnLoad == 'true'){
+				leafletDataLayer.addTo(this.map);
+				//reset cursor if needed
+				if (!model.get('interactions.retrieve') && model.get('interactions.pan')){
+					$("."+className).css('cursor', "grab");
+				};
 			};
 			//add to layers
-			layers.push(dataLayer);
+			model.attributes.leafletDataLayers.push(leafletDataLayer);
 		}, this);
 		//go get the data!
-		dataLayerModel.fetch({url: this.model.get('dataLayer.source')});
+		dataLayerModel.fetch({url: dataLayer.source});
+	},
+	setMap: function(){
+		//remove default zoom control and interactions if no zoom interaction
+		if (!this.model.get('interactions.zoom')){
+			this.model.set('mapOptions.zoomControl', false);
+			this.model.set('mapOptions.touchZoom', false);
+			this.model.set('mapOptions.scrollWheelZoom', false);
+			this.model.set('mapOptions.doubleClickZoom', false);
+			this.model.set('mapOptions.boxZoom', false);
+		};
+		//remove default panning interaction if no pan interaction
+		if (!this.model.get('interactions.pan')){
+			this.model.set('mapOptions.dragging', false);
+		};
+		//create Leaflet layers arrays
+		this.model.set({
+			leafletBaseLayers: [],
+			leafletDataLayers: []
+		});
+
+		//instantiate map
+		this.map = L.map('map', this.model.get('mapOptions'));
+
+		//add initial tile layers
+		var baseLayers = this.model.get('baseLayers');
+		_.each(baseLayers, this.setBaseLayer, this);
+
+		//add each data layer
+		var dataLayers = this.model.get('dataLayers');
+		_.each(dataLayers, this.setDataLayer, this);
 
 		//designate events to listen to with contexts for each interaction
 		var interactionCreation = {
@@ -262,30 +289,6 @@ var LeafletMap = Backbone.View.extend({
 				i.create(interactionCreation[interaction]);
 			};
 		};
-
-		// this.model.set('mapOptions.layers', layers); //can't do this because AJAX in technique model
-
-		// //layers control--NEEDS REWRITE
-		// var baseLayers = {}, overlays = {};
-		// //add any additional base layers
-		// if (this.model.get('altTiles') && this.model.get('altTiles').length > 0){
-		// 	_.each(this.model.get('altTiles'), function(layerProps){
-		// 		baseLayers[layerProps.name] = L.tileLayer(layerProps.source, layerProps.layerOptions);
-		// 	});
-		// };
-		// if ($.isEmptyObject(baseLayers)){ baseLayers = null };
-		// //add any additional data layers
-		// if (this.model.get('dataOverlays') && this.model.get('dataOverlays').length > 0){
-		// 	_.each(this.model.get('dataOverlays'), function(layerProps){
-		// 		var dataOverlayModel = new eval(layerProps.technique.type);
-		// 		overlays[layerProps.name] = dataOverlayModel.get('layer');
-		// 	});
-		// };
-		// if ($.isEmptyObject(overlays)){ overlays = null };
-		// //add layers control if needed
-		// if (baseLayers || overlays){
-		// 	L.control.layers(baseLayers, overlays).addTo(this.map);
-		// };
 	}
 });
 

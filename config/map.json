@@ -17,14 +17,14 @@
 		"minZoom": 3,
 		"maxZoom": 13
 	},
-	"baseLayer": {
+	"baseLayers": [{
 		"name": "Acetate",
 		"source": "http://{s}.acetate.geoiq.com/tiles/acetate/{z}/{x}/{y}.png",
 		"layerOptions": {
 			"attribution": "Acetate tileset from ESRI GeoIQ"
 		}
-	},
-	"dataLayer": {
+	}],
+	"dataLayers": [{
 		"name": "US States",
 		"source": "data/us-states.geojson",
 		"postgisTable": "",
@@ -45,5 +45,5 @@
 				"#A63603"
 			]
 		}
-	}
+	}]
 }

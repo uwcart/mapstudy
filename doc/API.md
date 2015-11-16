@@ -152,19 +152,13 @@ Overlay interaction. Must be included to allow the user to change base tiles or 
 
 		-"dataLayers"-: []
 
-An array containing `dataLayer` objects for additional data layers to allow users to add to the map.
+An array containing the names of `dataLayers` to allow users to switch between with the layers control. Each data layer will be represented by a checkbox in the layers control, allowing any number of listed layers to be added or removed.
 
 #### map.interactions.overlay.baseLayers
 
 		-"baseLayers"-: []
 
-An array containing `tileLayer` objects for additional base layers to allow users to choose from. The difference between this array and `dataLayers` is that users will only be able to view a single `tileLayer` at a time, but can overlay any number of `dataLayers` on top of it.
-
-#### map.interactions.overlay.baseLayers
-
-		-"baseLayers"-: []
-
-An array containing `tileLayer` objects for additional base layers to allow users to choose from. The difference between this array and `dataLayers` is that users will only be able to view a single `tileLayer` at a time, but can overlay any number of `dataLayers` on top of it.
+An array containing the names of `baseLayers` to allow users to switch between with the layers control. Users will only be able to view one base layer at a time.
 
 #### map.interactions.search
 
@@ -176,7 +170,7 @@ Search interaction. Creates a search box on the map.
 
 			-"attributes"-: []
 
-An array of the `dataLayer` and `dataOverlays` attributes to include in the search. Must have at least one value to enable searching. It is recommended to include categorical rather than numerical attributes (e.g., "name" but not "population").
+An array of the `dataLayers` attributes to include in the search. Must have at least one value to enable searching. It is recommended to include categorical rather than numerical attributes (e.g., "name" but not "population").
 
 #### map.interactions.search.autocomplete
 
@@ -194,7 +188,7 @@ Filter interaction. Creates a filter tool on the map.
 
 			-"attributes"-: []
 
-An array of the `dataLayer` and `dataOverlays` attributes to include in the filter tool. Must have at least one value to enable filtering. Each attribute will be selectable via a dropdown menu.
+An array of the `dataLayers` attributes to include in the filter tool. Must have at least one value to enable filtering. Each attribute will be selectable via a dropdown menu.
 
 #### map.interactions.filter.tool
 
@@ -210,7 +204,7 @@ Which interface tool to use for filtering. Default is `slider`.
 
 		-"sequence"-: { -"logging"- -"attributes"- -"tool"- }
 
-Sequence interaction. Allows the user to change the expressed attribute of the `dataLayer`.
+Sequence interaction. Allows the user to change the expressed attribute separately for each of the currently-viewed `dataLayers` that include two or more of the listed attributes plus the layer's `expressedAttribute`.
 
 #### map.interactions.sequence.attributes
 
@@ -232,13 +226,13 @@ Which interface tool to user for sequencing. Default is `buttons`.
 
 		-"reexpress"-: { -"logging"- -"techniques"- }
 
-Reexpress interaction. Allows the user to change the visual technique in which the `dataLayer` is expressed.
+Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the `dataLayer` is expressed.
 
 #### map.interactions.reexpress.techniques
 
 			-"techniques"-: []
 
-An array of `technique` objects, with the same parameters of the `dataLayer`'s `technique` object. Must have at least one value to enable reexpression. It is not necessary to include the `dataLayer`'s `technique` object.
+An array of `technique` objects, with the same parameters of a `dataLayer`'s `technique` object. Must have at least one value to enable reexpression. It is not necessary to include the `dataLayer`'s `technique` object.
 
 #### map.interactions.resymbolize
 
@@ -367,25 +361,26 @@ when sent to the server will translate as:
 
 The REST parameters may also be added in the above format to `baseLayer.source` and `layerOptions` omitted.
 
-#### map.dataLayer
+#### map.dataLayers
 
-	-"dataLayer"-: {
+	-"dataLayers"-: [{
 		"name"
 		"source"
 		"expressedAttribute"
+		-"renderOnLoad"-
 		-"layerOptions"-
 		"technique"
-	}
+	}]
 
-An object containing information about the data to be visualized on the map, if any. Only available for Leaflet, Mapbox-GL, and D3 maps.
+An array of objects containing information about the data to be visualized on the map, if any. Only available for Leaflet, Mapbox-GL, and D3 maps. Layers will be rendered on the map from bottom to top in the order in which they are listed in the array.
 
-#### map.dataLayer.name
+#### map.dataLayers[i].name
 
 		"name": layer name
 
 The name of the data layer; a string. Required. If `overlay` is included in the `interactions`, this name will appear in the layers control on the map.
 
-#### map.dataLayer.source
+#### map.dataLayers[i].source
 
 		"source": -layer data URL- -"postgis:"+table name-
 
@@ -395,19 +390,25 @@ The data should include feature geometries with *unprojected* WGS-84 coordinates
 
 For a Mapbox-GL map, the `source` may also be a vector tileset. The data retrieved by `source` will be added as a [data source](https://www.mapbox.com/mapbox-gl-style-spec/#sources) to the styles object.
 
-#### map.dataLayer.expressedAttribute
+#### map.dataLayers[i].expressedAttribute
 
 		"expressedAttribute": attribute name
 
 The name of the numerical attribute that will be visually expressed on the map; a string. Required. Must correspond to a key within each feature's `properties` object that references a numerical value (or no value or `null` if null for that feature).
 
-#### map.dataLayer.layerOptions
+#### map.dataLayers[i].renderOnLoad
+
+		-"renderOnLoad"-: -true- -false-
+
+Whether to render the layer when the map loads. Optional; default is `true`. If multiple `dataLayers` are included with some having `renderOnLoad` set to `false`, the only way those layers will be visible is by including an `overlay` interaction that includes those layers. In this case, those layers will be unchecked in the layers control until selected by the user. 
+
+#### map.dataLayers[i].layerOptions
 
 		-"layerOptions"-: -{}- -URL-
 
 An object or URL string pointing to a JSON file containing [Leaflet Path options](http://leafletjs.com/reference.html#path-options), [SVG styles](http://www.w3.org/TR/SVG/styling.html#SVGStylingProperties) for all layer paths drawn by D3, or [Mapbox-GL style layers](https://www.mapbox.com/mapbox-gl-style-spec/#layers). Optional. Properties added here that conflict with the `technique` classification will be overridden for each feature to which the classification is applied (i.e., any not null values).
 
-#### map.dataLayer.technique
+#### map.dataLayers[i].technique
 
 		"technique": {
 			"type"
@@ -418,15 +419,15 @@ An object or URL string pointing to a JSON file containing [Leaflet Path options
 			-"size"-
 		}
 
-An object containing the thematic mapping technique, including the map type and classification parameters for the `dataLayer`. Required.
+An object containing the thematic mapping technique, including the map type and classification parameters for the data layer. Required.
 
-#### map.dataLayer.technique.type
+#### map.dataLayers[i].technique.type
 
 			"type": -"choropleth"- -"proportional symbol"- -"dot"- -"isarithmic"-
 
 The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Required. Note that only a data layer with a `proportional symbol` or `isarithmic` technique type can use point feature data. 
 
-#### map.dataLayer.technique.classification
+#### map.dataLayers[i].technique.classification
 
 			"classification": -"quantile"- -"equal interval"- -"natural breaks"- -"unclassed"-
 
@@ -440,19 +441,19 @@ A `natural breaks` classification uses the [Cartesian k-means](http://www.cs.tor
 
 An `unclassed` classification creates a [linear scale](https://github.com/mbostock/d3/wiki/Quantitative-Scales#linear-scales) to map each input data value to an output value interpolated between the first two values given in the `classes` array. Thus, it results in a map with no defined classes. This is the most common classification for proportional symbol maps and the least common for choropleth maps.
 
-#### map.dataLayer.technique.classes
+#### map.dataLayers[i].technique.classes
 
 			-"classes"-: []
 
 An array containing the output values for each class. Required if `classification` is used. Array values should be numerical for proportional symbol maps&mdash;representing the diameter or width of each feature's symbol&mdash;and hexadecimal color strings for a choropleth map (e.g., `"#FFFFFF"`). The number of values in the array will correspond with the number of classes created. For choropleth maps, unless testing various color schemes, it is recommended you choose a colorblind-safe color scheme from [Colorbrewer](http://colorbrewer2.org/).
 
-#### map.dataLayer.technique.symbol
+#### map.dataLayers[i].technique.symbol
 
 			-"symbol"-: -"circle"- -"square"- -image url-
 
 Symbol to use for proportional symbol or dot map. Optional; default is `circle`. Not available to choropleth or isarithmic maps. For proportional symbol maps, if the dataset consists of point features, symbols will be placed on point coordinates; otherwise, symbols will be placed on the centroids of polygon features. While use of something other than `circle` for a dot map is possible, it is not recommended.
 
-#### map.dataLayer.technique.interval
+#### map.dataLayers[i].technique.interval
 
 			-"interval"-: value interval
 
@@ -462,7 +463,7 @@ For an isarithmic map, there are two ways to determine line separation. One way 
 
 For a dot map, the value of `interval` is the denominator by which the feature's expressed attribute value will be divided to determine the number of dots to add within the boundaries of a feature. Omitting `interval` will result in a default of one dot for every 10 units. For example, if the expressed attribute value for a feature is `15,607`, by default there will be 1,561 dots scattered within that feature's boundaries. Designating `interval` as `1` will result in a dot being added for each whole number increase in the expressed attribute value, resulting in a true dot (as opposed to dot density) map.
 
-#### map.dataLayer.technique.size
+#### map.dataLayers[i].technique.size
 
 			-"size"-: size
 
