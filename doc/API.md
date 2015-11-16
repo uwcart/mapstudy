@@ -144,21 +144,21 @@ Whether to open the pop-up when the mouse hovers over the feature or on mouse cl
 
 #### map.interactions.overlay
 
-		-"overlay"-: { -"logging"- -"dataLayers"- -"baseLayers"- }
+		-"overlay"-: { -"logging"- "dataLayers" }
 
-Overlay interaction. Must be included to allow the user to change base tiles or data layers on the map. Must include at least one of `dataLayers` and/or `baseLayers` properties.
+Overlay interaction. Must be included to allow the user to add or remove data layers on the map. Must include a list of `dataLayers` for which to enable the interaction.
 
 #### map.interactions.overlay.dataLayers
 
 		-"dataLayers"-: []
 
-An array containing the names of `dataLayers` to allow users to switch between with the layers control. Each data layer will be represented by a checkbox in the layers control, allowing any number of listed layers to be added or removed.
+An array containing the names of `dataLayers` to allow users to add and remove with a layers control. Required. Each data layer will be represented by a checkbox in the layers control, allowing any number of included layers to be added or removed.
 
-#### map.interactions.overlay.baseLayers
+#### map.interactions.underlay
 
-		-"baseLayers"-: []
+		-"underlay"-: { -"logging"- }
 
-An array containing the names of `baseLayers` to allow users to switch between with the layers control. Users will only be able to view one base layer at a time.
+Underlay interaction. Must be included to allow the user to change base layers on the map. If included, the names of all `baseLayers` will be shown with radio buttons in a layers control. Only one base layer can appear on the map at a time.
 
 #### map.interactions.search
 

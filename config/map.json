@@ -9,6 +9,15 @@
 		},
 		"zoom": {
 			"logging": true
+		},
+		"overlay": {
+			"logging": true,
+			"dataLayers": [
+				"US States Choropleth"
+			]
+		},
+		"underlay": {
+			"logging": true
 		}
 	},
 	"mapOptions": {
@@ -25,7 +34,7 @@
 		}
 	}],
 	"dataLayers": [{
-		"name": "US States",
+		"name": "US States Choropleth",
 		"source": "data/us-states.geojson",
 		"postgisTable": "",
 		"expressedAttribute": "density",
