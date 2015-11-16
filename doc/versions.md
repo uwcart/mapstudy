@@ -20,6 +20,8 @@
 
 - Turf 2.0.0
 
+- Fuse 1.3.0
+
 # Example files:
 
 - *us-states.geojson* -- shamelessly stolen from [Leaflet Interactive Choropleth Map tutorial](http://leafletjs.com/examples/choropleth.html)

@@ -2,7 +2,8 @@
 	"library": "Leaflet",
 	"interactions": {
 		"retrieve": {
-			"logging": true
+			"logging": true,
+			"attributes": ["name", "density"]
 		},
 		"pan": {
 			"logging": true
@@ -17,6 +18,10 @@
 			]
 		},
 		"underlay": {
+			"logging": true
+		},
+		"search": {
+			"attributes": ["name", "density"],
 			"logging": true
 		}
 	},

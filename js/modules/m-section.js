@@ -198,6 +198,7 @@ var LeafletMap = Backbone.View.extend({
 			};
 			//implement retrieve interaction if listed in config file
 			function onEachFeature(feature, layer){
+				feature.layer = layer; //bind layer to feature for search
 				if (model.get('interactions.retrieve')){
 					var popupContent = "<table>";
 					if (model.get('interactions.retrieve.attributes')){
@@ -265,13 +266,42 @@ var LeafletMap = Backbone.View.extend({
 		}, this);
 	},
 	addUnderlayControl: function(){
-		//instantiate layer control with base layers
-		this.layerControl = L.control.layers().addTo(this.map);
+		//add layer control if it wasn't created for overlay
+		if (!this.layerControl){
+			this.layerControl = L.control.layers().addTo(this.map);
+		};
+		//add each base layer to layers control
 		_.each(this.model.get('leafletBaseLayers'), function(baseLayer){
 			this.layerControl.addBaseLayer(baseLayer, baseLayer.layerName);
 		}, this);
 	},
-	setInteractionOptions: function(){
+	addSearch: function(){
+		var model = this.model;
+		function showResultFct(feature, container){
+			props = feature.properties;
+	        _.each(model.get('interactions.search.attributes'), function(attribute){
+	        	var span = L.DomUtil.create('span', null, container);
+	        	span.innerHTML = "<b>"+attribute+"</b>: "+props[attribute]+"<br>";
+	        }, this);
+		}
+		//add search control to map
+		var searchControl = L.control.fuseSearch({
+			position: 'topleft',
+			showResultFct: showResultFct
+		}).addTo(this.map);
+		//collect all dataLayers' features in one features array
+		var features = [];
+		_.each(this.model.get('leafletDataLayers'), function(dataLayer){
+			var geoJsonFeatures = dataLayer.toGeoJSON().features;
+			features = features.concat(geoJsonFeatures);
+		}, this);
+		//index features for search
+		searchControl.indexFeatures(features, this.model.get('interactions.search.attributes'));
+		//add search event
+		var view = this;
+		$("a[title=Search]").on('click', function(){ view.trigger('search'); });
+	},
+	setMapInteractions: function(){
 		//remove default zoom control and interactions if no zoom interaction
 		if (!this.model.get('interactions.zoom')){
 			this.model.set('mapOptions.zoomControl', false);
@@ -292,6 +322,10 @@ var LeafletMap = Backbone.View.extend({
 		if (this.model.get('interactions.underlay')){
 			this.on('baseLayersDone', this.addUnderlayControl, this);
 		};
+		//set search control for search interaction
+		if (this.model.get('interactions.search') && this.model.get('interactions.search.attributes') && this.model.get('interactions.search.attributes').length > 0){
+			this.on('dataLayersDone', this.addSearch, this);
+		};
 	},
 	logInteractions: function(){
 		//designate events to listen to with contexts for each interaction
@@ -300,7 +334,8 @@ var LeafletMap = Backbone.View.extend({
 			pan: {dragend: this.map},
 			retrieve: {popupopen: this},
 			overlay: {overlayadd: this.map, overlayremove: this.map},
-			underlay: {baselayerchange: this.map}
+			underlay: {baselayerchange: this.map},
+			search: {search: this}
 		};
 		//create a new interaction object for each interaction with logging
 		var interactions = this.model.get('interactions');
@@ -312,8 +347,8 @@ var LeafletMap = Backbone.View.extend({
 		};
 	},
 	setMap: function(){
-		//configure map interaction options
-		this.setInteractionOptions();
+		//configure map interactions
+		this.setMapInteractions();
 		//create Leaflet layers arrays
 		this.model.set({
 			leafletBaseLayers: [],

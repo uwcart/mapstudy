@@ -162,21 +162,15 @@ Underlay interaction. Must be included to allow the user to change base layers o
 
 #### map.interactions.search
 
-		-"search"-: { -"logging"- -"attributes"- -"autocomplete"- }
+		-"search"-: { -"logging"- "attributes" }
 
 Search interaction. Creates a search box on the map.
 
 #### map.interactions.search.attributes
 
-			-"attributes"-: []
+			"attributes": []
 
-An array of the `dataLayers` attributes to include in the search. Must have at least one value to enable searching. It is recommended to include categorical rather than numerical attributes (e.g., "name" but not "population").
-
-#### map.interactions.search.autocomplete
-
-			-"autocomplete"-: -true- -false-
-
-Whether to enable autocomplete on the search box. This creates a dropdown with options when the user types two or more characters into the search box. The autocomplete is automatically populated with all possible values in the active data layers from each attribute listed in `attributes`. Default is `true`.
+An array of the `dataLayers` attributes to include in the search. Must have at least one value to enable searching. Only categorical attributes with string values will be searchable (e.g., "name" but not "population").
 
 #### map.interactions.filter
 

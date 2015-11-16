@@ -12,6 +12,7 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="js/lib/leaflet/leaflet.css">
+        <link rel="stylesheet" href="js/lib/leaflet/leaflet.fusesearch.css">
         <link rel="stylesheet" href="js/lib/mapboxgl/mapboxgl.css">
         <link rel="stylesheet" href="css/style.css">
     </head>
@@ -33,7 +34,6 @@
         </div>
 
         <script type="text/template" id="question-template">
-            <!--an example template-->
             <div>
                 <input id="todo_complete" type="checkbox" <%= completed ? 'checked="checked"' : '' %>>
                 <%= title %>
@@ -46,6 +46,8 @@
         <script type="text/javascript" src="js/lib/backbone.js"></script>
         <script type="text/javascript" src="js/lib/backbone-deep-model.js"></script>
         <script type="text/javascript" src="js/lib/leaflet/leaflet.js"></script>
+        <script type="text/javascript" src="js/lib/fuse.js"></script>
+        <script type="text/javascript" src="js/lib/leaflet/leaflet.fusesearch.js"></script>
         <script type="text/javascript" src="js/lib/mapboxgl/mapboxgl.js"></script>
         <script type="text/javascript" src="js/lib/simple_statistics.js"></script>
         <script type="text/javascript" src="js/lib/d3.js"></script>
