@@ -149,14 +149,20 @@ var Interaction = Backbone.Model.extend({
 	}
 });
 
+var FilterModel = Backbone.Model.extend({
+	defaults: {
+		attribute: "",
+		tool: "slider"
+	}
+});
+
+
+
 /************** map.library ****************/
 
 //Leaflet
 var LeafletMap = Backbone.View.extend({
 	el: '#m',
-	events: {
-		//DOM events--not sure I'll use this
-	},
 	initialize: function(){
 
 	},
@@ -301,6 +307,31 @@ var LeafletMap = Backbone.View.extend({
 		var view = this;
 		$("a[title=Search]").on('click', function(){ view.trigger('search'); });
 	},
+	addFilter: function(){
+		var model = this.model;
+
+		//extend Leaflet controls to create filter control
+		var FilterControl = L.Control.extend({
+			options: {
+				position: 'bottomleft'
+			},
+			onAdd: function(map){
+				//create container for filter control
+				var container = L.DomUtil.create('div', 'filter-control-container control-container');
+				container.innerHTML = "hello world";
+				return container;
+			}
+		});
+		//add filter control to map
+		this.map.addControl(new FilterControl());
+
+		_.each(model.get('leafletDataLayers'), function(dataLayer){
+			var attributes = model.get('interactions.filter.attributes');
+			var controlType = model.get('interactions.filter.tool');
+
+
+		}, this);
+	},
 	setMapInteractions: function(){
 		//remove default zoom control and interactions if no zoom interaction
 		if (!this.model.get('interactions.zoom')){
@@ -325,6 +356,10 @@ var LeafletMap = Backbone.View.extend({
 		//set search control for search interaction
 		if (this.model.get('interactions.search') && this.model.get('interactions.search.attributes') && this.model.get('interactions.search.attributes').length > 0){
 			this.on('dataLayersDone', this.addSearch, this);
+		};
+		//set filter control for filter interaction
+		if (this.model.get('interactions.filter') && this.model.get('interactions.filter.attributes') && this.model.get('interactions.filter.attributes').length > 0){
+			this.on('dataLayersDone', this.addFilter, this);
 		};
 	},
 	logInteractions: function(){

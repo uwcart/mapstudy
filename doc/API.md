@@ -174,13 +174,13 @@ An array of the `dataLayers` attributes to include in the search. Must have at l
 
 #### map.interactions.filter
 
-		-"filter"-: { -"logging"- -"attributes"- -"tool"- }
+		-"filter"-: { -"logging"- "attributes" -"tool"- }
 
 Filter interaction. Creates a filter tool on the map.
 
 #### map.interactions.filter.attributes
 
-			-"attributes"-: []
+			"attributes": []
 
 An array of the `dataLayers` attributes to include in the filter tool. Must have at least one value to enable filtering. Each attribute will be selectable via a dropdown menu.
 
@@ -293,23 +293,23 @@ in *map.json* becomes
 
 Make sure that any value that is either a string or a mix of numbers and strings is represented as a string with double-quotes. The variables `"width"` and `"height"` will be recognized as the map width and the map height. You may wish to adjust these after you see the instantiated map.
 
-#### map.baseLayer
+#### map.baseLayers
 
-	-"baseLayer"-: {
+	-"baseLayers"-: [{
 		"name"
 		"source"
 		"layerOptions"
-	}
+	}]
 
-An object containing the information needed to add a basemap layer for any `library`.
+An array of objects containing the information needed to add a basemap layer for any `library`. Only the first base layer object will be rendered on the map on load. All `baseLayers` will be included as base layer options in the layers control if `underlay` is an included interaction.
 
-#### map.baseLayer.name
+#### map.baseLayers[i].name
 
 		"name": layer name
 
 The name of the base layer; a string. Required. If `overlay` is included in the `interactions`, this name will appear in the layers control on the map.
 
-#### map.baseLayer.source
+#### map.baseLayers[i].source
 
 		"source": -base layer URL- -"postgis:"+tablename-
 
@@ -325,7 +325,7 @@ For an iframe, the `source` should be the iframe `src` URL given in the embed HT
 
 For a REST service, the `source` should be the base URL with or without option parameters. For a static map image, the `source` should be a URL pointing to the image.
 
-#### map.baseLayer.layerOptions
+#### map.baseLayers[i].layerOptions
 
 		"layerOptions": -{}- -URL-
 
@@ -337,7 +337,7 @@ For a Mapbox-GL map, `layerOptions` is required and should contain or point to a
 
 For REST services, each option will be translated into a URL parameter key-value pair. For example:
 
-	"baseLayer": {
+	"baseLayers": [{
 		"name": "MassGIS",
 		"source": "http://giswebservices.massgis.state.ma.us/geoserver/wms",
 		"layerOptions": {
@@ -347,7 +347,7 @@ For REST services, each option will be translated into a URL parameter key-value
 			"LAYERS": "massgis:GISDATA.TOWNS_POLYM,massgis:GISDATA.NAVTEQRDS_ARC",
 			"STYLES": "Black_Lines"
 		}
-	}
+	}]
 
 when sent to the server will translate as:
 

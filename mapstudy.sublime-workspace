@@ -4,6 +4,54 @@
 		"selected_items":
 		[
 			[
+				"background",
+				"background-color"
+			],
+			[
+				"attri",
+				"attributes"
+			],
+			[
+				"search",
+				"search"
+			],
+			[
+				"geoJ",
+				"geoJsonFeatures"
+			],
+			[
+				"leafl",
+				"leafletDataLayer"
+			],
+			[
+				"data",
+				"dataLayers"
+			],
+			[
+				"leaflet",
+				"leafletBaseLayers"
+			],
+			[
+				"leafletData",
+				"leafletDataLayers"
+			],
+			[
+				"leafletDataLay",
+				"leafletDataLayer"
+			],
+			[
+				"baseLayers",
+				"baseLayersDone"
+			],
+			[
+				"leaf",
+				"leafletDataLayer"
+			],
+			[
+				"render",
+				"renderOnLoad"
+			],
+			[
 				"retrie",
 				"retrieveAttributes"
 			],
@@ -211,7 +259,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 2736,
+				"buffer_size": 3992,
 				"line_ending": "Unix"
 			}
 		},
@@ -227,7 +275,7 @@
 			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 6898,
+				"buffer_size": 7039,
 				"line_ending": "Unix"
 			}
 		},
@@ -243,7 +291,15 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 9366,
+				"buffer_size": 13395,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "doc/API.md",
+			"settings":
+			{
+				"buffer_size": 27040,
 				"line_ending": "Windows"
 			}
 		},
@@ -259,7 +315,7 @@
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 841,
+				"buffer_size": 1151,
 				"line_ending": "Windows",
 				"name": "["
 			}
@@ -268,15 +324,23 @@
 			"file": "doc/versions.md",
 			"settings":
 			{
-				"buffer_size": 391,
+				"buffer_size": 545,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "doc/API.md",
+			"file": "data/us-states.geojson",
 			"settings":
 			{
-				"buffer_size": 26758,
+				"buffer_size": 89263,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/city-data.geojson",
+			"settings":
+			{
+				"buffer_size": 4149,
 				"line_ending": "Windows"
 			}
 		}
@@ -305,9 +369,13 @@
 	},
 	"file_history":
 	[
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/jquery-ui/jquery-ui.theme.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet/leaflet.fusesearch.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/time-series-prop-map-leaflet/time-series-prop-map/data/city-data.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet/leaflet.fusesearch.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/us-states.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/app.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/api.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/us-states.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/architecture.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/styles.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/example/us-states.geojson",
@@ -428,11 +496,7 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main_finishedLegend.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/index.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/files/leaflet-lab/index.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/files/circle.svg",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/ModuleOutline.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/ModuleOutline_v5.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/files/circle_from_browser.svg"
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/files/leaflet-lab/index.html"
 	],
 	"find":
 	{
@@ -450,6 +514,17 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"filter",
+			".png",
+			"setInteractionOptions",
+			"leafletBaseLayers",
+			"className",
+			"overlay",
+			"this.data",
+			"data",
+			"view",
+			"technique",
+			"dataLayer",
 			"console",
 			".on",
 			"this.map",
@@ -566,18 +641,7 @@
 			"innerWidth",
 			"innerHeight",
 			"innerWidth",
-			"leftPadding",
-			"updateChart",
-			"changeAttribute",
-			"createDropdown",
-			"topBottomMargin",
-			"rightMargin",
-			"leftMargin",
-			"bar",
-			"set bars ",
-			"function choropleth",
-			"Number",
-			"numbars"
+			"leftPadding"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -585,6 +649,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"setMapInteractions",
+			"techniques",
 			"baseLayers",
 			"technique",
 			"method",
@@ -689,7 +755,7 @@
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": false,
+		"whole_word": true,
 		"wrap": true
 	},
 	"groups":
@@ -729,15 +795,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 2736,
+						"buffer_size": 3992,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2715,
-								2715
+								2349,
+								2349
 							]
 						],
 						"settings":
@@ -747,7 +813,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 700.0,
+						"translation.y": 787.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -783,15 +849,15 @@
 					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 6898,
+						"buffer_size": 7039,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3085,
-								3085
+								3311,
+								3311
 							]
 						],
 						"settings":
@@ -801,7 +867,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3060.0,
+						"translation.y": 3120.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -838,15 +904,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 9366,
+						"buffer_size": 13395,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8325,
-								8325
+								3847,
+								3847
 							]
 						],
 						"settings":
@@ -856,13 +922,40 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4491.0,
+						"translation.y": 2707.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 6,
+					"file": "doc/API.md",
+					"settings":
+					{
+						"buffer_size": 27040,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8811,
+								8811
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4111.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
 					"file": "php/interactions.php",
 					"settings":
 					{
@@ -888,19 +981,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 8,
 					"file": "config/map.json",
 					"settings":
 					{
-						"buffer_size": 841,
+						"buffer_size": 1151,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								81,
-								81
+								440,
+								440
 							]
 						],
 						"settings":
@@ -911,51 +1004,25 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "doc/versions.md",
-					"settings":
-					{
-						"buffer_size": 391,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								230,
-								230
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 180.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 9,
-					"file": "doc/API.md",
+					"file": "doc/versions.md",
 					"settings":
 					{
-						"buffer_size": 26758,
+						"buffer_size": 545,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7733,
-								7733
+								165,
+								165
 							]
 						],
 						"settings":
@@ -963,7 +1030,60 @@
 							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 3451.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "data/us-states.geojson",
+					"settings":
+					{
+						"buffer_size": 89263,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								110,
+								110
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "data/city-data.geojson",
+					"settings":
+					{
+						"buffer_size": 4149,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								839,
+								839
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1027,6 +1147,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 182.0,
 	"status_bar_visible": true
 }

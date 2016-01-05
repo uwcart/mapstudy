@@ -179,6 +179,13 @@ html, body {
     padding-right: 10px;
 }
 
+.control-container {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+    padding: 5px;
+}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */

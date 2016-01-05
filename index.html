@@ -11,6 +11,7 @@
         <link rel="icon" href="favicon.ico">
 
         <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="js/lib/jquery-ui/jquery-ui.css">
         <link rel="stylesheet" href="js/lib/leaflet/leaflet.css">
         <link rel="stylesheet" href="js/lib/leaflet/leaflet.fusesearch.css">
         <link rel="stylesheet" href="js/lib/mapboxgl/mapboxgl.css">
@@ -40,8 +41,32 @@
             </div>
         </script>
 
+        <script type="text/template" id="slider-template">
+            <div id="<%= attribute %>_slider" class="range-slider"></div>
+        </script>
+
+        <script type="text/template" id="logic-template">
+            <div id="<%= attribute %>_logic">
+                <%= attribute %>&nbsp;
+                <select name="boolean1"></select>
+                <input type="text" name="value1">
+                <input type="checkbox" name="and">
+                <label for="and">and</label>
+                <select name="boolean2" disabled></select>
+                <input type="text" name="value2" disabled>
+            </div>
+        </script>
+
+        <script type="text/template" id="logic-options">
+            <option name="is">=</option>
+            <option name="not">&ne;</option>
+            <option name="less">&lt;</option>
+            <option name="less">&gt;</option>
+        </script>
+
         <!-- Supported libraries -->
         <script type="text/javascript" src="js/lib/jquery.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-ui/jquery-ui.js"></script>
         <script type="text/javascript" src="js/lib/underscore.js"></script>
         <script type="text/javascript" src="js/lib/backbone.js"></script>
         <script type="text/javascript" src="js/lib/backbone-deep-model.js"></script>

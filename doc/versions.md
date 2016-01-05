@@ -2,6 +2,8 @@
 
 - jQuery 1.11.3
 
+- jQuery-UI 1.11.4 base theme custom (autocomplete, menu, slider, and tooltip widgets only, no interactions or effects)
+
 - Underscorejs 1.8.3
 
 - Backbonejs 1.2.3
@@ -11,6 +13,8 @@
 - modernizr 2.8.3
 
 - Leaflet 1.0 beta 2
+
+- Mapbox JS 2.2.3
 
 - Mapbox-GL 0.11.1
 

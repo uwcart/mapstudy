@@ -23,6 +23,9 @@
 		"search": {
 			"attributes": ["name", "density"],
 			"logging": true
+		},
+		"filter": {
+			"attributes": ["density"]
 		}
 	},
 	"mapOptions": {
@@ -32,10 +35,10 @@
 		"maxZoom": 13
 	},
 	"baseLayers": [{
-		"name": "Acetate",
-		"source": "http://{s}.acetate.geoiq.com/tiles/acetate/{z}/{x}/{y}.png",
+		"name": "OSM-BW",
+		"source": "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
 		"layerOptions": {
-			"attribution": "Acetate tileset from ESRI GeoIQ"
+			"attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap Contributors</a>"
 		}
 	}],
 	"dataLayers": [{
