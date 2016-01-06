@@ -3,6 +3,9 @@
 	[
 		{
 			"path": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy"
+		},
+		{
+			"path": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs"
 		}
 	]
 }

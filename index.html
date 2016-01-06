@@ -42,26 +42,26 @@
         </script>
 
         <script type="text/template" id="slider-template">
-            <div id="<%= attribute %>_slider" class="range-slider"></div>
-        </script>
-
-        <script type="text/template" id="logic-template">
-            <div id="<%= attribute %>_logic">
-                <%= attribute %>&nbsp;
-                <select name="boolean1"></select>
-                <input type="text" name="value1">
-                <input type="checkbox" name="and">
-                <label for="and">and</label>
-                <select name="boolean2" disabled></select>
-                <input type="text" name="value2" disabled>
+            <div id="<%= attribute %>-slider-div" class="filter-row">
+                <p style="margin: 5px 0 0 0;"><%= attribute %></p>
+                <div id="<%= attribute %>-slider" class="range-slider"></div>
             </div>
         </script>
 
-        <script type="text/template" id="logic-options">
-            <option name="is">=</option>
-            <option name="not">&ne;</option>
-            <option name="less">&lt;</option>
-            <option name="less">&gt;</option>
+        <script type="text/template" id="logic-template">
+            <div id="<%= attribute %>-logic-div" class="filter-row">
+                <%= attribute %>&nbsp;
+                <select name="boolean">
+                    <option name="is">=</option>
+                    <option name="not">&ne;</option>
+                    <option name="less">&lt;</option>
+                    <option name="less">&gt;</option>
+                </select>
+                <input type="text" name="value1" placeholder="value">
+                <label for="and" style="color:#999;">and</label>
+                <label for="value2" style="color:#999;">?</label>
+                <input type="text" name="value2" placeholder="optional value" disabled>
+            </div>
         </script>
 
         <!-- Supported libraries -->

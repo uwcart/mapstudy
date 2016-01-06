@@ -71,7 +71,7 @@
 }
 
 
-.leaflet-fusesearch-panel .close {
+.leaflet-fusesearch-panel .close, .close {
     position: absolute;
     right: 25px;
     top: 15px;

@@ -25,7 +25,8 @@
 			"logging": true
 		},
 		"filter": {
-			"attributes": ["density"]
+			"attributes": ["density"],
+			"tool": "slider"
 		}
 	},
 	"mapOptions": {

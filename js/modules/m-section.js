@@ -149,13 +149,157 @@ var Interaction = Backbone.Model.extend({
 	}
 });
 
+//model for filter interaction
 var FilterModel = Backbone.Model.extend({
 	defaults: {
-		attribute: "",
-		tool: "slider"
+		attributes: [],
+		tool: "slider",
+		map: {}
 	}
 });
 
+//slider view for filter interaction
+var SliderView = Backbone.View.extend({
+	el: ".filter-control-container",
+	events: {
+		"click img": "open",
+		"click .close": "close"
+	},
+	template: _.template( $( '#slider-template').html() ),
+	applyFilter: function(e, slider){
+		console.log(slider.values);
+	},
+	getAllAttributeValues: function(attribute){
+		//get attribute values for all features with given attribute
+		var map = this.model.get('map');
+		var allAttributeValues = [];
+		map.eachLayer(function(layer){
+			if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
+				allAttributeValues.push(parseFloat(layer.feature.properties[attribute]));
+			};
+		});
+		allAttributeValues.sort(function(a,b){ return a-b });
+		return allAttributeValues;
+	},
+	setSlider: function(attribute){
+		//get attribute values for all features with given attribute
+		var allAttributeValues = this.getAllAttributeValues(attribute);
+
+		//set values for slider
+		var min = _.min(allAttributeValues),
+			max = _.max(allAttributeValues),
+			mindiff = _.reduce(allAttributeValues, function(memo, val, i){
+				//take the smallest possible difference between attribute values to determine step
+				if (i < allAttributeValues.length-1){
+					var diff = Math.abs(val - allAttributeValues[i+1]);
+					if (diff == 0){ return memo };
+					return memo < diff ? memo : diff;
+				} else {
+					return memo;
+				};
+			}, Infinity),
+			step = 0;
+
+		//assign step the order of magnitude of mindiff
+		if (mindiff >= 1){
+			var intLength = String(Math.round(mindiff)).length;
+			step = Math.pow(10,intLength-1);
+		} else {
+			for (var i=12; i>0; i--){
+				if (mindiff * Math.pow(10,i) >= 1){
+					step = Math.pow(10,-i);
+				};
+			};
+			if (step == 0){
+				step = 1 * Math.pow(10,-12);
+			};
+		};
+
+		//add a small amount of padding to ensure max and min values stay within range
+		min = Math.floor(min / step) * step - step;
+		max = Math.ceil(max / step) * step + step;
+
+		//set slider
+		this.$el.find("#"+attribute+"-slider").slider({
+			range: true,
+			min: min, //change
+			max: max, //change
+			values: [min, max], //change
+			step: step, //change
+			slide: this.applyFilter
+		});
+	},
+	append: function(attribute){
+		this.$el.append(this.template({attribute: attribute}));
+		this.setSlider(attribute);
+	},
+	render: function(){
+		//add a filter tool for each attribute
+		_.each(this.model.get('attributes'), function(attribute){
+			this.append(attribute);
+		}, this);
+		this.$el.append('<a class="close">&times;</a>');
+		this.$el.children('.close').css({
+			'position': 'absolute',
+			'left': this.$el.width() - 20 + "px",
+			'top': "0px",
+			'color': '#333'
+		});
+		this.$el.children('.filter-row, .close').each(function(){
+			$(this).hide();
+		});
+		this.$el.css('cursor', 'pointer');
+	},
+	open: function(e){
+		//show content
+		this.$el.children('.filter-row, .close').each(function(){
+			$(this).show();
+		});
+		this.$el.css('cursor', 'default');
+	},
+	close: function(){
+		//hide content
+		this.$el.children('.filter-row, .close').each(function(){
+			$(this).hide();
+		});
+		this.$el.css('cursor', 'pointer');
+	}
+});
+
+//logic view for filter interaction
+var LogicView = SliderView.extend({
+	events: function(){
+		return _.extend({}, SliderView.prototype.events,{
+			"change select": "change",
+			"keyup input": "applyFilter"
+		});
+	},
+	change: function(e){
+		//activate second input only on greater or less than option
+		var target = $(e.target);
+		if (target.val() == "<" || target.val() == ">"){
+			var parent = target.parent();
+			parent.children('label[for=value2]').html(target.val() == "<" ? ">" : "<");
+			parent.children('label').css('color', '#000');
+			parent.children('input[name=value2]').removeAttr('disabled');
+		} else {
+			var parent = target.parent();
+			parent.children('label[for=value2]').html("?");
+			parent.children('label').css('color', '#999');
+			parent.children('input[name=value2]').attr('disabled', 'true');
+		}
+	},
+	template: _.template( $( '#logic-template').html() ),
+	applyFilter: function(e){
+		//THIS IS WHERE THE MAGIC WILL HAPPEN
+		var target = $(e.target);
+		var parent = target.parent();
+		console.log(target.parent().attr("id"));
+	},
+	append: function(attribute){
+		this.$el.append(this.template({attribute: attribute}));
+	}
+});
 
 
 /************** map.library ****************/
@@ -309,6 +453,7 @@ var LeafletMap = Backbone.View.extend({
 	},
 	addFilter: function(){
 		var model = this.model;
+		console.log(model);
 
 		//extend Leaflet controls to create filter control
 		var FilterControl = L.Control.extend({
@@ -318,7 +463,11 @@ var LeafletMap = Backbone.View.extend({
 			onAdd: function(map){
 				//create container for filter control
 				var container = L.DomUtil.create('div', 'filter-control-container control-container');
-				container.innerHTML = "hello world";
+				container.innerHTML = '<img src="js/lib/leaflet/images/filter.png">';
+				//kill map interactions under filter control
+				L.DomEvent.addListener(container, 'mousedown click dblclick', function(e) {
+					L.DomEvent.stopPropagation(e);
+				});
 				return container;
 			}
 		});
@@ -326,11 +475,17 @@ var LeafletMap = Backbone.View.extend({
 		this.map.addControl(new FilterControl());
 
 		_.each(model.get('leafletDataLayers'), function(dataLayer){
+			//get filter properties
 			var attributes = model.get('interactions.filter.attributes');
 			var controlType = model.get('interactions.filter.tool');
 
-
+			//set a tool for each filter attribute
+			var filterModel = new FilterModel({attributes: attributes, tool: controlType, map: this.map});
+			var filterView = controlType == 'logic' ? new LogicView({model: filterModel}) : new SliderView({model: filterModel});
+			filterView.render();
 		}, this);
+
+
 	},
 	setMapInteractions: function(){
 		//remove default zoom control and interactions if no zoom interaction
