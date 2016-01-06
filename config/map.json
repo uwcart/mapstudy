@@ -26,7 +26,7 @@
 		},
 		"filter": {
 			"attributes": ["density"],
-			"tool": "slider"
+			"tool": "logic"
 		}
 	},
 	"mapOptions": {

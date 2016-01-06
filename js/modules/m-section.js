@@ -166,8 +166,33 @@ var SliderView = Backbone.View.extend({
 		"click .close": "close"
 	},
 	template: _.template( $( '#slider-template').html() ),
-	applyFilter: function(e, slider){
-		console.log(slider.values);
+	applyFilter: function(attribute, values, map){
+		//global array to hold map layers removed
+		if (!window.offLayers){ window.offLayers = []; };
+		//helpful abbreviations
+		var min = values[0], max = values[1];
+		//attribute is stored in slider div id
+		// var attribute = $(e.target).attr('id').split('-')[0];
+		map.eachLayer(function(layer){
+			if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
+				var layerValue = layer.feature.properties[attribute];
+				//if value falls outside range, remove from map and stick in removed layers array
+				if (layerValue < min || layerValue > max){
+					map.removeLayer(layer);
+					offLayers.push(layer);
+				};
+			};
+		});
+		_.forEach(offLayers, function(layer){
+			if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
+				var layerValue = layer.feature.properties[attribute];
+				//if value within range, add to map and remove from removed layers array
+				if (layerValue > min && layerValue < max){
+					layer.addTo(map);
+					offLayers = _.without(offLayers, layer);
+				};
+			};
+		});
 	},
 	getAllAttributeValues: function(attribute){
 		//get attribute values for all features with given attribute
@@ -184,7 +209,6 @@ var SliderView = Backbone.View.extend({
 	setSlider: function(attribute){
 		//get attribute values for all features with given attribute
 		var allAttributeValues = this.getAllAttributeValues(attribute);
-
 		//set values for slider
 		var min = _.min(allAttributeValues),
 			max = _.max(allAttributeValues),
@@ -199,7 +223,6 @@ var SliderView = Backbone.View.extend({
 				};
 			}, Infinity),
 			step = 0;
-
 		//assign step the order of magnitude of mindiff
 		if (mindiff >= 1){
 			var intLength = String(Math.round(mindiff)).length;
@@ -214,11 +237,16 @@ var SliderView = Backbone.View.extend({
 				step = 1 * Math.pow(10,-12);
 			};
 		};
-
 		//add a small amount of padding to ensure max and min values stay within range
 		min = Math.floor(min / step) * step - step;
 		max = Math.ceil(max / step) * step + step;
-
+		//add labels
+		var labelsDiv = this.$el.find("#"+attribute+"-labels");
+		labelsDiv.children(".left").html(min);
+		labelsDiv.children(".right").html(max);
+		//to pass to slide callback
+		var map = this.model.get('map'),
+			applyFilter = this.applyFilter;
 		//set slider
 		this.$el.find("#"+attribute+"-slider").slider({
 			range: true,
@@ -226,7 +254,11 @@ var SliderView = Backbone.View.extend({
 			max: max, //change
 			values: [min, max], //change
 			step: step, //change
-			slide: this.applyFilter
+			slide: function(e, slider){
+				labelsDiv.children(".left").html(slider.values[0]);
+				labelsDiv.children(".right").html(slider.values[1]);
+				applyFilter(attribute, slider.values, map);
+			}
 		});
 	},
 	append: function(attribute){
@@ -271,7 +303,7 @@ var LogicView = SliderView.extend({
 	events: function(){
 		return _.extend({}, SliderView.prototype.events,{
 			"change select": "change",
-			"keyup input": "applyFilter"
+			"keyup input": "processFilter"
 		});
 	},
 	change: function(e){
@@ -290,11 +322,13 @@ var LogicView = SliderView.extend({
 		}
 	},
 	template: _.template( $( '#logic-template').html() ),
-	applyFilter: function(e){
+	processFilter: function(e){
 		//THIS IS WHERE THE MAGIC WILL HAPPEN
 		var target = $(e.target);
 		var parent = target.parent();
 		console.log(target.parent().attr("id"));
+		//JUST GET TO THIS:
+		//applyFilter(attribute, values, map);
 	},
 	append: function(attribute){
 		this.$el.append(this.template({attribute: attribute}));

@@ -4,12 +4,40 @@
 		"selected_items":
 		[
 			[
-				"background",
-				"background-color"
+				"all",
+				"allAttributeValues"
 			],
 			[
 				"attri",
-				"attributes"
+				"attribute"
+			],
+			[
+				"boole",
+				"booleanView"
+			],
+			[
+				"attr",
+				"attribute"
+			],
+			[
+				"clien",
+				"clientX"
+			],
+			[
+				"filter",
+				"filterView"
+			],
+			[
+				"und",
+				"undefined"
+			],
+			[
+				"initial",
+				"initialize"
+			],
+			[
+				"background",
+				"background-color"
 			],
 			[
 				"search",
@@ -259,7 +287,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 3992,
+				"buffer_size": 4172,
 				"line_ending": "Unix"
 			}
 		},
@@ -275,7 +303,7 @@
 			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 7039,
+				"buffer_size": 7150,
 				"line_ending": "Unix"
 			}
 		},
@@ -291,7 +319,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 13395,
+				"buffer_size": 18240,
 				"line_ending": "Windows"
 			}
 		},
@@ -315,7 +343,7 @@
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 1151,
+				"buffer_size": 1222,
 				"line_ending": "Windows",
 				"name": "["
 			}
@@ -343,6 +371,30 @@
 				"buffer_size": 4149,
 				"line_ending": "Windows"
 			}
+		},
+		{
+			"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
+			"settings":
+			{
+				"buffer_size": 2694,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Carl/Downloads/LeafletSlider-master/LeafletSlider-master/SliderControl.js",
+			"settings":
+			{
+				"buffer_size": 7333,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/lib/jquery-ui/jquery-ui.css",
+			"settings":
+			{
+				"buffer_size": 20059,
+				"line_ending": "Unix"
+			}
 		}
 	],
 	"build_system": "",
@@ -369,10 +421,14 @@
 	},
 	"file_history":
 	[
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/jquery-ui/jquery-ui.theme.css",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet/leaflet.fusesearch.css",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/time-series-prop-map-leaflet/time-series-prop-map/data/city-data.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/jquery-ui/jquery-ui.css",
+		"/C/Users/Carl/Downloads/jquery-ui-1.11.4.custom/jquery-ui-1.11.4.custom/jquery-ui.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/jquery-ui/jquery-ui.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/time-series-prop-map-leaflet/time-series-prop-map/js/main.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet/leaflet.fusesearch.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet/leaflet.fusesearch.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/jquery-ui/jquery-ui.theme.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/time-series-prop-map-leaflet/time-series-prop-map/data/city-data.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/us-states.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/app.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/api.js",
@@ -492,11 +548,7 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/lib/leaflet-0.7.3/leaflet.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/Module5_L.control.md",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/js/main_flannery.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/css/style.css",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main_finishedLegend.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/index.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/files/leaflet-lab/index.html"
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/css/style.css"
 	],
 	"find":
 	{
@@ -514,6 +566,30 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"this.map",
+			"map",
+			"#007fff",
+			"SliderView",
+			"titleOnly",
+			"LogicView",
+			"SliderView",
+			"LogicView",
+			"click",
+			".close",
+			"<img src=\"js/lib/leaflet/images/filter.png\">",
+			"Filter",
+			"width",
+			"SliderView",
+			"FilterView",
+			"this.model",
+			"FilterView",
+			"addOverlayControl",
+			"addOverlay",
+			"fetch",
+			"sync",
+			".done",
+			"filter",
+			"FilterModel",
 			"filter",
 			".png",
 			"setInteractionOptions",
@@ -617,31 +693,7 @@
 			"attVal",
 			"#searching",
 			"$(\"#searching\")",
-			"search",
-			"#searchform",
-			"#search",
-			"query",
-			"search",
-			"photo",
-			"the bolded words",
-			"deploying your",
-			"visual affordance",
-			"geovisualization",
-			"Quiz",
-			".on",
-			"dehighligh",
-			"blue",
-			".on",
-			"dehigh",
-			"desc",
-			"setEnu",
-			"console.",
-			".attr(\"class\", \"titleOption\")",
-			"colorScale",
-			"innerWidth",
-			"innerHeight",
-			"innerWidth",
-			"leftPadding"
+			"search"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -649,6 +701,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"#333333",
+			"filterIcon",
 			"setMapInteractions",
 			"techniques",
 			"baseLayers",
@@ -755,7 +809,7 @@
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
@@ -795,15 +849,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 3992,
+						"buffer_size": 4172,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2349,
-								2349
+								1924,
+								1924
 							]
 						],
 						"settings":
@@ -813,7 +867,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 787.0,
+						"translation.y": 577.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -849,15 +903,15 @@
 					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 7039,
+						"buffer_size": 7150,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3311,
-								3311
+								3421,
+								3421
 							]
 						],
 						"settings":
@@ -867,7 +921,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3120.0,
+						"translation.y": 3540.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -904,15 +958,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 13395,
+						"buffer_size": 18240,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3847,
-								3847
+								5181,
+								5181
 							]
 						],
 						"settings":
@@ -922,7 +976,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2707.0,
+						"translation.y": 3543.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -985,15 +1039,15 @@
 					"file": "config/map.json",
 					"settings":
 					{
-						"buffer_size": 1151,
+						"buffer_size": 1222,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								440,
-								440
+								462,
+								462
 							]
 						],
 						"settings":
@@ -1004,7 +1058,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 180.0,
+						"translation.y": 240.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1084,6 +1138,89 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
+					"settings":
+					{
+						"buffer_size": 2694,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								396,
+								396
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 600.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/C/Users/Carl/Downloads/LeafletSlider-master/LeafletSlider-master/SliderControl.js",
+					"settings":
+					{
+						"buffer_size": 7333,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3607,
+								3614
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1639.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "js/lib/jquery-ui/jquery-ui.css",
+					"settings":
+					{
+						"buffer_size": 20059,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5714,
+								5714
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4817.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
