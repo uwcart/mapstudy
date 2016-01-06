@@ -198,13 +198,16 @@ html, body {
     width: 300px;  
 }
 
-.mTop5 {
-    margin: 5px 0 0 0;
+.slider-labels {
+    display: inline;
+}
+
+.attribute-name {
+    display: inline;
 }
 
 .left, .right {
     position: absolute;
-    bottom: 23px;
 }
 
 .left {

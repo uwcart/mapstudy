@@ -210,6 +210,11 @@ var SliderView = Backbone.View.extend({
 				};
 			});
 		};
+		//ensure array only includes numbers
+		allAttributeValues = _.filter(allAttributeValues, function(value){
+			return !isNaN(value);
+		});
+		//sort array and return
 		allAttributeValues.sort(function(a,b){ return a-b });
 		return allAttributeValues;
 	},
@@ -275,7 +280,11 @@ var SliderView = Backbone.View.extend({
 	render: function(){
 		//add a filter tool for each attribute
 		_.each(this.model.get('attributes'), function(attribute){
-			this.append(attribute);
+			//only proceed if attribute is actually numerical
+			var allAttributeValues = this.getAllAttributeValues(attribute);
+			if (allAttributeValues.length > 0){
+				this.append(attribute);
+			};
 		}, this);
 		this.$el.append('<a class="close">&times;</a>');
 		this.$el.children('.close').css({
