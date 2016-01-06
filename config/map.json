@@ -3,7 +3,7 @@
 	"interactions": {
 		"retrieve": {
 			"logging": true,
-			"attributes": ["2008", "2009"]
+			"attributes": ["name", "density"]
 		},
 		"pan": {
 			"logging": true
@@ -21,12 +21,13 @@
 			"logging": true
 		},
 		"search": {
-			"attributes": ["2008", "2009"],
+			"attributes": ["name", "density"],
 			"logging": true
 		},
 		"filter": {
-			"attributes": ["2008", "2009", "name"],
-			"tool": "slider"
+			"attributes": ["density"],
+			"tool": "logic",
+			"logging": true
 		}
 	},
 	"mapOptions": {
@@ -44,7 +45,7 @@
 	}],
 	"dataLayers": [{
 		"name": "US States Choropleth",
-		"source": "data/city-data.geojson",
+		"source": "data/us-states.geojson",
 		"postgisTable": "",
 		"expressedAttribute": "density",
 		"layerOptions": {
@@ -61,6 +62,26 @@
 				"#FD8D3C",
 				"#E6550D",
 				"#A63603"
+			]
+		}
+	},
+	{
+		"name": "Cities Layer",
+		"source": "data/city-data.geojson",
+		"expressedAttribute": "2011",
+		"layerOptions": {
+			"fillOpacity": 0.8,
+			"color": "white",
+			"fillColor": "blue",
+			"opacity": 1,
+			"weight": 1
+		},
+		"technique": {
+			"type": "proportional symbol",
+			"classification": "unclassed",
+			"classes": [
+				5,
+				20
 			]
 		}
 	}]

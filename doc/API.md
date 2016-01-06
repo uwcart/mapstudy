@@ -443,7 +443,7 @@ An array containing the output values for each class. Required if `classificatio
 
 #### map.dataLayers[i].technique.symbol
 
-			-"symbol"-: -"circle"- -"square"- -image url-
+			-"symbol"-: -"circle"- -image url-
 
 Symbol to use for proportional symbol or dot map. Optional; default is `circle`. Not available to choropleth or isarithmic maps. For proportional symbol maps, if the dataset consists of point features, symbols will be placed on point coordinates; otherwise, symbols will be placed on the centroids of polygon features. While use of something other than `circle` for a dot map is possible, it is not recommended.
 

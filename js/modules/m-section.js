@@ -88,8 +88,14 @@ var Choropleth = Backbone.Model.extend({
 		techniqueType: 'choropleth',
 		classificationType: '',
 		expressedAttribute: '',
-		classes: '',
+		classes: [],
 		dataLayer: {}
+	},
+	setLayerOptions: function(feature, scale, expressedAttribute){
+		//set a new fillColor property for each feature with the class color value
+		return {
+			fillColor: scale(parseFloat(feature.properties[expressedAttribute]))
+		};
 	},
 	setClasses: function(){
 		var expressedAttribute = this.get('expressedAttribute');
@@ -100,12 +106,10 @@ var Choropleth = Backbone.Model.extend({
 		//get the d3 scale for the chosen classification scheme
 		var classificationModel = classification.where({type: this.get('classificationType')})[0];
 		var scale = classificationModel.scale(values, this.get('classes'));
-		//set a new fillColor property for each feature with the class color value
-		this.get('features').forEach(function(feature){
-			feature.properties.layerOptions = {
-				fillColor: scale(parseFloat(feature.properties[expressedAttribute]))
-			};
-		});
+		//use scale and attribute to set layer options
+		_.each(this.get('features'), function(feature){
+			feature.properties.layerOptions = this.setLayerOptions(feature, scale, expressedAttribute);
+		}, this);
 		this.trigger('done');
 	},
 	initialize: function(){
@@ -113,9 +117,24 @@ var Choropleth = Backbone.Model.extend({
 	}
 });
 
+//model for proportional symbol data overlay
+var ProportionalSymbol = Choropleth.extend({
+	defaults: {
+		techniqueType: 'proportional symbol',
+		symbol: 'circle'
+	},
+	setLayerOptions: function(feature, scale, expressedAttribute){
+		//set a new fillColor property for each feature with the class color value
+		return {
+			radius: scale(parseFloat(feature.properties[expressedAttribute]))
+		};
+	}
+});
+
 //a single collection holds all visual techniques
 var techniques = new Backbone.Collection([
-	new Choropleth()
+	new Choropleth(),
+	new ProportionalSymbol()
 ]);
 
 /************** map.interactions ****************/
@@ -154,7 +173,7 @@ var FilterModel = Backbone.Model.extend({
 	defaults: {
 		attributes: [],
 		tool: "slider",
-		map: {}
+		features: {}
 	}
 });
 
@@ -166,50 +185,17 @@ var SliderView = Backbone.View.extend({
 		"click .close": "close"
 	},
 	template: _.template( $( '#slider-template').html() ),
-	applyFilter: function(attribute, values, map){
-		//global array to hold map layers removed
-		if (!window.offLayers){ window.offLayers = []; };
-		//helpful abbreviations
-		var min = values[0], max = values[1];
-		//attribute is stored in slider div id
-		// var attribute = $(e.target).attr('id').split('-')[0];
-		map.eachLayer(function(layer){
-			if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
-				var layerValue = layer.feature.properties[attribute];
-				//if value falls outside range, remove from map and stick in removed layers array
-				if (layerValue < min || layerValue > max){
-					map.removeLayer(layer);
-					offLayers.push(layer);
-				};
-			};
-		});
-		_.forEach(offLayers, function(layer){
-			if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
-				var layerValue = layer.feature.properties[attribute];
-				//if value within range, add to map and remove from removed layers array
-				if (layerValue > min && layerValue < max){
-					layer.addTo(map);
-					offLayers = _.without(offLayers, layer);
-				};
-			};
-		});
-	},
+	applyFilter: function(){},
 	getAllAttributeValues: function(attribute){
 		//get attribute values for all features with given attribute
-		var map = this.model.get('map');
 		var allAttributeValues = [];
-		map.eachLayer(function(layer){
-			if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
-				allAttributeValues.push(parseFloat(layer.feature.properties[attribute]));
+
+		_.each(this.model.get('features'), function(feature){
+			if (feature.properties[attribute]){
+				allAttributeValues.push(parseFloat(feature.properties[attribute]));
 			};
-		});
-		if (window.offLayers && window.offLayers.length > 0){
-			_.forEach(offLayers, function(layer){
-				if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
-					allAttributeValues.push(parseFloat(layer.feature.properties[attribute]));
-				};
-			});
-		};
+		}, this);
+
 		//ensure array only includes numbers
 		allAttributeValues = _.filter(allAttributeValues, function(value){
 			return !isNaN(value);
@@ -257,8 +243,7 @@ var SliderView = Backbone.View.extend({
 		labelsDiv.children(".left").html(min);
 		labelsDiv.children(".right").html(max);
 		//to pass to slide callback
-		var map = this.model.get('map'),
-			applyFilter = this.applyFilter;
+		var applyFilter = this.applyFilter;
 		//set slider
 		this.$el.find("#"+attribute+"-slider").slider({
 			range: true,
@@ -269,7 +254,7 @@ var SliderView = Backbone.View.extend({
 			slide: function(e, slider){
 				labelsDiv.children(".left").html(slider.values[0]);
 				labelsDiv.children(".right").html(slider.values[1]);
-				applyFilter(attribute, slider.values, map);
+				applyFilter(attribute, slider.values);
 			}
 		});
 	},
@@ -311,6 +296,9 @@ var SliderView = Backbone.View.extend({
 			$(this).hide();
 		});
 		this.$el.css('cursor', 'pointer');
+	},
+	initialize: function(options){
+		this.applyFilter = options.applyFilter;
 	}
 });
 
@@ -339,7 +327,7 @@ var LogicView = SliderView.extend({
 			return value.length > 0 ? parseFloat(value) : minmax[i];
 		});
 		//go!
-		this.applyFilter(attribute, values, this.model.get('map'));
+		this.applyFilter(attribute, values);
 	},
 	setValues: function(attribute){
 		//get attribute values for all features with given attribute
@@ -434,12 +422,30 @@ var LeafletMap = Backbone.View.extend({
 					});
 				};
 			};
+			//implement pointToLayer conversion for proportional symbol maps
+			function pointToLayer(feature, latlng){
+				var markerOptions = _.extend(feature.properties.layerOptions, dataLayerOptions);
+				if (dataLayerModel.get('symbol') == 'circle'){
+					return L.circleMarker(latlng, markerOptions);
+				} else {
+					var width = markerOptions.radius * 2;
+					var icon = L.icon({
+						iconUrl: dataLayerModel.get('symbol'),
+						iconSize: [width, width]
+					});
+					return L.marker(latlng, {icon: icon})
+				};	
+			};
 			//add Leaflet overlay
-			var leafletDataLayer = L.geoJson(dataLayerModel.get('features'), {
-				style: style,
+			var overlayOptions = {
 				onEachFeature: onEachFeature,
+				style: style,
 				className: className
-			});
+			};
+			if (dataLayerModel.get('techniqueType') == 'proportional symbol'){
+				overlayOptions.pointToLayer = pointToLayer;
+			};
+			var leafletDataLayer = L.geoJson(dataLayerModel.get('features'), overlayOptions);
 			leafletDataLayer.layerName = layerName;
 			//render immediately by default
 			if (typeof dataLayer.renderOnLoad === 'undefined' || dataLayer.renderOnLoad == 'true'){
@@ -456,6 +462,15 @@ var LeafletMap = Backbone.View.extend({
 		}, this);
 		//go get the data!
 		dataLayerModel.fetch({url: dataLayer.source});
+	},
+	getFeatures: function(){
+		//collect all dataLayers' features in one features array
+		var features = [];
+		_.each(this.model.get('leafletDataLayers'), function(dataLayer){
+			var geoJsonFeatures = dataLayer.toGeoJSON().features;
+			features = features.concat(geoJsonFeatures);
+		}, this);
+		return features;
 	},
 	addOverlayControl: function(){
 		//add layer control if it wasn't created for underlay
@@ -494,20 +509,21 @@ var LeafletMap = Backbone.View.extend({
 			position: 'topleft',
 			showResultFct: showResultFct
 		}).addTo(this.map);
-		//collect all dataLayers' features in one features array
-		var features = [];
-		_.each(this.model.get('leafletDataLayers'), function(dataLayer){
-			var geoJsonFeatures = dataLayer.toGeoJSON().features;
-			features = features.concat(geoJsonFeatures);
-		}, this);
+		//get features array
+		var features = this.getFeatures();
 		//index features for search
 		searchControl.indexFeatures(features, this.model.get('interactions.search.attributes'));
 		//add search event
-		var view = this;
-		$("a[title=Search]").on('click', function(){ view.trigger('search'); });
+		var view = this,
+			timeout = window.setTimeout(function(){}, 0);
+		$(".search-input").on('keyup', function(){ 
+			clearTimeout(timeout);
+			timeout = window.setTimeout(function(){ view.trigger('search'); }, 1000)
+		});
 	},
 	addFilter: function(){
 		var model = this.model;
+		var map = this.map;
 		//extend Leaflet controls to create filter control
 		var FilterControl = L.Control.extend({
 			options: {
@@ -525,20 +541,61 @@ var LeafletMap = Backbone.View.extend({
 			}
 		});
 		//add filter control to map
-		this.map.addControl(new FilterControl());
+		map.addControl(new FilterControl());
+
+		//applyFilter function references map, so must be created here
+		var applyFilter = function(attribute, values){
+			//global array to hold map layers removed
+			if (!window.offLayers){ window.offLayers = []; };
+			//helpful abbreviations
+			var min = values[0], max = values[1];
+			//attribute is stored in slider div id
+			// var attribute = $(e.target).attr('id').split('-')[0];
+			map.eachLayer(function(layer){
+				if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
+					var layerValue = layer.feature.properties[attribute];
+					//if value falls outside range, remove from map and stick in removed layers array
+					if (layerValue < min || layerValue > max){
+						map.removeLayer(layer);
+						offLayers.push(layer);
+					};
+				};
+			});
+			_.forEach(offLayers, function(layer){
+				if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
+					var layerValue = layer.feature.properties[attribute];
+					//if value within range, add to map and remove from removed layers array
+					if (layerValue > min && layerValue < max){
+						layer.addTo(map);
+						offLayers = _.without(offLayers, layer);
+					};
+				};
+			});
+		};
 
 		_.each(model.get('leafletDataLayers'), function(dataLayer){
 			//get filter properties
 			var attributes = model.get('interactions.filter.attributes');
 			var controlType = model.get('interactions.filter.tool');
-
 			//set a tool for each filter attribute
-			var filterModel = new FilterModel({attributes: attributes, tool: controlType, map: this.map});
-			var filterView = controlType == 'logic' ? new LogicView({model: filterModel}) : new SliderView({model: filterModel});
+			var filterModel = new FilterModel({attributes: attributes, tool: controlType, map: this.map, features: this.getFeatures()});
+			//filter view options
+			var filterViewOptions = {
+				model: filterModel, 
+				applyFilter: applyFilter
+			};
+			//create filter view
+			var filterView = controlType == 'logic' ? new LogicView(filterViewOptions) : new SliderView(filterViewOptions);
 			filterView.render();
 		}, this);
-
-
+		//trigger filter event on slider stop or logic filter entry
+		var view = this, 
+			timeout = window.setTimeout(function(){}, 0);
+		$('.range-slider').on('slidestop', function(){ view.trigger('filter'); });
+		$('.filter-row input').on('keyup', function(){
+			clearTimeout(timeout);
+			timeout = window.setTimeout(function(){ view.trigger('filter'); }, 1000);
+		});
 	},
 	setMapInteractions: function(){
 		//remove default zoom control and interactions if no zoom interaction
@@ -578,7 +635,8 @@ var LeafletMap = Backbone.View.extend({
 			retrieve: {popupopen: this},
 			overlay: {overlayadd: this.map, overlayremove: this.map},
 			underlay: {baselayerchange: this.map},
-			search: {search: this}
+			search: {search: this},
+			filter: {filter: this}
 		};
 		//create a new interaction object for each interaction with logging
 		var interactions = this.model.get('interactions');

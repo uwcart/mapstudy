@@ -6,6 +6,12 @@
 		},
 		{
 			"path": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs"
+		},
+		{
+			"path": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/time-series-prop-map-leaflet/time-series-prop-map"
+		},
+		{
+			"path": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab"
 		}
 	]
 }
