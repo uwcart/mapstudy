@@ -203,6 +203,13 @@ var SliderView = Backbone.View.extend({
 				allAttributeValues.push(parseFloat(layer.feature.properties[attribute]));
 			};
 		});
+		if (window.offLayers && window.offLayers.length > 0){
+			_.forEach(offLayers, function(layer){
+				if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
+					allAttributeValues.push(parseFloat(layer.feature.properties[attribute]));
+				};
+			});
+		};
 		allAttributeValues.sort(function(a,b){ return a-b });
 		return allAttributeValues;
 	},
@@ -302,36 +309,41 @@ var SliderView = Backbone.View.extend({
 var LogicView = SliderView.extend({
 	events: function(){
 		return _.extend({}, SliderView.prototype.events,{
-			"change select": "change",
 			"keyup input": "processFilter"
 		});
 	},
-	change: function(e){
-		//activate second input only on greater or less than option
-		var target = $(e.target);
-		if (target.val() == "<" || target.val() == ">"){
-			var parent = target.parent();
-			parent.children('label[for=value2]').html(target.val() == "<" ? ">" : "<");
-			parent.children('label').css('color', '#000');
-			parent.children('input[name=value2]').removeAttr('disabled');
-		} else {
-			var parent = target.parent();
-			parent.children('label[for=value2]').html("?");
-			parent.children('label').css('color', '#999');
-			parent.children('input[name=value2]').attr('disabled', 'true');
-		}
-	},
 	template: _.template( $( '#logic-template').html() ),
 	processFilter: function(e){
-		//THIS IS WHERE THE MAGIC WILL HAPPEN
-		var target = $(e.target);
-		var parent = target.parent();
-		console.log(target.parent().attr("id"));
-		//JUST GET TO THIS:
-		//applyFilter(attribute, values, map);
+		//identify attribute
+		var attributeDiv = $(e.target).parent();
+		var attribute = attributeDiv.attr('id').split('-')[0];
+		//get attribute values min and max
+		var allAttributeValues = this.getAllAttributeValues(attribute);
+		var minmax = [_.min(allAttributeValues), _.max(allAttributeValues)];
+		//array to hold filter values
+		var values = [
+			attributeDiv.children('input[name=value1]').val(),
+			attributeDiv.children('input[name=value2]').val(),
+		];
+		//test whether input contains a value; if not, use default
+		values = _.map(values, function(value, i){
+			return value.length > 0 ? parseFloat(value) : minmax[i];
+		});
+		//go!
+		this.applyFilter(attribute, values, this.model.get('map'));
+	},
+	setValues: function(attribute){
+		//get attribute values for all features with given attribute
+		var allAttributeValues = this.getAllAttributeValues(attribute);
+		//set values for inputs
+		var min = _.min(allAttributeValues),
+			max = _.max(allAttributeValues);
+		this.$el.find('input[name=value1]').attr('placeholder', min);
+		this.$el.find('input[name=value2]').attr('placeholder', max);
 	},
 	append: function(attribute){
 		this.$el.append(this.template({attribute: attribute}));
+		this.setValues(attribute);
 	}
 });
 
@@ -487,8 +499,6 @@ var LeafletMap = Backbone.View.extend({
 	},
 	addFilter: function(){
 		var model = this.model;
-		console.log(model);
-
 		//extend Leaflet controls to create filter control
 		var FilterControl = L.Control.extend({
 			options: {

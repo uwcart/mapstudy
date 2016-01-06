@@ -53,17 +53,9 @@
 
         <script type="text/template" id="logic-template">
             <div id="<%= attribute %>-logic-div" class="filter-row">
-                <%= attribute %>&nbsp;
-                <select name="boolean">
-                    <option name="is">=</option>
-                    <option name="not">&ne;</option>
-                    <option name="less">&lt;</option>
-                    <option name="less">&gt;</option>
-                </select>
-                <input type="text" name="value1" placeholder="value">
-                <label for="and" style="color:#999;">and</label>
-                <label for="value2" style="color:#999;">?</label>
-                <input type="text" name="value2" placeholder="optional value" disabled>
+                <input type="text" name="value1" size="8">
+                &nbsp;&lt;&nbsp;<%= attribute %>&nbsp;&lt;&nbsp;
+                <input type="text" name="value2" size="8">
             </div>
         </script>
 
