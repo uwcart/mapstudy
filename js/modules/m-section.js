@@ -372,12 +372,12 @@ var LeafletMap = Backbone.View.extend({
 		//get layer options
 		var dataLayerOptions = dataLayer.layerOptions;
 		//get model based on technique type
-		var dataLayerModel = techniques.where({techniqueType: dataLayer.technique.type})[0];
+		var dataLayerModel = techniques.where({techniqueType: dataLayer.techniques[0].type})[0];
 		//pass in necessary values
 		dataLayerModel.set({
-			classificationType: dataLayer.technique.classification,
+			classificationType: dataLayer.techniques[0].classification,
 			expressedAttribute: dataLayer.expressedAttribute,
-			classes: dataLayer.technique.classes,
+			classes: dataLayer.techniques[0].classes,
 			dataLayer: dataLayer
 		});
 		//set up AJAX callback

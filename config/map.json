@@ -14,7 +14,8 @@
 		"overlay": {
 			"logging": true,
 			"dataLayers": [
-				"US States Choropleth"
+				"US States Choropleth",
+				"Cities Layer"
 			]
 		},
 		"underlay": {
@@ -53,7 +54,7 @@
 			"color": "white",
 			"opacity": 1
 		},
-		"technique": {
+		"techniques": [{
 			"type": "choropleth",
 			"classification": "quantile",
 			"classes": [
@@ -63,7 +64,7 @@
 				"#E6550D",
 				"#A63603"
 			]
-		}
+		}]
 	},
 	{
 		"name": "Cities Layer",
@@ -76,13 +77,13 @@
 			"opacity": 1,
 			"weight": 1
 		},
-		"technique": {
+		"techniques": [{
 			"type": "proportional symbol",
 			"classification": "unclassed",
 			"classes": [
 				5,
 				20
 			]
-		}
+		}]
 	}]
 }

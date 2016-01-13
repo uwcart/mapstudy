@@ -218,15 +218,9 @@ Which interface tool to user for sequencing. Default is `buttons`.
 
 #### map.interactions.reexpress
 
-		-"reexpress"-: { -"logging"- -"techniques"- }
+		-"reexpress"-: { -"logging"- }
 
-Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the `dataLayer` is expressed.
-
-#### map.interactions.reexpress.techniques
-
-			-"techniques"-: []
-
-An array of `technique` objects, with the same parameters of a `dataLayer`'s `technique` object. Must have at least one value to enable reexpression. It is not necessary to include the `dataLayer`'s `technique` object.
+Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the `dataLayer` is expressed to any of the techiques listed in the layer's `techniques` array.
 
 #### map.interactions.resymbolize
 
@@ -363,7 +357,7 @@ The REST parameters may also be added in the above format to `baseLayer.source` 
 		"expressedAttribute"
 		-"renderOnLoad"-
 		-"layerOptions"-
-		"technique"
+		"techniques"
 	}]
 
 An array of objects containing information about the data to be visualized on the map, if any. Only available for Leaflet, Mapbox-GL, and D3 maps. Layers will be rendered on the map from bottom to top in the order in which they are listed in the array.
@@ -402,26 +396,26 @@ Whether to render the layer when the map loads. Optional; default is `true`. If 
 
 An object or URL string pointing to a JSON file containing [Leaflet Path options](http://leafletjs.com/reference.html#path-options), [SVG styles](http://www.w3.org/TR/SVG/styling.html#SVGStylingProperties) for all layer paths drawn by D3, or [Mapbox-GL style layers](https://www.mapbox.com/mapbox-gl-style-spec/#layers). Optional. Properties added here that conflict with the `technique` classification will be overridden for each feature to which the classification is applied (i.e., any not null values).
 
-#### map.dataLayers[i].technique
+#### map.dataLayers[i].techniques
 
-		"technique": {
+		"techniques": [{
 			"type"
 			-"classification"-
 			-"classes"-
 			-"symbol"-
 			-"interval"-
 			-"size"-
-		}
+		}]
 
-An object containing the thematic mapping technique, including the map type and classification parameters for the data layer. Required.
+An array of objects containing the thematic mapping techniques, including the map type and classification parameters for the data layer. At least one technique object is required. The first technique object in the array will be used for the layer's initial expression; all other techniques for the layer will only be available to the user if `map.interactions.reexpress` is included.
 
-#### map.dataLayers[i].technique.type
+#### map.dataLayers[i].techniques[i].type
 
 			"type": -"choropleth"- -"proportional symbol"- -"dot"- -"isarithmic"-
 
 The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Required. Note that only a data layer with a `proportional symbol` or `isarithmic` technique type can use point feature data. 
 
-#### map.dataLayers[i].technique.classification
+#### map.dataLayers[i].techniques[i].classification
 
 			"classification": -"quantile"- -"equal interval"- -"natural breaks"- -"unclassed"-
 
@@ -431,23 +425,23 @@ A `quantile` classification groups the data into classes with an equal *number o
 
 An `equal interval` classification groups the data into classes each with an *equal range* of values (e.g., 0-10, 10-20, 20-30, etc.). This works best for data that are spread evenly across the entire data range, and usually turns out poorly if there is a small number of mapped features. It must be used if `type` is `isarithmic` and `classification` is included.
 
-A `natural breaks` classification uses the [Cartesian k-means](http://www.cs.toronto.edu/~norouzi/research/papers/ckmeans.pdf) algorithm to minimize the statistical distances between data points within each class. This technique is generally considered optimal for identifying groups of data values.
+A `natural breaks` classification uses the [Cartesian k-means](http://www.cs.toronto.edu/~norouzi/research/papers/ckmeans.pdf) algorithm to minimize the statistical distances between data points within each class. This classification is generally considered optimal for identifying groups of data values.
 
 An `unclassed` classification creates a [linear scale](https://github.com/mbostock/d3/wiki/Quantitative-Scales#linear-scales) to map each input data value to an output value interpolated between the first two values given in the `classes` array. Thus, it results in a map with no defined classes. This is the most common classification for proportional symbol maps and the least common for choropleth maps.
 
-#### map.dataLayers[i].technique.classes
+#### map.dataLayers[i].techniques[i].classes
 
 			-"classes"-: []
 
 An array containing the output values for each class. Required if `classification` is used. Array values should be numerical for proportional symbol maps&mdash;representing the diameter or width of each feature's symbol&mdash;and hexadecimal color strings for a choropleth map (e.g., `"#FFFFFF"`). The number of values in the array will correspond with the number of classes created. For choropleth maps, unless testing various color schemes, it is recommended you choose a colorblind-safe color scheme from [Colorbrewer](http://colorbrewer2.org/).
 
-#### map.dataLayers[i].technique.symbol
+#### map.dataLayers[i].techniques[i].symbol
 
 			-"symbol"-: -"circle"- -image url-
 
 Symbol to use for proportional symbol or dot map. Optional; default is `circle`. Not available to choropleth or isarithmic maps. For proportional symbol maps, if the dataset consists of point features, symbols will be placed on point coordinates; otherwise, symbols will be placed on the centroids of polygon features. While use of something other than `circle` for a dot map is possible, it is not recommended.
 
-#### map.dataLayers[i].technique.interval
+#### map.dataLayers[i].techniques[i].interval
 
 			-"interval"-: value interval
 
@@ -457,7 +451,7 @@ For an isarithmic map, there are two ways to determine line separation. One way 
 
 For a dot map, the value of `interval` is the denominator by which the feature's expressed attribute value will be divided to determine the number of dots to add within the boundaries of a feature. Omitting `interval` will result in a default of one dot for every 10 units. For example, if the expressed attribute value for a feature is `15,607`, by default there will be 1,561 dots scattered within that feature's boundaries. Designating `interval` as `1` will result in a dot being added for each whole number increase in the expressed attribute value, resulting in a true dot (as opposed to dot density) map.
 
-#### map.dataLayers[i].technique.size
+#### map.dataLayers[i].techniques[i].size
 
 			-"size"-: size
 
