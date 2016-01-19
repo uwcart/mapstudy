@@ -2,8 +2,7 @@
 	"library": "Leaflet",
 	"interactions": {
 		"retrieve": {
-			"logging": true,
-			"attributes": ["name", "density"]
+			"logging": true
 		},
 		"pan": {
 			"logging": true
@@ -14,7 +13,7 @@
 		"overlay": {
 			"logging": true,
 			"dataLayers": [
-				"US States Choropleth",
+				"US States",
 				"Cities Layer"
 			]
 		},
@@ -28,6 +27,9 @@
 		"filter": {
 			"attributes": ["density"],
 			"tool": "logic",
+			"logging": true
+		},
+		"reexpress": {
 			"logging": true
 		}
 	},
@@ -45,14 +47,19 @@
 		}
 	}],
 	"dataLayers": [{
-		"name": "US States Choropleth",
+		"name": "US States",
 		"source": "data/us-states.geojson",
 		"postgisTable": "",
 		"expressedAttribute": "density",
+		"retrieveAttributes": [
+			"name", 
+			"density"
+		],
 		"layerOptions": {
 			"fillOpacity": 0.8,
 			"color": "white",
-			"opacity": 1
+			"opacity": 1,
+			"fillColor": "#FD8D3C"
 		},
 		"techniques": [{
 			"type": "choropleth",
@@ -64,12 +71,29 @@
 				"#E6550D",
 				"#A63603"
 			]
+		},{
+			"type": "proportional symbol",
+			"classification": "unclassed",
+			"classes": [
+				5,
+				20
+			]
 		}]
 	},
 	{
 		"name": "Cities Layer",
 		"source": "data/city-data.geojson",
 		"expressedAttribute": "2011",
+		"retrieveAttributes": [
+			"name", 
+			"2005",
+			"2006",
+			"2007",
+			"2008",
+			"2009",
+			"2010",
+			"2011"
+		],
 		"layerOptions": {
 			"fillOpacity": 0.8,
 			"color": "white",

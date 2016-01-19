@@ -218,6 +218,14 @@ html, body {
     right: 3px;
 }
 
+.icon {
+    margin: 0 3px;
+}
+
+.active {
+    background-color: rgba(0,0,0,0.3);
+}
+
 
 /* ==========================================================================
    Helper classes

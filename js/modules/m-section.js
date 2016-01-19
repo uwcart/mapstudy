@@ -124,7 +124,7 @@ var ProportionalSymbol = Choropleth.extend({
 		symbol: 'circle'
 	},
 	setLayerOptions: function(feature, scale, expressedAttribute){
-		//set a new fillColor property for each feature with the class color value
+		//set a new radius property for each feature with the class color value
 		return {
 			radius: scale(parseFloat(feature.properties[expressedAttribute]))
 		};
@@ -178,7 +178,7 @@ var FilterModel = Backbone.Model.extend({
 });
 
 //slider view for filter interaction
-var SliderView = Backbone.View.extend({
+var FilterSliderView = Backbone.View.extend({
 	el: ".filter-control-container",
 	events: {
 		"click img": "open",
@@ -303,9 +303,9 @@ var SliderView = Backbone.View.extend({
 });
 
 //logic view for filter interaction
-var LogicView = SliderView.extend({
+var FilterLogicView = FilterSliderView.extend({
 	events: function(){
-		return _.extend({}, SliderView.prototype.events,{
+		return _.extend({}, FilterSliderView.prototype.events,{
 			"keyup input": "processFilter"
 		});
 	},
@@ -341,6 +341,32 @@ var LogicView = SliderView.extend({
 	append: function(attribute){
 		this.$el.append(this.template({attribute: attribute}));
 		this.setValues(attribute);
+	}
+});
+
+var ReexpressModel = Backbone.Model.extend({
+	defaults: {
+		className: '',
+		iconName: '',
+		techniqueType: ''
+	}
+});
+
+var ReexpressView = Backbone.View.extend({
+	tagName: 'button',
+	events: {
+		"click": "setTechnique"
+	},
+	setTechnique: function(e){
+		console.log('you clicked ',e);
+	},
+	render: function(){
+		this.$el.attr({
+			class: this.model.get('className'),
+			type: 'button'
+		});
+		this.$el.html('<img class="icon" src="img/icons/'+ this.model.get('iconName') +'.png">'+ this.model.get('techniqueType'));
+		return this.$el[0].outerHTML;
 	}
 });
 
@@ -387,16 +413,16 @@ var LeafletMap = Backbone.View.extend({
 			var className = layerName.replace(/\s|\:/g, '-');
 			function style(feature){
 				//combine layer options objects from config file and feature properties
-				return _.extend(feature.properties.layerOptions, dataLayerOptions);
+				//classification will take precedence over base options
+				return _.defaults(feature.properties.layerOptions, dataLayerOptions);
 			};
 			//implement retrieve interaction if listed in config file
 			function onEachFeature(feature, layer){
 				feature.layer = layer; //bind layer to feature for search
 				if (model.get('interactions.retrieve')){
 					var popupContent = "<table>";
-					if (model.get('interactions.retrieve.attributes')){
-						var retrieveAttributes = model.get('interactions.retrieve.attributes');
-						retrieveAttributes.forEach(function(attr){
+					if (dataLayer.retrieveAttributes){
+						dataLayer.retrieveAttributes.forEach(function(attr){
 							popupContent += "<tr><td class='attr'>"+attr+":</td><td>"+feature.properties[attr]+"</td></tr>";
 						});
 					} else {
@@ -481,6 +507,10 @@ var LeafletMap = Backbone.View.extend({
 		_.each(this.model.get('leafletDataLayers'), function(overlay){
 			//only add listed layers
 			if (_.indexOf(this.model.get('interactions.overlay.dataLayers'), overlay.layerName) > -1){
+				//for reexpress interaction, replace overlay.layerName with html for icon buttons
+				if (this.model.get('interactions.reexpress')){
+					overlay.layerName = this.addReexpress(overlay.layerName);
+				};
 				this.layerControl.addOverlay(overlay, overlay.layerName);
 			};
 		}, this);
@@ -561,7 +591,7 @@ var LeafletMap = Backbone.View.extend({
 					};
 				};
 			});
-			_.forEach(offLayers, function(layer){
+			_.each(offLayers, function(layer){
 				if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
 					var layerValue = layer.feature.properties[attribute];
 					//if value within range, add to map and remove from removed layers array
@@ -585,7 +615,7 @@ var LeafletMap = Backbone.View.extend({
 				applyFilter: applyFilter
 			};
 			//create filter view
-			var filterView = controlType == 'logic' ? new LogicView(filterViewOptions) : new SliderView(filterViewOptions);
+			var filterView = controlType == 'logic' ? new FilterLogicView(filterViewOptions) : new FilterSliderView(filterViewOptions);
 			filterView.render();
 		}, this);
 		//trigger filter event on slider stop or logic filter entry
@@ -596,6 +626,34 @@ var LeafletMap = Backbone.View.extend({
 			clearTimeout(timeout);
 			timeout = window.setTimeout(function(){ view.trigger('filter'); }, 1000);
 		});
+	},
+	addReexpress: function(layerName){
+		var techniques = _.findWhere(this.model.get('dataLayers'), {name: layerName}).techniques;
+		//if multiple available techniques, add button for each
+		if (techniques.length > 1){
+			var layerNameHtml = layerName +': ';
+			_.each(techniques, function(technique, i){
+				var className = i == 0 ? 'active' : 'inactive';
+				// var reexpressButton = new ReexpressView({
+				// 	model: new ReexpressModel({
+				// 		className: className,
+				// 		iconName: technique.type.replace(' ', '_'),
+				// 		techniqueType: technique.type
+				// 	})
+				// });
+				// layerNameHtml += reexpressButton.render();
+				
+				layerNameHtml += '<button type="button" class="'+ className +'"><img class="icon" src="img/icons/'+ technique.type.replace(' ', '_') +'.png">'+ technique.type +'</button>'; 
+			}, this);
+			//add reexpress buttons to layers control
+			return layerNameHtml;
+		} else {
+			//no buttons
+			return layerName;
+		};
+	},
+	reexpress: function(e){
+		console.log('reexpress ', e);
 	},
 	setMapInteractions: function(){
 		//remove default zoom control and interactions if no zoom interaction

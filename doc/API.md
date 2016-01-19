@@ -126,15 +126,9 @@ Rotate interaction. Allows the user to rotate the map. Only available with Mapbo
 
 #### map.interactions.retrieve
 
-		-"retrieve"-: { -"logging"- -"attributes"- -"event"- }
+		-"retrieve"-: { -"logging"- -"event"- }
 
 Retrieve interaction. Implemented as a pop-up on the map. If an empty object, options are considered to be defaults.
-
-#### map.interactions.retrieve.attributes
-
-			-"attributes"-: []
-
-An array listing the names of all attributes to be included with their values for the feature in the pop-up. Default is to show just the `expressedAttribute` of the `dataLayer` in the pop-up.
 
 #### map.interactions.retrieve.event
 
@@ -355,6 +349,7 @@ The REST parameters may also be added in the above format to `baseLayer.source` 
 		"name"
 		"source"
 		"expressedAttribute"
+		-"retrieveAttributes"-
 		-"renderOnLoad"-
 		-"layerOptions"-
 		"techniques"
@@ -383,6 +378,12 @@ For a Mapbox-GL map, the `source` may also be a vector tileset. The data retriev
 		"expressedAttribute": attribute name
 
 The name of the numerical attribute that will be visually expressed on the map; a string. Required. Must correspond to a key within each feature's `properties` object that references a numerical value (or no value or `null` if null for that feature).
+
+#### map.dataLayers[i].retrieveAttributes
+
+		-"retrieveAttributes"-: []
+
+An array of one or more attributes to include in that layer's pop-ups if the `retrieve` interaction is included. If `retrieve` is included but no `retrieveAttributes` are given, pop-ups will display only the layer's `expressedAttribute`.
 
 #### map.dataLayers[i].renderOnLoad
 
