@@ -346,27 +346,22 @@ var FilterLogicView = FilterSliderView.extend({
 
 var ReexpressModel = Backbone.Model.extend({
 	defaults: {
-		className: '',
 		iconName: '',
-		techniqueType: ''
+		layerName: '',
+		className: ''
 	}
 });
 
+//view for reexpress buttons
 var ReexpressView = Backbone.View.extend({
-	tagName: 'button',
 	events: {
 		"click": "setTechnique"
 	},
-	setTechnique: function(e){
-		console.log('you clicked ',e);
-	},
+	setTechnique: function(e){},
 	render: function(){
-		this.$el.attr({
-			class: this.model.get('className'),
-			type: 'button'
-		});
-		this.$el.html('<img class="icon" src="img/icons/'+ this.model.get('iconName') +'.png">'+ this.model.get('techniqueType'));
-		return this.$el[0].outerHTML;
+		var html = '<button type="button" name="'+ this.model.get('layerName').replace(' ', '_') +'---'+ this.model.get('iconName') +'" class="'+ this.model.get('className') +'"><img class="icon" src="img/icons/'+ this.model.get('iconName') +'.png">'+ this.model.get('iconName').replace('_', ' ') +'</button>';
+		this.$el.html(html);
+		return html;
 	}
 });
 
@@ -378,6 +373,9 @@ var LeafletMap = Backbone.View.extend({
 	el: '#m',
 	initialize: function(){
 
+	},
+	events: {
+		'click .reexpress': 'reexpress'
 	},
 	render: function(){
 		this.$el.html("<div id='map'>");
@@ -507,11 +505,13 @@ var LeafletMap = Backbone.View.extend({
 		_.each(this.model.get('leafletDataLayers'), function(overlay){
 			//only add listed layers
 			if (_.indexOf(this.model.get('interactions.overlay.dataLayers'), overlay.layerName) > -1){
-				//for reexpress interaction, replace overlay.layerName with html for icon buttons
+				//for reexpress interaction, replace overlay.layerName with html for span placeholders
 				if (this.model.get('interactions.reexpress')){
 					overlay.layerName = this.addReexpress(overlay.layerName);
+					this.layerControl.addOverlay(overlay, overlay.layerName);
+				} else {
+					this.layerControl.addOverlay(overlay, overlay.layerName);
 				};
-				this.layerControl.addOverlay(overlay, overlay.layerName);
 			};
 		}, this);
 	},
@@ -628,22 +628,22 @@ var LeafletMap = Backbone.View.extend({
 		});
 	},
 	addReexpress: function(layerName){
+		//function to render buttons
 		var techniques = _.findWhere(this.model.get('dataLayers'), {name: layerName}).techniques;
 		//if multiple available techniques, add button for each
 		if (techniques.length > 1){
 			var layerNameHtml = layerName +': ';
 			_.each(techniques, function(technique, i){
 				var className = i == 0 ? 'active' : 'inactive';
-				// var reexpressButton = new ReexpressView({
-				// 	model: new ReexpressModel({
-				// 		className: className,
-				// 		iconName: technique.type.replace(' ', '_'),
-				// 		techniqueType: technique.type
-				// 	})
-				// });
-				// layerNameHtml += reexpressButton.render();
-				
-				layerNameHtml += '<button type="button" class="'+ className +'"><img class="icon" src="img/icons/'+ technique.type.replace(' ', '_') +'.png">'+ technique.type +'</button>'; 
+				//ReexpressView can be used to create buttons or button html
+				var reexpressButton = new ReexpressView({
+					model: new ReexpressModel({
+						iconName: technique.type.replace(' ', '_'),
+						layerName: layerName,
+						className: className
+					})
+				});
+				layerNameHtml += '<span class="reexpress">'+ reexpressButton.render() +'</span>'; 
 			}, this);
 			//add reexpress buttons to layers control
 			return layerNameHtml;
@@ -653,7 +653,19 @@ var LeafletMap = Backbone.View.extend({
 		};
 	},
 	reexpress: function(e){
-		console.log('reexpress ', e);
+		var span = $(e.target).parent(),
+			parent = span.parent(),
+			button = span.children('button');
+		if (button.attr('class') == 'inactive'){
+			//switch which button is active
+			parent.find('button').each(function(){
+				var currentClass = $(this).attr('class');
+				var newClass = currentClass == 'active' ? 'inactive' : 'active';
+				$(this).attr('class', newClass);
+			});
+
+			
+		};
 	},
 	setMapInteractions: function(){
 		//remove default zoom control and interactions if no zoom interaction
