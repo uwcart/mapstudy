@@ -359,7 +359,7 @@ var ReexpressView = Backbone.View.extend({
 	},
 	setTechnique: function(e){},
 	render: function(){
-		var html = '<button type="button" name="'+ this.model.get('layerName').replace(/\s|\:/g, '-') +'---'+ this.model.get('iconName') +'" class="'+ this.model.get('className') +'"><img class="icon" src="img/icons/'+ this.model.get('iconName') +'.png">'+ this.model.get('iconName').replace(/_|\:/g, ' ') +'</button>';
+		var html = '<button type="button" name="'+ this.model.get('layerName').replace(/\s|\:/g, '-') +'" class="'+ this.model.get('className') +'"><img class="icon" src="img/icons/'+ this.model.get('iconName') +'.png">'+ this.model.get('iconName').replace(/_|\:/g, ' ') +'</button>';
 		this.$el.html(html);
 		return html;
 	}
@@ -459,7 +459,6 @@ var LeafletMap = Backbone.View.extend({
 				};
 				//implement pointToLayer conversion for proportional symbol maps
 				function pointToLayer(feature, latlng){
-					console.log('pointToLayer');
 					var markerOptions = _.extend(feature.properties.layerOptions, dataLayerOptions);
 					if (dataLayerModel.get('symbol') == 'circle'){
 						return L.circleMarker(latlng, markerOptions);
@@ -496,7 +495,6 @@ var LeafletMap = Backbone.View.extend({
 				leafletDataLayer.techniqueType = technique.type;
 				//render immediately by default
 				if (a==0 && (typeof dataLayer.renderOnLoad === 'undefined' || dataLayer.renderOnLoad == 'true')){
-					console.log(leafletDataLayer, technique.type, 'rendered');
 					leafletDataLayer.addTo(this.map);
 					//reset cursor if needed
 					if (!model.get('interactions.retrieve') && model.get('interactions.pan')){
@@ -505,7 +503,6 @@ var LeafletMap = Backbone.View.extend({
 				} else {
 					//stick it in offLayers array
 					offLayers.push(leafletDataLayer);
-					console.log(leafletDataLayer, technique.type, 'not rendered');
 				}
 				//add to layers
 				model.attributes.leafletDataLayers.push(leafletDataLayer);
@@ -514,7 +511,6 @@ var LeafletMap = Backbone.View.extend({
 			}, this);
 			//go get the data!
 			dataLayerModel.fetch({url: dataLayer.source});
-
 		}, this);
 	},
 	getFeatures: function(){
@@ -525,6 +521,44 @@ var LeafletMap = Backbone.View.extend({
 			features = features.concat(geoJsonFeatures);
 		}, this);
 		return features;
+	},
+	hideLabels: function(){
+		//temporarily hide all labels with reexpress buttons
+		$('.reexpress').parents('label').hide();
+
+		//hide unchecked labels with buttons--kinda hacky, but can't figure out another way
+		$('.leaflet-control-layers-overlays label').each(function(){
+			var label = $(this);
+			var reexpressSpan = label.find('.reexpress');
+			var button = $(this).find('button');
+			var input = $(this).find('input');
+			input.off();
+			//inactivate both buttons if layer is unchecked
+			input.on('change', function(){
+				if (button.length > 0){
+					if ($(this).prop('checked')){
+						label.find('button[class="inactive now"]').attr('class', 'active');
+					} else {
+						label.find('button[class=active]').attr('class', 'inactive now');
+						button.click(function(e){ e.preventDefault() });
+					};
+				};
+			});
+			if (reexpressSpan.length > 0){
+				//if the layer's checkbox is checked, hide all other labels belonging to same dataLayer
+				if (input.prop('checked')){
+					var dataLayerName = button.attr('name');
+					console.log(dataLayerName, ' checked');
+					//find all labels for same dataLayer and reset classes
+					console.log(dataLayerName == $('.leaflet-control-layers-overlays').find('button').attr('name'));
+					$('.leaflet-control-layers-overlays').find('button[name="'+ dataLayerName +'"]').parents('.reexpress').attr('class', 'reexpress');
+					//set only buttons belonging to checked layer to visible
+					reexpressSpan.attr('class', 'reexpress visible');
+				};
+			};
+		});
+		//show only one label for each dataLayer, even if renderOnLoad is false
+		$('.visible').parents('label').show();
 	},
 	addOverlayControl: function(){
 		//add layer control if it wasn't created for underlay
@@ -537,13 +571,23 @@ var LeafletMap = Backbone.View.extend({
 			if (_.indexOf(this.model.get('interactions.overlay.dataLayers'), overlay.layerName) > -1){
 				//for reexpress interaction, replace overlay.layerName with html for span placeholders
 				if (this.model.get('interactions.reexpress')){
-					var layerName = this.addReexpress(overlay.layerName);
+					var layerName = this.addReexpress(overlay.layerName, overlay.techniqueType);
 					this.layerControl.addOverlay(overlay, layerName);
 				} else {
 					this.layerControl.addOverlay(overlay, overlay.layerName);
 				};
 			};
 		}, this);
+		// //add event listener to switch active reexpress button
+		// $('.leaflet-control-layers-overlays input').on('change', function(){
+		// 	var label = $(this).parents('label');
+		// 	if (label.find('button').length > 0){
+		// 		console.log('checked: ', $(this).prop('checked'));
+		// 		$(this).prop('checked') ? label.find('button[class="inactive now"]').attr('class', 'active') : label.find('button[class=active]').attr('class', 'inactive now');
+		// 	};
+		// });
+		//hide multiple layers for same dataLayer
+		this.hideLabels();
 	},
 	addUnderlayControl: function(){
 		//add layer control if it wasn't created for overlay
@@ -655,23 +699,26 @@ var LeafletMap = Backbone.View.extend({
 			timeout = window.setTimeout(function(){ view.trigger('filter'); }, 1000);
 		});
 	},
-	addReexpress: function(layerName){
+	addReexpress: function(layerName, techniqueType){
 		//function to render buttons
 		var techniques = _.findWhere(this.model.get('dataLayers'), {name: layerName}).techniques;
 		//if multiple available techniques, add button for each
 		if (techniques.length > 1){
 			var layerNameHtml = layerName +': ';
+			var spanClass = 'reexpress';
 			_.each(techniques, function(technique, i){
-				var className = i == 0 ? 'active' : 'inactive';
+				var state = technique.type == techniqueType ? 'active' : 'inactive';
+				spanClass += i == 0 && technique.type == techniqueType ? ' visible' : '';
 				//ReexpressView can be used to create buttons or button html
 				var reexpressButton = new ReexpressView({
 					model: new ReexpressModel({
 						iconName: technique.type.replace(/\s|\:/g, '_'),
 						layerName: layerName,
-						className: className
+						className: state
 					})
 				});
-				layerNameHtml += '<span class="reexpress">'+ reexpressButton.render() +'</span>'; 
+				//here we use it to just create html
+				layerNameHtml += '<span class="'+spanClass+'">'+ reexpressButton.render() +'</span>'; 
 			}, this);
 			//add reexpress buttons to layers control
 			return layerNameHtml;
@@ -686,36 +733,27 @@ var LeafletMap = Backbone.View.extend({
 		var button = $(e.target),
 			span = button.parent(),
 			spanParent = span.parent();
-		if (button.attr('class') == 'inactive'){
-			//switch which button is active
-			spanParent.find('button').each(function(){
-				var currentClass = $(this).attr('class');
-				var newClass = currentClass == 'active' ? 'inactive' : 'active';
-				$(this).attr('class', newClass);
-			});
 
-			var buttonNameArray = button.attr('name').split('---'),
-				layerClassName = buttonNameArray[0],
-				techniqueType = buttonNameArray[1].replace(/_|\:/g, ' ');
-			map.eachLayer(function(layer){
-				if (layer.layerName && layer.layerName.replace(/\s|\:/g, '-') == layerClassName){
-					//remove the layer from the map to replace with other technique
-					map.removeLayer(layer);
-					offLayers.push(layer);
-					//if a layer with the correct technique exists, put it on the map
-					_.each(offLayers, function(offLayer){
-						if (offLayer.layerName == layer.layerName && offLayer.techniqueType == techniqueType){
-							offLayer.addTo(map);
-							offLayers = _.without(offLayers, offLayer);
-							return false;
-						} else {
-							//create a layer with the correct technique and put it on the map
-						}
-					}, this);
-				};
-			});
-
-		};
+		var layerClassName = button.attr('name'),
+			techniqueType = button.children('img').attr('src').split('/')[2];
+			techniqueType = techniqueType.substring(0, techniqueType.indexOf('.')).replace(/_|\:/g, ' ');
+			console.log(techniqueType);
+		map.eachLayer(function(layer){
+			if (layer.layerName && layer.layerName.replace(/\s|\:/g, '-') == layerClassName){
+				//remove the layer from the map to replace with other technique
+				map.removeLayer(layer);
+				offLayers.push(layer);
+				//if a layer with the correct technique exists, put it on the map
+				_.each(offLayers, function(offLayer){
+					if (offLayer.layerName == layer.layerName && offLayer.techniqueType == techniqueType){
+						offLayer.addTo(map);
+						offLayers = _.without(offLayers, offLayer);
+						return false;
+					};
+				}, this);
+			};
+		});
+		this.hideLabels();
 	},
 	setMapInteractions: function(){
 		//remove default zoom control and interactions if no zoom interaction
