@@ -523,9 +523,12 @@ var LeafletMap = Backbone.View.extend({
 		return features;
 	},
 	hideLabels: function(){
+		//if overlay is absent, hide all checkboxes
+		if (!this.model.get('interactions.overlay')){
+			$('.leaflet-control-layers-overlays input').hide();
+		};
 		//temporarily hide all labels with reexpress buttons
 		$('.reexpress').parents('label').hide();
-
 		//hide unchecked labels with buttons--kinda hacky, but can't figure out another way
 		$('.leaflet-control-layers-overlays label').each(function(){
 			var label = $(this);
@@ -545,12 +548,10 @@ var LeafletMap = Backbone.View.extend({
 				};
 			});
 			if (reexpressSpan.length > 0){
-				//if the layer's checkbox is checked, hide all other labels belonging to same dataLayer
+				//if the label's checkbox is checked, set to visible
 				if (input.prop('checked')){
 					var dataLayerName = button.attr('name');
-					console.log(dataLayerName, ' checked');
 					//find all labels for same dataLayer and reset classes
-					console.log(dataLayerName == $('.leaflet-control-layers-overlays').find('button').attr('name'));
 					$('.leaflet-control-layers-overlays').find('button[name="'+ dataLayerName +'"]').parents('.reexpress').attr('class', 'reexpress');
 					//set only buttons belonging to checked layer to visible
 					reexpressSpan.attr('class', 'reexpress visible');
@@ -567,8 +568,8 @@ var LeafletMap = Backbone.View.extend({
 		};
 		//add each overlay to layers control
 		_.each(this.model.get('leafletDataLayers'), function(overlay){
-			//only add listed layers
-			if (_.indexOf(this.model.get('interactions.overlay.dataLayers'), overlay.layerName) > -1){
+			//only add listed layers or multiple techniques of dataLayers if reexpress interaction
+			if (_.indexOf(this.model.get('interactions.overlay.dataLayers'), overlay.layerName) > -1 || (this.model.get('interactions.reexpress') && _.findWhere(this.model.get('dataLayers'), {name: overlay.layerName}).techniques.length > 1)){
 				//for reexpress interaction, replace overlay.layerName with html for span placeholders
 				if (this.model.get('interactions.reexpress')){
 					var layerName = this.addReexpress(overlay.layerName, overlay.techniqueType);
@@ -578,15 +579,11 @@ var LeafletMap = Backbone.View.extend({
 				};
 			};
 		}, this);
-		// //add event listener to switch active reexpress button
-		// $('.leaflet-control-layers-overlays input').on('change', function(){
-		// 	var label = $(this).parents('label');
-		// 	if (label.find('button').length > 0){
-		// 		console.log('checked: ', $(this).prop('checked'));
-		// 		$(this).prop('checked') ? label.find('button[class="inactive now"]').attr('class', 'active') : label.find('button[class=active]').attr('class', 'inactive now');
-		// 	};
-		// });
-		//hide multiple layers for same dataLayer
+		//set custom interaction for logging
+		var view = this;
+		this.map.on('overlayadd overlayremove', function(){
+			if (!view.reexpressed){ view.trigger('overlay'); };
+		});
 		this.hideLabels();
 	},
 	addUnderlayControl: function(){
@@ -728,18 +725,22 @@ var LeafletMap = Backbone.View.extend({
 		};
 	},
 	reexpress: function(e){
-		var map = this.map;
-
-		var button = $(e.target),
+		var view = this,
+			map = view.map,
+			button = $(e.target),
 			span = button.parent(),
-			spanParent = span.parent();
-
-		var layerClassName = button.attr('name'),
+			spanParent = span.parent(),
+			dataLayerName = button.attr('name'),
 			techniqueType = button.children('img').attr('src').split('/')[2];
 			techniqueType = techniqueType.substring(0, techniqueType.indexOf('.')).replace(/_|\:/g, ' ');
-			console.log(techniqueType);
+		//set variable to prevent overlay interaction from triggering
+		view.reexpressed = true;
+		setTimeout(function(){ view.reexpressed = false; }, 500);
+		//trigger reexpress interaction
+		view.trigger('reexpress');
+		//check each layer on the map for a name match
 		map.eachLayer(function(layer){
-			if (layer.layerName && layer.layerName.replace(/\s|\:/g, '-') == layerClassName){
+			if (layer.layerName && layer.layerName.replace(/\s|\:/g, '-') == dataLayerName){
 				//remove the layer from the map to replace with other technique
 				map.removeLayer(layer);
 				offLayers.push(layer);
@@ -753,6 +754,7 @@ var LeafletMap = Backbone.View.extend({
 				}, this);
 			};
 		});
+		//switch labels in layers control
 		this.hideLabels();
 	},
 	setMapInteractions: function(){
@@ -768,8 +770,10 @@ var LeafletMap = Backbone.View.extend({
 		if (!this.model.get('interactions.pan')){
 			this.model.set('mapOptions.dragging', false);
 		};
-		//set layers control for overlay interaction
-		if (this.model.get('interactions.overlay') && this.model.get('interactions.overlay.dataLayers') && this.model.get('interactions.overlay.dataLayers').length > 0){
+		//set layers control for overlay and reexpress interactions
+		if ((this.model.get('interactions.overlay') && this.model.get('interactions.overlay.dataLayers') && this.model.get('interactions.overlay.dataLayers').length > 0) || (this.model.get('interactions.reexpress') && _.some(this.model.get('dataLayers'), function(layer){
+			return layer.techniques.length > 1
+		}))){
 			this.on('dataLayersDone', this.addOverlayControl, this);
 		};
 		//set layers control for underlay interaction
@@ -791,10 +795,11 @@ var LeafletMap = Backbone.View.extend({
 			zoom: {zoomstart: this.map},
 			pan: {dragend: this.map},
 			retrieve: {popupopen: this},
-			overlay: {overlayadd: this.map, overlayremove: this.map},
+			overlay: {overlay: this},
 			underlay: {baselayerchange: this.map},
 			search: {search: this},
-			filter: {filter: this}
+			filter: {filter: this},
+			reexpress: {reexpress: this}
 		};
 		//create a new interaction object for each interaction with logging
 		var interactions = this.model.get('interactions');
