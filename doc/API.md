@@ -156,27 +156,27 @@ Underlay interaction. Must be included to allow the user to change base layers o
 
 #### map.interactions.search
 
-		-"search"-: { -"logging"- "attributes" }
+		-"search"-: { -"logging"- "dataLayers" }
 
 Search interaction. Creates a search box on the map.
 
-#### map.interactions.search.attributes
+#### map.interactions.search.dataLayers
 
-			"attributes": []
+			"dataLayers": []
 
-An array of the `dataLayers` attributes to include in the search. Must have at least one value to enable searching. Only categorical attributes with string values will be searchable (e.g., "name" but not "population").
+An array of the `dataLayers` to include in the search. Must have at least one value to enable searching.
 
 #### map.interactions.filter
 
-		-"filter"-: { -"logging"- "attributes" -"tool"- }
+		-"filter"-: { -"logging"- "dataLayers" -"tool"- }
 
 Filter interaction. Creates a filter tool on the map.
 
-#### map.interactions.filter.attributes
+#### map.interactions.filter.dataLayers
 
-			"attributes": []
+			"dataLayers": []
 
-An array of the `dataLayers` attributes to include in the filter tool. Must have at least one value to enable filtering. Each attribute will be selectable via a dropdown menu.
+An array of the `dataLayers` to include in the filter tool. Must have at least one value to enable filtering. Each data layer will have its own line in the filter tool.
 
 #### map.interactions.filter.tool
 
@@ -349,7 +349,7 @@ The REST parameters may also be added in the above format to `baseLayer.source` 
 		"name"
 		"source"
 		"expressedAttribute"
-		-"retrieveAttributes"-
+		-"displayAttributes"-
 		-"renderOnLoad"-
 		-"layerOptions"-
 		"techniques"
@@ -379,11 +379,11 @@ For a Mapbox-GL map, the `source` may also be a vector tileset. The data retriev
 
 The name of the numerical attribute that will be visually expressed on the map; a string. Required. Must correspond to a key within each feature's `properties` object that references a numerical value (or no value or `null` if null for that feature).
 
-#### map.dataLayers[i].retrieveAttributes
+#### map.dataLayers[i].displayAttributes
 
-		-"retrieveAttributes"-: []
+		-"displayAttributes"-: []
 
-An array of one or more attributes to include in that layer's pop-ups if the `retrieve` interaction is included. If `retrieve` is included but no `retrieveAttributes` are given, pop-ups will display only the layer's `expressedAttribute`.
+An array of one or more attributes to include in that layer's pop-ups if the `retrieve` interaction is included, in the search tool if the `search` interaction is included, and in the filter tool if the `filter` interaction is included. Only categorical attributes with string values will be searchable (e.g., "name" but not "population"). Only numerical attributes will be added to the filter tool (e.g., "population" but not "name"), and will be accessible via a drop-down menu in the data layer's line in the filter tool. If `retrieve`, `search`, or `filter` are included but no `displayAttributes` are given, pop-ups and tools will be implemented using only the layer's `expressedAttribute`.
 
 #### map.dataLayers[i].renderOnLoad
 

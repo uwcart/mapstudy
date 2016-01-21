@@ -42,25 +42,21 @@
         </script>
 
         <script type="text/template" id="slider-template">
-            <div id="<%= layerName %>-slider-div" class="filter-row">
-                <p class="layer-name"><%= layerName %>&nbsp;<select name="<%= layerName %>"></select></p>
-                <div id="<%= layerName %>-labels" class="slider-labels">
+            <div id="<%= attribute %>-slider-div" class="filter-row">
+                <p class="attribute-name"><%= attribute %></p>
+                <div id="<%= attribute %>-labels" class="slider-labels">
                 <span class="left"></span><span class="right"></span>
                 </div>
-                <div id="<%= layerName %>-slider" class="range-slider"></div>
+                <div id="<%= attribute %>-slider" class="range-slider"></div>
             </div>
         </script>
 
         <script type="text/template" id="logic-template">
-            <div id="<%= layerName %>-logic-div" class="filter-row">
+            <div id="<%= attribute %>-logic-div" class="filter-row">
                 <input type="text" name="value1" size="8">
-                &nbsp;&lt;&nbsp;<%= layerName %>&nbsp;<select name="<%= layerName %>"></select>&nbsp;&lt;&nbsp;
+                &nbsp;&lt;&nbsp;<%= attribute %>&nbsp;&lt;&nbsp;
                 <input type="text" name="value2" size="8">
             </div>
-        </script>
-
-        <script type="text/template" id="filter-options-template">
-            <option value="<%= attribute %>"><%= attribute %></option>
         </script>
 
         <!-- Supported libraries -->

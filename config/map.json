@@ -25,8 +25,11 @@
 			"logging": true
 		},
 		"filter": {
-			"attributes": ["density"],
-			"tool": "logic",
+			"dataLayers": [
+				"US States", 
+				"Cities Layer"
+			],
+			"tool": "slider",
 			"logging": true
 		},
 		"reexpress": {
@@ -41,9 +44,9 @@
 	},
 	"baseLayers": [{
 		"name": "OSM-BW",
-		"source": "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
+		"source": "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
 		"layerOptions": {
-			"attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap Contributors</a>"
+			"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
 		}
 	}],
 	"dataLayers": [{
@@ -51,13 +54,14 @@
 		"source": "data/us-states.geojson",
 		"postgisTable": "",
 		"expressedAttribute": "density",
-		"retrieveAttributes": [
+		"displayAttributes": [
 			"name", 
 			"density"
 		],
 		"layerOptions": {
 			"fillOpacity": 0.8,
-			"color": "white",
+			"color": "black",
+			"weight": 1,
 			"opacity": 1,
 			"fillColor": "#FD8D3C"
 		},
@@ -84,7 +88,7 @@
 		"name": "Cities Layer",
 		"source": "data/city-data.geojson",
 		"expressedAttribute": "2011",
-		"retrieveAttributes": [
+		"displayAttributes": [
 			"name", 
 			"2005",
 			"2006",

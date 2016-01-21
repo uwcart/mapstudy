@@ -183,15 +183,10 @@ var FilterSliderView = Backbone.View.extend({
 	el: ".filter-control-container",
 	events: {
 		"click img": "open",
-		"click .close": "close",
-		"change select": "select"
+		"click .close": "close"
 	},
 	template: _.template( $( '#slider-template').html() ),
 	applyFilter: function(){},
-	select: function(e){
-		var select = $(e.target);
-		this.setSlider(select.val(), select.attr('name'));
-	},
 	getAllAttributeValues: function(attribute){
 		//get attribute values for all features with given attribute
 		var allAttributeValues = [];
@@ -210,7 +205,7 @@ var FilterSliderView = Backbone.View.extend({
 		allAttributeValues.sort(function(a,b){ return a-b });
 		return allAttributeValues;
 	},
-	setSlider: function(attribute, layerName){
+	setSlider: function(attribute){
 		//get attribute values for all features with given attribute
 		var allAttributeValues = this.getAllAttributeValues(attribute);
 		//set values for slider
@@ -245,15 +240,13 @@ var FilterSliderView = Backbone.View.extend({
 		min = Math.floor(min / step) * step - step;
 		max = Math.ceil(max / step) * step + step;
 		//add labels
-		var labelsDiv = this.$el.find("#"+layerName+"-labels");
+		var labelsDiv = this.$el.find("#"+attribute+"-labels");
 		labelsDiv.children(".left").html(min);
 		labelsDiv.children(".right").html(max);
 		//to pass to slide callback
 		var applyFilter = this.applyFilter;
-		//call once to reset layer
-		applyFilter(attribute, [min, max]);
 		//set slider
-		this.$el.find("#"+layerName+"-slider").slider({
+		this.$el.find("#"+attribute+"-slider").slider({
 			range: true,
 			min: min, //change
 			max: max, //change
@@ -266,28 +259,19 @@ var FilterSliderView = Backbone.View.extend({
 			}
 		});
 	},
+	append: function(attribute){
+		this.$el.append(this.template({attribute: attribute}));
+		this.setSlider(attribute);
+	},
 	render: function(){
-		//get all numeric attributes for data layer
-		var numericAttributes = _.filter(this.model.get('attributes'), function(attribute){
+		//add a filter tool for each attribute
+		_.each(this.model.get('attributes'), function(attribute){
+			//only proceed if attribute is actually numerical
 			var allAttributeValues = this.getAllAttributeValues(attribute);
 			if (allAttributeValues.length > 0){
-				return attribute;
+				this.append(attribute);
 			};
 		}, this);
-		//only proceed if there are one or more numeric attributes
-		if (numericAttributes.length > 0){
-			//add line for data layer
-			this.$el.append(this.template(this.model.attributes));
-			//add slider for first attribute
-			this.setSlider(numericAttributes[0], this.model.get('layerName'));
-		};
-		//add dropdown option for each attribute
-		var optionTemplate = _.template($('#filter-options-template').html()),
-			select = this.$el.find('select[name=' + this.model.get('layerName') + ']');
-		_.each(numericAttributes, function(attribute){
-			select.append(optionTemplate({attribute: attribute}))
-		}, this);
-
 		this.$el.append('<a class="close">&times;</a>');
 		this.$el.children('.close').css({
 			'position': 'absolute',
@@ -596,24 +580,10 @@ var LeafletMap = Backbone.View.extend({
 				};
 			};
 		}, this);
-		//do stuff on overlay change
+		//set custom interaction for logging
 		var view = this;
-		this.map.on('overlayadd overlayremove', function(e){
-			//set custom interaction for logging
+		this.map.on('overlayadd overlayremove', function(){
 			if (!view.reexpressed){ view.trigger('overlay'); };
-			var layerName = e.name.indexOf(': <') > -1 ? e.name.split(': <')[0] : e.name;
-			layerName = layerName.replace(/\s|\:/g, '-');
-			if (e.type == 'overlayadd'){
-				//reset any filter sliders for layer
-				$('#'+layerName+'-slider').slider('enable');
-				var sliderOptions = $('#'+layerName+'-slider').slider('option');
-				$('#'+layerName+'-slider').slider('values', [sliderOptions.min, sliderOptions.max]);
-				$('#'+layerName+'-labels .left').text(sliderOptions.min);
-				$('#'+layerName+'-labels .right').text(sliderOptions.max);
-			} else {
-				//disable filtering
-				$('#'+layerName+'-slider').slider('disable');
-			}
 		});
 		this.hideLabels();
 	},
@@ -712,7 +682,7 @@ var LeafletMap = Backbone.View.extend({
 				//get filter properties
 				var attributes = dataLayer.displayAttributes;
 				//set a filter tool
-				var filterModel = new FilterModel({layerName: dataLayer.name.replace(/\s|\:/g, '-'), attributes: attributes, tool: controlType, map: this.map, features: this.getFeatures()});
+				var filterModel = new FilterModel({layerName: datalayer.name, attributes: attributes, tool: controlType, map: this.map, features: this.getFeatures()});
 				//filter view options
 				var filterViewOptions = {
 					model: filterModel, 
@@ -787,10 +757,6 @@ var LeafletMap = Backbone.View.extend({
 						offLayer.addTo(map);
 						offLayers = _.without(offLayers, offLayer);
 						return false;
-					};
-					//remove single-feature layers that might be leftover from filter
-					if (offLayer.feature){
-						offLayers = _.without(offLayers, offLayer);
 					};
 				}, this);
 			};
