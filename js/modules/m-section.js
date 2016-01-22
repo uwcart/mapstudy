@@ -195,7 +195,6 @@ var FilterSliderView = Backbone.View.extend({
 	getAllAttributeValues: function(attribute){
 		//get attribute values for all features with given attribute
 		var allAttributeValues = [];
-
 		_.each(this.model.get('features'), function(feature){
 			if (feature.properties[attribute]){
 				allAttributeValues.push(parseFloat(feature.properties[attribute]));
@@ -266,6 +265,12 @@ var FilterSliderView = Backbone.View.extend({
 			}
 		});
 	},
+	append: function(numericAttributes){
+		//add line for data layer
+		this.$el.append(this.template(this.model.attributes));
+		//add slider for first attribute
+		this.setSlider(numericAttributes[0], this.model.get('layerName'));
+	},
 	render: function(){
 		//get all numeric attributes for data layer
 		var numericAttributes = _.filter(this.model.get('attributes'), function(attribute){
@@ -275,12 +280,7 @@ var FilterSliderView = Backbone.View.extend({
 			};
 		}, this);
 		//only proceed if there are one or more numeric attributes
-		if (numericAttributes.length > 0){
-			//add line for data layer
-			this.$el.append(this.template(this.model.attributes));
-			//add slider for first attribute
-			this.setSlider(numericAttributes[0], this.model.get('layerName'));
-		};
+		if (numericAttributes.length > 0){ this.append(numericAttributes); };
 		//add dropdown option for each attribute
 		var optionTemplate = _.template($('#filter-options-template').html()),
 			select = this.$el.find('select[name=' + this.model.get('layerName') + ']');
@@ -328,16 +328,16 @@ var FilterLogicView = FilterSliderView.extend({
 	},
 	template: _.template( $( '#logic-template').html() ),
 	processFilter: function(e){
-		//identify attribute
-		var attributeDiv = $(e.target).parent();
-		var attribute = attributeDiv.attr('id').split('-')[0];
+		//identify layer and attribute
+		var layerDiv = $(e.target).parent();
+		var attribute = layerDiv.children('select').val();
 		//get attribute values min and max
 		var allAttributeValues = this.getAllAttributeValues(attribute);
 		var minmax = [_.min(allAttributeValues), _.max(allAttributeValues)];
 		//array to hold filter values
 		var values = [
-			attributeDiv.children('input[name=value1]').val(),
-			attributeDiv.children('input[name=value2]').val(),
+			layerDiv.children('input[name=value1]').val(),
+			layerDiv.children('input[name=value2]').val(),
 		];
 		//test whether input contains a value; if not, use default
 		values = _.map(values, function(value, i){
@@ -346,18 +346,23 @@ var FilterLogicView = FilterSliderView.extend({
 		//go!
 		this.applyFilter(attribute, values);
 	},
-	setValues: function(attribute){
+	setValues: function(attribute, layerName){
 		//get attribute values for all features with given attribute
 		var allAttributeValues = this.getAllAttributeValues(attribute);
 		//set values for inputs
 		var min = _.min(allAttributeValues),
 			max = _.max(allAttributeValues);
-		this.$el.find('input[name=value1]').attr('placeholder', min);
-		this.$el.find('input[name=value2]').attr('placeholder', max);
+		var parentDiv = this.$el.find('select[name='+layerName+']').parent();
+		parentDiv.children('input[name=value1]').attr('placeholder', min);
+		parentDiv.children('input[name=value2]').attr('placeholder', max);
 	},
-	append: function(attribute){
-		this.$el.append(this.template({attribute: attribute}));
-		this.setValues(attribute);
+	append: function(numericAttributes){
+		this.$el.append(this.template(this.model.attributes));
+		this.setValues(numericAttributes[0], this.model.get('layerName'));
+	},
+	select: function(e){
+		var select = $(e.target);
+		this.setValues(select.val(), select.attr('name'));
 	}
 });
 
@@ -604,15 +609,19 @@ var LeafletMap = Backbone.View.extend({
 			var layerName = e.name.indexOf(': <') > -1 ? e.name.split(': <')[0] : e.name;
 			layerName = layerName.replace(/\s|\:/g, '-');
 			if (e.type == 'overlayadd'){
-				//reset any filter sliders for layer
+				//enable filtering
 				$('#'+layerName+'-slider').slider('enable');
+				$('#'+layerName+'-logic-div input').removeProp('disabled');
+			} else {
+				//reset and disable filter sliders
 				var sliderOptions = $('#'+layerName+'-slider').slider('option');
 				$('#'+layerName+'-slider').slider('values', [sliderOptions.min, sliderOptions.max]);
 				$('#'+layerName+'-labels .left').text(sliderOptions.min);
 				$('#'+layerName+'-labels .right').text(sliderOptions.max);
-			} else {
-				//disable filtering
 				$('#'+layerName+'-slider').slider('disable');
+				//reset and disable logic sliders
+				$('#'+layerName+'-logic-div input').val('');
+				$('#'+layerName+'-logic-div input').prop('disabled', true);
 			}
 		});
 		this.hideLabels();
