@@ -34,6 +34,9 @@
 		},
 		"reexpress": {
 			"logging": true
+		},
+		"resymbolize": {
+			"logging": true
 		}
 	},
 	"mapOptions": {
@@ -67,7 +70,7 @@
 		},
 		"techniques": [{
 			"type": "choropleth",
-			"classification": "quantile",
+			"classification": "natural breaks",
 			"classes": [
 				"#FEEDDE",
 				"#FDBE85",

@@ -236,9 +236,15 @@ An array of `projection` objects with the projection name and D3-style projectio
 
 #### map.mapOptions
 
-	-"mapOptions"-: { -library options- }
+	-"mapOptions"-: { -library options- -legend- }
 
-An object to hold any map options applied on the instantiation of a Leaflet, Mapbox-GL, or REST map. Not available for any other `library`. If no `mapOptions` are included, library defaults will be applied. Refer to the [Leaflet](http://leafletjs.com/reference.html#map-options) or [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/#Map) documentation for lists of possible options for those libraries. REST `mapOptions` will be added as parameters to the map URL, and are thus dependent on the map server configuration.
+An object to hold any map options applied on the instantiation of a Leaflet, Mapbox-GL, or REST map. Not available for any other `library`. If no `mapOptions` are included, library defaults will be applied. Refer to the [Leaflet](http://leafletjs.com/reference.html#map-options) or [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/#Map) documentation for lists of possible options for those libraries. REST `mapOptions` will be added as parameters to the map URL, and are thus dependent on the map server configuration. The `legend` option is a special option, described below.
+
+#### map.mapOptions.legend
+
+	-"legend"-: -true- -false-
+
+If `legend` is included and `false`, no legend will be included on the map. If `legend` is excluded or `true`, a legend showing symbols for all `dataLayers` will be included on the map.
 
 #### map.projection
 

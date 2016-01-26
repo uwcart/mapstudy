@@ -4,6 +4,98 @@
 		"selected_items":
 		[
 			[
+				"leaflet",
+				"leafletDataLayer"
+			],
+			[
+				"numeric",
+				"numericAttributes"
+			],
+			[
+				"first",
+				"firstAttribute"
+			],
+			[
+				"reexpre",
+				"reexpressed"
+			],
+			[
+				"reexp",
+				"reexpressed"
+			],
+			[
+				"overl",
+				"overlayremove"
+			],
+			[
+				"reexpres",
+				"reexpressSpan"
+			],
+			[
+				"inde",
+				"indexOf"
+			],
+			[
+				"technique",
+				"techniqueType"
+			],
+			[
+				"new",
+				"newClass"
+			],
+			[
+				"leafl",
+				"leafletDataLayers"
+			],
+			[
+				"geoJ",
+				"geoJson"
+			],
+			[
+				"leafletData",
+				"leafletDataLayer"
+			],
+			[
+				"tec",
+				"techique"
+			],
+			[
+				"techniqu",
+				"techniqueType"
+			],
+			[
+				"setT",
+				"setTechnique"
+			],
+			[
+				"reex",
+				"reexpress"
+			],
+			[
+				"add",
+				"addReexpress"
+			],
+			[
+				"layer",
+				"layerName"
+			],
+			[
+				"render",
+				"renderReexpressButtons"
+			],
+			[
+				"ree",
+				"ReexpressModel"
+			],
+			[
+				"rg",
+				"rgba()"
+			],
+			[
+				"layerName",
+				"layerNameHtml"
+			],
+			[
 				"ex",
 				"expressedAttribute"
 			],
@@ -56,24 +148,8 @@
 				"search"
 			],
 			[
-				"geoJ",
-				"geoJsonFeatures"
-			],
-			[
-				"leafl",
-				"leafletDataLayer"
-			],
-			[
 				"data",
 				"dataLayers"
-			],
-			[
-				"leaflet",
-				"leafletBaseLayers"
-			],
-			[
-				"leafletData",
-				"leafletDataLayers"
 			],
 			[
 				"leafletDataLay",
@@ -86,10 +162,6 @@
 			[
 				"leaf",
 				"leafletDataLayer"
-			],
-			[
-				"render",
-				"renderOnLoad"
 			],
 			[
 				"retrie",
@@ -299,8 +371,16 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 3913,
+				"buffer_size": 4160,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/modules/m-section.js",
+			"settings":
+			{
+				"buffer_size": 32272,
+				"line_ending": "Windows"
 			}
 		},
 		{
@@ -315,7 +395,7 @@
 			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 7331,
+				"buffer_size": 7461,
 				"line_ending": "Unix"
 			}
 		},
@@ -328,21 +408,10 @@
 			}
 		},
 		{
-			"contents": "//Map panel\n\n(function(){\n\n/************** map.dataLayer.techique.classification ****************/\n\nvar Quantile = Backbone.Model.extend({\n	defaults: {\n		type: 'quantile'\n	},\n	scale: function(values, classes){\n		//create scale generator\n		var scale = d3.scale.quantile()\n			.range(classes);\n		//assign array of values as scale domain\n		scale.domain(values);\n		//done\n		return scale;\n	}\n});\n\nvar EqualInterval = Backbone.Model.extend({\n	defaults: {\n		type: 'equal interval'\n	},\n	scale: function(values, classes){\n		//create scale generator\n		var scale = d3.scale.quantile()\n			.range(classes);\n		//assign two-value array as scale domain\n		scale.domain([d3.min(values), d3.max(values)]);\n		//done\n		return scale;\n	}\n});\n\nvar NaturalBreaks = Backbone.Model.extend({\n	defaults: {\n		type: 'natural breaks'\n	},\n	scale: function(values, classes){\n		//create scale generator\n		var scale = d3.scale.threshold()\n			.range(classes);\n		//cluster data using ckmeans clustering algorithm to create natural breaks\n		var clusters = ss.ckmeans(values, classes.length);\n		//set domain array to cluster minimums\n		var domainArray = clusters.map(function(d){\n			return d3.min(d);\n		});\n		//remove first value from domain array to create class breakpoints\n		domainArray.shift();\n		//assign array of remaining cluster minimums as domain\n		scale.domain(domainArray);\n		//done\n		return scale;\n	}\n});\n\nvar Unclassed = Backbone.Model.extend({\n	defaults: {\n		type: 'unclassed'\n	},\n	scale: function(values, rangeBounds){\n		//create scale generator\n		var scale = d3.scale.linear()\n			.range(rangeBounds);\n		//assign two-value array as scale domain\n		scale.domain([d3.min(values), d3.max(values)]);\n		//done\n		return scale;\n	}\n});\n\n//a single collection holds all classification models\nvar classification = new Backbone.Collection([\n	new Quantile(),\n	new EqualInterval(),\n	new NaturalBreaks(),\n	new Unclassed()\n]);\n\n/************** map.dataLayer.technique ****************/\n\n//model for choropleth data overlay\nvar Choropleth = Backbone.Model.extend({\n	defaults: {\n		techniqueType: 'choropleth',\n		classificationType: '',\n		expressedAttribute: '',\n		classes: [],\n		dataLayer: {}\n	},\n	setLayerOptions: function(feature, scale, expressedAttribute){\n		//set a new fillColor property for each feature with the class color value\n		return {\n			fillColor: scale(parseFloat(feature.properties[expressedAttribute]))\n		};\n	},\n	setClasses: function(){\n		var expressedAttribute = this.get('expressedAttribute');\n		//get all of the values for the attribute by which the data will be classed\n		var values = _.map(this.get('features'), function(feature){\n			return parseFloat(feature.properties[expressedAttribute]);\n		});\n		//get the d3 scale for the chosen classification scheme\n		var classificationModel = classification.where({type: this.get('classificationType')})[0];\n		var scale = classificationModel.scale(values, this.get('classes'));\n		//use scale and attribute to set layer options\n		_.each(this.get('features'), function(feature){\n			feature.properties.layerOptions = this.setLayerOptions(feature, scale, expressedAttribute);\n		}, this);\n		this.trigger('done');\n	},\n	initialize: function(){\n		this.on('sync', this.setClasses);\n	}\n});\n\n//model for proportional symbol data overlay\nvar ProportionalSymbol = Choropleth.extend({\n	defaults: {\n		techniqueType: 'proportional symbol',\n		symbol: 'circle'\n	},\n	setLayerOptions: function(feature, scale, expressedAttribute){\n		//set a new radius property for each feature with the class color value\n		return {\n			radius: scale(parseFloat(feature.properties[expressedAttribute]))\n		};\n	}\n});\n\n//a single collection holds all visual techniques\nvar techniques = new Backbone.Collection([\n	new Choropleth(),\n	new ProportionalSymbol()\n]);\n\n/************** map.interactions ****************/\n\n//basic interaction model\nvar Interaction = Backbone.Model.extend({\n	defaults: {\n		interaction: \"\",\n		timestamp: \"\",\n		userId: userId,\n		question: 0\n	},\n	url: \"php/interactions.php\",\n	record: function(){\n		var date = new Date();\n		this.set({\n			timestamp: date.toUTCString(),\n			question: question\n		});\n		this.save();\n	},\n	create: function(events){\n		//events is an object in the form of {event1: context1, event2: context2}\n		for (var e in events){\n			var context = events[e];\n			var model = this;\n			context.on(e, function(){\n				model.record();\n			});\n		}\n	}\n});\n\n//model for filter interaction\nvar FilterModel = Backbone.Model.extend({\n	defaults: {\n		attributes: [],\n		tool: \"slider\",\n		features: {}\n	}\n});\n\n//slider view for filter interaction\nvar FilterSliderView = Backbone.View.extend({\n	el: \".filter-control-container\",\n	events: {\n		\"click img\": \"open\",\n		\"click .close\": \"close\"\n	},\n	template: _.template( $( '#slider-template').html() ),\n	applyFilter: function(){},\n	getAllAttributeValues: function(attribute){\n		//get attribute values for all features with given attribute\n		var allAttributeValues = [];\n\n		_.each(this.model.get('features'), function(feature){\n			if (feature.properties[attribute]){\n				allAttributeValues.push(parseFloat(feature.properties[attribute]));\n			};\n		}, this);\n\n		//ensure array only includes numbers\n		allAttributeValues = _.filter(allAttributeValues, function(value){\n			return !isNaN(value);\n		});\n		//sort array and return\n		allAttributeValues.sort(function(a,b){ return a-b });\n		return allAttributeValues;\n	},\n	setSlider: function(attribute){\n		//get attribute values for all features with given attribute\n		var allAttributeValues = this.getAllAttributeValues(attribute);\n		//set values for slider\n		var min = _.min(allAttributeValues),\n			max = _.max(allAttributeValues),\n			mindiff = _.reduce(allAttributeValues, function(memo, val, i){\n				//take the smallest possible difference between attribute values to determine step\n				if (i < allAttributeValues.length-1){\n					var diff = Math.abs(val - allAttributeValues[i+1]);\n					if (diff == 0){ return memo };\n					return memo < diff ? memo : diff;\n				} else {\n					return memo;\n				};\n			}, Infinity),\n			step = 0;\n		//assign step the order of magnitude of mindiff\n		if (mindiff >= 1){\n			var intLength = String(Math.round(mindiff)).length;\n			step = Math.pow(10,intLength-1);\n		} else {\n			for (var i=12; i>0; i--){\n				if (mindiff * Math.pow(10,i) >= 1){\n					step = Math.pow(10,-i);\n				};\n			};\n			if (step == 0){\n				step = 1 * Math.pow(10,-12);\n			};\n		};\n		//add a small amount of padding to ensure max and min values stay within range\n		min = Math.floor(min / step) * step - step;\n		max = Math.ceil(max / step) * step + step;\n		//add labels\n		var labelsDiv = this.$el.find(\"#\"+attribute+\"-labels\");\n		labelsDiv.children(\".left\").html(min);\n		labelsDiv.children(\".right\").html(max);\n		//to pass to slide callback\n		var applyFilter = this.applyFilter;\n		//set slider\n		this.$el.find(\"#\"+attribute+\"-slider\").slider({\n			range: true,\n			min: min, //change\n			max: max, //change\n			values: [min, max], //change\n			step: step, //change\n			slide: function(e, slider){\n				labelsDiv.children(\".left\").html(slider.values[0]);\n				labelsDiv.children(\".right\").html(slider.values[1]);\n				applyFilter(attribute, slider.values);\n			}\n		});\n	},\n	append: function(attribute){\n		this.$el.append(this.template({attribute: attribute}));\n		this.setSlider(attribute);\n	},\n	render: function(){\n		//add a filter tool for each attribute\n		_.each(this.model.get('attributes'), function(attribute){\n			//only proceed if attribute is actually numerical\n			var allAttributeValues = this.getAllAttributeValues(attribute);\n			if (allAttributeValues.length > 0){\n				this.append(attribute);\n			};\n		}, this);\n		this.$el.append('<a class=\"close\">&times;</a>');\n		this.$el.children('.close').css({\n			'position': 'absolute',\n			'left': this.$el.width() - 20 + \"px\",\n			'top': \"0px\",\n			'color': '#333'\n		});\n		this.$el.children('.filter-row, .close').each(function(){\n			$(this).hide();\n		});\n		this.$el.css('cursor', 'pointer');\n	},\n	open: function(e){\n		//show content\n		this.$el.children('.filter-row, .close').each(function(){\n			$(this).show();\n		});\n		this.$el.css('cursor', 'default');\n	},\n	close: function(){\n		//hide content\n		this.$el.children('.filter-row, .close').each(function(){\n			$(this).hide();\n		});\n		this.$el.css('cursor', 'pointer');\n	},\n	initialize: function(options){\n		this.applyFilter = options.applyFilter;\n	}\n});\n\n//logic view for filter interaction\nvar FilterLogicView = FilterSliderView.extend({\n	events: function(){\n		return _.extend({}, FilterSliderView.prototype.events,{\n			\"keyup input\": \"processFilter\"\n		});\n	},\n	template: _.template( $( '#logic-template').html() ),\n	processFilter: function(e){\n		//identify attribute\n		var attributeDiv = $(e.target).parent();\n		var attribute = attributeDiv.attr('id').split('-')[0];\n		//get attribute values min and max\n		var allAttributeValues = this.getAllAttributeValues(attribute);\n		var minmax = [_.min(allAttributeValues), _.max(allAttributeValues)];\n		//array to hold filter values\n		var values = [\n			attributeDiv.children('input[name=value1]').val(),\n			attributeDiv.children('input[name=value2]').val(),\n		];\n		//test whether input contains a value; if not, use default\n		values = _.map(values, function(value, i){\n			return value.length > 0 ? parseFloat(value) : minmax[i];\n		});\n		//go!\n		this.applyFilter(attribute, values);\n	},\n	setValues: function(attribute){\n		//get attribute values for all features with given attribute\n		var allAttributeValues = this.getAllAttributeValues(attribute);\n		//set values for inputs\n		var min = _.min(allAttributeValues),\n			max = _.max(allAttributeValues);\n		this.$el.find('input[name=value1]').attr('placeholder', min);\n		this.$el.find('input[name=value2]').attr('placeholder', max);\n	},\n	append: function(attribute){\n		this.$el.append(this.template({attribute: attribute}));\n		this.setValues(attribute);\n	}\n});\n\nvar ReexpressView = Backbone.View.Extend({\n	events: {\n		\"click\": \"setTechnique\"\n	},\n	setTechnique: function(){},\n	render: function(){\n		this.$el.html('<img src=\"img/'+ this.model.get('technique') +'.png\">')\n	}\n});\n\n\n/************** map.library ****************/\n\n//Leaflet\nvar LeafletMap = Backbone.View.extend({\n	el: '#m',\n	initialize: function(){\n\n	},\n	render: function(){\n		this.$el.html(\"<div id='map'>\");\n		return this;\n	},\n	setBaseLayer: function(baseLayer, i){\n		//create leaflet tile layer\n		var leafletBaseLayer = L.tileLayer(baseLayer.source, baseLayer.layerOptions);\n		leafletBaseLayer.layerName = baseLayer.name;\n		//only add first base layer to the map\n		if (i==0){ leafletBaseLayer.addTo(this.map); };\n		//add to array of base layers\n		this.model.attributes.leafletBaseLayers.push(leafletBaseLayer);\n		//trigger done event\n		if (i == this.model.get('baseLayers').length-1){ this.trigger('baseLayersDone') };\n	},\n	setDataLayer: function(dataLayer, i){\n		//get layer options\n		var dataLayerOptions = dataLayer.layerOptions;\n		//get model based on technique type\n		var dataLayerModel = techniques.where({techniqueType: dataLayer.techniques[0].type})[0];\n		//pass in necessary values\n		dataLayerModel.set({\n			classificationType: dataLayer.techniques[0].classification,\n			expressedAttribute: dataLayer.expressedAttribute,\n			classes: dataLayer.techniques[0].classes,\n			dataLayer: dataLayer\n		});\n		//set up AJAX callback\n		dataLayerModel.on('done', function(){\n			var model = this.model, view = this;\n			var layerName = dataLayerModel.get('dataLayer').name;\n			var className = layerName.replace(/\\s|\\:/g, '-');\n			function style(feature){\n				//combine layer options objects from config file and feature properties\n				//classification will take precedence over base options\n				return _.defaults(feature.properties.layerOptions, dataLayerOptions);\n			};\n			//implement retrieve interaction if listed in config file\n			function onEachFeature(feature, layer){\n				feature.layer = layer; //bind layer to feature for search\n				if (model.get('interactions.retrieve')){\n					var popupContent = \"<table>\";\n					if (dataLayer.retrieveAttributes){\n						dataLayer.retrieveAttributes.forEach(function(attr){\n							popupContent += \"<tr><td class='attr'>\"+attr+\":</td><td>\"+feature.properties[attr]+\"</td></tr>\";\n						});\n					} else {\n						var attr = dataLayerModel.get('expressedAttribute');\n						popupContent += \"<tr><td class='attr'>\"+attr+\":</td><td>\"+feature.properties[attr]+\"</td></tr>\";\n					};\n					popupContent += \"</table>\";\n					layer.bindPopup(popupContent);\n					if (model.get('interactions.retrieve.event') == 'hover'){\n						layer.on({\n							mouseover: function(){\n								//fix for popup flicker\n								var bounds = this.getBounds();\n								var maxLat = bounds.getNorth();\n								var midLng = bounds.getCenter().lng;\n								this.openPopup([maxLat, midLng]);\n							},\n							mouseout: function(){ this.closePopup() }\n						});\n					};\n					layer.on('popupopen', function(){\n						view.trigger('popupopen');\n					});\n				};\n			};\n			//implement pointToLayer conversion for proportional symbol maps\n			function pointToLayer(feature, latlng){\n				var markerOptions = _.extend(feature.properties.layerOptions, dataLayerOptions);\n				if (dataLayerModel.get('symbol') == 'circle'){\n					return L.circleMarker(latlng, markerOptions);\n				} else {\n					var width = markerOptions.radius * 2;\n					var icon = L.icon({\n						iconUrl: dataLayerModel.get('symbol'),\n						iconSize: [width, width]\n					});\n					return L.marker(latlng, {icon: icon})\n				};	\n			};\n			//add Leaflet overlay\n			var overlayOptions = {\n				onEachFeature: onEachFeature,\n				style: style,\n				className: className\n			};\n			if (dataLayerModel.get('techniqueType') == 'proportional symbol'){\n				overlayOptions.pointToLayer = pointToLayer;\n			};\n			var leafletDataLayer = L.geoJson(dataLayerModel.get('features'), overlayOptions);\n			leafletDataLayer.layerName = layerName;\n			//render immediately by default\n			if (typeof dataLayer.renderOnLoad === 'undefined' || dataLayer.renderOnLoad == 'true'){\n				leafletDataLayer.addTo(this.map);\n				//reset cursor if needed\n				if (!model.get('interactions.retrieve') && model.get('interactions.pan')){\n					$(\".\"+className).css('cursor', \"grab\");\n				};\n			};\n			//add to layers\n			model.attributes.leafletDataLayers.push(leafletDataLayer);\n			//trigger done event\n			if (i == model.get('dataLayers').length-1){ this.trigger('dataLayersDone') };\n		}, this);\n		//go get the data!\n		dataLayerModel.fetch({url: dataLayer.source});\n	},\n	getFeatures: function(){\n		//collect all dataLayers' features in one features array\n		var features = [];\n		_.each(this.model.get('leafletDataLayers'), function(dataLayer){\n			var geoJsonFeatures = dataLayer.toGeoJSON().features;\n			features = features.concat(geoJsonFeatures);\n		}, this);\n		return features;\n	},\n	addOverlayControl: function(){\n		//add layer control if it wasn't created for underlay\n		if (!this.layerControl){\n			this.layerControl = L.control.layers().addTo(this.map);\n		};\n		//add each overlay to layers control\n		_.each(this.model.get('leafletDataLayers'), function(overlay){\n			//only add listed layers\n			if (_.indexOf(this.model.get('interactions.overlay.dataLayers'), overlay.layerName) > -1){\n				this.layerControl.addOverlay(overlay, overlay.layerName);\n			};\n		}, this);\n	},\n	addUnderlayControl: function(){\n		//add layer control if it wasn't created for overlay\n		if (!this.layerControl){\n			this.layerControl = L.control.layers().addTo(this.map);\n		};\n		//add each base layer to layers control\n		_.each(this.model.get('leafletBaseLayers'), function(baseLayer){\n			this.layerControl.addBaseLayer(baseLayer, baseLayer.layerName);\n		}, this);\n	},\n	addSearch: function(){\n		var model = this.model;\n		function showResultFct(feature, container){\n			props = feature.properties;\n	        _.each(model.get('interactions.search.attributes'), function(attribute){\n	        	var span = L.DomUtil.create('span', null, container);\n	        	span.innerHTML = \"<b>\"+attribute+\"</b>: \"+props[attribute]+\"<br>\";\n	        }, this);\n		}\n		//add search control to map\n		var searchControl = L.control.fuseSearch({\n			position: 'topleft',\n			showResultFct: showResultFct\n		}).addTo(this.map);\n		//get features array\n		var features = this.getFeatures();\n		//index features for search\n		searchControl.indexFeatures(features, this.model.get('interactions.search.attributes'));\n		//add search event\n		var view = this,\n			timeout = window.setTimeout(function(){}, 0);\n		$(\".search-input\").on('keyup', function(){ \n			clearTimeout(timeout);\n			timeout = window.setTimeout(function(){ view.trigger('search'); }, 1000)\n		});\n	},\n	addFilter: function(){\n		var model = this.model;\n		var map = this.map;\n		//extend Leaflet controls to create filter control\n		var FilterControl = L.Control.extend({\n			options: {\n				position: 'bottomleft'\n			},\n			onAdd: function(map){\n				//create container for filter control\n				var container = L.DomUtil.create('div', 'filter-control-container control-container');\n				container.innerHTML = '<img src=\"js/lib/leaflet/images/filter.png\">';\n				//kill map interactions under filter control\n				L.DomEvent.addListener(container, 'mousedown click dblclick', function(e) {\n					L.DomEvent.stopPropagation(e);\n				});\n				return container;\n			}\n		});\n		//add filter control to map\n		map.addControl(new FilterControl());\n\n		//applyFilter function references map, so must be created here\n		var applyFilter = function(attribute, values){\n			//global array to hold map layers removed\n			if (!window.offLayers){ window.offLayers = []; };\n			//helpful abbreviations\n			var min = values[0], max = values[1];\n			//attribute is stored in slider div id\n			// var attribute = $(e.target).attr('id').split('-')[0];\n			map.eachLayer(function(layer){\n				if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){\n					var layerValue = layer.feature.properties[attribute];\n					//if value falls outside range, remove from map and stick in removed layers array\n					if (layerValue < min || layerValue > max){\n						map.removeLayer(layer);\n						offLayers.push(layer);\n					};\n				};\n			});\n			_.each(offLayers, function(layer){\n				if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){\n					var layerValue = layer.feature.properties[attribute];\n					//if value within range, add to map and remove from removed layers array\n					if (layerValue > min && layerValue < max){\n						layer.addTo(map);\n						offLayers = _.without(offLayers, layer);\n					};\n				};\n			});\n		};\n\n		_.each(model.get('leafletDataLayers'), function(dataLayer){\n			//get filter properties\n			var attributes = model.get('interactions.filter.attributes');\n			var controlType = model.get('interactions.filter.tool');\n			//set a tool for each filter attribute\n			var filterModel = new FilterModel({attributes: attributes, tool: controlType, map: this.map, features: this.getFeatures()});\n			//filter view options\n			var filterViewOptions = {\n				model: filterModel, \n				applyFilter: applyFilter\n			};\n			//create filter view\n			var filterView = controlType == 'logic' ? new FilterLogicView(filterViewOptions) : new FilterSliderView(filterViewOptions);\n			filterView.render();\n		}, this);\n		//trigger filter event on slider stop or logic filter entry\n		var view = this, \n			timeout = window.setTimeout(function(){}, 0);\n		$('.range-slider').on('slidestop', function(){ view.trigger('filter'); });\n		$('.filter-row input').on('keyup', function(){\n			clearTimeout(timeout);\n			timeout = window.setTimeout(function(){ view.trigger('filter'); }, 1000);\n		});\n	},\n	addReexpress: function(){\n\n	},\n	setMapInteractions: function(){\n		//remove default zoom control and interactions if no zoom interaction\n		if (!this.model.get('interactions.zoom')){\n			this.model.set('mapOptions.zoomControl', false);\n			this.model.set('mapOptions.touchZoom', false);\n			this.model.set('mapOptions.scrollWheelZoom', false);\n			this.model.set('mapOptions.doubleClickZoom', false);\n			this.model.set('mapOptions.boxZoom', false);\n		};\n		//remove default panning interaction if no pan interaction\n		if (!this.model.get('interactions.pan')){\n			this.model.set('mapOptions.dragging', false);\n		};\n		//set layers control for overlay interaction\n		if (this.model.get('interactions.overlay') && this.model.get('interactions.overlay.dataLayers') && this.model.get('interactions.overlay.dataLayers').length > 0){\n			this.on('dataLayersDone', this.addOverlayControl, this);\n		};\n		//set layers control for underlay interaction\n		if (this.model.get('interactions.underlay')){\n			this.on('baseLayersDone', this.addUnderlayControl, this);\n		};\n		//set search control for search interaction\n		if (this.model.get('interactions.search') && this.model.get('interactions.search.attributes') && this.model.get('interactions.search.attributes').length > 0){\n			this.on('dataLayersDone', this.addSearch, this);\n		};\n		//set filter control for filter interaction\n		if (this.model.get('interactions.filter') && this.model.get('interactions.filter.attributes') && this.model.get('interactions.filter.attributes').length > 0){\n			this.on('dataLayersDone', this.addFilter, this);\n		};\n	},\n	logInteractions: function(){\n		//designate events to listen to with contexts for each interaction\n		var interactionCreation = {\n			zoom: {zoomstart: this.map},\n			pan: {dragend: this.map},\n			retrieve: {popupopen: this},\n			overlay: {overlayadd: this.map, overlayremove: this.map},\n			underlay: {baselayerchange: this.map},\n			search: {search: this},\n			filter: {filter: this}\n		};\n		//create a new interaction object for each interaction with logging\n		var interactions = this.model.get('interactions');\n		for (var interaction in interactionCreation){\n			if (interactions[interaction] && interactions[interaction].logging){\n				var i = new Interaction({interaction: interaction});\n				i.create(interactionCreation[interaction]);\n			};\n		};\n	},\n	setMap: function(){\n		//configure map interactions\n		this.setMapInteractions();\n		//create Leaflet layers arrays\n		this.model.set({\n			leafletBaseLayers: [],\n			leafletDataLayers: []\n		});\n\n		//instantiate map\n		this.map = L.map('map', this.model.get('mapOptions'));\n\n		//add initial tile layers\n		var baseLayers = this.model.get('baseLayers');\n		_.each(baseLayers, this.setBaseLayer, this);\n\n		//add each data layer\n		var dataLayers = this.model.get('dataLayers');\n		_.each(dataLayers, this.setDataLayer, this);\n\n		//set interaction logging\n		this.logInteractions();\n	}\n});\n\n/************** set map view ****************/\n\nfunction setMapView(options){\n	var mapView = eval(\"new \" + options.get('library') + \"Map({model: options})\");\n	mapView.render().setMap();\n};\n\n/************** map config ****************/\n\nvar MapConfig = Backbone.DeepModel.extend({\n	url: \"config/map.json\"\n});\n\n//get map configuration options\nvar mapConfig = new MapConfig();\nmapConfig.on('sync', setMapView);\nmapConfig.fetch();\n\n})();",
-			"file": "js/modules/m-section.js",
-			"file_size": 23287,
-			"file_write_time": 130971970044027189,
-			"settings":
-			{
-				"buffer_size": 22807,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "doc/API.md",
 			"settings":
 			{
-				"buffer_size": 27137,
+				"buffer_size": 27782,
 				"line_ending": "Windows"
 			}
 		},
@@ -358,17 +427,9 @@
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 1911,
+				"buffer_size": 2048,
 				"line_ending": "Windows",
 				"name": "["
-			}
-		},
-		{
-			"contents": ",\n	{\n		\"name\": \"Cities Layer\",\n		\"source\": \"data/city-data.geojson\",\n		\"expressedAttribute\": \"2011\",\n		\"layerOptions\": {\n			\"fillOpacity\": 0.8,\n			\"color\": \"white\",\n			\"opacity\": 1\n		},\n		\"technique\": {\n			\"type\": \"proportional symbol\",\n			\"classification\": \"unclassed\",\n			\"classes\": [\n				10,\n				100\n			]\n		}\n	}",
-			"settings":
-			{
-				"buffer_size": 314,
-				"line_ending": "Windows"
 			}
 		},
 		{
@@ -384,6 +445,14 @@
 			"settings":
 			{
 				"buffer_size": 89247,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
+			"settings":
+			{
+				"buffer_size": 2694,
 				"line_ending": "Windows"
 			}
 		}
@@ -412,6 +481,9 @@
 	},
 	"file_history":
 	[
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.bak.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/index.bak.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/time-series-prop-map-leaflet/time-series-prop-map/js/main.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
@@ -442,7 +514,6 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/questions.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/CONFIG.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/q-section.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/main.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet/leaflet.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/jquery.js",
@@ -537,9 +608,7 @@
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/js/main.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-lab/index.html",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/files/D3 Demo.html",
-		"/E/files/Documents/School/UW/Teaching/Geog575/2014_Fall/Labs/Week7/index.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2014_Fall/Labs/Week7/index.html",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/lib/leaflet-0.7.3/leaflet.js"
+		"/E/files/Documents/School/UW/Teaching/Geog575/2014_Fall/Labs/Week7/index.html"
 	],
 	"find":
 	{
@@ -557,134 +626,134 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"US States",
-			"LogicView",
-			"SliderView",
-			"retrieve",
-			"expressedAttribute",
-			"dataLayer",
-			"retrieve",
-			"Proportional symbol",
-			"radius",
-			"_.extend",
-			"technique",
-			"fillColor",
-			"pointToLayer",
-			"layerOptions",
-			"fillColor",
-			"techniques",
+			"overlayOptions",
 			"features",
-			"create: fu",
-			"search",
-			"sliderView",
-			"SliderView",
-			"SliderModel",
-			"map",
+			"setDataLayer",
+			"dataLayersDone",
+			"addLegend",
+			"dataLayersDone",
+			"addOverlayControl",
+			"addLegend",
+			"addOverlayControl",
+			"addCustomControl",
+			"interaction",
+			"addCustomControl",
+			"mapOptions",
+			"addCustomControl",
+			"resymbolize",
 			"applyFilter",
+			"model",
+			"applyFilter",
+			"filter",
 			"console",
+			"getAllAttributeValues",
+			"attributeDiv",
+			"logic",
+			"offLayers",
+			"slider",
+			"setSlider",
+			"FilterModel",
+			"replace",
+			"FilterModel",
+			"template",
+			"setSlider",
+			"getAllAttributeValues",
+			"template",
+			"layerName",
+			".attribute-name",
+			"render",
+			"_.template",
+			"FilterModel",
+			"FilterSliderView",
+			"addFilter",
+			"class",
+			"attribute-name",
+			"addFilter",
 			"FilterModel",
 			"getFeatures",
-			"features",
-			"techniques",
-			"symbol",
-			"console",
-			"append",
-			"\"name\", \"density\"",
-			"console",
-			"mapbox",
-			"Mapbox",
-			"10065",
-			"this.map",
-			"map",
-			"#007fff",
-			"SliderView",
-			"titleOnly",
-			"LogicView",
-			"SliderView",
-			"LogicView",
-			"click",
-			".close",
-			"<img src=\"js/lib/leaflet/images/filter.png\">",
-			"Filter",
-			"width",
-			"SliderView",
-			"FilterView",
-			"this.model",
-			"FilterView",
-			"addOverlayControl",
-			"addOverlay",
-			"fetch",
-			"sync",
-			".done",
-			"filter",
 			"FilterModel",
-			"filter",
-			".png",
-			"setInteractionOptions",
-			"leafletBaseLayers",
-			"className",
-			"overlay",
-			"this.data",
-			"data",
-			"view",
-			"technique",
 			"dataLayer",
+			"attributes",
+			"setFilter",
+			"retrieveAttributes",
+			"displayAttributes",
+			"search",
+			"filter",
+			"attributes",
+			"filter",
+			"retrieveAttributes",
 			"console",
-			".on",
-			"this.map",
-			"tileLayers",
-			"\"#",
-			"base layer url",
-			"or",
-			"polygon",
-			"point",
-			"classification",
-			"isomorph",
-			"CSS styles",
+			"hideLabels",
+			"addReexpress",
 			"console",
-			"expressedAttribute",
-			"layerOptions",
-			"url",
-			"sync",
-			"L.baseLayer",
-			"url",
-			"tileLayer",
-			"overlay",
-			"baseTiles",
-			"</h3></a>",
-			"</h4></a>",
-			"classedAttribute",
-			"Leaflet",
-			"eval",
-			"example",
+			"addOverlayControl",
+			"layerClassName",
+			"dataLayerName",
+			".reexpressed",
+			"this.reexpressed",
+			"reexpress",
+			"trigger",
+			"addOverlay",
+			"reexpress",
+			"button.click",
+			"hideLabels",
 			"console",
-			"colorClasses",
-			"colorScale",
-			"colorClasses",
-			"rangeArray",
-			"colorScale",
+			"hideLabels",
+			"button",
+			"name",
+			"---",
+			"hideLabels",
+			"stopEvent",
+			"hideLabels",
 			"console",
-			"this.options",
-			");\n",
-			"photos",
-			"250",
-			"addQueryDiv",
-			"Livestock",
-			"messages.eee",
-			"Associated With",
-			"checkbox",
-			"panelP",
-			"legendName",
-			"Water point",
-			"Resting-point",
-			".replace",
-			"legendname",
-			"iconName",
-			"addToLegend",
-			"query",
-			"processFeatures",
-			"resultsTitle",
-			"query"
+			"hideLabels",
+			"addReexpress",
+			"hideLabels()",
+			"activeButtons",
+			"'.leaflet-control-layers-overlays'",
+			"'.leaflet-control-layers-overlays label'",
+			"leafletDataLayers",
+			"addReexpress",
+			"layersAdded",
+			"addTo",
+			"addLayer",
+			"this.hideLabels();",
+			"console",
+			"offLayers",
+			"e.preventDefault",
+			"removeLayer",
+			"addTo(",
+			"reexpress",
+			"addReexpress",
+			"i",
+			"addReexpress",
+			"inactive",
+			"class",
+			"leafletLayer",
+			"addReexpress",
+			"leafletDataLayers",
+			"addReexpress",
+			"addOverlay",
+			"pointToLayer",
+			"offLayers",
+			"console",
+			"techniques",
+			"dataLayerModel",
+			"console",
+			"dataLayerModel",
+			"offLayers",
+			"setDataLayer",
+			"done",
+			"'done'",
+			"technique",
+			"window.offL",
+			"addTo",
+			"dataLayer.techniques[0]",
+			"renderOnLoad",
+			"techniques",
+			"techniqueType",
+			"offLayers",
+			"reexpress"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -692,6 +761,20 @@
 		"regex": false,
 		"replace_history":
 		[
+			"controlName",
+			"layerDiv",
+			".layer-name",
+			"leafletLayer",
+			"displayAttributes",
+			"dataLayers",
+			"displayAttributes",
+			"dataLayerName",
+			"buttonCounts",
+			"this",
+			"dataLayerModels[i+a]",
+			"dataLayer.techniques[0]",
+			"technique",
+			"spanParent",
 			"FilterLogicView",
 			"FilterSliderView",
 			"\"2008\", \"2009\"",
@@ -809,7 +892,7 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -843,15 +926,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 3913,
+						"buffer_size": 4160,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2072,
-								2072
+								2267,
+								2267
 							]
 						],
 						"settings":
@@ -861,13 +944,41 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 611.0,
+						"translation.y": 724.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
+					"file": "js/modules/m-section.js",
+					"settings":
+					{
+						"buffer_size": 32272,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								16194,
+								16194
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 10347.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": ".gitignore",
 					"settings":
 					{
@@ -893,19 +1004,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 4,
 					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 7331,
+						"buffer_size": 7461,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3466,
-								3466
+								3733,
+								3733
 							]
 						],
 						"settings":
@@ -915,13 +1026,13 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3643.0,
+						"translation.y": 4087.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 5,
 					"file": "js/modules/app.js",
 					"settings":
 					{
@@ -948,47 +1059,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "js/modules/m-section.js",
-					"settings":
-					{
-						"buffer_size": 22807,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								10021,
-								10021
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 6603.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
 					"buffer": 6,
 					"file": "doc/API.md",
 					"settings":
 					{
-						"buffer_size": 27137,
+						"buffer_size": 27782,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								20583,
-								20583
+								12102,
+								12102
 							]
 						],
 						"settings":
@@ -997,7 +1080,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 9811.0,
+						"translation.y": 5755.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1033,15 +1116,15 @@
 					"file": "config/map.json",
 					"settings":
 					{
-						"buffer_size": 1911,
+						"buffer_size": 2048,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								977,
-								977
+								669,
+								669
 							]
 						],
 						"settings":
@@ -1052,39 +1135,13 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 691.0,
+						"translation.y": 667.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 9,
-					"settings":
-					{
-						"buffer_size": 314,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								314
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 10,
 					"file": "doc/versions.md",
 					"settings":
 					{
@@ -1110,7 +1167,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 10,
 					"file": "data/us-states.geojson",
 					"settings":
 					{
@@ -1131,6 +1188,34 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
+					"settings":
+					{
+						"buffer_size": 2694,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1050,
+								1056
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 667.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

@@ -44,6 +44,7 @@ var NaturalBreaks = Backbone.Model.extend({
 			.range(classes);
 		//cluster data using ckmeans clustering algorithm to create natural breaks
 		var clusters = ss.ckmeans(values, classes.length);
+		console.log(values);
 		//set domain array to cluster minimums
 		var domainArray = clusters.map(function(d){
 			return d3.min(d);
@@ -103,6 +104,9 @@ var Choropleth = Backbone.Model.extend({
 		var values = _.map(this.get('features'), function(feature){
 			return parseFloat(feature.properties[expressedAttribute]);
 		});
+		//strip any NaNs and sort
+		values = _.without(values, NaN);
+		values.sort(function(a,b){ return a-b });
 		//get the d3 scale for the chosen classification scheme
 		var classificationModel = classification.where({type: this.get('classificationType')})[0];
 		var scale = classificationModel.scale(values, this.get('classes'));
@@ -110,6 +114,7 @@ var Choropleth = Backbone.Model.extend({
 		_.each(this.get('features'), function(feature){
 			feature.properties.layerOptions = this.setLayerOptions(feature, scale, expressedAttribute);
 		}, this);
+		this.set('scale', scale);
 		this.trigger('done');
 	},
 	initialize: function(){
@@ -515,6 +520,7 @@ var LeafletMap = Backbone.View.extend({
 				var leafletDataLayer = L.geoJson(dataLayerModel.get('features'), overlayOptions);
 				leafletDataLayer.layerName = layerName;
 				leafletDataLayer.techniqueType = technique.type;
+				leafletDataLayer.scale = dataLayerModel.get('scale');
 				//render immediately by default
 				if (a==0 && (typeof dataLayer.renderOnLoad === 'undefined' || dataLayer.renderOnLoad == 'true')){
 					leafletDataLayer.addTo(this.map);
@@ -582,6 +588,60 @@ var LeafletMap = Backbone.View.extend({
 		});
 		//show only one label for each dataLayer, even if renderOnLoad is false
 		$('.visible').parents('label').show();
+	},
+	addCustomControl: function(controlName, position){
+		var model = this.model;
+		var map = this.map;
+		//extend Leaflet controls to create control
+		var Control = L.Control.extend({
+			options: {
+				position: position
+			},
+			onAdd: function(map){
+				//create container for control
+				var container = L.DomUtil.create('div', controlName+'-control-container control-container');
+				if (controlName == 'legend'){
+					container.innerHTML = '<h3>Legend</h3>';
+				} else {
+					container.innerHTML = '<img src="img/icons/'+controlName+'.png">';
+				};
+				//kill map interactions under control
+				L.DomEvent.addListener(container, 'mousedown click dblclick', function(e) {
+					L.DomEvent.stopPropagation(e);
+				});
+				return container;
+			}
+		});
+		//add control to map and return
+		var control = new Control();
+		map.addControl(control);
+	},
+	addLegend: function(){
+		//add legend control
+		this.legendControl = this.addCustomControl('legend', 'bottomright');
+		//add legend entry for each layer
+		_.each(this.model.get('leafletDataLayers'), function(layer){
+			if (this.map.hasLayer(layer)){
+				//get output range and input domain values
+				var range = layer.scale.range(),
+					domain = layer.scale.domain();
+				//only build classes for classed classification
+				if (domain.length > 2){
+					//add a symbol for each class
+					_.each(range, function(rangeval){
+						console.log(layer.layerName, rangeval, domain, layer.scale.invertExtent(rangeval));
+					}, this);
+				} else {
+					//add a symbol for lowest and highest values
+					_.each(range, function(rangeval){
+						console.log(layer.layerName, rangeval, domain); //GET MIN AND MAX DOMAIN VALS
+					}, this)
+				}
+			};
+			
+
+		}, this);
+		
 	},
 	addOverlayControl: function(){
 		//add layer control if it wasn't created for underlay
@@ -663,26 +723,9 @@ var LeafletMap = Backbone.View.extend({
 		});
 	},
 	addFilter: function(){
-		var model = this.model;
 		var map = this.map;
-		//extend Leaflet controls to create filter control
-		var FilterControl = L.Control.extend({
-			options: {
-				position: 'bottomleft'
-			},
-			onAdd: function(map){
-				//create container for filter control
-				var container = L.DomUtil.create('div', 'filter-control-container control-container');
-				container.innerHTML = '<img src="js/lib/leaflet/images/filter.png">';
-				//kill map interactions under filter control
-				L.DomEvent.addListener(container, 'mousedown click dblclick', function(e) {
-					L.DomEvent.stopPropagation(e);
-				});
-				return container;
-			}
-		});
-		//add filter control to map
-		map.addControl(new FilterControl());
+		//add control to map
+		this.addCustomControl('filter', 'bottomleft');
 
 		//applyFilter function references map, so must be created here
 		var applyFilter = function(attribute, values){
@@ -712,10 +755,10 @@ var LeafletMap = Backbone.View.extend({
 			});
 		};
 		//get interaction variables
-		var filterLayers = model.get('interactions.filter.dataLayers'),
-			controlType = model.get('interactions.filter.tool');
+		var filterLayers = this.model.get('interactions.filter.dataLayers'),
+			controlType = this.model.get('interactions.filter.tool');
 		//set a tool for each included data layer
-		_.each(model.get('dataLayers'), function(dataLayer){
+		_.each(this.model.get('dataLayers'), function(dataLayer){
 			//test for inclusion of data layer in filter interaction
 			if (_.indexOf(filterLayers, dataLayer.name) > -1){
 				//get filter properties
@@ -807,6 +850,12 @@ var LeafletMap = Backbone.View.extend({
 		//switch labels in layers control
 		this.hideLabels();
 	},
+	addResymbolize: function(){
+		//change classification scheme, class breaks, and output values via legend
+
+
+
+	},
 	setMapInteractions: function(){
 		//remove default zoom control and interactions if no zoom interaction
 		if (!this.model.get('interactions.zoom')){
@@ -819,6 +868,10 @@ var LeafletMap = Backbone.View.extend({
 		//remove default panning interaction if no pan interaction
 		if (!this.model.get('interactions.pan')){
 			this.model.set('mapOptions.dragging', false);
+		};
+		//set legend control
+		if (typeof this.model.get('mapOptions.legend') == 'undefined' || this.model.get('mapOptions.legend')){
+			this.on('dataLayersDone', this.addLegend, this);
 		};
 		//set layers control for overlay and reexpress interactions
 		if ((this.model.get('interactions.overlay') && this.model.get('interactions.overlay.dataLayers') && this.model.get('interactions.overlay.dataLayers').length > 0) || (this.model.get('interactions.reexpress') && _.some(this.model.get('dataLayers'), function(layer){
@@ -837,6 +890,10 @@ var LeafletMap = Backbone.View.extend({
 		//set filter control for filter interaction
 		if (this.model.get('interactions.filter') && this.model.get('interactions.filter.dataLayers') && this.model.get('interactions.filter.dataLayers').length > 0){
 			this.on('dataLayersDone', this.addFilter, this);
+		};
+		//set resymbolize control for resymbolize interaction
+		if (this.model.get('interactions.resymbolize')){
+			this.on('dataLayersDone', this.addResymbolize, this);
 		};
 	},
 	logInteractions: function(){
