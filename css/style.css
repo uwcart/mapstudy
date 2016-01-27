@@ -224,7 +224,13 @@ svg {
 }
 
 .icon {
-    margin: 0 3px;
+    cursor: pointer;
+}
+
+.close {
+    position: absolute;
+    top: 0px;
+    color: #333 !important;
 }
 
 .active {

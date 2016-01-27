@@ -309,6 +309,34 @@ var Interaction = Backbone.Model.extend({
 	}
 });
 
+//view for all interaction controls
+var InteractionControlView = Backbone.View.extend({
+	defaults: {
+		controlName: ''
+	},
+	events: {
+		'click': 'toggle'
+	},
+	toggle: function(){
+		var className = this.$el.attr('class');
+		if (className.indexOf(' active') > -1){
+			//close associated interaction widget
+
+
+
+			//remove active class
+			this.$el.attr('class', className.substring(0, className.indexOf(' active')));
+		} else {
+			//open associated interaction widget
+
+
+
+			//add active class
+			this.$el.attr('class', className + ' active');
+		}
+	}
+});
+
 //model for filter interaction
 var FilterModel = Backbone.Model.extend({
 	defaults: {
@@ -411,17 +439,10 @@ var FilterSliderView = Backbone.View.extend({
 		_.each(numericAttributes, function(attribute){
 			select.append(optionTemplate({attribute: attribute}))
 		}, this);
-
-		this.$el.append('<a class="close">&times;</a>');
-		this.$el.children('.close').css({
-			'position': 'absolute',
-			'left': this.$el.width() - 20 + "px",
-			'top': "0px",
-			'color': '#333'
-		});
-		this.$el.children('.filter-row, .close').each(function(){
-			$(this).hide();
-		});
+		//add close button and hide tools
+		var closeButton = _.template( $('#close-button-template').html() );
+		this.$el.append(closeButton({x: this.$el.width() - 20 + "px"}));
+		this.$el.children('.filter-row').hide();
 		this.$el.css('cursor', 'pointer');
 	},
 	open: function(e){
@@ -642,6 +663,7 @@ var LeafletMap = Backbone.View.extend({
 				leafletDataLayer.techniqueType = technique.type;
 				//render immediately by default
 				if (a==0 && (typeof dataLayer.renderOnLoad === 'undefined' || dataLayer.renderOnLoad == 'true')){
+					//add layer to map
 					leafletDataLayer.addTo(this.map);
 					//reset cursor if needed
 					if (!model.get('interactions.retrieve') && model.get('interactions.pan')){
@@ -650,11 +672,13 @@ var LeafletMap = Backbone.View.extend({
 				} else {
 					//stick it in offLayers array
 					offLayers.push(leafletDataLayer);
-				}
+				};
 				//add to layers
 				model.attributes.leafletDataLayers.push(leafletDataLayer);
-				//trigger done event
-				if (i == model.get('dataLayers').length-1){ this.trigger('dataLayersDone') };
+				//if the last layer, trigger the done event
+				if (i == model.get('dataLayers').length-1 && a == dataLayer.techniques.length-1){ 
+					this.trigger('dataLayersDone');
+				};
 			}, this);
 			//go get the data!
 			dataLayerModel.fetch({url: dataLayer.source});
@@ -719,7 +743,7 @@ var LeafletMap = Backbone.View.extend({
 			onAdd: function(map){
 				//create container for control
 				var container = L.DomUtil.create('div', controlName+'-control-container control-container');
-				container.innerHTML = '<img src="img/icons/'+controlName+'.png">';
+				container.innerHTML = '<img class="icon" src="img/icons/'+controlName+'.png" alt="'+controlName+'" title="'+controlName+'">';
 				//kill map interactions under control
 				L.DomEvent.addListener(container, 'mousedown click dblclick', function(e) {
 					L.DomEvent.stopPropagation(e);
@@ -729,7 +753,8 @@ var LeafletMap = Backbone.View.extend({
 		});
 		return Control;
 	},
-	editLegend: function(e){
+	layerChange: function(e){
+		//edit legend
 		var legendEntry = $('#legend-'+e.layer._leaflet_id);
 		legendEntry.length > 0 && e.type == 'layeradd' ? legendEntry.show() : legendEntry.hide();
 	},
@@ -739,20 +764,22 @@ var LeafletMap = Backbone.View.extend({
 		//add legend control
 		var CustomControl = this.CustomControl('legend', 'bottomright');
 		this.legendControl = new CustomControl();
+		//need to actually create SVGs in onAdd() function to work correctly
 		this.legendControl.onAdd = function(map){
 			//create container for control
 			var container = L.DomUtil.create('div', 'legend-control-container control-container');
-			container.innerHTML = '<h3>Legend</h3>';
+			var innerHTML = '<img class="icon" src="img/icons/legend.png" alt="legend" title="legend"><div id="legend-wrapper"><h3>Legend</h3>';
 			//add legend entry for each visible data layer
-			_.each(model.get('leafletDataLayers'), function(layer){
+			_.each(model.get('leafletDataLayers'), function(layer, i){
 				var id = 'legend-'+layer._leaflet_id;
 				//only show immediately if layer is visible
 				var display = map.hasLayer(layer) ? 'block' : 'none';
-				var innerHTML = '<div id="'+id+'" style="display: '+display+';"><p class="legend-layer-title">'+layer.layerName+' '+layer.techniqueType+'<br/>Attribute: '+layer.model.get('expressedAttribute')+'</p>';
+				innerHTML += '<div id="'+id+'" style="display: '+display+';"><p class="legend-layer-title">'+layer.layerName+' '+layer.techniqueType+'<br/>Attribute: '+layer.model.get('expressedAttribute')+'</p>';
 				var legendView = new LegendLayerView({model: layer.model});
 				innerHTML += legendView.$el[0].outerHTML + '</div>';
-				container.innerHTML += innerHTML;
 			}, this);
+			innerHTML += '</div>';
+			container.innerHTML = innerHTML;
 
 			//kill map interactions under control
 			L.DomEvent.addListener(container, 'mousedown click dblclick', function(e) {
@@ -762,8 +789,20 @@ var LeafletMap = Backbone.View.extend({
 		};
 		//add legend to the map
 		this.map.addControl(this.legendControl);
-		var editLegend = this.editLegend;
-		this.map.on('layeradd layerremove', editLegend);
+		//add close button
+		var closeButton = _.template( $('#close-button-template').html() );
+		$('.legend-control-container').append(closeButton({x: $('.legend-control-container').width() - 20 + "px"}));
+		//add open and close listeners
+		$('.legend-control-container .icon').click(function(){
+			$('.legend-control-container .icon').hide();
+			$('#legend-wrapper, .legend-control-container .close').show();
+		});
+		$('.legend-control-container .close').click(function(){
+			$('#legend-wrapper, .legend-control-container .close').hide();
+			$('.legend-control-container .icon').show();
+		});
+		//hide everything but icon to start
+		$('#legend-wrapper').hide();
 	},
 	addOverlayControl: function(){
 		//add layer control if it wasn't created for underlay
@@ -1052,6 +1091,10 @@ var LeafletMap = Backbone.View.extend({
 
 		//instantiate map
 		this.map = L.map('map', this.model.get('mapOptions'));
+
+		//set layer change listener
+		var layerChange = this.layerChange;
+		this.map.on('layeradd layerremove', layerChange);
 
 		//add initial tile layers
 		var baseLayers = this.model.get('baseLayers');
