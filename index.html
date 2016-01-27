@@ -63,6 +63,16 @@
             <option value="<%= attribute %>"><%= attribute %></option>
         </script>
 
+        <script type="text/template" id="choropleth-legend-template">
+            <rect width="20" height="12" x="10" y="<%= y + 3 %>" fill="<%= range %>"/>
+            <text x="35" y="<%= y + 13 %>"><%= label %></text>
+        </script>
+
+        <script type="text/template" id="proportional-symbol-legend-template">
+            <circle cx="<%= cx %>" cy="<%= svgHeight - range - 3 %>" r="<%= range %>"/>
+            <text x="<%= cx * 2 %>" y="<%= y + 13 %>"><%= label %></text>
+        </script>
+
         <!-- Supported libraries -->
         <script type="text/javascript" src="js/lib/jquery.js"></script>
         <script type="text/javascript" src="js/lib/jquery-ui/jquery-ui.js"></script>

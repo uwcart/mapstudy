@@ -21,7 +21,7 @@
 			"logging": true
 		},
 		"search": {
-			"attributes": ["name", "density"],
+			"attributes": ["name", "Density (ppl/sq. mile)"],
 			"logging": true
 		},
 		"filter": {
@@ -56,10 +56,10 @@
 		"name": "US States",
 		"source": "data/us-states.geojson",
 		"postgisTable": "",
-		"expressedAttribute": "density",
+		"expressedAttribute": "Density (ppl/sq. mile)",
 		"displayAttributes": [
 			"name", 
-			"density"
+			"Density (ppl/sq. mile)"
 		],
 		"layerOptions": {
 			"fillOpacity": 0.8,
@@ -70,7 +70,7 @@
 		},
 		"techniques": [{
 			"type": "choropleth",
-			"classification": "natural breaks",
+			"classification": "quantile",
 			"classes": [
 				"#FEEDDE",
 				"#FDBE85",

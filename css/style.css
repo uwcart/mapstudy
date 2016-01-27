@@ -100,6 +100,11 @@ html, body {
     overflow: hidden;
 }
 
+svg {
+    display: block;
+    margin: auto;
+}
+
 #cover {
     position: absolute;
     height: 100%;
@@ -227,7 +232,18 @@ html, body {
 }
 
 .legend-control-container h3 {
-    margin-top: 0;
+    margin: 5px 0;
+}
+
+.legend-layer-title {
+    font-size: 1em;
+    line-height: 1.2em;
+    margin: 5px 0;
+}
+
+.legend-control-container rect, .legend-control-container circle {
+    stroke: black;
+    stroke-width: 1;
 }
 
 /* ==========================================================================

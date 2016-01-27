@@ -2,6 +2,20 @@
 
 (function(){
 
+/************************ helper functions ***************************/
+
+//produce numeric values array from GeoJSON features
+function getAllAttributeValues(features, attribute){
+	//get attribute values for all features with given attribute
+	var values = _.map(features, function(feature){
+		return parseFloat(feature.properties[attribute]);
+	});
+	//strip any NaNs and sort
+	values = _.without(values, NaN);
+	values.sort(function(a,b){ return a-b });
+	return values;
+};
+
 /************** map.dataLayer.techique.classification ****************/
 
 var Quantile = Backbone.Model.extend({
@@ -44,7 +58,6 @@ var NaturalBreaks = Backbone.Model.extend({
 			.range(classes);
 		//cluster data using ckmeans clustering algorithm to create natural breaks
 		var clusters = ss.ckmeans(values, classes.length);
-		console.log(values);
 		//set domain array to cluster minimums
 		var domainArray = clusters.map(function(d){
 			return d3.min(d);
@@ -101,12 +114,7 @@ var Choropleth = Backbone.Model.extend({
 	setClasses: function(){
 		var expressedAttribute = this.get('expressedAttribute');
 		//get all of the values for the attribute by which the data will be classed
-		var values = _.map(this.get('features'), function(feature){
-			return parseFloat(feature.properties[expressedAttribute]);
-		});
-		//strip any NaNs and sort
-		values = _.without(values, NaN);
-		values.sort(function(a,b){ return a-b });
+		var values = getAllAttributeValues(this.get('features'), expressedAttribute);
 		//get the d3 scale for the chosen classification scheme
 		var classificationModel = classification.where({type: this.get('classificationType')})[0];
 		var scale = classificationModel.scale(values, this.get('classes'));
@@ -129,7 +137,12 @@ var ProportionalSymbol = Choropleth.extend({
 		symbol: 'circle'
 	},
 	setLayerOptions: function(feature, scale, expressedAttribute){
-		//set a new radius property for each feature with the class color value
+		//ensure scale range values are numbers
+		var range = _.map(scale.range(), function(val){
+			return parseFloat(val);
+		});
+		scale.range(range);
+		//set a new radius property for each feature with the class radius
 		return {
 			radius: scale(parseFloat(feature.properties[expressedAttribute]))
 		};
@@ -141,6 +154,129 @@ var techniquesObj = {
 	'choropleth': Choropleth,
 	'proportional symbol': ProportionalSymbol
 };
+
+//view for legend creation
+var LegendLayerView = Backbone.View.extend({
+	tagName: 'svg',
+	id: function(){
+		return this.model.get('dataLayer').name.replace(/\s|\:/g, '-') + '-' + this.model.get('techniqueType').replace(/\s|\:/g, '-') + '-legend';
+	},
+	append: function(range, domain, i){
+		var techniqueType = this.model.get('techniqueType');
+		template = _.template( $('#'+techniqueType.replace(/\s|\:/g, '-')+'-legend-template').html() );
+		//set y attribute as function of index
+		var y = i * 12;
+		var attributes = {
+			range: range,
+			y: y,
+			svgHeight: this.model.get('svgHeight')
+		};
+		//set label content
+		if (typeof domain == 'object'){
+			attributes.label = domain[0] + ' - ' + domain[1];
+		} else {
+			attributes.label = String(domain)
+		};
+		//create temporary span element to test label width
+		var labelTestSpan = $('<span class="leaflet-container">'+attributes.label+'</span>').appendTo('body');
+		var labelWidth = labelTestSpan.width() + 5;
+		labelTestSpan.remove();
+		//set circle x for prop symbol legend and svgWidth for both
+		if (this.model.get('maxRadius')){
+			attributes.cx = this.model.get('maxRadius') + 10;
+			attributes.svgWidth = labelWidth + attributes.cx * 2;
+		} else {
+			attributes.svgWidth = labelWidth + 40;
+		};
+		//reset svg width based on current width
+		if (!this.model.get('svgWidth') || attributes.svgWidth > this.model.get('svgWidth')){
+			this.model.set('svgWidth', attributes.svgWidth);
+		};
+		//append a symbol for each class
+		var newline = template(attributes);
+		this.$el.append(newline);
+	},
+	render: function(){
+		//append svg to legend container
+		$('.legend-control-container').append(this.$el);
+	},
+	initialize: function(){
+		//get output range and input domain values
+		var scale = this.model.get('scale'),
+			range = scale.range().reverse(),
+			domain = scale.domain().reverse();
+		//get expressed attribute
+		var expressedAttribute = this.model.get('expressedAttribute');
+		//calculate svg height
+		if (!isNaN(parseFloat(range[0]))){ //if range is a number, treat as prop symbol
+			//set max radius
+			this.model.set('maxRadius', parseFloat(range[0]));
+			//svg height should be whichever is larger, label heights or largest circle diameter
+			var heightArray = [
+				13 * range.length + 6, 
+				parseFloat(range[0]) * 2 + 6
+			];
+			heightArray.sort(function(a,b){ return b-a });
+			this.model.set('svgHeight', heightArray[0]);
+		} else {
+			this.model.set('svgHeight', 13 * range.length + 6);
+		};
+		//only build classes for classed classification
+		if (domain.length > 2 || range.length > 2){
+			//add a symbol for each class
+			_.each(range, function(rangeval, i){
+				var domainvals = scale.invertExtent(rangeval);
+				//fill in min and max values for natural breaks threshold scale
+				if (typeof domainvals[0] == 'undefined'){
+					domainvals[0] = d3.min(getAllAttributeValues(this.model.get('features'), expressedAttribute));
+				} else if (typeof domainvals[1] == 'undefined'){
+					domainvals[1] = d3.max(getAllAttributeValues(this.model.get('features'), expressedAttribute));
+				};
+				//add visual element and label for each class
+				this.append(rangeval, domainvals, i);
+			}, this);
+		} else {
+			//add a symbol for lowest and highest values
+			_.each(range, function(rangeval, i){
+				this.append(rangeval, domain[i], i);
+			}, this)
+		};
+		//set svg dimensions
+		this.$el.attr({
+			width: this.model.get('svgWidth'),
+			height: this.model.get('svgHeight'),
+			xmlns: 'http://www.w3.org/2000/svg',
+			version: '1.1'
+		});
+		//style according to layer options
+		var css = {},
+			layerOptions = this.model.get('dataLayer').layerOptions;
+		for (var option in layerOptions){
+			//assign options that may apply
+			css[option] = layerOptions[option];
+			//deal with special Leaflet options
+			switch (option){
+				case 'fillColor': css.fill = layerOptions[option]; break;
+				case 'fillOpacity': css['fill-opacity'] = layerOptions[option]; break;
+				case 'color': css.stroke = layerOptions[option]; break;
+				case 'weight': css['stroke-width'] = layerOptions[option]; break;
+				case 'opacity': css['stroke-opacity'] = layerOptions[option]; break;
+				case 'dashArray': css['stroke-dasharray'] = layerOptions[option]; break;
+				case 'linecap': css['stroke-linecap'] = layerOptions[option]; break;
+				case 'linejoin': css['stroke-linejoin'] = layerOptions[option]; break;
+			};
+		};
+		for (var style in css){
+			this.$el.children('rect').each(function(){
+				//don't override rectangle color
+				if (style != 'fill'){ $(this).css(style, css[style]); };
+			});
+			this.$el.children('circle').each(function(){
+				$(this).css(style, css[style]);
+			});
+		};
+	}
+});
 
 /************** map.interactions ****************/
 
@@ -197,26 +333,9 @@ var FilterSliderView = Backbone.View.extend({
 		var select = $(e.target);
 		this.setSlider(select.val(), select.attr('name'));
 	},
-	getAllAttributeValues: function(attribute){
-		//get attribute values for all features with given attribute
-		var allAttributeValues = [];
-		_.each(this.model.get('features'), function(feature){
-			if (feature.properties[attribute]){
-				allAttributeValues.push(parseFloat(feature.properties[attribute]));
-			};
-		}, this);
-
-		//ensure array only includes numbers
-		allAttributeValues = _.filter(allAttributeValues, function(value){
-			return !isNaN(value);
-		});
-		//sort array and return
-		allAttributeValues.sort(function(a,b){ return a-b });
-		return allAttributeValues;
-	},
 	setSlider: function(attribute, layerName){
 		//get attribute values for all features with given attribute
-		var allAttributeValues = this.getAllAttributeValues(attribute);
+		var allAttributeValues = getAllAttributeValues(this.model.get('features'), attribute);
 		//set values for slider
 		var min = _.min(allAttributeValues),
 			max = _.max(allAttributeValues),
@@ -279,7 +398,7 @@ var FilterSliderView = Backbone.View.extend({
 	render: function(){
 		//get all numeric attributes for data layer
 		var numericAttributes = _.filter(this.model.get('attributes'), function(attribute){
-			var allAttributeValues = this.getAllAttributeValues(attribute);
+			var allAttributeValues = getAllAttributeValues(this.model.get('features'), attribute);
 			if (allAttributeValues.length > 0){
 				return attribute;
 			};
@@ -337,7 +456,7 @@ var FilterLogicView = FilterSliderView.extend({
 		var layerDiv = $(e.target).parent();
 		var attribute = layerDiv.children('select').val();
 		//get attribute values min and max
-		var allAttributeValues = this.getAllAttributeValues(attribute);
+		var allAttributeValues = getAllAttributeValues(this.model.get('features'), attribute);
 		var minmax = [_.min(allAttributeValues), _.max(allAttributeValues)];
 		//array to hold filter values
 		var values = [
@@ -353,7 +472,7 @@ var FilterLogicView = FilterSliderView.extend({
 	},
 	setValues: function(attribute, layerName){
 		//get attribute values for all features with given attribute
-		var allAttributeValues = this.getAllAttributeValues(attribute);
+		var allAttributeValues = getAllAttributeValues(this.model.get('features'), attribute);
 		//set values for inputs
 		var min = _.min(allAttributeValues),
 			max = _.max(allAttributeValues);
@@ -518,9 +637,9 @@ var LeafletMap = Backbone.View.extend({
 					overlayOptions.pointToLayer = pointToLayer;
 				};
 				var leafletDataLayer = L.geoJson(dataLayerModel.get('features'), overlayOptions);
+				leafletDataLayer.model = dataLayerModel;
 				leafletDataLayer.layerName = layerName;
 				leafletDataLayer.techniqueType = technique.type;
-				leafletDataLayer.scale = dataLayerModel.get('scale');
 				//render immediately by default
 				if (a==0 && (typeof dataLayer.renderOnLoad === 'undefined' || dataLayer.renderOnLoad == 'true')){
 					leafletDataLayer.addTo(this.map);
@@ -589,7 +708,7 @@ var LeafletMap = Backbone.View.extend({
 		//show only one label for each dataLayer, even if renderOnLoad is false
 		$('.visible').parents('label').show();
 	},
-	addCustomControl: function(controlName, position){
+	CustomControl: function(controlName, position){
 		var model = this.model;
 		var map = this.map;
 		//extend Leaflet controls to create control
@@ -600,11 +719,7 @@ var LeafletMap = Backbone.View.extend({
 			onAdd: function(map){
 				//create container for control
 				var container = L.DomUtil.create('div', controlName+'-control-container control-container');
-				if (controlName == 'legend'){
-					container.innerHTML = '<h3>Legend</h3>';
-				} else {
-					container.innerHTML = '<img src="img/icons/'+controlName+'.png">';
-				};
+				container.innerHTML = '<img src="img/icons/'+controlName+'.png">';
 				//kill map interactions under control
 				L.DomEvent.addListener(container, 'mousedown click dblclick', function(e) {
 					L.DomEvent.stopPropagation(e);
@@ -612,36 +727,43 @@ var LeafletMap = Backbone.View.extend({
 				return container;
 			}
 		});
-		//add control to map and return
-		var control = new Control();
-		map.addControl(control);
+		return Control;
+	},
+	editLegend: function(e){
+		var legendEntry = $('#legend-'+e.layer._leaflet_id);
+		legendEntry.length > 0 && e.type == 'layeradd' ? legendEntry.show() : legendEntry.hide();
 	},
 	addLegend: function(){
+		var model = this.model,
+			map = this.map;
 		//add legend control
-		this.legendControl = this.addCustomControl('legend', 'bottomright');
-		//add legend entry for each layer
-		_.each(this.model.get('leafletDataLayers'), function(layer){
-			if (this.map.hasLayer(layer)){
-				//get output range and input domain values
-				var range = layer.scale.range(),
-					domain = layer.scale.domain();
-				//only build classes for classed classification
-				if (domain.length > 2){
-					//add a symbol for each class
-					_.each(range, function(rangeval){
-						console.log(layer.layerName, rangeval, domain, layer.scale.invertExtent(rangeval));
-					}, this);
-				} else {
-					//add a symbol for lowest and highest values
-					_.each(range, function(rangeval){
-						console.log(layer.layerName, rangeval, domain); //GET MIN AND MAX DOMAIN VALS
-					}, this)
-				}
-			};
-			
+		var CustomControl = this.CustomControl('legend', 'bottomright');
+		this.legendControl = new CustomControl();
+		this.legendControl.onAdd = function(map){
+			//create container for control
+			var container = L.DomUtil.create('div', 'legend-control-container control-container');
+			container.innerHTML = '<h3>Legend</h3>';
+			//add legend entry for each visible data layer
+			_.each(model.get('leafletDataLayers'), function(layer){
+				var id = 'legend-'+layer._leaflet_id;
+				//only show immediately if layer is visible
+				var display = map.hasLayer(layer) ? 'block' : 'none';
+				var innerHTML = '<div id="'+id+'" style="display: '+display+';"><p class="legend-layer-title">'+layer.layerName+' '+layer.techniqueType+'<br/>Attribute: '+layer.model.get('expressedAttribute')+'</p>';
+				var legendView = new LegendLayerView({model: layer.model});
+				innerHTML += legendView.$el[0].outerHTML + '</div>';
+				container.innerHTML += innerHTML;
+			}, this);
 
-		}, this);
-		
+			//kill map interactions under control
+			L.DomEvent.addListener(container, 'mousedown click dblclick', function(e) {
+				L.DomEvent.stopPropagation(e);
+			});
+			return container;
+		};
+		//add legend to the map
+		this.map.addControl(this.legendControl);
+		var editLegend = this.editLegend;
+		this.map.on('layeradd layerremove', editLegend);
 	},
 	addOverlayControl: function(){
 		//add layer control if it wasn't created for underlay
@@ -725,7 +847,9 @@ var LeafletMap = Backbone.View.extend({
 	addFilter: function(){
 		var map = this.map;
 		//add control to map
-		this.addCustomControl('filter', 'bottomleft');
+		var CustomControl = this.CustomControl('filter', 'bottomleft');
+		this.filterControl = new CustomControl();
+		map.addControl(this.filterControl);
 
 		//applyFilter function references map, so must be created here
 		var applyFilter = function(attribute, values){
