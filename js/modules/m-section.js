@@ -309,31 +309,42 @@ var Interaction = Backbone.Model.extend({
 	}
 });
 
+var InteractionControlModel = Backbone.Model.extend({
+	defaults: {
+		interaction: ''
+	}
+});
+
 //view for all interaction controls
 var InteractionControlView = Backbone.View.extend({
-	defaults: {
-		controlName: ''
-	},
-	events: {
-		'click': 'toggle'
-	},
-	toggle: function(){
-		var className = this.$el.attr('class');
+	el: '.interaction-control-container',
+	template: _.template( $('#interaction-control-template').html() ),
+	toggle: function(e){
+		console.log($(e.target).attr('class'));
+		var target = $(e.target).attr('class') ? $(e.target) : $(e.target).parent();
+		var className = target.attr('class'),
+			interaction = className.split('-')[0];
+			console.log(className, interaction);
 		if (className.indexOf(' active') > -1){
 			//close associated interaction widget
-
-
-
+			$('.'+interaction+'-control-container').hide();
 			//remove active class
-			this.$el.attr('class', className.substring(0, className.indexOf(' active')));
+			target.attr('class', className.substring(0, className.indexOf(' active')));
 		} else {
 			//open associated interaction widget
-
-
-
+			$('.'+interaction+'-control-container').show();
 			//add active class
-			this.$el.attr('class', className + ' active');
+			target.attr('class', className + ' active');
 		}
+	},
+	render: function(){
+		this.$el.append(this.template(this.model.attributes));
+		var toggle = this.toggle;
+		this.$el.children('.'+this.model.get('interaction')+'-control').click(toggle);
+	},
+	initialize: function(){
+		this.render();
+		return this;
 	}
 });
 
@@ -1020,6 +1031,20 @@ var LeafletMap = Backbone.View.extend({
 
 	},
 	setMapInteractions: function(){
+		this.on('mapset', function(){
+			//set UI toggle buttons
+			var InteractionControl = this.CustomControl('interaction', 'topright');
+			var interactionControl = new InteractionControl();
+			interactionControl.addTo(this.map);
+
+			for (var interaction in this.model.get('interactions')){
+				var interactionControlModel = new InteractionControlModel({interaction: interaction});
+				var interactionControlView = new InteractionControlView({model: interactionControlModel});
+			};
+		}, this);
+
+
+
 		//remove default zoom control and interactions if no zoom interaction
 		if (!this.model.get('interactions.zoom')){
 			this.model.set('mapOptions.zoomControl', false);
@@ -1103,6 +1128,8 @@ var LeafletMap = Backbone.View.extend({
 		//add each data layer
 		var dataLayers = this.model.get('dataLayers');
 		_.each(dataLayers, this.setDataLayer, this);
+
+		this.trigger('mapset');
 
 		//set interaction logging
 		this.logInteractions();

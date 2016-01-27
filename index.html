@@ -41,6 +41,12 @@
             </div>
         </script>
 
+        <script type="text/template" id="interaction-control-template">
+            <div class="<%= interaction %>-control interaction-control">
+                <img src="img/icons/<%= interaction %>.png" alt="<%= interaction %>" title="click for <%= interaction %> interaction">
+            </div>
+        </script>
+
         <script type="text/template" id="slider-template">
             <div id="<%= layerName %>-slider-div" class="filter-row">
                 <p class="layer-name"><%= layerName %>&nbsp;<select name="<%= layerName %>"></select></p>

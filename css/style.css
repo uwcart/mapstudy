@@ -191,6 +191,13 @@ svg {
     padding: 5px;
 }
 
+.interaction-control {
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 0 5px;
+}
+
 .leaflet-left {
     bottom: 10px;
 }
