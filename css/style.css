@@ -188,14 +188,30 @@ svg {
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
-    padding: 5px;
+    padding: 10px;
+}
+
+.interaction-control-container {
+    background: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
 }
 
 .interaction-control {
     background-color: white;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
     border-radius: 5px;
-    padding: 5px;
+    cursor: pointer;
+    display: inline-block;
     margin: 0 5px;
+    padding: 5px;
+}
+
+.control-title {
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 1.2em;
 }
 
 .leaflet-left {
@@ -223,11 +239,11 @@ svg {
 }
 
 .left {
-    left: 3px;
+    left: 10px;
 }
 
 .right {
-    right: 3px;
+    right: 10px;
 }
 
 .icon {
@@ -241,11 +257,15 @@ svg {
 }
 
 .active {
-    background-color: rgba(0,0,0,0.3);
+    background-color: #ccc;
 }
 
 .legend-control-container h3 {
     margin: 5px 0;
+}
+
+.legend-control-container {
+    padding: 5px;
 }
 
 .legend-layer-title {

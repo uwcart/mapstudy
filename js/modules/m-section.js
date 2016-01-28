@@ -320,7 +320,6 @@ var InteractionControlView = Backbone.View.extend({
 	el: '.interaction-control-container',
 	template: _.template( $('#interaction-control-template').html() ),
 	toggle: function(e){
-		console.log($(e.target).attr('class'));
 		var target = $(e.target).attr('class') ? $(e.target) : $(e.target).parent();
 		var className = target.attr('class'),
 			interaction = className.split('-')[0];
@@ -362,8 +361,6 @@ var FilterModel = Backbone.Model.extend({
 var FilterSliderView = Backbone.View.extend({
 	el: ".filter-control-container",
 	events: {
-		"click img": "open",
-		"click .close": "close",
 		"change select": "select"
 	},
 	template: _.template( $( '#slider-template').html() ),
@@ -450,25 +447,6 @@ var FilterSliderView = Backbone.View.extend({
 		_.each(numericAttributes, function(attribute){
 			select.append(optionTemplate({attribute: attribute}))
 		}, this);
-		//add close button and hide tools
-		var closeButton = _.template( $('#close-button-template').html() );
-		this.$el.append(closeButton({x: this.$el.width() - 20 + "px"}));
-		this.$el.children('.filter-row').hide();
-		this.$el.css('cursor', 'pointer');
-	},
-	open: function(e){
-		//show content
-		this.$el.children('.filter-row, .close').each(function(){
-			$(this).show();
-		});
-		this.$el.css('cursor', 'default');
-	},
-	close: function(){
-		//hide content
-		this.$el.children('.filter-row, .close').each(function(){
-			$(this).hide();
-		});
-		this.$el.css('cursor', 'pointer');
 	},
 	initialize: function(options){
 		this.applyFilter = options.applyFilter;
@@ -754,7 +732,11 @@ var LeafletMap = Backbone.View.extend({
 			onAdd: function(map){
 				//create container for control
 				var container = L.DomUtil.create('div', controlName+'-control-container control-container');
-				container.innerHTML = '<img class="icon" src="img/icons/'+controlName+'.png" alt="'+controlName+'" title="'+controlName+'">';
+				//add name and icon if not the interaction buttons
+				if (controlName != 'interaction'){
+					container.innerHTML = '<img class="icon" src="img/icons/'+controlName+'.png" alt="'+controlName+'" title="'+controlName+'"><span class="control-title">'+controlName+'</span>';
+					$(container).hide();
+				};
 				//kill map interactions under control
 				L.DomEvent.addListener(container, 'mousedown click dblclick', function(e) {
 					L.DomEvent.stopPropagation(e);
@@ -779,7 +761,7 @@ var LeafletMap = Backbone.View.extend({
 		this.legendControl.onAdd = function(map){
 			//create container for control
 			var container = L.DomUtil.create('div', 'legend-control-container control-container');
-			var innerHTML = '<img class="icon" src="img/icons/legend.png" alt="legend" title="legend"><div id="legend-wrapper"><h3>Legend</h3>';
+			var innerHTML = '<img class="icon" src="img/icons/legend.png" alt="legend" title="click to open legend"><div id="legend-wrapper"><h3>Legend</h3>';
 			//add legend entry for each visible data layer
 			_.each(model.get('leafletDataLayers'), function(layer, i){
 				var id = 'legend-'+layer._leaflet_id;
@@ -818,7 +800,7 @@ var LeafletMap = Backbone.View.extend({
 	addOverlayControl: function(){
 		//add layer control if it wasn't created for underlay
 		if (!this.layerControl){
-			this.layerControl = L.control.layers().addTo(this.map);
+			this.layerControl = L.control.layers({position: 'bottomright'}).addTo(this.map);
 		};
 		//add each overlay to layers control
 		_.each(this.model.get('leafletDataLayers'), function(overlay){
@@ -861,7 +843,7 @@ var LeafletMap = Backbone.View.extend({
 	addUnderlayControl: function(){
 		//add layer control if it wasn't created for overlay
 		if (!this.layerControl){
-			this.layerControl = L.control.layers().addTo(this.map);
+			this.layerControl = L.control.layers(null, null, {position: 'bottomright'}).addTo(this.map);
 		};
 		//add each base layer to layers control
 		_.each(this.model.get('leafletBaseLayers'), function(baseLayer){
