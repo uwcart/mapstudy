@@ -663,6 +663,7 @@ var LeafletMap = Backbone.View.extend({
 	offLayers: {},
 	render: function(){
 		this.$el.html("<div id='map'>");
+		this.model.set('allFeatures', []);
 		return this;
 	},
 	addLayer: function(layerId){
@@ -744,6 +745,11 @@ var LeafletMap = Backbone.View.extend({
 			//set up AJAX callback
 			dataLayerModel.once('done', function(){
 				var model = this.model, view = this;
+				//add new features to collection of all features
+				if (a==0){
+					model.attributes.allFeatures = _.union(model.attributes.allFeatures, dataLayerModel.get('features'));
+					this.trigger(dataLayer.name.replace(/\s|\:/g, '-')+'-features-added');
+				};
 				var layerName = dataLayerModel.get('dataLayer').name;
 				var className = layerName.replace(/\s|\:/g, '-');
 				function style(feature){
@@ -871,15 +877,15 @@ var LeafletMap = Backbone.View.extend({
 			dataLayerModel.fetch({url: dataLayer.source});
 		}, this);
 	},
-	getFeatures: function(){
-		//collect all dataLayers' features in one features array
-		var features = [];
-		_.each(this.model.get('leafletDataLayers'), function(dataLayer){
-			var geoJsonFeatures = dataLayer.toGeoJSON().features;
-			features = features.concat(geoJsonFeatures);
-		}, this);
-		return features;
-	},
+	// getFeatures: function(){
+	// 	//collect all dataLayers' features in one features array
+	// 	var features = [];
+	// 	_.each(this.model.get('leafletDataLayers'), function(dataLayer){
+	// 		var geoJsonFeatures = dataLayer.toGeoJSON().features;
+	// 		features = features.concat(geoJsonFeatures);
+	// 	}, this);
+	// 	return features;
+	// },
 	hideLabels: function(){
 		//if overlay is absent, hide all checkboxes
 		if (!this.model.get('interactions.overlay')){
@@ -1004,113 +1010,6 @@ var LeafletMap = Backbone.View.extend({
 		});
 		//hide everything but icon to start
 		$('#legend-wrapper').hide();
-	},
-	addOverlayControl: function(){
-		// //add layer control if it wasn't created for underlay
-		// if (!this.layerControl){
-		// 	this.layerControl = L.control.layers({position: 'bottomright'}).addTo(this.map);
-		// };
-		// //add each overlay to layers control
-		// _.each(this.model.get('leafletDataLayers'), function(overlay){
-		// 	//only add listed layers or multiple techniques of dataLayers if reexpress interaction
-		// 	if (_.indexOf(this.model.get('interactions.overlay.dataLayers'), overlay.layerName) > -1 || (this.model.get('interactions.reexpress') && _.findWhere(this.model.get('dataLayers'), {name: overlay.layerName}).techniques.length > 1)){
-		// 		//for reexpress interaction, replace overlay.layerName with html for span placeholders
-		// 		if (this.model.get('interactions.reexpress')){
-		// 			var layerName = this.addReexpress(overlay.layerName, overlay.techniqueType);
-		// 			this.layerControl.addOverlay(overlay, layerName);
-		// 		} else {
-		// 			this.layerControl.addOverlay(overlay, overlay.layerName);
-		// 		};
-		// 	};
-		// }, this);
-		//update filter on overlay change
-		// var view = this;
-		// this.map.on('overlayadd overlayremove', function(e){
-		// 	var layerName = e.name.indexOf(': <') > -1 ? e.name.split(': <')[0] : e.name;
-		// 	layerName = layerName.replace(/\s|\:/g, '-');
-		// 	if (e.type == 'overlayadd'){
-		// 		//enable filtering
-		// 		$('#'+layerName+'-slider').slider('enable');
-		// 		$('#'+layerName+'-logic-div input').removeProp('disabled');
-		// 	} else {
-		// 		//reset and disable filter sliders
-		// 		var sliderOptions = $('#'+layerName+'-slider').slider('option');
-		// 		$('#'+layerName+'-slider').slider('values', [sliderOptions.min, sliderOptions.max]);
-		// 		$('#'+layerName+'-labels .left').text(sliderOptions.min);
-		// 		$('#'+layerName+'-labels .right').text(sliderOptions.max);
-		// 		$('#'+layerName+'-slider').slider('disable');
-		// 		//reset and disable logic inputs
-		// 		$('#'+layerName+'-logic-div input').val('');
-		// 		$('#'+layerName+'-logic-div input').prop('disabled', true);
-		// 	}
-		// });
-		// this.hideLabels();
-	},
-	addFilter: function(){
-		var map = this.map,
-			offLayers = this.offLayers;
-		//add control to map
-		var CustomControl = this.CustomControl('filter', 'bottomleft');
-		this.filterControl = new CustomControl();
-		map.addControl(this.filterControl);
-
-		//applyFilter function references map, so must be created here
-		var applyFilter = function(attribute, values){
-			//helpful abbreviations
-			var min = values[0], max = values[1];
-			//remove layers outside of filter range
-			map.eachLayer(function(layer){
-				if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
-					var layerValue = layer.feature.properties[attribute];
-					//if value falls outside range, remove from map and stick in removed layers array
-					if (layerValue < min || layerValue > max){
-						map.removeLayer(layer);
-						offLayers[layer._leaflet_id] = layer;
-					};
-				};
-			});
-			//add layers within filter range
-			_.each(offLayers, function(layer){
-				if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
-					var layerValue = layer.feature.properties[attribute];
-					//if value within range, add to map and remove from removed layers array
-					if (layerValue > min && layerValue < max){
-						layer.addTo(map);
-						delete offLayers[layer._leaflet_id];
-					};
-				};
-			});
-		};
-		//get interaction variables
-		var filterLayers = this.model.get('interactions.filter.dataLayers'),
-			controlType = this.model.get('interactions.filter.tool');
-		//set a tool for each included data layer
-		_.each(this.model.get('dataLayers'), function(dataLayer){
-			//test for inclusion of data layer in filter interaction
-			if (_.indexOf(filterLayers, dataLayer.name) > -1){
-				//get filter properties
-				var attributes = dataLayer.displayAttributes;
-				//set a filter tool
-				var filterModel = new FilterModel({layerName: dataLayer.name.replace(/\s|\:/g, '-'), attributes: attributes, tool: controlType, map: this.map, features: this.getFeatures()});
-				//filter view options
-				var filterViewOptions = {
-					model: filterModel, 
-					applyFilter: applyFilter
-				};
-				//create filter view
-				var filterView = controlType == 'logic' ? new FilterLogicView(filterViewOptions) : new FilterSliderView(filterViewOptions);
-				filterView.render();
-			};
-			
-		}, this);
-		//trigger filter event on slider stop or logic filter entry
-		var view = this, 
-			timeout = window.setTimeout(function(){}, 0);
-		$('.range-slider').on('slidestop', function(){ view.trigger('filter'); });
-		$('.filter-row input').on('keyup', function(){
-			clearTimeout(timeout);
-			timeout = window.setTimeout(function(){ view.trigger('filter'); }, 1000);
-		});
 	},
 	addReexpress: function(layerName, techniqueType){
 		//function to render buttons
@@ -1353,11 +1252,91 @@ var LeafletMap = Backbone.View.extend({
 			return controlView;
 		},
 		filter: function(controlView, leafletView){
-			//MOVE FILTER WIDGET CREATION TO HERE
+			var map = leafletView.map,
+				offLayers = leafletView.offLayers;
+			//add control to map
+			var CustomControl = leafletView.CustomControl('filter', 'bottomleft');
+			var filterControl = new CustomControl();
+			map.addControl(filterControl);
 
+			//applyFilter function references map, so must be created here
+			function applyFilter(attribute, values){
+				//helpful abbreviations
+				var min = values[0], max = values[1];
+				//remove layers outside of filter range
+				map.eachLayer(function(layer){
+					if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
+						var layerValue = layer.feature.properties[attribute];
+						//if value falls outside range, remove from map and stick in removed layers array
+						if (layerValue < min || layerValue > max){
+							map.removeLayer(layer);
+							offLayers[layer._leaflet_id + '-filter'] = layer;
+						};
+					};
+				});
+				//add layers within filter range
+				_.each(offLayers, function(layer){
+					if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
+						var layerValue = layer.feature.properties[attribute];
+						//if value within range, add to map and remove from removed layers array
+						if (layerValue > min && layerValue < max){
+							layer.addTo(map);
+							delete offLayers[layer._leaflet_id + '-filter'];
+						};
+					};
+				});
+			};
+			//get interaction variables
+			var filterLayers = leafletView.model.get('interactions.filter.dataLayers'),
+				controlType = leafletView.model.get('interactions.filter.tool');
+			//set a tool for each included data layer
+			_.each(leafletView.model.get('dataLayers'), function(dataLayer){
+				//test for inclusion of data layer in filter interaction
+				if (_.indexOf(filterLayers, dataLayer.name) > -1){
+					//get filter properties
+					var attributes = dataLayer.displayAttributes;
+					//create filter view
+					var filterView = controlType == 'logic' ? new FilterLogicView({applyFilter: applyFilter}) : new FilterSliderView({applyFilter: applyFilter});
+					//when the features are loaded, render the tool
+					leafletView.once(dataLayer.name.replace(/\s|\:/g, '-')+'-features-added', function(){
+						//set a filter tool
+						var filterModel = new FilterModel({layerName: dataLayer.name.replace(/\s|\:/g, '-'), attributes: attributes, tool: controlType, map: map, features: leafletView.model.get('allFeatures')});
+						filterView.model = filterModel;
+						filterView.render();
+						//trigger filter event on slider stop or logic filter entry
+						var timeout = window.setTimeout(function(){}, 0);
+						$('#'+dataLayer.name.replace(/\s|\:/g, '-')+'-slider').on('slidestop', function(){ leafletView.trigger('filter'); });
+						$('#'+dataLayer.name.replace(/\s|\:/g, '-')+'-logic-div input').on('keyup', function(){
+							clearTimeout(timeout);
+							timeout = window.setTimeout(function(){ leafletView.trigger('filter'); }, 1000);
+						});
+					});
+				};
+			}, leafletView);
+			//function to reset filter inputs
+			controlView.removeInteraction = function(){
+				//reset filter sliders
+				$('.range-slider').each(function(){
+					var layerName = $(this).attr('id').split('-');
+					layerName.pop();
+					layerName = layerName.join('-');
+					var sliderOptions = $(this).slider('option');
+					$(this).slider('values', [sliderOptions.min, sliderOptions.max]);
+					$('#'+layerName+'-labels .left').text(sliderOptions.min);
+					$('#'+layerName+'-labels .right').text(sliderOptions.max);
+				});
+				//reset logic inputs
+				$('.filter-row input').val('');
+				//reset layers
+				_.each(offLayers, function(layer){
+					if (offLayers[layer._leaflet_id + '-filter']){
+						layer.addTo(map);
+						delete offLayers[layer._leaflet_id + '-filter'];
+					};
+				});
+			};
 			//update filter on overlay change
 			leafletView.map.on('layeradd layerremove', function(e){
-				//CHANGE LAYERNAME TO LAYERID?
 				if (e.layer.layerName){
 					var layerName = e.layer.layerName;
 					layerName = layerName.replace(/\s|\:/g, '-');
@@ -1432,22 +1411,10 @@ var LeafletMap = Backbone.View.extend({
 			this.on('dataLayersDone', this.addLegend, this);
 		};
 
-		//set layers control for overlay and reexpress interactions
-		if ((this.model.get('interactions.overlay') && this.model.get('interactions.overlay.dataLayers') && this.model.get('interactions.overlay.dataLayers').length > 0) || (this.model.get('interactions.reexpress') && _.some(this.model.get('dataLayers'), function(layer){
-			return layer.techniques.length > 1
-		}))){
-			this.on('dataLayersDone', this.addOverlayControl, this);
-		};
-
-		//set filter control for filter interaction
-		if (this.model.get('interactions.filter') && this.model.get('interactions.filter.dataLayers') && this.model.get('interactions.filter.dataLayers').length > 0){
-			this.on('dataLayersDone', this.addFilter, this);
-		};
 		//set resymbolize control for resymbolize interaction
 		if (this.model.get('interactions.resymbolize')){
 			// this.on('dataLayersDone', this.addResymbolize, this);
 		};
-
 
 		this.on('dataLayersDone', function(){
 			//prevent retrieve by default
