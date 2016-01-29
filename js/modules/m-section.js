@@ -401,16 +401,15 @@ var OverlayControlModel = Backbone.Model.extend({
 //view for overlay control
 var OverlayControlView = Backbone.View.extend({
 	el: '.overlay-control-container',
-	events: {
-		'click input': 'overlay'
-	},
 	template: _.template( $('#overlay-control-template').html() ),
 	toggleLayer: function(layerId, addLayer){},
-	overlay: function(e){
-		this.toggleLayer($(e.target).val(), $(e.target).prop('checked'));
-	},
 	render: function(){
 		this.$el.append(this.template(this.model.attributes));
+		//set click interaction on this child element only
+		var view = this;
+		this.$el.find('.layer-'+this.model.get('layerId')+' input').click(function(e){
+			view.toggleLayer($(e.target).val(), $(e.target).prop('checked'));
+		});
 	}
 });
 
@@ -429,6 +428,50 @@ var UnderlayControlView = OverlayControlView.extend({
 		'click input': 'overlay'
 	},
 	template: _.template( $('#underlay-control-template').html() )
+});
+
+//model for Fuse search of GeoJSON features
+var SearchModel = Backbone.Model.extend({
+	defaults: {
+		allFeatures: {},
+		searchOptions: {},
+		fuse: {},
+		term: '',
+		result: []
+	},
+	createSearch: function(){
+		this.set('fuse', new Fuse(this.get('allFeatures'), this.get('searchOptions')));
+	},
+	search: function(){
+		this.set('result', this.get('fuse').search(this.get('term')));
+	}
+});
+
+var SearchView = Backbone.View.extend({
+	el: '.search-control-container',
+	template: _.template($('#search-result-template').html()),
+	events: {
+		'keyup input': 'search'
+	},
+	selectFeature: function(e, result){},
+	search: function(e){
+		//define search term
+		this.model.set('term', $(e.target).val());
+		//get results
+		this.model.search();
+		//reset html
+		this.$el.children('#search-results-box').html('');
+		_.each(this.model.get('result'), function(result, i){
+			//limit to top 10 results
+			if (i < 10){
+				//append a new line for each result
+				this.$el.children('#search-results-box').append(this.template({featureName: result.properties.name, featureId: result.id}));
+				//attach click listener
+				var selectFeature = this.selectFeature;
+				$('#result-'+result.id).click(function(e){ selectFeature(e, result); });
+			};
+		}, this);
+	}
 });
 
 //model for filter interaction
@@ -803,6 +846,7 @@ var LeafletMap = Backbone.View.extend({
 					var overlayControlView = new OverlayControlView({model: overlayControlModel});
 					//toggleLayer function must be defined for leaflet view
 					overlayControlView.toggleLayer = function(layerId, addLayer){
+						if (!view.reexpressed){ view.trigger('overlay'); };
 						//turn layer on/off
 						if (map._layers[layerId] && !addLayer){
 							view.removeLayer(layerId);
@@ -927,7 +971,7 @@ var LeafletMap = Backbone.View.extend({
 		this.legendControl.onAdd = function(map){
 			//create container for control
 			var container = L.DomUtil.create('div', 'legend-control-container control-container');
-			var innerHTML = '<img class="icon button" src="img/icons/legend.png" alt="legend" title="click to open legend"><div id="legend-wrapper"><h3>Legend</h3>';
+			var innerHTML = '<div class="open button" title="click to open legend"><img src="img/icons/legend.png" alt="legend"><span class="control-title">Legend</span></div><div id="legend-wrapper">';
 			//add legend entry for each visible data layer
 			_.each(model.get('leafletDataLayers'), function(layer, i){
 				var id = 'legend-'+layer._leaflet_id;
@@ -952,95 +996,55 @@ var LeafletMap = Backbone.View.extend({
 		var closeButton = _.template( $('#close-button-template').html() );
 		$('.legend-control-container').append(closeButton({x: $('.legend-control-container').width() - 20 + "px"}));
 		//add open and close listeners
-		$('.legend-control-container .icon').click(function(){
-			$('.legend-control-container .icon').hide();
+		$('.legend-control-container .open').click(function(){
 			$('#legend-wrapper, .legend-control-container .close').show();
 		});
 		$('.legend-control-container .close').click(function(){
 			$('#legend-wrapper, .legend-control-container .close').hide();
-			$('.legend-control-container .icon').show();
 		});
 		//hide everything but icon to start
 		$('#legend-wrapper').hide();
 	},
 	addOverlayControl: function(){
-		//add layer control if it wasn't created for underlay
-		if (!this.layerControl){
-			this.layerControl = L.control.layers({position: 'bottomright'}).addTo(this.map);
-		};
-		//add each overlay to layers control
-		_.each(this.model.get('leafletDataLayers'), function(overlay){
-			//only add listed layers or multiple techniques of dataLayers if reexpress interaction
-			if (_.indexOf(this.model.get('interactions.overlay.dataLayers'), overlay.layerName) > -1 || (this.model.get('interactions.reexpress') && _.findWhere(this.model.get('dataLayers'), {name: overlay.layerName}).techniques.length > 1)){
-				//for reexpress interaction, replace overlay.layerName with html for span placeholders
-				if (this.model.get('interactions.reexpress')){
-					var layerName = this.addReexpress(overlay.layerName, overlay.techniqueType);
-					this.layerControl.addOverlay(overlay, layerName);
-				} else {
-					this.layerControl.addOverlay(overlay, overlay.layerName);
-				};
-			};
-		}, this);
-		//do stuff on overlay change
-		var view = this;
-		this.map.on('overlayadd overlayremove', function(e){
-			//set custom interaction for logging
-			if (!view.reexpressed){ view.trigger('overlay'); };
-			var layerName = e.name.indexOf(': <') > -1 ? e.name.split(': <')[0] : e.name;
-			layerName = layerName.replace(/\s|\:/g, '-');
-			if (e.type == 'overlayadd'){
-				//enable filtering
-				$('#'+layerName+'-slider').slider('enable');
-				$('#'+layerName+'-logic-div input').removeProp('disabled');
-			} else {
-				//reset and disable filter sliders
-				var sliderOptions = $('#'+layerName+'-slider').slider('option');
-				$('#'+layerName+'-slider').slider('values', [sliderOptions.min, sliderOptions.max]);
-				$('#'+layerName+'-labels .left').text(sliderOptions.min);
-				$('#'+layerName+'-labels .right').text(sliderOptions.max);
-				$('#'+layerName+'-slider').slider('disable');
-				//reset and disable logic sliders
-				$('#'+layerName+'-logic-div input').val('');
-				$('#'+layerName+'-logic-div input').prop('disabled', true);
-			}
-		});
-		this.hideLabels();
-	},
-	addUnderlayControl: function(){
-		//add layer control if it wasn't created for overlay
-		if (!this.layerControl){
-			this.layerControl = L.control.layers(null, null, {position: 'bottomright'}).addTo(this.map);
-		};
-		//add each base layer to layers control
-		_.each(this.model.get('leafletBaseLayers'), function(baseLayer){
-			this.layerControl.addBaseLayer(baseLayer, baseLayer.layerName);
-		}, this);
-	},
-	addSearch: function(){
-		var model = this.model;
-		function showResultFct(feature, container){
-			props = feature.properties;
-	        _.each(model.get('interactions.search.attributes'), function(attribute){
-	        	var span = L.DomUtil.create('span', null, container);
-	        	span.innerHTML = "<b>"+attribute+"</b>: "+props[attribute]+"<br>";
-	        }, this);
-		}
-		//add search control to map
-		var searchControl = L.control.fuseSearch({
-			position: 'topleft',
-			showResultFct: showResultFct
-		}).addTo(this.map);
-		//get features array
-		var features = this.getFeatures();
-		//index features for search
-		searchControl.indexFeatures(features, this.model.get('interactions.search.attributes'));
-		//add search event
-		var view = this,
-			timeout = window.setTimeout(function(){}, 0);
-		$(".search-input").on('keyup', function(){ 
-			clearTimeout(timeout);
-			timeout = window.setTimeout(function(){ view.trigger('search'); }, 1000)
-		});
+		// //add layer control if it wasn't created for underlay
+		// if (!this.layerControl){
+		// 	this.layerControl = L.control.layers({position: 'bottomright'}).addTo(this.map);
+		// };
+		// //add each overlay to layers control
+		// _.each(this.model.get('leafletDataLayers'), function(overlay){
+		// 	//only add listed layers or multiple techniques of dataLayers if reexpress interaction
+		// 	if (_.indexOf(this.model.get('interactions.overlay.dataLayers'), overlay.layerName) > -1 || (this.model.get('interactions.reexpress') && _.findWhere(this.model.get('dataLayers'), {name: overlay.layerName}).techniques.length > 1)){
+		// 		//for reexpress interaction, replace overlay.layerName with html for span placeholders
+		// 		if (this.model.get('interactions.reexpress')){
+		// 			var layerName = this.addReexpress(overlay.layerName, overlay.techniqueType);
+		// 			this.layerControl.addOverlay(overlay, layerName);
+		// 		} else {
+		// 			this.layerControl.addOverlay(overlay, overlay.layerName);
+		// 		};
+		// 	};
+		// }, this);
+		//update filter on overlay change
+		// var view = this;
+		// this.map.on('overlayadd overlayremove', function(e){
+		// 	var layerName = e.name.indexOf(': <') > -1 ? e.name.split(': <')[0] : e.name;
+		// 	layerName = layerName.replace(/\s|\:/g, '-');
+		// 	if (e.type == 'overlayadd'){
+		// 		//enable filtering
+		// 		$('#'+layerName+'-slider').slider('enable');
+		// 		$('#'+layerName+'-logic-div input').removeProp('disabled');
+		// 	} else {
+		// 		//reset and disable filter sliders
+		// 		var sliderOptions = $('#'+layerName+'-slider').slider('option');
+		// 		$('#'+layerName+'-slider').slider('values', [sliderOptions.min, sliderOptions.max]);
+		// 		$('#'+layerName+'-labels .left').text(sliderOptions.min);
+		// 		$('#'+layerName+'-labels .right').text(sliderOptions.max);
+		// 		$('#'+layerName+'-slider').slider('disable');
+		// 		//reset and disable logic inputs
+		// 		$('#'+layerName+'-logic-div input').val('');
+		// 		$('#'+layerName+'-logic-div input').prop('disabled', true);
+		// 	}
+		// });
+		// this.hideLabels();
 	},
 	addFilter: function(){
 		var map = this.map,
@@ -1174,12 +1178,6 @@ var LeafletMap = Backbone.View.extend({
 		//switch labels in layers control
 		this.hideLabels();
 	},
-	addResymbolize: function(){
-		//change classification scheme, class breaks, and output values via legend
-
-
-
-	},
 	setMapInteractions: {
 		zoom: function(controlView, leafletView){
 			var map = leafletView.map;
@@ -1200,10 +1198,21 @@ var LeafletMap = Backbone.View.extend({
 			};
 			//add zoom control to map
 			L.control.zoom({position: 'bottomleft'}).addTo(map);
-			//add zoom-control-container class and hide
+			//customize zoom control style
 			var zoomControl = $('.leaflet-control-zoom');
-			zoomControl.attr('class', zoomControl.attr('class') + ' zoom-control-container');
-			zoomControl.hide();
+			zoomControl.css({
+				border: '2px solid #000',
+				'box-shadow': 'none',
+				'float': 'none',
+				margin: '10px auto 0',
+				opacity: '0.5',
+				width: '26px'
+			});
+			zoomControl.wrap('<div class="zoom-control-container control-container leaflet-control">');
+			var zoomContainer = $('.zoom-control-container');
+			zoomContainer.prepend('<img class="icon" src="img/icons/zoom.png" alt="zoom" title="zoom"><span class="control-title">zoom</span>');
+			//hide zoom control
+			zoomContainer.hide();
 			//set message for first click alert
 			controlView.message = 'In addition to the zoom tool, you can use a mouse scroll wheel, double-click, shift-click-drag, or the + and - keys to zoom on a desktop computer, and pinch to zoom on a touch-enabled device.';
 			return controlView;
@@ -1214,10 +1223,18 @@ var LeafletMap = Backbone.View.extend({
 			controlView.addInteraction = function(){
 				map.dragging.enable();
 				map.keyboard._setPanOffset(80);
+				//set cursor to grab if no retrieve
+				if ($('.retrieve-control').length > 0 && $('.retrieve-control').attr('class').indexOf('active') > -1){} else {
+					$('.leaflet-interactive').css('cursor', 'grab');
+				};				
 			};
 			controlView.removeInteraction = function(){
 				map.dragging.disable();
 				map.keyboard._setPanOffset(0);
+				//set cursor to pointer if no retrieve
+				if ($('.retrieve-control').length > 0 && $('.retrieve-control').attr('class').indexOf('active') > -1){} else {
+					$('.leaflet-interactive').css('cursor', 'default');
+				};
 			};
 			//add pan control to map and hide
 			var PanControl = leafletView.CustomControl('pan', 'bottomleft');
@@ -1242,7 +1259,12 @@ var LeafletMap = Backbone.View.extend({
 			};
 			controlView.removeInteraction = function(){
 				$('.leaflet-popup-pane').hide();
-				$('.leaflet-interactive').css('cursor', 'default');
+				//set cursor to grab if pan active or default if not
+				if ($('.pan-control').length > 0 && $('.pan-control').attr('class').indexOf('active') > -1){
+					$('.leaflet-interactive').css('cursor', 'grab');
+				} else {
+					$('.leaflet-interactive').css('cursor', 'default');
+				};
 			};
 			//add retrieve-control-container class to allow popup pane show/hide
 			var popupPane = $('.leaflet-popup-pane');
@@ -1268,9 +1290,95 @@ var LeafletMap = Backbone.View.extend({
 			return controlView;
 		},
 		search: function(controlView, leafletView){
+			var map = leafletView.map;
+			//add search control to map and hide
+			var SearchControl = leafletView.CustomControl('search', 'bottomleft');
+			var searchControl = new SearchControl();
+			map.addControl(searchControl);
+			var template = _.template($('#search-control-template').html());
+			$('.search-control-container').append(template());
+			$('.search-control-container').hide();
+			//instantiate a view to call and display results
+			var searchView = new SearchView();
+			//function to show popup for clicked feature
+			searchView.selectFeature = function(e, result){
+				//reveal popups pane if retrieve is off
+				map.closePopup();
+				$('.leaflet-popup-pane').show();
+				//open the retrieve popup or just the feature name if no retrieve
+				if (result.layer._popup){
+					result.layer.openPopup();
+				} else {
+					result.layer.openPopup(result.properties.name);
+				};
+				//reset map center to avoid overlapping search box
+				var center = result.layer.getBounds ? result.layer.getBounds().getCenter() : result.layer.getLatLng();
+				map.setView(center, null, {pan: {animate: false}});
+				map.panBy([-50, 0]);
+				//disable further popups if retrieve is off
+				if ($('.retrieve-control').length > 0 && $('.retrieve-control').attr('class').indexOf('active') == -1){
+					result.layer.on('popupclose', function(){
+						$('.retrieve-control-container').hide();
+						result.layer.off('popupclose');
+					});
+				};
+			};
+			//replace search model when mapped layers change
+			function setSearchInput(){
+				//reset search widget content
+				$('#search-box input').val('');
+				$('#search-results-box').html('');
+				var allFeatures = [];
+				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					if (map.hasLayer(layer)){
+						allFeatures = _.union(allFeatures, layer.toGeoJSON().features);
+					};
+				});
+				var options = {
+					keys: ['properties.name']
+				};
+				//create a model for the data
+				var searchModel = new SearchModel({
+					allFeatures: allFeatures,
+					searchOptions: options
+				});
+				//build Fuse search
+				searchModel.createSearch();
+				searchView.model = searchModel;
+			};
+			//reset widget on add and layer change
+			controlView.addInteraction = setSearchInput;
+			map.on('layeradd layerremove', setSearchInput);
+			//return UI
 			return controlView;
 		},
 		filter: function(controlView, leafletView){
+			//MOVE FILTER WIDGET CREATION TO HERE
+
+			//update filter on overlay change
+			leafletView.map.on('layeradd layerremove', function(e){
+				//CHANGE LAYERNAME TO LAYERID?
+				if (e.layer.layerName){
+					var layerName = e.layer.layerName;
+					layerName = layerName.replace(/\s|\:/g, '-');
+					if (e.type == 'layeradd'){
+						//enable filtering
+						$('#'+layerName+'-slider').slider('enable');
+						$('#'+layerName+'-logic-div input').removeProp('disabled');
+					} else {
+						//reset and disable filter sliders
+						var sliderOptions = $('#'+layerName+'-slider').slider('option');
+						$('#'+layerName+'-slider').slider('values', [sliderOptions.min, sliderOptions.max]);
+						$('#'+layerName+'-labels .left').text(sliderOptions.min);
+						$('#'+layerName+'-labels .right').text(sliderOptions.max);
+						$('#'+layerName+'-slider').slider('disable');
+						//reset and disable logic inputs
+						$('#'+layerName+'-logic-div input').val('');
+						$('#'+layerName+'-logic-div input').prop('disabled', true);
+					}
+				};	
+			});
+
 			return controlView;
 		},
 		reexpress: function(controlView, leafletView){
@@ -1317,7 +1425,6 @@ var LeafletMap = Backbone.View.extend({
 				//render interaction toggle button
 				interactionToggleView.render();
 			};
-			console.log(map);
 		}, this);
 
 		//set legend control
@@ -1331,21 +1438,14 @@ var LeafletMap = Backbone.View.extend({
 		}))){
 			this.on('dataLayersDone', this.addOverlayControl, this);
 		};
-		//set layers control for underlay interaction
-		if (this.model.get('interactions.underlay')){
-			this.on('baseLayersDone', this.addUnderlayControl, this);
-		};
-		//set search control for search interaction
-		if (this.model.get('interactions.search') && this.model.get('interactions.search.attributes') && this.model.get('interactions.search.attributes').length > 0){
-			this.on('dataLayersDone', this.addSearch, this);
-		};
+
 		//set filter control for filter interaction
 		if (this.model.get('interactions.filter') && this.model.get('interactions.filter.dataLayers') && this.model.get('interactions.filter.dataLayers').length > 0){
 			this.on('dataLayersDone', this.addFilter, this);
 		};
 		//set resymbolize control for resymbolize interaction
 		if (this.model.get('interactions.resymbolize')){
-			this.on('dataLayersDone', this.addResymbolize, this);
+			// this.on('dataLayersDone', this.addResymbolize, this);
 		};
 
 

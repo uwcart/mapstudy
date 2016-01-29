@@ -251,20 +251,12 @@ svg {
 
 .close {
     position: absolute;
-    top: 0px;
+    top: 5px;
     color: #333 !important;
 }
 
 .active {
     background-color: #ccc;
-}
-
-.legend-control-container h3 {
-    margin: 5px 0;
-}
-
-.legend-control-container {
-    padding: 5px;
 }
 
 .legend-layer-title {
@@ -290,6 +282,14 @@ svg {
 
 .overlay-control-layer {
     padding-top: 5px;
+}
+
+#search-box {
+    padding: 5px 0;
+}
+
+#search-results-box p {
+    cursor: pointer;
 }
 
 /* ==========================================================================

@@ -13,7 +13,6 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="js/lib/jquery-ui/jquery-ui.css">
         <link rel="stylesheet" href="js/lib/leaflet/leaflet.css">
-        <link rel="stylesheet" href="js/lib/leaflet/leaflet.fusesearch.css">
         <link rel="stylesheet" href="js/lib/mapboxgl/mapboxgl.css">
         <link rel="stylesheet" href="css/style.css">
     </head>
@@ -63,18 +62,31 @@
         </script>
 
         <script type="text/template" id="overlay-control-template">
-            <div class="overlay-control-layer <%= techniqueType %>-layer" id="overlay-layer-<%= layerId %>">
+            <div class="overlay-control-layer <%= techniqueType %>-layer layer-<%= layerId %>" id="overlay-layer-<%= layerId %>">
                 <input type="checkbox" name="overlay-input" value="<%= layerId %>">
                 <label for="<%= layerId %>"><%= layerName %></label>
             </div>
         </script>
 
         <script type="text/template" id="underlay-control-template">
-            <div class="underlay-control-layer" id="underlay-layer-<%= layerId %>">
+            <div class="underlay-control-layer layer-<%= layerId %>" id="underlay-layer-<%= layerId %>">
                 <input type="radio" name="underlay-input" value="<%= layerId %>">
                 <label for="<%= layerId %>"><%= layerName %></label>
             </div>
         </script>
+
+        <script type="text/template" id="search-control-template">
+            <div id="search-box">
+                <label for="search">Search for:</label>
+                <input type="text" name="search">
+            </div>
+            <div id="search-results-box"></div>
+        </script>
+
+        <script type="text/template" id="search-result-template">
+            <p id="result-<%= featureId %>"><%= featureName %></p>
+        </script>
+
 
         <script type="text/template" id="slider-template">
             <div id="<%= layerName %>-slider-div" class="filter-row">
@@ -109,7 +121,7 @@
         </script>
 
         <script type="text/template" id="close-button-template">
-            <a class="close" style="left: <%= x %>; display: none;">&times;</a>
+            <a class="close" title="close" style="left: <%= x %>; display: none;">&times;</a>
         </script>
 
         <!-- Supported libraries -->
@@ -120,7 +132,6 @@
         <script type="text/javascript" src="js/lib/backbone-deep-model.js"></script>
         <script type="text/javascript" src="js/lib/leaflet/leaflet.js"></script>
         <script type="text/javascript" src="js/lib/fuse.js"></script>
-        <script type="text/javascript" src="js/lib/leaflet/leaflet.fusesearch.js"></script>
         <script type="text/javascript" src="js/lib/mapboxgl/mapboxgl.js"></script>
         <script type="text/javascript" src="js/lib/simple_statistics.js"></script>
         <script type="text/javascript" src="js/lib/d3.js"></script>
