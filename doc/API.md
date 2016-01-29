@@ -126,15 +126,9 @@ Rotate interaction. Allows the user to rotate the map. Only available with Mapbo
 
 #### map.interactions.retrieve
 
-		-"retrieve"-: { -"logging"- -"event"- }
+		-"retrieve"-: { -"logging"- }
 
 Retrieve interaction. Implemented as a pop-up on the map. If an empty object, options are considered to be defaults.
-
-#### map.interactions.retrieve.event
-
-			-"event"-: -"hover"- -"click"-
-
-Whether to open the pop-up when the mouse hovers over the feature or on mouse click. In the mobile context, `hover` is unavailable and `click` is equivalent to tap.
 
 #### map.interactions.overlay
 

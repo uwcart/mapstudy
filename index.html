@@ -42,8 +42,37 @@
         </script>
 
         <script type="text/template" id="interaction-control-template">
-            <div class="<%= interaction %>-control interaction-control">
+            <div class="<%= interaction %>-control interaction-control button">
                 <img src="img/icons/<%= interaction %>.png" alt="<%= interaction %>" title="click for <%= interaction %> interaction">
+            </div>
+        </script>
+
+        <script type="text/template" id="pan-control-template">
+            <div class="pan-button button" id="pan-up">
+                <img src="img/icons/uparrow.png" alt="pan up" title="pan up">
+            </div>
+            <div class="pan-button button" id="pan-left">
+                <img src="img/icons/leftarrow.png" alt="pan left" title="pan left">
+            </div>
+            <div class="pan-button button" id="pan-right">
+                <img src="img/icons/rightarrow.png" alt="pan right" title="pan right">
+            </div>
+            <div class="pan-button button" id="pan-down">
+                <img src="img/icons/downarrow.png" alt="pan down" title="pan down">
+            </div>
+        </script>
+
+        <script type="text/template" id="overlay-control-template">
+            <div class="overlay-control-layer <%= techniqueType %>-layer" id="overlay-layer-<%= layerId %>">
+                <input type="checkbox" name="overlay-input" value="<%= layerId %>">
+                <label for="<%= layerId %>"><%= layerName %></label>
+            </div>
+        </script>
+
+        <script type="text/template" id="underlay-control-template">
+            <div class="underlay-control-layer" id="underlay-layer-<%= layerId %>">
+                <input type="radio" name="underlay-input" value="<%= layerId %>">
+                <label for="<%= layerId %>"><%= layerName %></label>
             </div>
         </script>
 

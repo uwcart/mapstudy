@@ -202,7 +202,6 @@ svg {
     background-color: white;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
     border-radius: 5px;
-    cursor: pointer;
     display: inline-block;
     margin: 0 5px;
     padding: 5px;
@@ -246,7 +245,7 @@ svg {
     right: 10px;
 }
 
-.icon {
+.button {
     cursor: pointer;
 }
 
@@ -277,6 +276,20 @@ svg {
 .legend-control-container rect, .legend-control-container circle {
     stroke: black;
     stroke-width: 1;
+}
+
+#pan-left {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#pan-right {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.overlay-control-layer {
+    padding-top: 5px;
 }
 
 /* ==========================================================================

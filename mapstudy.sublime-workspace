@@ -4,6 +4,58 @@
 		"selected_items":
 		[
 			[
+				"font",
+				"font-weight"
+			],
+			[
+				"map",
+				"mapset"
+			],
+			[
+				"Inter",
+				"InteractionControl"
+			],
+			[
+				"interac",
+				"interactionControlModel"
+			],
+			[
+				"Interac",
+				"InteractionControlView"
+			],
+			[
+				"legen",
+				"legendEntry"
+			],
+			[
+				"index",
+				"indexOf"
+			],
+			[
+				"off",
+				"offLayers"
+			],
+			[
+				"svg",
+				"svgHeight"
+			],
+			[
+				"max",
+				"maxRadius"
+			],
+			[
+				"layer",
+				"layerOptions"
+			],
+			[
+				"expre",
+				"expressedAttribute"
+			],
+			[
+				"attr",
+				"attr"
+			],
+			[
 				"leaflet",
 				"leafletDataLayer"
 			],
@@ -76,10 +128,6 @@
 				"addReexpress"
 			],
 			[
-				"layer",
-				"layerName"
-			],
-			[
 				"render",
 				"renderReexpressButtons"
 			],
@@ -98,10 +146,6 @@
 			[
 				"ex",
 				"expressedAttribute"
-			],
-			[
-				"attr",
-				"attributes"
 			],
 			[
 				"attribute",
@@ -220,10 +264,6 @@
 				"moveLabel"
 			],
 			[
-				"font",
-				"font-size"
-			],
-			[
 				"inlin",
 				"inline-block"
 			],
@@ -286,10 +326,6 @@
 			[
 				"prev",
 				"previewHeight"
-			],
-			[
-				"max",
-				"max-height"
 			],
 			[
 				"mapTrans",
@@ -371,7 +407,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 4160,
+				"buffer_size": 5141,
 				"line_ending": "Unix"
 			}
 		},
@@ -379,7 +415,15 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 32272,
+				"buffer_size": 40528,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module2/debug.js",
+			"settings":
+			{
+				"buffer_size": 827,
 				"line_ending": "Windows"
 			}
 		},
@@ -395,7 +439,7 @@
 			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 7461,
+				"buffer_size": 8236,
 				"line_ending": "Unix"
 			}
 		},
@@ -427,7 +471,7 @@
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 2048,
+				"buffer_size": 2093,
 				"line_ending": "Windows",
 				"name": "["
 			}
@@ -444,7 +488,7 @@
 			"file": "data/us-states.geojson",
 			"settings":
 			{
-				"buffer_size": 89247,
+				"buffer_size": 90012,
 				"line_ending": "Windows"
 			}
 		},
@@ -481,11 +525,14 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Carl/Desktop/temp/test.svg",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module2/complete/unit-1(module2)/js/main.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/time-series-prop-map-leaflet/time-series-prop-map/js/main.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main.js",
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/Module6.html",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.bak.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/index.bak.html",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab/js/main.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/time-series-prop-map-leaflet/time-series-prop-map/js/main.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
 		"/C/Users/Carl/Downloads/LeafletSlider-master/LeafletSlider-master/SliderControl.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/jquery-ui/jquery-ui.css",
@@ -549,7 +596,6 @@
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module3/Module3.html",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module4/Module4.html",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/Module5.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/Module6.html",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/Module7.html",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module8/Module8.html",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module9/Module9.html",
@@ -606,9 +652,7 @@
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/files/leaflet-lab/data/MegaCities.geojson",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module4/files/leaflet-lab/js/main.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/js/main.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-lab/index.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/files/D3 Demo.html",
-		"/E/files/Documents/School/UW/Teaching/Geog575/2014_Fall/Labs/Week7/index.html"
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-lab/index.html"
 	],
 	"find":
 	{
@@ -626,6 +670,105 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"CustomControl",
+			"control",
+			"CustomControl",
+			".left",
+			"filter",
+			"FilterSliderView",
+			"CustomControl",
+			"interaction",
+			"control-container",
+			".active",
+			";\n",
+			"Interaction",
+			"InteractionControlView",
+			"setMapInteractions",
+			"addTo",
+			"Interaction",
+			"Custom",
+			"InteractionControlView",
+			"el:",
+			".close",
+			"control-container",
+			"icon",
+			".icon",
+			"CustomControl",
+			".close",
+			"CustomControl",
+			"onAdd",
+			".close",
+			"CustomControl",
+			"LegendLayerView",
+			"FilterSliderView",
+			"CustomControl",
+			"LegendLayerView",
+			"FilterSliderView",
+			"CustomControl",
+			"filter",
+			"CustomControl",
+			"filter.png",
+			"triggerDone",
+			"layerChange",
+			"editLegend",
+			"layeradd",
+			"dataLayersDone",
+			"console",
+			"innerHTML",
+			"legend",
+			"LegendLayerView",
+			"addTo",
+			"LegendLayerView",
+			"ppl/sq. mile",
+			".scale",
+			"addLegend",
+			"LegendLayerView",
+			"svgHeight",
+			"attributes.height",
+			"setLayerOptions",
+			"techniquesObj",
+			".range()",
+			"this.model.get('scale').range()",
+			"console",
+			"Density (people/mile)",
+			"Density (people per mile)",
+			"density",
+			"LegendLayerView",
+			"legendHeight",
+			"text",
+			"LegendLayerView",
+			"template",
+			"LegendLayer",
+			"svg",
+			"LegendLayerView",
+			"LegendLayer",
+			"CustomControl",
+			"addCustom",
+			"this.template(",
+			"this.template",
+			"LegendLayerView",
+			"TechniqueLegendView",
+			"layer.model",
+			"techniquelegend",
+			"addLegend",
+			".expressedAttribute",
+			".scale",
+			"scale",
+			"layerName",
+			"TechniqueLegendView",
+			"layerName",
+			"leafletDataLayer",
+			"addLegend",
+			"layerName",
+			"techniqueObj",
+			"techniquesObj",
+			"round",
+			"getAllAttributeValues",
+			".scale",
+			"consol",
+			"_.without",
+			"density",
+			".scale",
 			"overlayOptions",
 			"features",
 			"setDataLayer",
@@ -654,106 +797,7 @@
 			"setSlider",
 			"FilterModel",
 			"replace",
-			"FilterModel",
-			"template",
-			"setSlider",
-			"getAllAttributeValues",
-			"template",
-			"layerName",
-			".attribute-name",
-			"render",
-			"_.template",
-			"FilterModel",
-			"FilterSliderView",
-			"addFilter",
-			"class",
-			"attribute-name",
-			"addFilter",
-			"FilterModel",
-			"getFeatures",
-			"FilterModel",
-			"dataLayer",
-			"attributes",
-			"setFilter",
-			"retrieveAttributes",
-			"displayAttributes",
-			"search",
-			"filter",
-			"attributes",
-			"filter",
-			"retrieveAttributes",
-			"console",
-			"hideLabels",
-			"addReexpress",
-			"console",
-			"addOverlayControl",
-			"layerClassName",
-			"dataLayerName",
-			".reexpressed",
-			"this.reexpressed",
-			"reexpress",
-			"trigger",
-			"addOverlay",
-			"reexpress",
-			"button.click",
-			"hideLabels",
-			"console",
-			"hideLabels",
-			"button",
-			"name",
-			"---",
-			"hideLabels",
-			"stopEvent",
-			"hideLabels",
-			"console",
-			"hideLabels",
-			"addReexpress",
-			"hideLabels()",
-			"activeButtons",
-			"'.leaflet-control-layers-overlays'",
-			"'.leaflet-control-layers-overlays label'",
-			"leafletDataLayers",
-			"addReexpress",
-			"layersAdded",
-			"addTo",
-			"addLayer",
-			"this.hideLabels();",
-			"console",
-			"offLayers",
-			"e.preventDefault",
-			"removeLayer",
-			"addTo(",
-			"reexpress",
-			"addReexpress",
-			"i",
-			"addReexpress",
-			"inactive",
-			"class",
-			"leafletLayer",
-			"addReexpress",
-			"leafletDataLayers",
-			"addReexpress",
-			"addOverlay",
-			"pointToLayer",
-			"offLayers",
-			"console",
-			"techniques",
-			"dataLayerModel",
-			"console",
-			"dataLayerModel",
-			"offLayers",
-			"setDataLayer",
-			"done",
-			"'done'",
-			"technique",
-			"window.offL",
-			"addTo",
-			"dataLayer.techniques[0]",
-			"renderOnLoad",
-			"techniques",
-			"techniqueType",
-			"offLayers",
-			"reexpress"
+			"FilterModel"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -761,6 +805,15 @@
 		"regex": false,
 		"replace_history":
 		[
+			"layerChange",
+			"people/mi2",
+			"attributes.svgHeight",
+			"Density (ppl/sq. mile)",
+			"Density (people/mile)",
+			"Density (people per mile)",
+			"svgHeight",
+			"LegendLayerView",
+			"this.model",
 			"controlName",
 			"layerDiv",
 			".layer-name",
@@ -879,9 +932,7 @@
 			"Aire-protegé",
 			"Protected-Area",
 			"Commune",
-			"Céannes",
-			"resting point",
-			"Resting Point"
+			"Céannes"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -926,15 +977,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 4160,
+						"buffer_size": 5141,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2267,
-								2267
+								2031,
+								2031
 							]
 						],
 						"settings":
@@ -944,7 +995,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 724.0,
+						"translation.y": 624.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -954,15 +1005,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 32272,
+						"buffer_size": 40528,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								16194,
-								16194
+								24797,
+								24797
 							]
 						],
 						"settings":
@@ -972,13 +1023,39 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 10347.0,
+						"translation.y": 14711.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
+					"file": "/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module2/debug.js",
+					"settings":
+					{
+						"buffer_size": 827,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								751,
+								751
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 480.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
 					"file": ".gitignore",
 					"settings":
 					{
@@ -1004,19 +1081,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 5,
 					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 7461,
+						"buffer_size": 8236,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3733,
-								3733
+								4243,
+								4243
 							]
 						],
 						"settings":
@@ -1026,13 +1103,13 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4087.0,
+						"translation.y": 4931.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 6,
 					"file": "js/modules/app.js",
 					"settings":
 					{
@@ -1059,7 +1136,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 7,
 					"file": "doc/API.md",
 					"settings":
 					{
@@ -1070,8 +1147,8 @@
 						"selection":
 						[
 							[
-								12102,
-								12102
+								23292,
+								23306
 							]
 						],
 						"settings":
@@ -1080,13 +1157,13 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 5755.0,
+						"translation.y": 11031.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 8,
 					"file": "php/interactions.php",
 					"settings":
 					{
@@ -1112,19 +1189,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 9,
 					"file": "config/map.json",
 					"settings":
 					{
-						"buffer_size": 2048,
+						"buffer_size": 2093,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								669,
-								669
+								27,
+								39
 							]
 						],
 						"settings":
@@ -1135,13 +1212,13 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 667.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 10,
 					"file": "doc/versions.md",
 					"settings":
 					{
@@ -1161,25 +1238,25 @@
 							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 60.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 11,
 					"file": "data/us-states.geojson",
 					"settings":
 					{
-						"buffer_size": 89247,
+						"buffer_size": 90012,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								39,
-								40
+								36016,
+								36028
 							]
 						],
 						"settings":
@@ -1187,13 +1264,13 @@
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 6785.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 12,
 					"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
 					"settings":
 					{
@@ -1204,8 +1281,8 @@
 						"selection":
 						[
 							[
-								1050,
-								1056
+								1208,
+								1208
 							]
 						],
 						"settings":

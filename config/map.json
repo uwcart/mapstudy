@@ -46,11 +46,18 @@
 		"maxZoom": 13
 	},
 	"baseLayers": [{
-		"name": "OSM-BW",
+		"name": "Stamen Toner Lite",
 		"source": "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
 		"layerOptions": {
 			"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
-		}
+			}
+		},
+		{
+		"name": "Stamen Toner",
+		"source": "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
+		"layerOptions": {
+			"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
+			}
 	}],
 	"dataLayers": [{
 		"name": "US States",

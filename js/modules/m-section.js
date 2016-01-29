@@ -315,36 +315,120 @@ var InteractionControlModel = Backbone.Model.extend({
 	}
 });
 
-//view for all interaction controls
-var InteractionControlView = Backbone.View.extend({
+//view for all interaction control toggle buttons
+var InteractionToggleView = Backbone.View.extend({
 	el: '.interaction-control-container',
 	template: _.template( $('#interaction-control-template').html() ),
-	toggle: function(e){
-		var target = $(e.target).attr('class') ? $(e.target) : $(e.target).parent();
-		var className = target.attr('class'),
+	message: '',
+	addInteraction: function(){},
+	removeInteraction: function(){},
+	toggle: function(e, addInteraction, removeInteraction, message){
+		//get target and interaction
+		var target = $(e.target).attr('class') ? $(e.target) : $(e.target).parent(),
+			className = target.attr('class'),
 			interaction = className.split('-')[0];
-			console.log(className, interaction);
+		//toggle
 		if (className.indexOf(' active') > -1){
 			//close associated interaction widget
 			$('.'+interaction+'-control-container').hide();
 			//remove active class
 			target.attr('class', className.substring(0, className.indexOf(' active')));
+			//remove any additional interaction scripts
+			removeInteraction();
 		} else {
 			//open associated interaction widget
 			$('.'+interaction+'-control-container').show();
 			//add active class
 			target.attr('class', className + ' active');
-		}
+			//add any additional interaction scripts
+			addInteraction();
+		};
+		//display message about the interaction on first click
+		if (message){ alert(message); };
 	},
 	render: function(){
 		this.$el.append(this.template(this.model.attributes));
-		var toggle = this.toggle;
-		this.$el.children('.'+this.model.get('interaction')+'-control').click(toggle);
+		var toggle = this.toggle,
+			addInteraction = this.addInteraction,
+			removeInteraction = this.removeInteraction,
+			message = this.message,
+			firstClick = true;
+		this.$el.children('.'+this.model.get('interaction')+'-control').click(function(e){
+			//only display message on first click
+			message = message.length > 0 && firstClick ? message : false;
+			toggle(e, addInteraction, removeInteraction, message);
+			firstClick = false;
+		});
+	},
+	initialize: function(){
+		return this;
+	}
+});
+
+//interaction control base view
+var InteractionControlView = Backbone.View.extend({
+	render: function(){
+		this.$el.append(this.template());
 	},
 	initialize: function(){
 		this.render();
 		return this;
 	}
+});
+
+//view for pan interaction
+var PanControlView = InteractionControlView.extend({
+	el: '.pan-control-container',
+	events: {
+		'click .pan-button': 'pan'
+	},
+	template: _.template( $('#pan-control-template').html() ),
+	pan: function(e){
+		var targetId = $(e.target).attr('id') ? $(e.target).attr('id') : $(e.target).parent().attr('id');
+		this.trigger('pan', targetId);
+	}
+});
+
+//model for overlay control
+var OverlayControlModel = Backbone.Model.extend({
+	defaults: {
+		layerName: '',
+		layerId: '',
+		techniqueType: ''
+	}
+});
+
+//view for overlay control
+var OverlayControlView = Backbone.View.extend({
+	el: '.overlay-control-container',
+	events: {
+		'click input': 'overlay'
+	},
+	template: _.template( $('#overlay-control-template').html() ),
+	toggleLayer: function(layerId, addLayer){},
+	overlay: function(e){
+		this.toggleLayer($(e.target).val(), $(e.target).prop('checked'));
+	},
+	render: function(){
+		this.$el.append(this.template(this.model.attributes));
+	}
+});
+
+//model for underlay control
+var UnderlayControlModel = Backbone.Model.extend({
+	defaults: {
+		layerName: '',
+		layerId: ''
+	}
+});
+
+//view for underlay control
+var UnderlayControlView = OverlayControlView.extend({
+	el: '.underlay-control-container',
+	events: {
+		'click input': 'overlay'
+	},
+	template: _.template( $('#underlay-control-template').html() )
 });
 
 //model for filter interaction
@@ -533,18 +617,61 @@ var LeafletMap = Backbone.View.extend({
 	events: {
 		'click .reexpress': 'reexpress'
 	},
+	offLayers: {},
 	render: function(){
 		this.$el.html("<div id='map'>");
 		return this;
+	},
+	addLayer: function(layerId){
+		this.offLayers[layerId].addTo(this.map);
+		delete this.offLayers[layerId];
+	},
+	removeLayer: function(layerId){
+		this.offLayers[layerId] = this.map._layers[layerId];
+		this.map.removeLayer(this.map._layers[layerId]);
 	},
 	setBaseLayer: function(baseLayer, i){
 		//create leaflet tile layer
 		var leafletBaseLayer = L.tileLayer(baseLayer.source, baseLayer.layerOptions);
 		leafletBaseLayer.layerName = baseLayer.name;
+		//need to pre-assign layerId for tile layers...for unknown reason
+		leafletBaseLayer._leaflet_id = Math.round(Math.random()*10000);
+		var layerId = leafletBaseLayer._leaflet_id;
 		//only add first base layer to the map
-		if (i==0){ leafletBaseLayer.addTo(this.map); };
+		if (i==0){ 
+			leafletBaseLayer.addTo(this.map);
+		} else {
+			this.offLayers[layerId] = leafletBaseLayer;
+		};
 		//add to array of base layers
 		this.model.attributes.leafletBaseLayers.push(leafletBaseLayer);
+		//add to underlay control
+		var view = this,
+			map = this.map;
+		var underlayControlModel = new UnderlayControlModel({
+			layerName: baseLayer.name,
+			layerId: layerId,
+		});
+		var underlayControlView = new UnderlayControlView({model: underlayControlModel});
+		//toggleLayer function must be defined for leaflet view
+		underlayControlView.toggleLayer = function(layerId, addLayer){
+			//turn clicked layer on
+			if (!map._layers[layerId] && view.offLayers[layerId]){
+				view.addLayer(layerId);
+			};
+			//turn other layers off
+			$('.underlay-control-layer').each(function(){
+				var thisId = $(this).attr('id').split('-')[2];
+				if (layerId != thisId && map._layers[thisId]){
+					view.removeLayer(thisId);
+				};
+			});
+		};
+		underlayControlView.render();
+		//check the layer that is on the map
+		if (this.map._layers[layerId]){
+			$('#underlay-layer-'+layerId+' input').prop('checked', true);
+		};
 		//trigger done event
 		if (i == this.model.get('baseLayers').length-1){ this.trigger('baseLayersDone') };
 	},
@@ -556,8 +683,8 @@ var LeafletMap = Backbone.View.extend({
 		return feature;
 	},
 	setDataLayer: function(dataLayer, i){
-		//global array to hold non-mapped layers
-		if (!window.offLayers){ window.offLayers = []; };
+		//global object to hold non-mapped layers
+		if (!window.offLayers){ window.offLayers = {}; };
 		//get layer options
 		var dataLayerOptions = dataLayer.layerOptions;
 		//create a layer for each technique
@@ -609,7 +736,10 @@ var LeafletMap = Backbone.View.extend({
 							});
 						};
 						layer.on('popupopen', function(){
-							view.trigger('popupopen');
+							//only trigger event if popup is visible
+							if ($('.leaflet-popup-pane').css('display') != 'none'){
+								view.trigger('popupopen');
+							};
 						});
 					};
 				};
@@ -650,20 +780,44 @@ var LeafletMap = Backbone.View.extend({
 				leafletDataLayer.model = dataLayerModel;
 				leafletDataLayer.layerName = layerName;
 				leafletDataLayer.techniqueType = technique.type;
+				var layerId = leafletDataLayer._leaflet_id;
 				//render immediately by default
 				if (a==0 && (typeof dataLayer.renderOnLoad === 'undefined' || dataLayer.renderOnLoad == 'true')){
 					//add layer to map
 					leafletDataLayer.addTo(this.map);
-					//reset cursor if needed
-					if (!model.get('interactions.retrieve') && model.get('interactions.pan')){
-						$("."+className).css('cursor', "grab");
-					};
 				} else {
 					//stick it in offLayers array
-					offLayers.push(leafletDataLayer);
+					this.offLayers[layerId] = leafletDataLayer;
 				};
 				//add to layers
 				model.attributes.leafletDataLayers.push(leafletDataLayer);
+				//add to overlay control
+				if ($('.overlay-control-container')){
+					var map = this.map,
+						offLayers = this.offLayers;
+					var overlayControlModel = new OverlayControlModel({
+						layerName: layerName,
+						layerId: layerId,
+						techniqueType: technique.type
+					});
+					var overlayControlView = new OverlayControlView({model: overlayControlModel});
+					//toggleLayer function must be defined for leaflet view
+					overlayControlView.toggleLayer = function(layerId, addLayer){
+						//turn layer on/off
+						if (map._layers[layerId] && !addLayer){
+							view.removeLayer(layerId);
+						} else if (!map._layers[layerId] && offLayers[layerId]){
+							view.addLayer(layerId);
+						};
+					};
+					overlayControlView.render();
+					//only show the layers that are on the map
+					if (this.offLayers[layerId]){
+						$('#overlay-layer-'+layerId).hide();
+					} else {
+						$('#overlay-layer-'+layerId+' input').prop('checked', true);
+					};
+				};
 				//if the last layer, trigger the done event
 				if (i == model.get('dataLayers').length-1 && a == dataLayer.techniques.length-1){ 
 					this.trigger('dataLayersDone');
@@ -746,6 +900,18 @@ var LeafletMap = Backbone.View.extend({
 		});
 		return Control;
 	},
+	pan: function(e){
+		switch (e){
+			case 'pan-up':
+				this.map.panBy([0, -80]); break;
+			case 'pan-left':
+				this.map.panBy([-80, 0]); break;
+			case 'pan-right':
+				this.map.panBy([80, 0]); break;
+			case 'pan-down':
+				this.map.panBy([0, 80]); break;
+		};
+	},
 	layerChange: function(e){
 		//edit legend
 		var legendEntry = $('#legend-'+e.layer._leaflet_id);
@@ -761,7 +927,7 @@ var LeafletMap = Backbone.View.extend({
 		this.legendControl.onAdd = function(map){
 			//create container for control
 			var container = L.DomUtil.create('div', 'legend-control-container control-container');
-			var innerHTML = '<img class="icon" src="img/icons/legend.png" alt="legend" title="click to open legend"><div id="legend-wrapper"><h3>Legend</h3>';
+			var innerHTML = '<img class="icon button" src="img/icons/legend.png" alt="legend" title="click to open legend"><div id="legend-wrapper"><h3>Legend</h3>';
 			//add legend entry for each visible data layer
 			_.each(model.get('leafletDataLayers'), function(layer, i){
 				var id = 'legend-'+layer._leaflet_id;
@@ -877,7 +1043,8 @@ var LeafletMap = Backbone.View.extend({
 		});
 	},
 	addFilter: function(){
-		var map = this.map;
+		var map = this.map,
+			offLayers = this.offLayers;
 		//add control to map
 		var CustomControl = this.CustomControl('filter', 'bottomleft');
 		this.filterControl = new CustomControl();
@@ -894,7 +1061,7 @@ var LeafletMap = Backbone.View.extend({
 					//if value falls outside range, remove from map and stick in removed layers array
 					if (layerValue < min || layerValue > max){
 						map.removeLayer(layer);
-						offLayers.push(layer);
+						offLayers[layer._leaflet_id] = layer;
 					};
 				};
 			});
@@ -905,7 +1072,7 @@ var LeafletMap = Backbone.View.extend({
 					//if value within range, add to map and remove from removed layers array
 					if (layerValue > min && layerValue < max){
 						layer.addTo(map);
-						offLayers = _.without(offLayers, layer);
+						delete offLayers[layer._leaflet_id];
 					};
 				};
 			});
@@ -972,6 +1139,7 @@ var LeafletMap = Backbone.View.extend({
 	reexpress: function(e){
 		var view = this,
 			map = view.map,
+			offLayers = view.offLayers
 			button = $(e.target),
 			span = button.parent(),
 			spanParent = span.parent(),
@@ -988,17 +1156,17 @@ var LeafletMap = Backbone.View.extend({
 			if (layer.layerName && layer.layerName.replace(/\s|\:/g, '-') == dataLayerName){
 				//remove the layer from the map to replace with other technique
 				map.removeLayer(layer);
-				offLayers.push(layer);
+				offLayers[layer._leaflet_id] = layer;
 				//if a layer with the correct technique exists, put it on the map
 				_.each(offLayers, function(offLayer){
 					if (offLayer.layerName == layer.layerName && offLayer.techniqueType == techniqueType){
 						offLayer.addTo(map);
-						offLayers = _.without(offLayers, offLayer);
+						delete offLayers[offLayer._leaflet_id];
 						return false;
 					};
 					//remove single-feature layers that might be leftover from filter
 					if (offLayer.feature){
-						offLayers = _.without(offLayers, offLayer);
+						delete offLayers[offLayer._leaflet_id];
 					};
 				}, this);
 			};
@@ -1012,37 +1180,151 @@ var LeafletMap = Backbone.View.extend({
 
 
 	},
-	setMapInteractions: function(){
+	setMapInteractions: {
+		zoom: function(controlView, leafletView){
+			var map = leafletView.map;
+			//set on/off scripts
+			controlView.addInteraction = function(){
+				map.touchZoom.enable();
+				map.scrollWheelZoom.enable();
+				map.doubleClickZoom.enable();
+				map.boxZoom.enable();
+				map.keyboard._setZoomOffset(1);
+			};
+			controlView.removeInteraction = function(){
+				map.touchZoom.disable();
+				map.scrollWheelZoom.disable();
+				map.doubleClickZoom.disable();
+				map.boxZoom.disable();
+				map.keyboard._setZoomOffset(0);
+			};
+			//add zoom control to map
+			L.control.zoom({position: 'bottomleft'}).addTo(map);
+			//add zoom-control-container class and hide
+			var zoomControl = $('.leaflet-control-zoom');
+			zoomControl.attr('class', zoomControl.attr('class') + ' zoom-control-container');
+			zoomControl.hide();
+			//set message for first click alert
+			controlView.message = 'In addition to the zoom tool, you can use a mouse scroll wheel, double-click, shift-click-drag, or the + and - keys to zoom on a desktop computer, and pinch to zoom on a touch-enabled device.';
+			return controlView;
+		},
+		pan: function(controlView, leafletView){
+			var map = leafletView.map;
+			//on/off scripts
+			controlView.addInteraction = function(){
+				map.dragging.enable();
+				map.keyboard._setPanOffset(80);
+			};
+			controlView.removeInteraction = function(){
+				map.dragging.disable();
+				map.keyboard._setPanOffset(0);
+			};
+			//add pan control to map and hide
+			var PanControl = leafletView.CustomControl('pan', 'bottomleft');
+			var panControl = new PanControl();
+			map.addControl(panControl);
+			var panControlView = new PanControlView();
+			$('.pan-control-container').hide();
+			//set pan control events
+			panControlView.on('pan', leafletView.pan, leafletView);
+			//set message for first click alert
+			controlView.message = 'In addition to the pan tool, you can click and drag the map or use the arrow keys to pan the map on a desktop computer, or touch and drag with one finger to pan the map on a touch-enabled device.';
+			return controlView;
+		},
+		retrieve: function(controlView, leafletView){
+			var map = leafletView.map;
+			//on/off scripts
+			controlView.addInteraction = function(){
+				//close any hidden-but-open popups
+				map.closePopup();
+				$('.leaflet-popup-pane').show();
+				$('.leaflet-interactive').removeAttr('style');
+			};
+			controlView.removeInteraction = function(){
+				$('.leaflet-popup-pane').hide();
+				$('.leaflet-interactive').css('cursor', 'default');
+			};
+			//add retrieve-control-container class to allow popup pane show/hide
+			var popupPane = $('.leaflet-popup-pane');
+			popupPane.attr('class', popupPane.attr('class') + ' retrieve-control-container');
+			//set message for first click alert
+			controlView.message = 'Retrieve information by clicking a map feature to open a pop-up on the feature.';
+			return controlView;
+		},
+		overlay: function(controlView, leafletView){
+			var map = leafletView.map;
+			//add overlay control
+			var OverlayControl = leafletView.CustomControl('overlay', 'bottomleft');
+			var overlayControl = new OverlayControl();
+			map.addControl(overlayControl);
+			return controlView;
+		},
+		underlay: function(controlView, leafletView){
+			var map = leafletView.map;
+			//add overlay control
+			var UnderlayControl = leafletView.CustomControl('underlay', 'bottomleft');
+			var underlayControl = new UnderlayControl();
+			map.addControl(underlayControl);
+			return controlView;
+		},
+		search: function(controlView, leafletView){
+			return controlView;
+		},
+		filter: function(controlView, leafletView){
+			return controlView;
+		},
+		reexpress: function(controlView, leafletView){
+			return controlView;
+		},
+		resymbolize: function(controlView, leafletView){
+			return controlView;
+		},
+		reproject: function(controlView, leafletView){
+			return controlView;
+		}
+	},
+	setInteractionControls: function(){
+		//set no-interaction map option defaults
+		var noInteraction = {
+			zoomControl: false,
+			touchZoom: false,
+			scrollWheelZoom: false,
+			doubleClickZoom: false,
+			boxZoom: false,
+			dragging: false,
+			keyboardPanOffset: 0,
+			keyboardZoomOffset: 0
+		};
+		var mapOptions = this.model.get('mapOptions');
+		this.model.set('mapOptions', _.extend(mapOptions, noInteraction));
+		//once map has been set, add interaction UI controls
 		this.on('mapset', function(){
-			//set UI toggle buttons
+			var map = this.map;
+			//set interaction toggle buttons control
 			var InteractionControl = this.CustomControl('interaction', 'topright');
 			var interactionControl = new InteractionControl();
-			interactionControl.addTo(this.map);
-
+			interactionControl.addTo(map);
+			//create new button for each interaction
 			for (var interaction in this.model.get('interactions')){
+				//instantiate model
 				var interactionControlModel = new InteractionControlModel({interaction: interaction});
-				var interactionControlView = new InteractionControlView({model: interactionControlModel});
+				//instantiate view
+				var interactionToggleView = new InteractionToggleView({model: interactionControlModel});
+				//add controls and scripts for each included interaction
+				if (this.setMapInteractions[interaction]){
+					interactionToggleView = this.setMapInteractions[interaction](interactionToggleView, this);
+				};
+				//render interaction toggle button
+				interactionToggleView.render();
 			};
+			console.log(map);
 		}, this);
 
-
-
-		//remove default zoom control and interactions if no zoom interaction
-		if (!this.model.get('interactions.zoom')){
-			this.model.set('mapOptions.zoomControl', false);
-			this.model.set('mapOptions.touchZoom', false);
-			this.model.set('mapOptions.scrollWheelZoom', false);
-			this.model.set('mapOptions.doubleClickZoom', false);
-			this.model.set('mapOptions.boxZoom', false);
-		};
-		//remove default panning interaction if no pan interaction
-		if (!this.model.get('interactions.pan')){
-			this.model.set('mapOptions.dragging', false);
-		};
 		//set legend control
 		if (typeof this.model.get('mapOptions.legend') == 'undefined' || this.model.get('mapOptions.legend')){
 			this.on('dataLayersDone', this.addLegend, this);
 		};
+
 		//set layers control for overlay and reexpress interactions
 		if ((this.model.get('interactions.overlay') && this.model.get('interactions.overlay.dataLayers') && this.model.get('interactions.overlay.dataLayers').length > 0) || (this.model.get('interactions.reexpress') && _.some(this.model.get('dataLayers'), function(layer){
 			return layer.techniques.length > 1
@@ -1065,6 +1347,13 @@ var LeafletMap = Backbone.View.extend({
 		if (this.model.get('interactions.resymbolize')){
 			this.on('dataLayersDone', this.addResymbolize, this);
 		};
+
+
+		this.on('dataLayersDone', function(){
+			//prevent retrieve by default
+			$('.leaflet-popup-pane').hide();
+			$('.leaflet-interactive').css('cursor', 'default');
+		}, this);
 	},
 	logInteractions: function(){
 		//designate events to listen to with contexts for each interaction
@@ -1089,7 +1378,7 @@ var LeafletMap = Backbone.View.extend({
 	},
 	setMap: function(){
 		//configure map interactions
-		this.setMapInteractions();
+		this.setInteractionControls();
 		//create Leaflet layers arrays
 		this.model.set({
 			leafletBaseLayers: [],
@@ -1098,6 +1387,9 @@ var LeafletMap = Backbone.View.extend({
 
 		//instantiate map
 		this.map = L.map('map', this.model.get('mapOptions'));
+
+		//trigger mapset event
+		this.trigger('mapset');
 
 		//set layer change listener
 		var layerChange = this.layerChange;
@@ -1110,8 +1402,6 @@ var LeafletMap = Backbone.View.extend({
 		//add each data layer
 		var dataLayers = this.model.get('dataLayers');
 		_.each(dataLayers, this.setDataLayer, this);
-
-		this.trigger('mapset');
 
 		//set interaction logging
 		this.logInteractions();
