@@ -743,45 +743,7 @@ var LeafletMap = Backbone.View.extend({
 			//classification will take precedence over base options
 			return _.defaults(feature.properties.layerOptions, dataLayerModel.get('layerOptions'));
 		};
-		//add popups to layer
-		function onEachFeature(feature, layer){
-			feature.layer = layer; //bind layer to feature for search
-			var popupContent = "<table>";
-			if (dataLayerModel.attributes.displayAttributes){
-				dataLayerModel.get('displayAttributes').forEach(function(attr){
-					popupContent += "<tr><td class='attr'>"+attr+":</td><td>"+feature.properties[attr]+"</td></tr>";
-				});
-			} else {
-				var attr = dataLayerModel.get('expressedAttribute');
-				popupContent += "<tr><td class='attr'>"+attr+":</td><td>"+feature.properties[attr]+"</td></tr>";
-			};
-			popupContent += "</table>";
-			layer.bindPopup(popupContent);
-			if (model.get('interactions.retrieve.event') == 'hover'){
-				layer.on({
-					mouseover: function(){
-						//fix for popup flicker
-						var bounds = this.getBounds();
-						var maxLat = bounds.getNorth();
-						var midLng = bounds.getCenter().lng;
-						this.openPopup([maxLat, midLng]);
-					},
-					mouseout: function(){ this.closePopup() }
-				});
-			};
-			layer.on('popupopen', function(){
-				//only trigger event if popup is visible
-				if ($('.leaflet-popup-pane').css('display') != 'none'){
-					view.trigger('popupopen');
-				};
-			});
-		};
-		//Leaflet overlay options
-		var overlayOptions = {
-			onEachFeature: onEachFeature,
-			style: style,
-			className: dataLayerModel.get('className')
-		};
+
 		//create a new Leaflet layer for each technique
 		_.each(dataLayerModel.get('techniques'), function(technique, i){
 			//instantiate new model based on technique type and combine with data layer model
@@ -790,6 +752,47 @@ var LeafletMap = Backbone.View.extend({
 			_.extend(techniqueModel.attributes, dataLayerModel.attributes);
 			//set model classification
 			techniqueModel.setClasses();
+
+			//add popups to layer
+			function onEachFeature(feature, layer){
+				if (!feature.layers){ feature.layers = [] };
+				feature.layers.push(layer); //bind layer to feature for search
+				var popupContent = "<table>";
+				if (dataLayerModel.attributes.displayAttributes){
+					dataLayerModel.get('displayAttributes').forEach(function(attr){
+						popupContent += "<tr><td class='attr'>"+attr+":</td><td>"+feature.properties[attr]+"</td></tr>";
+					});
+				} else {
+					var attr = dataLayerModel.get('expressedAttribute');
+					popupContent += "<tr><td class='attr'>"+attr+":</td><td>"+feature.properties[attr]+"</td></tr>";
+				};
+				popupContent += "</table>";
+				layer.bindPopup(popupContent);
+				if (model.get('interactions.retrieve.event') == 'hover'){
+					layer.on({
+						mouseover: function(){
+							//fix for popup flicker
+							var bounds = this.getBounds();
+							var maxLat = bounds.getNorth();
+							var midLng = bounds.getCenter().lng;
+							this.openPopup([maxLat, midLng]);
+						},
+						mouseout: function(){ this.closePopup() }
+					});
+				};
+				layer.on('popupopen', function(){
+					//only trigger event if popup is visible
+					if ($('.leaflet-popup-pane').css('display') != 'none'){
+						view.trigger('popupopen');
+					};
+				});
+			};
+			//Leaflet overlay options
+			var overlayOptions = {
+				onEachFeature: onEachFeature,
+				style: style,
+				className: dataLayerModel.get('className')
+			};
 
 			//special processing for prop symbol maps
 			if (technique.type == 'proportional symbol'){
@@ -1206,22 +1209,26 @@ var LeafletMap = Backbone.View.extend({
 				map.closePopup();
 				$('.leaflet-popup-pane').show();
 				//open the retrieve popup or just the feature name if no retrieve
-				if (result.layer._popup){
-					result.layer.openPopup();
-				} else {
-					result.layer.openPopup(result.properties.name);
-				};
-				//reset map center to avoid overlapping search box
-				var center = result.layer.getBounds ? result.layer.getBounds().getCenter() : result.layer.getLatLng();
-				map.setView(center, null, {pan: {animate: false}});
-				map.panBy([-50, 0]);
-				//disable further popups if retrieve is off
-				if ($('.retrieve-control').length > 0 && $('.retrieve-control').attr('class').indexOf('active') == -1){
-					result.layer.on('popupclose', function(){
-						$('.retrieve-control-container').hide();
-						result.layer.off('popupclose');
-					});
-				};
+				_.each(result.layers, function(layer){
+					if (map.hasLayer(layer)){
+						if (layer._popup){
+							layer.openPopup();
+						} else {
+							layer.openPopup(result.properties.name);
+						};
+						//reset map center to avoid overlapping search box
+						var center = layer.getBounds ? layer.getBounds().getCenter() : layer.getLatLng();
+						map.setView(center, null, {pan: {animate: false}});
+						map.panBy([-50, 0]);
+						//disable further popups if retrieve is off
+						if ($('.retrieve-control').length > 0 && $('.retrieve-control').attr('class').indexOf('active') == -1){
+							layer.on('popupclose', function(){
+								$('.retrieve-control-container').hide();
+								layer.off('popupclose');
+							});
+						};
+					}
+				}, this);
 			};
 			//replace search model when mapped layers change
 			function setSearchInput(){
