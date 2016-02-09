@@ -1305,8 +1305,10 @@ var LeafletMap = Backbone.View.extend({
 					var attributes = dataLayer.displayAttributes;
 					//create filter view
 					var filterView = controlType == 'logic' ? new FilterLogicView({applyFilter: applyFilter}) : new FilterSliderView({applyFilter: applyFilter});
+					//dataLayer className hasn't been defined yet, so must use name here
+					var className = dataLayer.name.replace(/\./g, '').replace(/\s/g, '-');
 					//when the features are loaded, render the tool
-					leafletView.once(dataLayer.className+'-features-added', function(){
+					leafletView.once(className+'-features-added', function(){
 						//set a filter tool
 						var filterModel = new FilterModel({layerName: dataLayer.className, attributes: attributes, tool: controlType, map: map, features: leafletView.model.get('allFeatures')});
 						filterView.model = filterModel;
