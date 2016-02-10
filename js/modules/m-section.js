@@ -322,41 +322,48 @@ var InteractionToggleView = Backbone.View.extend({
 	message: '',
 	addInteraction: function(){},
 	removeInteraction: function(){},
-	toggle: function(e, addInteraction, removeInteraction, message){
+	toggle: function(e, toggleView){
 		//get target and interaction
 		var target = $(e.target).attr('class') ? $(e.target) : $(e.target).parent(),
 			className = target.attr('class'),
 			interaction = className.split('-')[0];
 		//toggle
+		var action, state;
 		if (className.indexOf(' active') > -1){
+			action = 'inactivate', state = 'inactive';
 			//close associated interaction widget
 			$('.'+interaction+'-control-container').hide();
 			//remove active class
 			target.attr('class', className.substring(0, className.indexOf(' active')));
 			//remove any additional interaction scripts
-			removeInteraction();
+			toggleView.removeInteraction();
 		} else {
+			action = 'activate', state = 'active';
 			//open associated interaction widget
 			$('.'+interaction+'-control-container').show();
 			//add active class
 			target.attr('class', className + ' active');
 			//add any additional interaction scripts
-			addInteraction();
+			toggleView.addInteraction();
 		};
+		//fire inactivate event
+		toggleView.trigger('toggle', {
+			action: action,
+			state: state,
+			interaction: interaction
+		});
 		//display message about the interaction on first click
-		if (message){ alert(message); };
+		if (toggleView.message){ alert(toggleView.message); };
 	},
 	render: function(){
 		this.$el.append(this.template(this.model.attributes));
-		var toggle = this.toggle,
-			addInteraction = this.addInteraction,
-			removeInteraction = this.removeInteraction,
-			message = this.message,
+		var toggleView = this,
+			toggle = this.toggle,
 			firstClick = true;
 		this.$el.children('.'+this.model.get('interaction')+'-control').click(function(e){
 			//only display message on first click
-			message = message.length > 0 && firstClick ? message : false;
-			toggle(e, addInteraction, removeInteraction, message);
+			toggleView.message = toggleView.message.length > 0 && firstClick ? toggleView.message : false;
+			toggle(e, toggleView);
 			firstClick = false;
 		});
 	},
@@ -697,6 +704,19 @@ var LeafletMap = Backbone.View.extend({
 		'click .reexpress': 'reexpress'
 	},
 	offLayers: {},
+	//all available interactions
+	interactions: {
+		zoom: false,
+		pan: false,
+		retrieve: false,
+		overlay: false,
+		search: false,
+		filter: false,
+		sequence: false,
+		reexpress: false,
+		resymbolize: false,
+		reproject: false
+	},
 	render: function(){
 		this.$el.html("<div id='map'>");
 		this.model.set('allFeatures', []);
@@ -1024,7 +1044,7 @@ var LeafletMap = Backbone.View.extend({
 				map.dragging.enable();
 				map.keyboard._setPanOffset(80);
 				//set cursor to grab if no retrieve
-				if ($('.retrieve-control').length > 0 && $('.retrieve-control').attr('class').indexOf('active') > -1){} else {
+				if (!leafletView.interactions.retrieve || leafletView.interactions.retrieve == 'inactive'){
 					$('.leaflet-interactive').css('cursor', 'grab');
 				};				
 			};
@@ -1032,7 +1052,7 @@ var LeafletMap = Backbone.View.extend({
 				map.dragging.disable();
 				map.keyboard._setPanOffset(0);
 				//set cursor to pointer if no retrieve
-				if ($('.retrieve-control').length > 0 && $('.retrieve-control').attr('class').indexOf('active') > -1){} else {
+				if (!leafletView.interactions.retrieve || leafletView.interactions.retrieve == 'inactive'){
 					$('.leaflet-interactive').css('cursor', 'default');
 				};
 			};
@@ -1071,7 +1091,7 @@ var LeafletMap = Backbone.View.extend({
 			controlView.removeInteraction = function(){
 				$('.leaflet-popup-pane').hide();
 				//set cursor to grab if pan active or default if not
-				if ($('.pan-control').length > 0 && $('.pan-control').attr('class').indexOf('active') > -1){
+				if (leafletView.interactions.pan == 'active'){
 					$('.leaflet-interactive').css('cursor', 'grab');
 				} else {
 					$('.leaflet-interactive').css('cursor', 'default');
@@ -1165,7 +1185,7 @@ var LeafletMap = Backbone.View.extend({
 						map.setView(center, null, {pan: {animate: false}});
 						map.panBy([-50, 0]);
 						//disable further popups if retrieve is off
-						if ($('.retrieve-control').length > 0 && $('.retrieve-control').attr('class').indexOf('active') == -1){
+						if (leafletView.interactions.retrieve == 'inactive'){
 							layer.on('popupclose', function(){
 								$('.retrieve-control-container').hide();
 								layer.off('popupclose');
@@ -1362,6 +1382,14 @@ var LeafletMap = Backbone.View.extend({
 							$('#overlay-layer-'+targetVal+' input').prop('checked', true);
 							$('#overlay-layer-'+targetVal).show();
 						};
+						//set cursor based on presence of other interactions
+						if (leafletView.interactions.retrieve == 'active'){
+							$('.leaflet-interactive').css('cursor', 'pointer');
+						} else if (leafletView.interactions.pan == 'active'){
+							$('.leaflet-interactive').css('cursor', 'grab');
+						} else {
+							$('.leaflet-interactive').css('cursor', 'default');
+						};
 					};
 					//render input views
 					reexpressInputView.render();
@@ -1432,26 +1460,26 @@ var LeafletMap = Backbone.View.extend({
 				var interactionControlModel = new InteractionControlModel({interaction: interaction});
 				//instantiate view
 				var interactionToggleView = new InteractionToggleView({model: interactionControlModel});
+				//listen for toggle to set status of interaction in map view
+				interactionToggleView.on('toggle', function(e){
+					this.interactions[e.interaction] = e.state;
+				}, this);
 				//add controls and scripts for each included interaction
 				if (this.setMapInteractions[interaction]){
 					interactionToggleView = this.setMapInteractions[interaction](interactionToggleView, this);
+					//change interaction property of Leaflet view from false to 'inactive'
+					this.interactions[interaction] = 'inactive';
 				};
 				//render interaction toggle button
 				interactionToggleView.render();
 			};
 		}, this);
 
-		//set legend control
-		if (typeof this.model.get('mapOptions.legend') == 'undefined' || this.model.get('mapOptions.legend')){
-			this.on('dataLayersDone', this.addLegend, this);
-		};
-
-		//set resymbolize control for resymbolize interaction
-		if (this.model.get('interactions.resymbolize')){
-			// this.on('dataLayersDone', this.addResymbolize, this);
-		};
-
 		this.on('dataLayersDone', function(){
+			//set legend control
+			if (typeof this.model.get('mapOptions.legend') == 'undefined' || this.model.get('mapOptions.legend')){
+				this.addLegend();
+			};
 			//prevent retrieve by default
 			$('.leaflet-popup-pane').hide();
 			$('.leaflet-interactive').css('cursor', 'default');
