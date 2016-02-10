@@ -20,6 +20,10 @@
 
 - D3 3.5.6
 
+- ColorBrewer
+
+- jscolor 2.0.4
+
 - Simple Statistics 1.0.0
 
 - Turf 2.0.0

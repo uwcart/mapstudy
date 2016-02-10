@@ -1339,8 +1339,8 @@ var LeafletMap = Backbone.View.extend({
 
 			//add control to map
 			var CustomControl = leafletView.CustomControl('reexpress', 'bottomleft');
-			var filterControl = new CustomControl();
-			map.addControl(filterControl);
+			var reexpressControl = new CustomControl();
+			map.addControl(reexpressControl);
 
 			//set inputs
 			function setInputs(){
@@ -1422,11 +1422,18 @@ var LeafletMap = Backbone.View.extend({
 						layerSection.find('label').css('opacity', '1');
 					};
 				};
-			})
-
+			});
 			return controlView;
 		},
 		resymbolize: function(controlView, leafletView){
+			var map = leafletView.map;
+
+			//add control to map
+			var CustomControl = leafletView.CustomControl('resymbolize', 'bottomleft');
+			var resymbolizeControl = new CustomControl();
+			map.addControl(resymbolizeControl);
+
+
 			return controlView;
 		},
 		reproject: function(controlView, leafletView){

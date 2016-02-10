@@ -212,9 +212,27 @@ Reexpress interaction. For each visible data layer, allows the user to change th
 
 #### map.interactions.resymbolize
 
-		-"resymbolize"-: { -"logging"- }
+		-"resymbolize"-: { -"logging"- -"reclassify"- -"rescale"- -"recolor"- }
 
-Resymbolize interaction. Allows the user to manipulate the classification scheme via the legend. If included, users will be able to add or remove classes, change class breaks, and change the output parameters of the class scale (colors or numbers).
+Resymbolize interaction. Allows the user to manipulate the classification scheme via the legend. If included, users will be able to change the classification parameters of graduated maps (choropleth or proportional symbol), change the symbol scale or interval (proportional symbol, dot, isarithm), and/or change the symbol color (choropleth and proportional symbol). If `reclassify`, `rescale`, and `recolor` are all omitted, all of their functionality will be included by default; if one or more are included, only those that are included as `true` will be available.
+
+#### map.interactions.resymbolize.reclassify
+
+	-"reclassify": -true- -false-
+
+Allows the user to change the classification scheme, the number of classes, and the class breakpoints. Only available for choropleth and proportional symbol maps.
+
+#### map.interactions.resymbolize.rescale
+
+	-"rescale": -true- -false-
+
+Allows the user to change the symbol scaling if a proportional symbol map, or the interval if a dot or isarithm map.
+
+#### map.interactions.resymbolize.recolor
+
+	-"recolor": -true- -false-
+
+Allows the user to change the symbol color. For a choropleth map, the user may choose from any sequential ColorBrewer scale. For proportional symbol map, the user may enter any HEX value or choose from a palette the fill color of the symbols.
 
 #### map.interactions.reproject
 
