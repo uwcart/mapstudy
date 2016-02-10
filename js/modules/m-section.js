@@ -383,9 +383,10 @@ var PanControlView = InteractionControlView.extend({
 		'click .pan-button': 'pan'
 	},
 	template: _.template( $('#pan-control-template').html() ),
+	panMap: function(targetId){},
 	pan: function(e){
 		var targetId = $(e.target).attr('id') ? $(e.target).attr('id') : $(e.target).parent().attr('id');
-		this.trigger('pan', targetId);
+		this.panMap(targetId);
 	}
 });
 
@@ -447,6 +448,22 @@ var SearchModel = Backbone.Model.extend({
 	}
 });
 
+var SearchInputView = Backbone.View.extend({
+	el: '.search-control-container',
+	template: _.template($('#search-control-template').html()),
+	events: {
+		'click button': 'resetSearch'
+	},
+	resetSearch: function(){
+		this.$el.find('input').val('');
+		$('#search-results-box').html('');
+		this.trigger('reset');
+	},
+	initialize: function(){
+		this.$el.append(this.template());
+	}
+});
+
 var SearchView = Backbone.View.extend({
 	el: '.search-control-container',
 	template: _.template($('#search-result-template').html()),
@@ -464,11 +481,12 @@ var SearchView = Backbone.View.extend({
 		_.each(this.model.get('result'), function(result, i){
 			//limit to top 10 results
 			if (i < 10){
+				var featureId = i + result.properties.name.replace(/[\.\s#]/g, '') + result.id;
 				//append a new line for each result
-				this.$el.children('#search-results-box').append(this.template({featureName: result.properties.name, featureId: result.id}));
+				this.$el.children('#search-results-box').append(this.template({featureName: result.properties.name, featureId: featureId}));
 				//attach click listener
 				var selectFeature = this.selectFeature;
-				$('#result-'+result.id).click(function(e){ selectFeature(e, result); });
+				$('#result-'+featureId).click(function(e){ selectFeature(e, result); });
 			};
 		}, this);
 	}
@@ -627,25 +645,42 @@ var FilterLogicView = FilterSliderView.extend({
 	}
 });
 
+//model for reexpress widget
 var ReexpressModel = Backbone.Model.extend({
 	defaults: {
-		iconName: '',
+		techniqueType: '',
+		techniqueTypeClass: '',
 		layerName: '',
-		state: '',
-		name: ''
+		layerNameClass: '',
+		layerId: 0
 	}
 });
 
+//view for reexpress section
+var ReexpressSectionView = Backbone.View.extend({
+	el: '.reexpress-control-container',
+	template: _.template( $('#reexpress-section-template').html() ),
+	initialize: function(){
+		this.$el.append(this.template(this.model.attributes));
+	}
+})
+
 //view for reexpress buttons
-var ReexpressView = Backbone.View.extend({
-	events: {
-		"click": "setTechnique"
-	},
+var ReexpressInputView = Backbone.View.extend({
+	template: _.template( $('#reexpress-input-template').html() ),
 	setTechnique: function(e){},
 	render: function(){
-		var html = '<button type="button" name="'+ this.model.get('name') +'" class="'+ this.model.get('state') +'"><img class="icon" src="img/icons/'+ this.model.get('iconName') +'.png">'+ this.model.get('iconName').replace(/_/g, ' ') +'</button>';
-		this.$el.html(html);
-		return html;
+		//instantiate reexpress section if needed
+		if ($('#'+this.model.get('layerNameClass')+'-reexpress-section').length == 0){
+			new ReexpressSectionView({model: this.model});
+		};
+		//set el as section div
+		this.$el = $('#'+this.model.get('layerNameClass')+'-reexpress-section');
+		//add input div for technique
+		this.$el.append(this.template(this.model.attributes));
+		//set click listener
+		var setTechnique = this.setTechnique;
+		this.$el.find('input.'+this.model.get('techniqueTypeClass')).click(setTechnique);
 	}
 });
 
@@ -840,38 +875,19 @@ var LeafletMap = Backbone.View.extend({
 			};
 			//add to layers
 			model.attributes.leafletDataLayers.push(leafletDataLayer);
-			//add to overlay control
-			if ($('.overlay-control-container')){
-				var offLayers = view.offLayers;
-				var overlayControlModel = new OverlayControlModel({
-					layerName: dataLayerModel.get('name'),
-					layerId: layerId,
-					techniqueType: technique.type
-				});
-				var overlayControlView = new OverlayControlView({model: overlayControlModel});
-				//toggleLayer function must be defined for leaflet view
-				overlayControlView.toggleLayer = function(layerId, addLayer){
-					//trigger interaction logging if toggle was not due to reexpression
-					if (!view.reexpressed){ view.trigger('overlay'); };
-					//turn layer on/off
-					if (map._layers[layerId] && !addLayer){
-						view.removeLayer(layerId);
-					} else if (!map._layers[layerId] && offLayers[layerId]){
-						view.addLayer(layerId);
+
+			//interval needed to keep checking if layer not yet fully processed
+			var interval = setInterval(triggerDone, 100);
+			function triggerDone(){
+				//check to make sure layer has been fully processed
+				if (map.hasLayer(leafletDataLayer) || view.offLayers[layerId]){
+					clearInterval(interval);
+					//if the last layer, trigger the done event
+					if (dataLayerModel.id == model.get('dataLayers').length-1 && techniqueModel.get('techniqueIndex') == techniqueModel.get('techniques').length-1){
+						view.trigger('dataLayersDone');
 					};
 				};
-				overlayControlView.render();
-				//only show the layers that are on the map
-				if (view.offLayers[layerId]){
-					$('#overlay-layer-'+layerId).hide();
-				} else {
-					$('#overlay-layer-'+layerId+' input').prop('checked', true);
-				};
-			};
-			//if the last layer, trigger the done event
-			if (dataLayerModel.id == model.get('dataLayers').length-1 && techniqueModel.get('techniqueIndex') == techniqueModel.get('techniques').length-1){ 
-				this.trigger('dataLayersDone');
-			};
+			};			
 		}, this);
 	},
 	setDataLayer: function(dataLayer, i){
@@ -887,45 +903,6 @@ var LeafletMap = Backbone.View.extend({
 		//get data and create thematic layers
 		dataLayerModel.on('sync', this.setTechniques, this);
 		dataLayerModel.fetch({url: dataLayer.source});
-	},
-	hideLabels: function(){
-		//if overlay is absent, hide all checkboxes
-		if (!this.model.get('interactions.overlay')){
-			$('.leaflet-control-layers-overlays input').hide();
-		};
-		//temporarily hide all labels with reexpress buttons
-		$('.reexpress').parents('label').hide();
-		//hide unchecked labels with buttons--kinda hacky, but can't figure out another way
-		$('.leaflet-control-layers-overlays label').each(function(){
-			var label = $(this);
-			var reexpressSpan = label.find('.reexpress');
-			var button = $(this).find('button');
-			var input = $(this).find('input');
-			input.off();
-			//inactivate both buttons if layer is unchecked
-			input.on('change', function(){
-				if (button.length > 0){
-					if ($(this).prop('checked')){
-						label.find('button[class="inactive now"]').attr('class', 'active');
-					} else {
-						label.find('button[class=active]').attr('class', 'inactive now');
-						button.click(function(e){ e.preventDefault() });
-					};
-				};
-			});
-			if (reexpressSpan.length > 0){
-				//if the label's checkbox is checked, set to visible
-				if (input.prop('checked')){
-					var dataLayerName = button.attr('name');
-					//find all labels for same dataLayer and reset classes
-					$('.leaflet-control-layers-overlays').find('button[name="'+ dataLayerName +'"]').parents('.reexpress').attr('class', 'reexpress');
-					//set only buttons belonging to checked layer to visible
-					reexpressSpan.attr('class', 'reexpress visible');
-				};
-			};
-		});
-		//show only one label for each dataLayer, even if renderOnLoad is false
-		$('.visible').parents('label').show();
 	},
 	CustomControl: function(controlName, position){
 		var model = this.model;
@@ -951,18 +928,6 @@ var LeafletMap = Backbone.View.extend({
 			}
 		});
 		return Control;
-	},
-	pan: function(e){
-		switch (e){
-			case 'pan-up':
-				this.map.panBy([0, -80]); break;
-			case 'pan-left':
-				this.map.panBy([-80, 0]); break;
-			case 'pan-right':
-				this.map.panBy([80, 0]); break;
-			case 'pan-down':
-				this.map.panBy([0, 80]); break;
-		};
 	},
 	layerChange: function(e){
 		//edit legend
@@ -1012,74 +977,6 @@ var LeafletMap = Backbone.View.extend({
 		});
 		//hide everything but icon to start
 		$('#legend-wrapper').hide();
-	},
-	addReexpress: function(layerName, techniqueType){
-		//function to render buttons
-		var layer = _.findWhere(this.model.get('dataLayers'), {name: layerName}),
-			techniques = layer.techniques;
-		//if multiple available techniques, add button for each
-		if (techniques.length > 1){
-			var layerNameHtml = layerName +': ';
-			var spanClass = 'reexpress';
-			_.each(techniques, function(technique, i){
-				var state = technique.type == techniqueType ? 'active' : 'inactive';
-				spanClass += i == 0 && technique.type == techniqueType ? ' visible' : '';
-				//ReexpressView can be used to create buttons or button html
-				var reexpressButton = new ReexpressView({
-					model: new ReexpressModel({
-						iconName: technique.type.replace(/\s/g, '_'),
-						layerName: layerName,
-						name: layer.className,
-						state: state
-					})
-				});
-				//here we use it to just create html
-				layerNameHtml += '<span class="'+spanClass+'">'+ reexpressButton.render() +'</span>'; 
-			}, this);
-			//add reexpress buttons to layers control
-			return layerNameHtml;
-		} else {
-			//no buttons
-			return layerName;
-		};
-	},
-	reexpress: function(e){
-		var view = this,
-			map = view.map,
-			offLayers = view.offLayers
-			button = $(e.target),
-			span = button.parent(),
-			spanParent = span.parent(),
-			dataLayerName = button.attr('name'),
-			techniqueType = button.children('img').attr('src').split('/')[2];
-			techniqueType = techniqueType.substring(0, techniqueType.indexOf('.')).replace(/_/g, ' ');
-		//set variable to prevent overlay interaction from triggering
-		view.reexpressed = true;
-		setTimeout(function(){ view.reexpressed = false; }, 500);
-		//trigger reexpress interaction
-		view.trigger('reexpress');
-		//check each layer on the map for a name match
-		map.eachLayer(function(layer){
-			if (layer.className && layer.className == dataLayerName){
-				//remove the layer from the map to replace with other technique
-				map.removeLayer(layer);
-				offLayers[layer._leaflet_id] = layer;
-				//if a layer with the correct technique exists, put it on the map
-				_.each(offLayers, function(offLayer){
-					if (offLayer.layerName == layer.layerName && offLayer.techniqueType == techniqueType){
-						offLayer.addTo(map);
-						delete offLayers[offLayer._leaflet_id];
-						return false;
-					};
-					//remove single-feature layers that might be leftover from filter
-					if (offLayer.feature){
-						delete offLayers[offLayer._leaflet_id];
-					};
-				}, this);
-			};
-		});
-		//switch labels in layers control
-		this.hideLabels();
 	},
 	setMapInteractions: {
 		zoom: function(controlView, leafletView){
@@ -1144,9 +1041,20 @@ var LeafletMap = Backbone.View.extend({
 			var panControl = new PanControl();
 			map.addControl(panControl);
 			var panControlView = new PanControlView();
+			//widget-based pan-handler
+			panControlView.panMap = function(target){
+				switch (target){
+					case 'pan-up':
+						map.panBy([0, -80]); break;
+					case 'pan-left':
+						map.panBy([-80, 0]); break;
+					case 'pan-right':
+						map.panBy([80, 0]); break;
+					case 'pan-down':
+						map.panBy([0, 80]); break;
+				};
+			};
 			$('.pan-control-container').hide();
-			//set pan control events
-			panControlView.on('pan', leafletView.pan, leafletView);
 			//set message for first click alert
 			controlView.message = 'In addition to the pan tool, you can click and drag the map or use the arrow keys to pan the map on a desktop computer, or touch and drag with one finger to pan the map on a touch-enabled device.';
 			return controlView;
@@ -1177,11 +1085,44 @@ var LeafletMap = Backbone.View.extend({
 			return controlView;
 		},
 		overlay: function(controlView, leafletView){
-			var map = leafletView.map;
+			var map = leafletView.map,
+				offLayers = leafletView.offLayers;
 			//add overlay control
 			var OverlayControl = leafletView.CustomControl('overlay', 'bottomleft');
 			var overlayControl = new OverlayControl();
 			map.addControl(overlayControl);
+
+			//add to overlay control
+			leafletView.on('dataLayersDone', function(){
+				_.each(leafletView.model.get('leafletDataLayers'), function(dataLayer){
+					var layerId = dataLayer._leaflet_id;
+					var overlayControlModel = new OverlayControlModel({
+						layerName: dataLayer.layerName,
+						layerId: layerId,
+						techniqueType: dataLayer.techniqueType
+					});
+					var overlayControlView = new OverlayControlView({model: overlayControlModel});
+					//toggleLayer function must be defined for leaflet view
+					overlayControlView.toggleLayer = function(layerId, addLayer){
+						//trigger interaction logging if toggle was not due to reexpression
+						if (!leafletView.reexpressed){ leafletView.trigger('overlay'); };
+						//turn layer on/off
+						if (map._layers[layerId] && !addLayer){
+							leafletView.removeLayer(layerId);
+						} else if (!map._layers[layerId] && offLayers[layerId]){
+							leafletView.addLayer(layerId);
+						};
+					};
+					overlayControlView.render();
+					//only show the layers that are on the map
+					if (offLayers[layerId]){
+						$('#overlay-layer-'+layerId).hide();
+					} else {
+						$('#overlay-layer-'+layerId+' input').prop('checked', true);
+					};
+				}, this);
+			}, this);
+
 			return controlView;
 		},
 		underlay: function(controlView, leafletView){
@@ -1198,8 +1139,11 @@ var LeafletMap = Backbone.View.extend({
 			var SearchControl = leafletView.CustomControl('search', 'bottomleft');
 			var searchControl = new SearchControl();
 			map.addControl(searchControl);
-			var template = _.template($('#search-control-template').html());
-			$('.search-control-container').append(template());
+			var searchInputView = new SearchInputView();
+			searchInputView.on('reset', function(){
+				map.setView(leafletView.model.get('mapOptions').center, leafletView.model.get('mapOptions').zoom);
+				map.closePopup();
+			}, this);
 			$('.search-control-container').hide();
 			//instantiate a view to call and display results
 			var searchView = new SearchView();
@@ -1370,6 +1314,88 @@ var LeafletMap = Backbone.View.extend({
 			return controlView;
 		},
 		reexpress: function(controlView, leafletView){
+			var map = leafletView.map,
+				offLayers = leafletView.offLayers;
+
+			//add control to map
+			var CustomControl = leafletView.CustomControl('reexpress', 'bottomleft');
+			var filterControl = new CustomControl();
+			map.addControl(filterControl);
+
+			//set inputs
+			function setInputs(){
+				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					//create reexpressModel for layer
+					var reexpressModel = new ReexpressModel({
+						layerName: layer.name,
+						layerNameClass: layer.className,
+						techniqueType: layer.techniqueType,
+						techniqueTypeClass: layer.techniqueType.replace(/\s/g, ''),
+						layerId: layer._leaflet_id
+					});
+					//instantiate section and input views
+					var reexpressInputView = new ReexpressInputView({model: reexpressModel});
+					reexpressInputView.setTechnique = function(e){
+						var target = $(e.target),
+							targetVal = target.val(),
+							inputs = target.parents('.reexpress-section').find('input');
+						//remove all map layers for given data layer
+						_.each(inputs, function(input){
+							var inputVal = $(input).val();
+							//this ensures single-technique layers can be moved to top
+							if (leafletView.map._layers[inputVal]){
+								leafletView.removeLayer(inputVal);
+								//fire reexpress event if layer was changed
+								if (inputVal != targetVal){
+									leafletView.trigger('reexpress');
+								};
+							};
+							//hide overlay control inputs for inactive layers
+							if (inputVal != targetVal){
+								$('#overlay-layer-'+inputVal).hide();
+							};
+						});
+						//add selected map layer
+						if (!map._layers[targetVal]){
+							leafletView.addLayer(targetVal);
+							//show corresponding overlay control input
+							$('#overlay-layer-'+targetVal+' input').prop('checked', true);
+							$('#overlay-layer-'+targetVal).show();
+						};
+					};
+					//render input views
+					reexpressInputView.render();
+				}, this);
+			};
+			//function to check radio for currently expressed layers
+			function resetTechniques(){
+				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					if (map.hasLayer(layer)){
+						var techniqueType = layer.techniqueType.replace(/\s/g, '');
+						//check the radio button for layer in reexpress widget
+						$('.reexpress-control-container input[name='+layer.className+'].'+techniqueType).prop('checked', true);
+					};
+				}, this);
+			};
+			//add data layers after loaded
+			leafletView.on('dataLayersDone', function(){
+				setInputs();
+				resetTechniques();
+			}, this);
+			//disable reexpress for data layers not shown on map
+			map.on('layeradd layerremove', function(e){
+				if (e.layer.className && e.layer.techniqueType){
+					var layerSection = $('#'+e.layer.className+'-reexpress-section');
+					if (e.type == 'layerremove'){
+						layerSection.find('input').prop('disabled', true);
+						layerSection.find('label').css('opacity', '0.5');
+					} else {
+						layerSection.find('input').removeProp('disabled');
+						layerSection.find('label').css('opacity', '1');
+					};
+				};
+			})
+
 			return controlView;
 		},
 		resymbolize: function(controlView, leafletView){

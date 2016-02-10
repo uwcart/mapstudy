@@ -79,6 +79,7 @@
             <div id="search-box">
                 <label for="search">Search for:</label>
                 <input type="text" name="search">
+                <button type="button" name="reset">Reset</button>
             </div>
             <div id="search-results-box"></div>
         </script>
@@ -108,6 +109,22 @@
 
         <script type="text/template" id="filter-options-template">
             <option value="<%= attribute %>"><%= attribute %></option>
+        </script>
+
+        <script type="text/template" id="reexpress-section-template">
+            <div id="<%= layerNameClass %>-reexpress-section" class="reexpress-section">
+                <p class="reexpress-section-title"><%= layerName %></p>
+            </div>
+        </script>
+
+        <script type="text/template" id="reexpress-input-template">
+            <div class="reexpress-input-div">
+                <input type="radio" name="<%= layerNameClass %>" class="<%= techniqueTypeClass %>" value="<%= layerId %>">
+                <label for="<%= layerId %>">
+                    <img src="img/icons/<%= techniqueTypeClass %>.png" alt="<%= techniqueType %>">
+                    <%= techniqueType %>
+                </label>
+            </div>
         </script>
 
         <script type="text/template" id="choropleth-legend-template">

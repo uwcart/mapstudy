@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"leafletDa",
+				"leafletDataLayer"
+			],
+			[
+				"techni",
+				"techniqueModel"
+			],
+			[
+				"techniq",
+				"techniqueIndex"
+			],
+			[
+				"techn",
+				"techniqueIndex"
+			],
+			[
 				"data",
 				"dataLayer"
 			],
@@ -491,7 +507,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 52242,
+				"buffer_size": 52572,
 				"line_ending": "Windows"
 			}
 		},
@@ -517,14 +533,6 @@
 			{
 				"buffer_size": 8602,
 				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module6/complete/leaflet-lab/js/main.js",
-			"settings":
-			{
-				"buffer_size": 9586,
-				"line_ending": "Windows"
 			}
 		},
 		{
@@ -555,7 +563,7 @@
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 2384,
+				"buffer_size": 2408,
 				"line_ending": "Windows",
 				"name": "["
 			}
@@ -581,6 +589,14 @@
 			"settings":
 			{
 				"buffer_size": 2694,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/city-data.geojson",
+			"settings":
+			{
+				"buffer_size": 4149,
 				"line_ending": "Windows"
 			}
 		}
@@ -609,6 +625,7 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module6/complete/leaflet-lab/js/main.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module3/Module3.html",
 		"/C/Users/Carl/Desktop/temp/test.svg",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module2/complete/unit-1(module2)/js/main.js",
@@ -735,8 +752,7 @@
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/files/d3-demo/js/main.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module3/files/unit-1(module_3)/js/main.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/files/leaflet-lab/data/MegaCities.geojson",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module4/files/leaflet-lab/js/main.js",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/files/leaflet-lab/js/main.js"
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module4/files/leaflet-lab/js/main.js"
 	],
 	"find":
 	{
@@ -754,6 +770,70 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"result-",
+			"search",
+			"console.log",
+			"-features-added",
+			"result.",
+			"console",
+			"result.",
+			"'layer'+",
+			"layer+",
+			"onEachFeature",
+			"selectFeature",
+			"SearchModel",
+			"selectFeature",
+			"SearchModel",
+			"setSearchInput",
+			"search",
+			"setBaseLayer",
+			"console",
+			".replace",
+			"ReexpressView",
+			"DataLayerModel",
+			"addDataLayer",
+			"ReexpressModel",
+			".replace",
+			"layerName",
+			"console",
+			"DataLayerModel",
+			"leafletDataLayer",
+			"features-added",
+			"className",
+			"setDataLayer",
+			"window.offLayers",
+			"setDataLayer",
+			"setTechniques",
+			"addLegend",
+			"LegendLayerView",
+			"mapset",
+			"addLegend",
+			"LegendLayerView",
+			"innerHtml",
+			"addLegend",
+			"consol",
+			"console.log",
+			"dataLayersDone",
+			"addLegend",
+			"LegendLayerView",
+			"techniqueType",
+			"reexpressed",
+			"console",
+			"renderOnLoad",
+			"map",
+			"dataLayerOptions",
+			"DataLayerModel",
+			"classificationType",
+			"techniquesObj",
+			"dataLayer",
+			"a",
+			"done",
+			"'done'",
+			"dataLayerModel",
+			"techniquesObj",
+			"setDataLayer",
+			"techniquesObj",
+			"technique",
 			"Inter",
 			"addOverlayControl",
 			"addOverlay",
@@ -817,71 +897,7 @@
 			"leafletDataLayer",
 			"dataLayers",
 			"addOverlay",
-			"addSearch",
-			"addResymbolize",
-			"zoomControl",
-			"CustomControl",
-			"console",
-			"underlayControlView",
-			"CustomControl",
-			"underlay",
-			"underlayControlView",
-			"layer-",
-			"underlayControlView",
-			"toggleLayer",
-			"underlayControlView",
-			"console",
-			"setBaseLayer",
-			"underlayControlView",
-			"UnderlayControlView",
-			"underlayControlView",
-			"offLayers",
-			"map.addLayer(offLayers[layerId]);",
-			"addBaseLayers",
-			"offLayers",
-			"map",
-			"OverlayControlView",
-			"interactionControlView",
-			"InteractionControlView",
-			"InteractionToggleView",
-			"InteractionControlView",
-			"addOverlayControl",
-			"interactionControlView",
-			"setMapInteractions",
-			"retrieve",
-			"popupopen",
-			"setDataLayer",
-			"dataLayers",
-			"retrieve",
-			"console",
-			"cursor: pointer",
-			"interaction-control",
-			"icon",
-			"'icon'",
-			"icon",
-			"cursor: pointer",
-			".button",
-			".buttn",
-			"PanControlView",
-			"CustomControl",
-			"InteractionControlView",
-			"addInteraction",
-			"Custom",
-			"this.map",
-			"zoomControl",
-			"enable",
-			"interactionControlView",
-			"interactionControlModel",
-			"InteractionControlView",
-			".click",
-			"L.map",
-			"addZoom",
-			"CustomControl",
-			"control",
-			"CustomControl",
-			".left",
-			"filter",
-			"FilterSliderView"
+			"addSearch"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -889,6 +905,9 @@
 		"regex": false,
 		"replace_history":
 		[
+			"",
+			"i",
+			"techniqueModel",
 			"leafletView",
 			"this.offLayers",
 			"interactionToggleView",
@@ -1013,10 +1032,7 @@
 			": ",
 			":",
 			"*index.html*",
-			"*main.js*",
-			"decrement",
-			"*Using GeoJSON with Leaflet*",
-			"*Leaflet Quick Start Guide*"
+			"*main.js*"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1027,7 +1043,7 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -1079,7 +1095,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1440.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1089,15 +1105,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 52242,
+						"buffer_size": 52572,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								49616,
-								49616
+								14223,
+								14223
 							]
 						],
 						"settings":
@@ -1107,7 +1123,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 28871.0,
+						"translation.y": 9027.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1194,33 +1210,6 @@
 				},
 				{
 					"buffer": 6,
-					"file": "/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module6/complete/leaflet-lab/js/main.js",
-					"settings":
-					{
-						"buffer_size": 9586,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2222,
-								2275
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1275.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 7,
 					"file": "js/modules/app.js",
 					"settings":
 					{
@@ -1247,7 +1236,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 7,
 					"file": "doc/API.md",
 					"settings":
 					{
@@ -1274,7 +1263,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 8,
 					"file": "php/interactions.php",
 					"settings":
 					{
@@ -1300,19 +1289,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 9,
 					"file": "config/map.json",
 					"settings":
 					{
-						"buffer_size": 2384,
+						"buffer_size": 2408,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								480,
-								480
+								149,
+								149
 							]
 						],
 						"settings":
@@ -1323,13 +1312,13 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 240.0,
+						"translation.y": 360.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 10,
 					"file": "doc/versions.md",
 					"settings":
 					{
@@ -1349,13 +1338,13 @@
 							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 60.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 11,
 					"file": "data/us-states.geojson",
 					"settings":
 					{
@@ -1375,13 +1364,13 @@
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 7671.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 12,
 					"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
 					"settings":
 					{
@@ -1404,6 +1393,32 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 600.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "data/city-data.geojson",
+					"settings":
+					{
+						"buffer_size": 4149,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

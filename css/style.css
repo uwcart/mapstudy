@@ -100,6 +100,10 @@ html, body {
     overflow: hidden;
 }
 
+input[type="checkbox"], input[type="radio"] {
+    cursor: pointer;
+}
+
 svg {
     display: block;
     margin: auto;
@@ -300,6 +304,14 @@ svg {
 
 #search-results-box p {
     cursor: pointer;
+}
+
+.reexpress-section-title {
+    font-weight: bold;
+}
+
+.reexpress-input-div {
+    text-align: left;
 }
 
 /* ==========================================================================
