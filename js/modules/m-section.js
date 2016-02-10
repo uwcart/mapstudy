@@ -203,18 +203,18 @@ var LegendLayerView = Backbone.View.extend({
 	initialize: function(){
 		//get output range and input domain values
 		var scale = this.model.get('scale'),
-			range = scale.range().reverse(),
-			domain = scale.domain().reverse();
+			range = scale.range(),
+			domain = scale.domain();
 		//get expressed attribute
 		var expressedAttribute = this.model.get('expressedAttribute');
 		//calculate svg height
-		if (!isNaN(parseFloat(range[0]))){ //if range is a number, treat as prop symbol
+		if (!isNaN(parseFloat(range[range.length-1]))){ //if range is a number, treat as prop symbol
 			//set max radius
-			this.model.set('maxRadius', parseFloat(range[0]));
+			this.model.set('maxRadius', parseFloat(range[range.length-1]));
 			//svg height should be whichever is larger, label heights or largest circle diameter
 			var heightArray = [
 				13 * range.length + 6, 
-				parseFloat(range[0]) * 2 + 6
+				parseFloat(range[range.length-1]) * 2 + 6
 			];
 			heightArray.sort(function(a,b){ return b-a });
 			this.model.set('svgHeight', heightArray[0]);
@@ -224,8 +224,9 @@ var LegendLayerView = Backbone.View.extend({
 		//only build classes for classed classification
 		if (domain.length > 2 || range.length > 2){
 			//add a symbol for each class
-			_.each(range, function(rangeval, i){
-				var domainvals = scale.invertExtent(rangeval);
+			var y = 0;
+			for (var i = range.length-1; i >= 0; i--){
+				var domainvals = scale.invertExtent(range[i]);
 				//fill in min and max values for natural breaks threshold scale
 				if (typeof domainvals[0] == 'undefined'){
 					domainvals[0] = d3.min(getAllAttributeValues(this.model.get('features'), expressedAttribute));
@@ -233,13 +234,17 @@ var LegendLayerView = Backbone.View.extend({
 					domainvals[1] = d3.max(getAllAttributeValues(this.model.get('features'), expressedAttribute));
 				};
 				//add visual element and label for each class
-				this.append(rangeval, domainvals, i);
-			}, this);
+				this.append(range[i], domainvals, y);
+				//count up to put swatches in correct order
+				y++;
+			};
 		} else {
+			range = range.reverse(),
+			domain = domain.reverse();
 			//add a symbol for lowest and highest values
 			_.each(range, function(rangeval, i){
 				this.append(rangeval, domain[i], i);
-			}, this)
+			}, this);
 		};
 		//set svg dimensions
 		this.$el.attr({
@@ -1347,7 +1352,7 @@ var LeafletMap = Backbone.View.extend({
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
 					//create reexpressModel for layer
 					var reexpressModel = new ReexpressModel({
-						layerName: layer.name,
+						layerName: layer.layerName,
 						layerNameClass: layer.className,
 						techniqueType: layer.techniqueType,
 						techniqueTypeClass: layer.techniqueType.replace(/\s/g, ''),
