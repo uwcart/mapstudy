@@ -128,9 +128,73 @@
         </script>
 
         <script type="text/template" id="resymbolize-section-template">
-            <div id="<%= layerNameClass %>-resymbolize-section" class="resymbolize-section">
-                <p class="resymbolize-section-title section-title"><%= layerName %></p>
+            <div id="<%= layerNameClass %>-<%= techniqueTypeClass %>-resymbolize-section" class="resymbolize-section">
+                <p class="resymbolize-section-title section-title"><%= layerName %> <%= techniqueType %></p>
             </div>
+        </script>
+
+        <script type="text/template" id="reclassify-template">
+            <div id="<%= layerNameClass %>-<%= techniqueTypeClass %>-reclassify" class="reclassify">
+                <div class="classification resymbolize-line">
+                    <label>Classification: </label>
+                    <select name="classification">
+                        <option value="quantile">Quantile</option>
+                        <option value="equal interval">Equal Interval</option>
+                        <option value="natural breaks">Natural Breaks</option>
+                        <option value="unclassed">Unclassed</option>
+                        <option value="user defined">User Defined</option>
+                    </select>
+                </div>
+                <div class="n-classes resymbolize-line">
+                    <label>Number of classes: </label>
+                    <select name="n-classes">
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                    </select>
+                </div>
+                <div class="class-breaks resymbolize-line">
+                    <label class="resymbolize-line">Class breaks: </label>
+                    <span class="class-break class-min"></span>
+                    <span class="class-break class-break-inputs"></span>
+                    <span class="class-break class-max"></span>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="class-break-input-template">
+            <span class="class-break cb-<%= index %>">
+                <input type="text" size="2">
+            </span>
+        </script>
+
+        <script type="text/template" id="rescale-template">
+            <div id="<%= layerNameClass %>-<%= techniqueTypeClass %>-rescale" class="rescale">
+                <label><%= label %>: </label>
+                <select class="scale-method">
+                    <option value="power">x<sup>y</sup></option>
+                    <option value="multiply">&times;</option>
+                </select>
+                <input name="scale-value" type="text" size="3">
+            </div>
+        </script>
+
+        <script type="text/template" id="recolor-template">
+            <div id="<%= layerNameClass %>-<%= techniqueTypeClass %>-recolor" class="recolor">
+                <label><%= label %>: </label>
+                <select class="color-scale">
+                </select>
+                <input class="jscolor" size="7">
+            </div>
+        </script>
+
+        <script type="text/template" id="color-swatch">
+            <div class="color-swatch <%= color %>" style="border: 1px solid <%= stroke %>; background-color: <%= fill %>"></div>
         </script>
 
         <script type="text/template" id="choropleth-legend-template">

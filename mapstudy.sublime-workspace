@@ -4,19 +4,75 @@
 		"selected_items":
 		[
 			[
-				"leafletDa",
-				"leafletDataLayer"
+				"length",
+				"length-1"
+			],
+			[
+				"nClas",
+				"nClassesSelect"
+			],
+			[
+				"recolor",
+				"recolorView"
+			],
+			[
+				"recla",
+				"reclassifyView"
+			],
+			[
+				"resymboli",
+				"resymbolizeModel"
+			],
+			[
+				"resymbo",
+				"resymbolizeModel"
 			],
 			[
 				"techni",
-				"techniqueModel"
+				"techniqueType"
 			],
 			[
-				"techniq",
-				"techniqueIndex"
+				"Reex",
+				"ReexpressSectionView"
 			],
 			[
 				"techn",
+				"techniqueType"
+			],
+			[
+				"leaflet",
+				"leafletDataLayers"
+			],
+			[
+				"techniqueType",
+				"techniqueTypeClass"
+			],
+			[
+				"setTechn",
+				"setTechnique"
+			],
+			[
+				"leafletDa",
+				"leafletDataLayers"
+			],
+			[
+				"dataLayer",
+				"dataLayersDone"
+			],
+			[
+				"leafletData",
+				"leafletDataLayers"
+			],
+			[
+				"Reexpre",
+				"ReexpressInputView"
+			],
+			[
+				"Reexpress",
+				"ReexpressSectionView"
+			],
+			[
+				"techniq",
 				"techniqueIndex"
 			],
 			[
@@ -156,10 +212,6 @@
 				"attr"
 			],
 			[
-				"leaflet",
-				"leafletDataLayer"
-			],
-			[
 				"numeric",
 				"numericAttributes"
 			],
@@ -198,10 +250,6 @@
 			[
 				"geoJ",
 				"geoJson"
-			],
-			[
-				"leafletData",
-				"leafletDataLayer"
 			],
 			[
 				"tec",
@@ -306,10 +354,6 @@
 			[
 				"dum",
 				"var_dump"
-			],
-			[
-				"dataLayer",
-				"dataLayerModel"
 			],
 			[
 				"prop",
@@ -470,18 +514,6 @@
 			[
 				"ajax",
 				"ajaxRequest"
-			],
-			[
-				"jQuery",
-				"jQueryAjax"
-			],
-			[
-				"city",
-				"cityHeader"
-			],
-			[
-				"additional",
-				"additionalInfo"
 			]
 		]
 	},
@@ -499,7 +531,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 6914,
+				"buffer_size": 11293,
 				"line_ending": "Unix"
 			}
 		},
@@ -507,7 +539,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 52572,
+				"buffer_size": 59076,
 				"line_ending": "Windows"
 			}
 		},
@@ -531,7 +563,7 @@
 			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 8602,
+				"buffer_size": 8920,
 				"line_ending": "Unix"
 			}
 		},
@@ -547,7 +579,7 @@
 			"file": "doc/API.md",
 			"settings":
 			{
-				"buffer_size": 27533,
+				"buffer_size": 28640,
 				"line_ending": "Windows"
 			}
 		},
@@ -572,7 +604,7 @@
 			"file": "doc/versions.md",
 			"settings":
 			{
-				"buffer_size": 545,
+				"buffer_size": 577,
 				"line_ending": "Windows"
 			}
 		},
@@ -625,6 +657,11 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Carl/Downloads/jscolor-2.0.4/jscolor-example.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/colorbrewer.json",
+		"/C/Users/Carl/Downloads/d3-master/d3-master/lib/colorbrewer/LICENSE",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/LICENSE.txt",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/d3.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module6/complete/leaflet-lab/js/main.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module3/Module3.html",
 		"/C/Users/Carl/Desktop/temp/test.svg",
@@ -659,7 +696,6 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/TOC.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/usage.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/VERSIONS.md",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/LICENSE.txt",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/questions.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/CONFIG.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/q-section.js",
@@ -748,11 +784,7 @@
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v5.md",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v4.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/README.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/files/d3-demo/index.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/files/d3-demo/js/main.js",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module3/files/unit-1(module_3)/js/main.js",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/files/leaflet-lab/data/MegaCities.geojson",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module4/files/leaflet-lab/js/main.js"
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/files/d3-demo/index.html"
 	],
 	"find":
 	{
@@ -770,6 +802,108 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"ResymbolizeModel",
+			"resymbolize:",
+			"classification",
+			".html(\"\"",
+			".html(''",
+			"ReclassifyView",
+			"resymbolize:",
+			"resybolize",
+			"choropleth",
+			"resymbolize:",
+			"colorType",
+			"resymbolizeModel",
+			"ReexpressInputView",
+			"option",
+			"select",
+			"resymbolize",
+			"maxRadius",
+			"svgWidth",
+			"svgHeight",
+			"svgWidth",
+			"append",
+			"label",
+			"choropleth-legend-template",
+			"console",
+			"ReexpressModel",
+			"resymbolize",
+			"12",
+			"11",
+			"10",
+			"9",
+			"8",
+			"7",
+			"6",
+			"5",
+			"4",
+			"3",
+			"classes",
+			"classification",
+			"resymbolize",
+			"setInteractionControls",
+			"layerChange",
+			"console",
+			"leafletView.interactions",
+			"pan:",
+			"activate",
+			"InteractionToggleView",
+			"toggle",
+			"InteractionToggleView",
+			"reproject",
+			"resymbolize",
+			"rotate",
+			"interactions:",
+			"reexpress",
+			"cursor",
+			"PanControlView",
+			"pan:",
+			"pan",
+			"pan:",
+			"'pan'",
+			"this.pan",
+			"pan",
+			"OverlayControlView",
+			"overlay",
+			"target.val()",
+			"val",
+			"layeradd",
+			"prop('checked",
+			"reexpress",
+			"OverlayControlView",
+			"overlay",
+			"hideLabels",
+			"reexpress",
+			"addReexpress",
+			"removeLayer",
+			"LeafletMap",
+			"ReexpressInputView",
+			"ReexpressSectionView",
+			"ReexpressModel",
+			"setTechnique",
+			"ReexpressInputView",
+			"reexpressInputView",
+			"ReexpressModel",
+			"reexpressModel",
+			"reexpress:",
+			"reexpress",
+			"dataLayersDone",
+			"addReexpress",
+			"ReexpressInputView",
+			"ReexpressSectionView",
+			"ReexpressModel",
+			"reexpress: ",
+			"reexpress",
+			"ReexpressModel",
+			"layerNameClass",
+			"ReexpressModel",
+			"ReexpressView",
+			"reexpress",
+			"console",
+			"SearchInputView",
+			"console",
+			"search-control",
+			"SearchView",
 			"result-",
 			"search",
 			"console.log",
@@ -795,109 +929,7 @@
 			"ReexpressModel",
 			".replace",
 			"layerName",
-			"console",
-			"DataLayerModel",
-			"leafletDataLayer",
-			"features-added",
-			"className",
-			"setDataLayer",
-			"window.offLayers",
-			"setDataLayer",
-			"setTechniques",
-			"addLegend",
-			"LegendLayerView",
-			"mapset",
-			"addLegend",
-			"LegendLayerView",
-			"innerHtml",
-			"addLegend",
-			"consol",
-			"console.log",
-			"dataLayersDone",
-			"addLegend",
-			"LegendLayerView",
-			"techniqueType",
-			"reexpressed",
-			"console",
-			"renderOnLoad",
-			"map",
-			"dataLayerOptions",
-			"DataLayerModel",
-			"classificationType",
-			"techniquesObj",
-			"dataLayer",
-			"a",
-			"done",
-			"'done'",
-			"dataLayerModel",
-			"techniquesObj",
-			"setDataLayer",
-			"techniquesObj",
-			"technique",
-			"Inter",
-			"addOverlayControl",
-			"addOverlay",
-			"addFilter",
-			"console",
-			"//remove single-feature layers that might be leftover from filter",
-			"filter",
-			"layeradd layerremove",
-			"FilterSliderView",
-			"filterView",
-			"features-added",
-			"features added",
-			"FilterModel",
-			"console",
-			"getAllAttributeValues",
-			"FilterModel",
-			"allFeatures",
-			"id",
-			"techniquesObj",
-			"allFeatures",
-			"getFeatures",
-			"dataLayerModel.get('features')",
-			"getFeatures",
-			"allFeatures",
-			"getAllFeatures",
-			"LeafletMap",
-			"leafletDataLayers",
-			"getFeatures",
-			"FilterSliderView",
-			"filterControl",
-			"view",
-			"this",
-			"addFilter",
-			"console",
-			"addUnderlayControl",
-			"addOverlayControl",
-			"Leaflet",
-			"fusesearch",
-			"addSearch",
-			"cursor",
-			"closePopup",
-			"SearchModel",
-			"console",
-			"SearchModel",
-			"addOverlayControl",
-			"search",
-			".icon",
-			"button",
-			"CustomControl",
-			"button",
-			".button",
-			"CustomControl",
-			"addOverlay",
-			"leafletView.map.on('overlayadd overlayremove', function(e){",
-			".name.indexOf(': <') > -1 ?",
-			"var layerName = e.name.indexOf(': <') > -1 ? e.name.split(': <')[0] : e.name;",
-			"view",
-			"filter",
-			"if (!view.reexpressed){ view.trigger('overlay'); };",
-			"toggleLayer",
-			"leafletDataLayer",
-			"dataLayers",
-			"addOverlay",
-			"addSearch"
+			"console"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -905,6 +937,21 @@
 		"regex": false,
 		"replace_history":
 		[
+			"label",
+			"\"12\"",
+			"\"11\"",
+			"\"10\"",
+			"\"9\"",
+			"\"8\"",
+			"\"7\"",
+			"\"6\"",
+			"\"5\"",
+			"\"4\"",
+			"\"3\"",
+			"targetVal",
+			"inputVal",
+			"className",
+			"ReexpressInputView",
 			"",
 			"i",
 			"techniqueModel",
@@ -1017,22 +1064,7 @@
 			"figure3.12",
 			"figure3.13",
 			"Example 3.5",
-			"Example 3.4",
-			"Example 3.3",
-			"Example 3.2",
-			"Figure 3.1",
-			"Example 3.1",
-			"dataArray",
-			"Irrelevant",
-			"updateLegend",
-			"info",
-			"Example",
-			"files/figures/",
-			"pseudo-code",
-			": ",
-			":",
-			"*index.html*",
-			"*main.js*"
+			"Example 3.4"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1077,15 +1109,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 6914,
+						"buffer_size": 11293,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								841,
-								841
+								7874,
+								7874
 							]
 						],
 						"settings":
@@ -1095,7 +1127,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1440.0,
+						"translation.y": 3063.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1105,15 +1137,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 52572,
+						"buffer_size": 59076,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								14223,
-								14223
+								24157,
+								24157
 							]
 						],
 						"settings":
@@ -1123,7 +1155,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 9027.0,
+						"translation.y": 15111.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1185,15 +1217,15 @@
 					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 8602,
+						"buffer_size": 8920,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4479,
-								4479
+								5192,
+								5192
 							]
 						],
 						"settings":
@@ -1203,7 +1235,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4951.0,
+						"translation.y": 5965.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1240,15 +1272,15 @@
 					"file": "doc/API.md",
 					"settings":
 					{
-						"buffer_size": 27533,
+						"buffer_size": 28640,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6815,
-								6815
+								11625,
+								11625
 							]
 						],
 						"settings":
@@ -1257,7 +1289,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3031.0,
+						"translation.y": 5531.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1300,8 +1332,8 @@
 						"selection":
 						[
 							[
-								149,
-								149
+								1638,
+								1638
 							]
 						],
 						"settings":
@@ -1312,7 +1344,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 360.0,
+						"translation.y": 1440.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1322,15 +1354,15 @@
 					"file": "doc/versions.md",
 					"settings":
 					{
-						"buffer_size": 545,
+						"buffer_size": 577,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								317,
-								317
+								361,
+								361
 							]
 						],
 						"settings":
@@ -1338,7 +1370,7 @@
 							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 60.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

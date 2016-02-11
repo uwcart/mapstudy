@@ -468,7 +468,7 @@ var SearchInputView = Backbone.View.extend({
 	},
 	resetSearch: function(){
 		this.$el.find('input').val('');
-		$('#search-results-box').html('');
+		$('#search-results-box').empty();
 		this.trigger('reset');
 	},
 	initialize: function(){
@@ -489,7 +489,7 @@ var SearchView = Backbone.View.extend({
 		//get results
 		this.model.search();
 		//reset html
-		this.$el.children('#search-results-box').html('');
+		this.$el.children('#search-results-box').empty();
 		_.each(this.model.get('result'), function(result, i){
 			//limit to top 10 results
 			if (i < 10){
@@ -660,15 +660,29 @@ var FilterLogicView = FilterSliderView.extend({
 //model for reexpress widget
 var ReexpressModel = Backbone.Model.extend({
 	defaults: {
+		layer: {},
 		techniqueType: '',
 		techniqueTypeClass: '',
 		layerName: '',
 		layerNameClass: '',
 		layerId: 0
+	},
+	initialize: function(){
+		//set other attributes based on layer
+		if (this.attributes.layer){
+			var layer = this.get('layer');
+			this.set({
+				layerName: layer.layerName,
+				layerNameClass: layer.className,
+				techniqueType: layer.techniqueType,
+				techniqueTypeClass: layer.techniqueType.replace(/\s/g, ''),
+				layerId: layer._leaflet_id
+			});
+		};
 	}
 });
 
-//view for reexpress section
+//view for reexpress widget section
 var ReexpressSectionView = Backbone.View.extend({
 	el: '.reexpress-control-container',
 	template: _.template( $('#reexpress-section-template').html() ),
@@ -677,25 +691,147 @@ var ReexpressSectionView = Backbone.View.extend({
 	}
 })
 
-//view for reexpress buttons
+//view for reexpress radio buttons
 var ReexpressInputView = Backbone.View.extend({
 	template: _.template( $('#reexpress-input-template').html() ),
 	setTechnique: function(e){},
-	render: function(){
-		//instantiate reexpress section if needed
-		if ($('#'+this.model.get('layerNameClass')+'-reexpress-section').length == 0){
-			new ReexpressSectionView({model: this.model});
-		};
-		//set el as section div
-		this.$el = $('#'+this.model.get('layerNameClass')+'-reexpress-section');
-		//add input div for technique
-		this.$el.append(this.template(this.model.attributes));
+	getEl: function(){
+		return $('#'+this.model.get('layerNameClass')+'-reexpress-section');
+	},
+	setSection: function(){
+		new ReexpressSectionView({model: this.model});
+	},
+	setEvents: function(){
 		//set click listener
 		var setTechnique = this.setTechnique;
 		this.$el.find('input.'+this.model.get('techniqueTypeClass')).click(setTechnique);
+	},
+	render: function(){
+		//instantiate reexpress section if needed
+		if (this.getEl().length == 0){ this.setSection() };
+		//set el as section div
+		this.$el = this.getEl();
+		//add input div for technique
+		this.$el.append(this.template(this.model.attributes));
+		//set event listeners
+		this.setEvents();
 	}
 });
 
+//model for resymbolize widget
+var ResymbolizeModel = ReexpressModel.extend({
+	classification: '',
+	scale: function(){}
+});
+
+//view for resymbolize widget section
+var ResymbolizeSectionView = ReexpressSectionView.extend({
+	el: '.resymbolize-control-container',
+	template: _.template( $('#resymbolize-section-template').html() )
+});
+
+//view for reclassify section of resymbolize widget
+var ReclassifyView = ReexpressInputView.extend({
+	template: _.template( $('#reclassify-template').html() ),
+	reclassify: function(classification, nClasses, classBreaks){
+
+	},
+	setClassification: function(){
+		//set classification type in select element
+		var classifyDiv = this.$el.children('.reclassify');
+		classifyDiv.find('select[name=classification]').val(this.model.get('classification'));
+		//hide class breaks
+		classifyDiv.children('.class-breaks').hide();
+	},
+	setNClasses: function(){
+		//get necessary values
+		var classifyDiv = this.$el.children('.reclassify'),
+			scale = this.model.get('scale'),
+			nClasses = scale.range().length,
+			domain = scale.domain(),
+			min = domain[0],
+			max = domain[domain.length-1],
+			nClassesSelect = classifyDiv.find('.n-classes select'),
+			inputsDiv = classifyDiv.find('.class-break-inputs');
+		//clear existing inputs
+		inputsDiv.empty();
+		//get class break template
+		var cbTemplate = _.template( $('#class-break-input-template').html() );
+		//add a special option if the number of classes is out of range
+		if (nClasses < 2 || nClasses > 9){
+			classifyDiv.find('.class-break-inputs').append('<option value="-1"></option>');
+		};
+		//set correct number of class break inputs
+		for (var i = 0; i < nClasses-1; i++){
+			classifyDiv.find('.class-break-inputs').append(cbTemplate({index: i}));
+		};
+		//set correct number of classes in select element
+		if (nClasses > 1 && nClasses < 10){
+			nClassesSelect.val(String(nClasses));
+		} else {
+			nClassesSelect.val('-1');
+		};
+		//add min and max values
+		classifyDiv.find('.class-min').html(min);
+		classifyDiv.find('.class-max').html(max);
+	},
+	setClassBreaks: function(){
+
+	},
+	getEl: function(){
+		return $('#'+this.model.get('layerNameClass')+'-'+this.model.get('techniqueTypeClass')+'-resymbolize-section');
+	},
+	setSection: function(){
+		new ResymbolizeSectionView({model: this.model});
+	},
+	setEvents: function(){
+		//get scale info
+		console.log(this.model.get('classification'), this.model.get('scale').range(), this.model.get('scale').domain());
+		//set reclassify events here
+		var setClassification = this.setClassification;
+		this.$el.find('select[name=classification]').select(setClassification);
+
+		//call all setup methods once
+		this.setNClasses();
+		this.setClassification();
+	}
+});
+
+//view for recolor section of resymbolize widget
+var RecolorView = ReclassifyView.extend({
+	template: _.template( $('#recolor-template').html() ),
+	setEvents: function(){
+		//set reclassify events here
+	},
+	setLabelAttribute: function(){
+		var techniqueType = this.model.get('techniqueType'),
+			label = false;
+		if (techniqueType == 'choropleth'){
+			label = 'Color scale';
+		} else if (techniqueType == 'proportional symbol'){
+			label = 'Symbol color';
+		};
+		this.model.set('label', label);
+	},
+	initialize: function(){
+		this.setLabelAttribute();
+	}
+});
+
+//view for rescale section of resymbolize widget
+var RescaleView = RecolorView.extend({
+	template: _.template( $('#rescale-template').html() ),
+	setLabelAttribute: function(){
+		var techniqueType = this.model.get('techniqueType'),
+			label = false;
+		if (techniqueType == 'proportional symbol'){
+			label = 'Symbol color';
+		} else if (techniqueType == 'dot' || techniqueType == 'isarithm'){
+			label = 'Interval';
+		};
+		this.model.set('label', label);
+	}
+});
 
 /************** map.library ****************/
 
@@ -1203,7 +1339,7 @@ var LeafletMap = Backbone.View.extend({
 			function setSearchInput(){
 				//reset search widget content
 				$('#search-box input').val('');
-				$('#search-results-box').html('');
+				$('#search-results-box').empty();
 				var allFeatures = [];
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
 					if (map.hasLayer(layer)){
@@ -1351,13 +1487,7 @@ var LeafletMap = Backbone.View.extend({
 			function setInputs(){
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
 					//create reexpressModel for layer
-					var reexpressModel = new ReexpressModel({
-						layerName: layer.layerName,
-						layerNameClass: layer.className,
-						techniqueType: layer.techniqueType,
-						techniqueTypeClass: layer.techniqueType.replace(/\s/g, ''),
-						layerId: layer._leaflet_id
-					});
+					var reexpressModel = new ReexpressModel({ layer:layer });
 					//instantiate section and input views
 					var reexpressInputView = new ReexpressInputView({model: reexpressModel});
 					reexpressInputView.setTechnique = function(e){
@@ -1432,12 +1562,36 @@ var LeafletMap = Backbone.View.extend({
 		},
 		resymbolize: function(controlView, leafletView){
 			var map = leafletView.map;
-
 			//add control to map
 			var CustomControl = leafletView.CustomControl('resymbolize', 'bottomleft');
 			var resymbolizeControl = new CustomControl();
 			map.addControl(resymbolizeControl);
+			//set resymbolize tools
+			function setTools(){
+				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					//create resymbolizeModel for layer
+					var resymbolizeModel = new ResymbolizeModel({
+						layer: layer,
+						classification: layer.model.get('techniques')[layer.model.get('techniqueIndex')].classification,
+						scale: layer.model.get('scale')
+					});
+				
+					if (layer.techniqueType == 'choropleth'){
+						var reclassifyView = new ReclassifyView({model: resymbolizeModel}),
+							recolorView = new RecolorView({model: resymbolizeModel});
 
+
+						reclassifyView.render();
+						recolorView.render();
+					}
+
+				}, this);
+			};
+
+			//add tools for data layers after loaded
+			leafletView.on('dataLayersDone', function(){
+				setTools();
+			}, this);
 
 			return controlView;
 		},
