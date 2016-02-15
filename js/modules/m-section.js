@@ -91,12 +91,27 @@ var Unclassed = Backbone.Model.extend({
 	}
 });
 
+var UserDefined = Backbone.Model.extend({
+	defaults: {
+		type: 'user defined'
+	},
+	scale: function(domain, classes){
+		//create scale generator
+		var scale = d3.scale.threshold()
+			.range(classes)
+			.domain(domain);
+		//done
+		return scale;
+	}
+});
+
 //a single collection holds all classification models
 var classification = new Backbone.Collection([
 	new Quantile(),
 	new EqualInterval(),
 	new NaturalBreaks(),
-	new Unclassed()
+	new Unclassed(),
+	new UserDefined()
 ]);
 
 /************** map.dataLayer.technique ****************/
@@ -720,7 +735,12 @@ var ReexpressInputView = Backbone.View.extend({
 
 //model for resymbolize widget
 var ResymbolizeModel = ReexpressModel.extend({
-	classification: '',
+	classificationType: '',
+	classificationModel: {},
+	range: [],
+	domain: [],
+	min: 0,
+	max: 0,
 	scale: function(){}
 });
 
@@ -733,49 +753,179 @@ var ResymbolizeSectionView = ReexpressSectionView.extend({
 //view for reclassify section of resymbolize widget
 var ReclassifyView = ReexpressInputView.extend({
 	template: _.template( $('#reclassify-template').html() ),
-	reclassify: function(classification, nClasses, classBreaks){
-
+	reclassify: function(scale){
+		console.log(scale.domain(), scale.range());
+		console.log(scale(this.model.get('min')), scale(this.model.get('max')));
 	},
-	setClassification: function(){
-		//set classification type in select element
-		var classifyDiv = this.$el.children('.reclassify');
-		classifyDiv.find('select[name=classification]').val(this.model.get('classification'));
-		//hide class breaks
-		classifyDiv.children('.class-breaks').hide();
+	setScale: function(){
+		var classificationModel = this.model.get('classificationModel'),
+			scale = classificationModel.scale(this.model.get('domain'), this.model.get('range'));
+			this.model.set('scale', scale);
+			this.reclassify(scale);
 	},
-	setNClasses: function(){
-		//get necessary values
-		var classifyDiv = this.$el.children('.reclassify'),
-			scale = this.model.get('scale'),
-			nClasses = scale.range().length,
-			domain = scale.domain(),
-			min = domain[0],
-			max = domain[domain.length-1],
+	setClassification: function(view, classificationType){
+		//get correct reclassify div
+		var classifyDiv = view.$el.children('.reclassify');
+		//set classification type in select element if first run
+		if (typeof classificationType == 'undefined'){
+			classificationType = view.model.get('classificationType');
+			classifyDiv.find('select[name=classification]').val(classificationType);
+			//hide class breaks
+			classifyDiv.children('.class-breaks').hide();
+		} else {
+			//set classification type in model
+			view.model.set('classificationType', classificationType);
+			//create new classification from classification type
+			var classificationModel = classification.where({type: classificationType})[0];
+			view.model.set('classificationModel', classificationModel);
+			//if user defined classification, reset classification
+			if (classificationType == 'user defined'){
+				view.setClassBreaks(view);
+				return;
+			} else {
+				//reset domain to undo user defined class breaks
+				view.model.set('domain', view.model.get('allvalues'));
+			};
+			//set a new scale and reclassify
+			view.setScale();
+		};
+		view.setClassBreaks();
+	},
+	setNClasses: function(view, nClasses){
+		//get DOM elements
+		var classifyDiv = view.$el.children('.reclassify'),
 			nClassesSelect = classifyDiv.find('.n-classes select'),
 			inputsDiv = classifyDiv.find('.class-break-inputs');
-		//clear existing inputs
-		inputsDiv.empty();
+		//set up classes if the first run
+		if (typeof nClasses == 'undefined'){
+			var nClasses = view.model.get('nClasses'),
+				min = view.model.get('min'),
+				max = view.model.get('max');
+			//add min and max values
+			classifyDiv.find('.class-min').html(min);
+			classifyDiv.find('.class-max').html(max);
+			//add a special option if the number of classes is out of range
+			if (nClasses < 2 || nClasses > 9){
+				classifyDiv.find('.class-break-inputs').prepend('<option value="-1"></option>');
+			};
+			//set correct number of classes in select element
+			if (nClasses > 1 && nClasses < 10){
+				nClassesSelect.val(String(nClasses));
+			} else {
+				nClassesSelect.val('-1');
+			};
+		} else {
+			//set the new number of classes
+			view.model.set('nClasses', nClasses);
+			//set display of class break inputs
+			inputsDiv.find('span').each(function(){
+				var i = Number($(this).attr('class').split('cb-')[1]);
+				if (i < nClasses-1){
+					$(this).show();
+				} else {
+					$(this).children('input').val('');
+					$(this).hide();
+				}
+			});
+			//designate new range for scale
+			var scale = view.model.get('scale'),
+				range = scale.range(),
+				newRange = [];
+			if (!view.model.attributes.colorScale){
+				var interpolator = d3.interpolate(range[0], range[range.length-1]);
+				for (var i = 0; i < nClasses; i++){
+					newRange.push(interpolator(i/(nClasses-1)));
+				};
+			} else {
+				//if colorbrewer scale specified, set as range
+				newRange = colorbrewer[view.model.get('colorScale')][nClasses];
+			};
+			view.model.set('range', newRange);
+			//if user defined classification, reset classification
+			if (view.model.get('classificationType') == 'user defined'){
+				view.setClassBreaks(view);
+				return;
+			};
+			view.setScale();
+		};
+		view.setClassBreaks();
+	},
+	setClassBreaks: function(view){
+		var reclassify = true;
+		//use the parameter to determine if setting or using input values
+		if (typeof view == 'undefined'){
+			view = this;
+			reclassify = false;
+		};
+		//get DOM elements
+		var classifyDiv = view.$el.children('.reclassify'),
+			inputsDiv = classifyDiv.find('.class-break-inputs');
+		//get necessary variables
+		var scale = view.model.get('scale'),
+			domain = scale.domain(),
+			range = scale.range(),
+			classificationType = view.model.get('classificationType');
+		if (reclassify){
+			//get input values
+			var classBreaks = [];
+			inputsDiv.find('input').each(function(){
+				var val = $(this).val();
+				if (val != '' && !isNaN(parseFloat(val))){
+					classBreaks.push(parseFloat(val));
+				}
+			});
+			//set domain based on input values
+			view.model.set('domain', classBreaks);
+			view.setScale();
+		} else {
+			//set input values
+			//for natural breaks, domain array is class breaks array
+			if (classificationType == 'natural breaks'){
+				inputsDiv.show();
+				_.each(domain, function(d, i){
+					inputsDiv.find('.cb-'+i+' input').val(d);
+				});
+			//for unclassed, no class breaks
+			} else if (classificationType == 'unclassed'){
+				inputsDiv.find('input').val('');
+			//for quantile and equal interval, set class breaks according to range extents
+			} else if (classificationType == 'quantile' || classificationType == 'equal interval') {
+				inputsDiv.show();
+				_.each(range, function(r, i){
+					if (i < range.length-1){
+						inputsDiv.find('.cb-'+i+' input').val(scale.invertExtent(r)[1]);
+					};
+				});
+			};
+			//don't reset inputs for user defined
+		};
+	},
+	setForm: function(){
+		//set model variables
+		var scale = this.model.get('scale'),
+			domain = this.model.get('domain');
+		this.model.set('allvalues', domain);
+		this.model.set('nClasses', scale.range().length);
+		this.model.set('range', scale.range());
+		this.model.set('min', domain[0]);
+		this.model.set('max', domain[domain.length-1]);
+		//set classification model
+		var classificationModel = classification.where({type: this.model.get('classificationType')})[0];
+		this.model.set('classificationModel', classificationModel);
 		//get class break template
 		var cbTemplate = _.template( $('#class-break-input-template').html() );
-		//add a special option if the number of classes is out of range
-		if (nClasses < 2 || nClasses > 9){
-			classifyDiv.find('.class-break-inputs').append('<option value="-1"></option>');
+		//set 8 class break inputs
+		for (var i = 0; i < 8; i++){
+			//set display and values based on number of classes
+			var display = i < scale.range().length-1 ? 'inline' : 'none';
+			this.$el.find('.class-break-inputs').append(cbTemplate({
+				index: i, 
+				display: display
+			}));
 		};
-		//set correct number of class break inputs
-		for (var i = 0; i < nClasses-1; i++){
-			classifyDiv.find('.class-break-inputs').append(cbTemplate({index: i}));
-		};
-		//set correct number of classes in select element
-		if (nClasses > 1 && nClasses < 10){
-			nClassesSelect.val(String(nClasses));
-		} else {
-			nClassesSelect.val('-1');
-		};
-		//add min and max values
-		classifyDiv.find('.class-min').html(min);
-		classifyDiv.find('.class-max').html(max);
-	},
-	setClassBreaks: function(){
+		//call setup methods
+		this.setNClasses(this);
+		this.setClassification(this);
 
 	},
 	getEl: function(){
@@ -785,15 +935,39 @@ var ReclassifyView = ReexpressInputView.extend({
 		new ResymbolizeSectionView({model: this.model});
 	},
 	setEvents: function(){
-		//get scale info
-		console.log(this.model.get('classification'), this.model.get('scale').range(), this.model.get('scale').domain());
-		//set reclassify events here
-		var setClassification = this.setClassification;
-		this.$el.find('select[name=classification]').select(setClassification);
-
-		//call all setup methods once
-		this.setNClasses();
-		this.setClassification();
+		//set reclassify form
+		this.setForm();
+		//alias methods
+		var view = this,
+			setClassification = this.setClassification,
+			setNClasses = this.setNClasses,
+			setClassBreaks = this.setClassBreaks;
+		
+		//set reclassification listener on classification dropdown
+		this.$el.find('select[name=classification]').change(function(){
+			//get classification parameters
+			var classificationType = $(this).val(),
+				parent = $(this).parents('.reclassify');
+			if ($(this).val() == 'user defined'){
+				//show class breaks
+				parent.find('.class-breaks').show();
+			} else {
+				//hide class breaks
+				parent.find('.class-breaks').hide();
+			};
+			//reset classification
+			setClassification(view, classificationType);
+		});
+		//set reclassification listener on nClasses dropdown
+		this.$el.find('select[name=n-classes]').change(function(){
+			setNClasses(view, $(this).val());
+		});
+		//set reclassification listener on class breaks keyup
+		var timeout = setTimeout(function(){},0);
+		this.$el.find('.class-break input').keyup(function(){
+			clearTimeout(timeout);
+			timeout = setTimeout(function(){ setClassBreaks(view) }, 1000);
+		});
 	}
 });
 
@@ -1572,7 +1746,8 @@ var LeafletMap = Backbone.View.extend({
 					//create resymbolizeModel for layer
 					var resymbolizeModel = new ResymbolizeModel({
 						layer: layer,
-						classification: layer.model.get('techniques')[layer.model.get('techniqueIndex')].classification,
+						classificationType: layer.model.get('techniques')[layer.model.get('techniqueIndex')].classification,
+						domain: getAllAttributeValues(layer.toGeoJSON().features, layer.model.get('expressedAttribute')),
 						scale: layer.model.get('scale')
 					});
 				
