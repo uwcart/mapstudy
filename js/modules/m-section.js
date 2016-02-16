@@ -761,12 +761,12 @@ var ResymbolizeSectionView = ReexpressSectionView.extend({
 //view for reclassify section of resymbolize widget
 var ReclassifyView = ReexpressInputView.extend({
 	template: _.template( $('#reclassify-template').html() ),
-	reclassify: function(scale){},
+	resymbolize: function(scale){},
 	setScale: function(){
 		var classificationModel = this.model.get('classificationModel'),
 			scale = classificationModel.scale(this.model.get('domain'), this.model.get('range'));
 			this.model.set('scale', scale);
-			this.reclassify(scale);
+			this.resymbolize(scale);
 	},
 	setClassification: function(view, classificationType){
 		//get correct reclassify div
@@ -999,7 +999,7 @@ var RecolorView = ReclassifyView.extend({
 	},
 	setColorSwatches: function(){
 		//get variables
-		view = this,
+		var view = this,
 			nClasses = this.model.get('nClasses');
 		//retrieve templates
 		var optionTemplate = _.template( $('#color-scale-option-template').html() ),
@@ -1026,6 +1026,8 @@ var RecolorView = ReclassifyView.extend({
 		};
 		//set reclassify event listener
 		select.change(function(){
+			//set colorbrewer array
+			view.model.set('colorbrewer', $(this).val());
 			//set range to new color scale array
 			var range = colorbrewer[$(this).val()][nClasses];
 			view.model.set('range', range);
@@ -1825,8 +1827,8 @@ var LeafletMap = Backbone.View.extend({
 						//instantiate appropriate views
 						var reclassifyView = new ReclassifyView({model: resymbolizeModel}),
 							recolorView = new RecolorView({model: resymbolizeModel});
-						//designate reclassify function specific to Leaflet
-						reclassifyView.reclassify = function(scale){
+						//designate resymbolize function specific to Leaflet
+						reclassifyView.resymbolize = function(scale){
 							layer.eachLayer(function(sublayer){
 								var style = {
 									fillColor: scale(sublayer.feature.properties[expressedAttribute])
@@ -1834,10 +1836,31 @@ var LeafletMap = Backbone.View.extend({
 								sublayer.setStyle(style);
 							});
 						};
-						recolorView.reclassify = reclassifyView.reclassify;
+						//recolor method is reclassification
+						recolorView.resymbolize = reclassifyView.resymbolize;
 						//render views
 						reclassifyView.render();
 						recolorView.render();
+					} else if (layer.techniqueType == 'proportional symbol'){
+						//instantiate appropriate views
+						var reclassifyView = new ReclassifyView({model: resymbolizeModel}),
+							rescaleView = new RescaleView({model: resymbolizeModel}),
+							recolorView = new RecolorView({model: resymbolizeModel});
+						//designate resymbolize function specific to Leaflet
+						reclassifyView.resymbolize = function(scale){
+							layer.eachLayer(function(sublayer){
+								var radius = scale(sublayer.feature.properties[expressedAttribute]);
+								sublayer.setRadius(radius);
+							});
+						};
+						recolorView.recolor = function(color){
+							layer.eachLayer(function(sublayer){
+								sublayer.setStyle({fillColor: color});
+							});
+						};
+						//render views
+						reclassifyView.render();
+						// recolorView.render();
 					}
 
 				}, this);

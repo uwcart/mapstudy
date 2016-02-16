@@ -2,6 +2,25 @@
 
 (function(){
 
+/************************ helper functions ***************************/
+
+//produce numeric values array from GeoJSON features
+function getAllAttributeValues(features, attribute){
+	//get attribute values for all features with given attribute
+	var values = _.map(features, function(feature){
+		return parseFloat(feature.properties[attribute]);
+	});
+	//strip any NaNs and sort
+	values = _.without(values, NaN);
+	values.sort(function(a,b){ return a-b });
+	return values;
+};
+
+/*************************** map.dataLayer ***************************/
+
+//basic model to hold geojson and data layer options
+var DataLayerModel = Backbone.Model.extend();
+
 /************** map.dataLayer.techique.classification ****************/
 
 var Quantile = Backbone.Model.extend({
@@ -72,12 +91,27 @@ var Unclassed = Backbone.Model.extend({
 	}
 });
 
+var UserDefined = Backbone.Model.extend({
+	defaults: {
+		type: 'user defined'
+	},
+	scale: function(domain, classes){
+		//create scale generator
+		var scale = d3.scale.threshold()
+			.range(classes)
+			.domain(domain);
+		//done
+		return scale;
+	}
+});
+
 //a single collection holds all classification models
 var classification = new Backbone.Collection([
 	new Quantile(),
 	new EqualInterval(),
 	new NaturalBreaks(),
-	new Unclassed()
+	new Unclassed(),
+	new UserDefined()
 ]);
 
 /************** map.dataLayer.technique ****************/
@@ -85,11 +119,8 @@ var classification = new Backbone.Collection([
 //model for choropleth data overlay
 var Choropleth = Backbone.Model.extend({
 	defaults: {
-		techniqueType: 'choropleth',
-		classificationType: '',
-		expressedAttribute: '',
-		classes: [],
-		dataLayer: {}
+		techniqueIndex: 0,
+		techniqueType: 'choropleth'
 	},
 	setLayerOptions: function(feature, scale, expressedAttribute){
 		//set a new fillColor property for each feature with the class color value
@@ -98,33 +129,43 @@ var Choropleth = Backbone.Model.extend({
 		};
 	},
 	setClasses: function(){
-		var expressedAttribute = this.get('expressedAttribute');
+		var expressedAttribute = this.get('expressedAttribute'),
+			techniqueIndex = this.get('techniqueIndex'),
+			technique = this.get('techniques')[techniqueIndex];
+		//retrieve ColorBrewer scheme if classes is a colorbrewer code
+		var classes;
+		if (typeof technique.classes == 'string'){
+			var colorcode = technique.classes.split('.');
+			classes = colorbrewer[colorcode[0]][Number(colorcode[1])];
+		} else {
+			classes = technique.classes;
+		};
 		//get all of the values for the attribute by which the data will be classed
-		var values = _.map(this.get('features'), function(feature){
-			return parseFloat(feature.properties[expressedAttribute]);
-		});
+		var values = getAllAttributeValues(this.get('features'), expressedAttribute);
 		//get the d3 scale for the chosen classification scheme
-		var classificationModel = classification.where({type: this.get('classificationType')})[0];
-		var scale = classificationModel.scale(values, this.get('classes'));
+		var classificationModel = classification.where({type: technique.classification})[0];
+		var scale = classificationModel.scale(values, classes);
 		//use scale and attribute to set layer options
 		_.each(this.get('features'), function(feature){
 			feature.properties.layerOptions = this.setLayerOptions(feature, scale, expressedAttribute);
 		}, this);
-		this.trigger('done');
-	},
-	initialize: function(){
-		this.on('sync', this.setClasses);
+		this.set('scale', scale);
 	}
 });
 
 //model for proportional symbol data overlay
 var ProportionalSymbol = Choropleth.extend({
 	defaults: {
-		techniqueType: 'proportional symbol',
-		symbol: 'circle'
+		symbol: 'circle',
+		techniqueType: 'proportional symbol'
 	},
 	setLayerOptions: function(feature, scale, expressedAttribute){
-		//set a new radius property for each feature with the class color value
+		//ensure scale range values are numbers
+		var range = _.map(scale.range(), function(val){
+			return parseFloat(val);
+		});
+		scale.range(range);
+		//set a new radius property for each feature with the class radius
 		return {
 			radius: scale(parseFloat(feature.properties[expressedAttribute]))
 		};
@@ -136,6 +177,134 @@ var techniquesObj = {
 	'choropleth': Choropleth,
 	'proportional symbol': ProportionalSymbol
 };
+
+//view for legend creation
+var LegendLayerView = Backbone.View.extend({
+	tagName: 'svg',
+	id: function(){
+		return this.model.get('className') + '-' + this.model.get('techniqueType').replace(/\s/g, '-') + '-legend';
+	},
+	append: function(range, domain, i){
+		var techniqueType = this.model.get('techniqueType');
+		template = _.template( $('#'+techniqueType.replace(/\s/g, '-')+'-legend-template').html() );
+		//set y attribute as function of index
+		var y = i * 12;
+		var attributes = {
+			range: range,
+			y: y,
+			svgHeight: this.model.get('svgHeight')
+		};
+		//set label content
+		if (typeof domain == 'object'){
+			attributes.label = domain[0] + ' - ' + domain[1];
+		} else {
+			attributes.label = String(domain)
+		};
+		//create temporary span element to test label width
+		var labelTestSpan = $('<span class="leaflet-container">'+attributes.label+'</span>').appendTo('body');
+		var labelWidth = labelTestSpan.width() + 5;
+		labelTestSpan.remove();
+		//set circle x for prop symbol legend and svgWidth for both
+		if (this.model.get('maxRadius')){
+			attributes.cx = this.model.get('maxRadius') + 10;
+			attributes.svgWidth = labelWidth + attributes.cx * 2;
+		} else {
+			attributes.svgWidth = labelWidth + 40;
+		};
+		//reset svg width based on current width
+		if (!this.model.get('svgWidth') || attributes.svgWidth > this.model.get('svgWidth')){
+			this.model.set('svgWidth', attributes.svgWidth);
+		};
+		//append a symbol for each class
+		var newline = template(attributes);
+		this.$el.append(newline);
+	},
+	render: function(){
+		//append svg to legend container
+		$('.legend-control-container').append(this.$el);
+	},
+	initialize: function(){
+		//get output range and input domain values
+		var scale = this.model.get('scale'),
+			range = scale.range(),
+			domain = scale.domain();
+		//get expressed attribute
+		var expressedAttribute = this.model.get('expressedAttribute');
+		//calculate svg height
+		if (!isNaN(parseFloat(range[range.length-1]))){ //if range is a number, treat as prop symbol
+			//set max radius
+			this.model.set('maxRadius', parseFloat(range[range.length-1]));
+			//svg height should be whichever is larger, label heights or largest circle diameter
+			var heightArray = [
+				13 * range.length + 6, 
+				parseFloat(range[range.length-1]) * 2 + 6
+			];
+			heightArray.sort(function(a,b){ return b-a });
+			this.model.set('svgHeight', heightArray[0]);
+		} else {
+			this.model.set('svgHeight', 13 * range.length + 6);
+		};
+		//only build classes for classed classification
+		if (domain.length > 2 || range.length > 2){
+			//add a symbol for each class
+			var y = 0;
+			for (var i = range.length-1; i >= 0; i--){
+				var domainvals = scale.invertExtent(range[i]);
+				//fill in min and max values for natural breaks threshold scale
+				if (typeof domainvals[0] == 'undefined'){
+					domainvals[0] = d3.min(getAllAttributeValues(this.model.get('features'), expressedAttribute));
+				} else if (typeof domainvals[1] == 'undefined'){
+					domainvals[1] = d3.max(getAllAttributeValues(this.model.get('features'), expressedAttribute));
+				};
+				//add visual element and label for each class
+				this.append(range[i], domainvals, y);
+				//count up to put swatches in correct order
+				y++;
+			};
+		} else {
+			range = range.reverse(),
+			domain = domain.reverse();
+			//add a symbol for lowest and highest values
+			_.each(range, function(rangeval, i){
+				this.append(rangeval, domain[i], i);
+			}, this);
+		};
+		//set svg dimensions
+		this.$el.attr({
+			width: this.model.get('svgWidth'),
+			height: this.model.get('svgHeight'),
+			xmlns: 'http://www.w3.org/2000/svg',
+			version: '1.1'
+		});
+		//style according to layer options
+		var css = {},
+			layerOptions = this.model.get('layerOptions');
+		for (var option in layerOptions){
+			//assign options that may apply
+			css[option] = layerOptions[option];
+			//deal with special Leaflet options
+			switch (option){
+				case 'fillColor': css.fill = layerOptions[option]; break;
+				case 'fillOpacity': css['fill-opacity'] = layerOptions[option]; break;
+				case 'color': css.stroke = layerOptions[option]; break;
+				case 'weight': css['stroke-width'] = layerOptions[option]; break;
+				case 'opacity': css['stroke-opacity'] = layerOptions[option]; break;
+				case 'dashArray': css['stroke-dasharray'] = layerOptions[option]; break;
+				case 'linecap': css['stroke-linecap'] = layerOptions[option]; break;
+				case 'linejoin': css['stroke-linejoin'] = layerOptions[option]; break;
+			};
+		};
+		for (var style in css){
+			this.$el.children('rect').each(function(){
+				//don't override rectangle color
+				if (style != 'fill'){ $(this).css(style, css[style]); };
+			});
+			this.$el.children('circle').each(function(){
+				$(this).css(style, css[style]);
+			});
+		};
+	}
+});
 
 /************** map.interactions ****************/
 
@@ -168,6 +337,196 @@ var Interaction = Backbone.Model.extend({
 	}
 });
 
+var InteractionControlModel = Backbone.Model.extend({
+	defaults: {
+		interaction: ''
+	}
+});
+
+//view for all interaction control toggle buttons
+var InteractionToggleView = Backbone.View.extend({
+	el: '.interaction-control-container',
+	template: _.template( $('#interaction-control-template').html() ),
+	message: '',
+	addInteraction: function(){},
+	removeInteraction: function(){},
+	toggle: function(e, toggleView){
+		//get target and interaction
+		var target = $(e.target).attr('class') ? $(e.target) : $(e.target).parent(),
+			className = target.attr('class'),
+			interaction = className.split('-')[0];
+		//toggle
+		var action, state;
+		if (className.indexOf(' active') > -1){
+			action = 'inactivate', state = 'inactive';
+			//close associated interaction widget
+			$('.'+interaction+'-control-container').hide();
+			//remove active class
+			target.attr('class', className.substring(0, className.indexOf(' active')));
+			//remove any additional interaction scripts
+			toggleView.removeInteraction();
+		} else {
+			action = 'activate', state = 'active';
+			//open associated interaction widget
+			$('.'+interaction+'-control-container').show();
+			//add active class
+			target.attr('class', className + ' active');
+			//add any additional interaction scripts
+			toggleView.addInteraction();
+		};
+		//fire inactivate event
+		toggleView.trigger('toggle', {
+			action: action,
+			state: state,
+			interaction: interaction
+		});
+		//display message about the interaction on first click
+		if (toggleView.message){ alert(toggleView.message); };
+	},
+	render: function(){
+		this.$el.append(this.template(this.model.attributes));
+		var toggleView = this,
+			toggle = this.toggle,
+			firstClick = true;
+		this.$el.children('.'+this.model.get('interaction')+'-control').click(function(e){
+			//only display message on first click
+			toggleView.message = toggleView.message.length > 0 && firstClick ? toggleView.message : false;
+			toggle(e, toggleView);
+			firstClick = false;
+		});
+	},
+	initialize: function(){
+		return this;
+	}
+});
+
+//interaction control base view
+var InteractionControlView = Backbone.View.extend({
+	render: function(){
+		this.$el.append(this.template());
+	},
+	initialize: function(){
+		this.render();
+		return this;
+	}
+});
+
+//view for pan interaction
+var PanControlView = InteractionControlView.extend({
+	el: '.pan-control-container',
+	events: {
+		'click .pan-button': 'pan'
+	},
+	template: _.template( $('#pan-control-template').html() ),
+	panMap: function(targetId){},
+	pan: function(e){
+		var targetId = $(e.target).attr('id') ? $(e.target).attr('id') : $(e.target).parent().attr('id');
+		this.panMap(targetId);
+	}
+});
+
+//model for overlay control
+var OverlayControlModel = Backbone.Model.extend({
+	defaults: {
+		layerName: '',
+		layerId: '',
+		techniqueType: ''
+	}
+});
+
+//view for overlay control
+var OverlayControlView = Backbone.View.extend({
+	el: '.overlay-control-container',
+	template: _.template( $('#overlay-control-template').html() ),
+	toggleLayer: function(layerId, addLayer){},
+	render: function(){
+		this.$el.append(this.template(this.model.attributes));
+		//set click interaction on this child element only
+		var view = this;
+		this.$el.find('.layer-'+this.model.get('layerId')+' input').click(function(e){
+			view.toggleLayer($(e.target).val(), $(e.target).prop('checked'));
+		});
+	}
+});
+
+//model for underlay control
+var UnderlayControlModel = Backbone.Model.extend({
+	defaults: {
+		layerName: '',
+		layerId: ''
+	}
+});
+
+//view for underlay control
+var UnderlayControlView = OverlayControlView.extend({
+	el: '.underlay-control-container',
+	events: {
+		'click input': 'overlay'
+	},
+	template: _.template( $('#underlay-control-template').html() )
+});
+
+//model for Fuse search of GeoJSON features
+var SearchModel = Backbone.Model.extend({
+	defaults: {
+		allFeatures: {},
+		searchOptions: {},
+		fuse: {},
+		term: '',
+		result: []
+	},
+	createSearch: function(){
+		this.set('fuse', new Fuse(this.get('allFeatures'), this.get('searchOptions')));
+	},
+	search: function(){
+		this.set('result', this.get('fuse').search(this.get('term')));
+	}
+});
+
+var SearchInputView = Backbone.View.extend({
+	el: '.search-control-container',
+	template: _.template($('#search-control-template').html()),
+	events: {
+		'click button': 'resetSearch'
+	},
+	resetSearch: function(){
+		this.$el.find('input').val('');
+		$('#search-results-box').empty();
+		this.trigger('reset');
+	},
+	initialize: function(){
+		this.$el.append(this.template());
+	}
+});
+
+var SearchView = Backbone.View.extend({
+	el: '.search-control-container',
+	template: _.template($('#search-result-template').html()),
+	events: {
+		'keyup input': 'search'
+	},
+	selectFeature: function(e, result){},
+	search: function(e){
+		//define search term
+		this.model.set('term', $(e.target).val());
+		//get results
+		this.model.search();
+		//reset html
+		this.$el.children('#search-results-box').empty();
+		_.each(this.model.get('result'), function(result, i){
+			//limit to top 10 results
+			if (i < 10){
+				var featureId = i + result.properties.name.replace(/[\.\s#]/g, '') + result.id;
+				//append a new line for each result
+				this.$el.children('#search-results-box').append(this.template({featureName: result.properties.name, featureId: featureId}));
+				//attach click listener
+				var selectFeature = this.selectFeature;
+				$('#result-'+featureId).click(function(e){ selectFeature(e, result); });
+			};
+		}, this);
+	}
+});
+
 //model for filter interaction
 var FilterModel = Backbone.Model.extend({
 	defaults: {
@@ -182,32 +541,17 @@ var FilterModel = Backbone.Model.extend({
 var FilterSliderView = Backbone.View.extend({
 	el: ".filter-control-container",
 	events: {
-		"click img": "open",
-		"click .close": "close"
+		"change select": "select"
 	},
 	template: _.template( $( '#slider-template').html() ),
 	applyFilter: function(){},
-	getAllAttributeValues: function(attribute){
-		//get attribute values for all features with given attribute
-		var allAttributeValues = [];
-
-		_.each(this.model.get('features'), function(feature){
-			if (feature.properties[attribute]){
-				allAttributeValues.push(parseFloat(feature.properties[attribute]));
-			};
-		}, this);
-
-		//ensure array only includes numbers
-		allAttributeValues = _.filter(allAttributeValues, function(value){
-			return !isNaN(value);
-		});
-		//sort array and return
-		allAttributeValues.sort(function(a,b){ return a-b });
-		return allAttributeValues;
+	select: function(e){
+		var select = $(e.target);
+		this.setSlider(select.val(), select.attr('name'));
 	},
-	setSlider: function(attribute){
+	setSlider: function(attribute, layerName){
 		//get attribute values for all features with given attribute
-		var allAttributeValues = this.getAllAttributeValues(attribute);
+		var allAttributeValues = getAllAttributeValues(this.model.get('features'), attribute);
 		//set values for slider
 		var min = _.min(allAttributeValues),
 			max = _.max(allAttributeValues),
@@ -240,13 +584,15 @@ var FilterSliderView = Backbone.View.extend({
 		min = Math.floor(min / step) * step - step;
 		max = Math.ceil(max / step) * step + step;
 		//add labels
-		var labelsDiv = this.$el.find("#"+attribute+"-labels");
+		var labelsDiv = this.$el.find("#"+layerName+"-labels");
 		labelsDiv.children(".left").html(min);
 		labelsDiv.children(".right").html(max);
 		//to pass to slide callback
 		var applyFilter = this.applyFilter;
+		//call once to reset layer
+		applyFilter(attribute, [min, max]);
 		//set slider
-		this.$el.find("#"+attribute+"-slider").slider({
+		this.$el.find("#"+layerName+"-slider").slider({
 			range: true,
 			min: min, //change
 			max: max, //change
@@ -259,44 +605,28 @@ var FilterSliderView = Backbone.View.extend({
 			}
 		});
 	},
-	append: function(attribute){
-		this.$el.append(this.template({attribute: attribute}));
-		this.setSlider(attribute);
+	append: function(numericAttributes){
+		//add line for data layer
+		this.$el.append(this.template(this.model.attributes));
+		//add slider for first attribute
+		this.setSlider(numericAttributes[0], this.model.get('layerName'));
 	},
 	render: function(){
-		//add a filter tool for each attribute
-		_.each(this.model.get('attributes'), function(attribute){
-			//only proceed if attribute is actually numerical
-			var allAttributeValues = this.getAllAttributeValues(attribute);
+		//get all numeric attributes for data layer
+		var numericAttributes = _.filter(this.model.get('attributes'), function(attribute){
+			var allAttributeValues = getAllAttributeValues(this.model.get('features'), attribute);
 			if (allAttributeValues.length > 0){
-				this.append(attribute);
+				return attribute;
 			};
 		}, this);
-		this.$el.append('<a class="close">&times;</a>');
-		this.$el.children('.close').css({
-			'position': 'absolute',
-			'left': this.$el.width() - 20 + "px",
-			'top': "0px",
-			'color': '#333'
-		});
-		this.$el.children('.filter-row, .close').each(function(){
-			$(this).hide();
-		});
-		this.$el.css('cursor', 'pointer');
-	},
-	open: function(e){
-		//show content
-		this.$el.children('.filter-row, .close').each(function(){
-			$(this).show();
-		});
-		this.$el.css('cursor', 'default');
-	},
-	close: function(){
-		//hide content
-		this.$el.children('.filter-row, .close').each(function(){
-			$(this).hide();
-		});
-		this.$el.css('cursor', 'pointer');
+		//only proceed if there are one or more numeric attributes
+		if (numericAttributes.length > 0){ this.append(numericAttributes); };
+		//add dropdown option for each attribute
+		var optionTemplate = _.template($('#filter-options-template').html()),
+			select = this.$el.find('select[name=' + this.model.get('layerName') + ']');
+		_.each(numericAttributes, function(attribute){
+			select.append(optionTemplate({attribute: attribute}))
+		}, this);
 	},
 	initialize: function(options){
 		this.applyFilter = options.applyFilter;
@@ -312,16 +642,16 @@ var FilterLogicView = FilterSliderView.extend({
 	},
 	template: _.template( $( '#logic-template').html() ),
 	processFilter: function(e){
-		//identify attribute
-		var attributeDiv = $(e.target).parent();
-		var attribute = attributeDiv.attr('id').split('-')[0];
+		//identify layer and attribute
+		var layerDiv = $(e.target).parent();
+		var attribute = layerDiv.children('select').val();
 		//get attribute values min and max
-		var allAttributeValues = this.getAllAttributeValues(attribute);
+		var allAttributeValues = getAllAttributeValues(this.model.get('features'), attribute);
 		var minmax = [_.min(allAttributeValues), _.max(allAttributeValues)];
 		//array to hold filter values
 		var values = [
-			attributeDiv.children('input[name=value1]').val(),
-			attributeDiv.children('input[name=value2]').val(),
+			layerDiv.children('input[name=value1]').val(),
+			layerDiv.children('input[name=value2]').val(),
 		];
 		//test whether input contains a value; if not, use default
 		values = _.map(values, function(value, i){
@@ -330,42 +660,416 @@ var FilterLogicView = FilterSliderView.extend({
 		//go!
 		this.applyFilter(attribute, values);
 	},
-	setValues: function(attribute){
+	setValues: function(attribute, layerName){
 		//get attribute values for all features with given attribute
-		var allAttributeValues = this.getAllAttributeValues(attribute);
+		var allAttributeValues = getAllAttributeValues(this.model.get('features'), attribute);
 		//set values for inputs
 		var min = _.min(allAttributeValues),
 			max = _.max(allAttributeValues);
-		this.$el.find('input[name=value1]').attr('placeholder', min);
-		this.$el.find('input[name=value2]').attr('placeholder', max);
+		var parentDiv = this.$el.find('select[name='+layerName+']').parent();
+		parentDiv.children('input[name=value1]').attr('placeholder', min);
+		parentDiv.children('input[name=value2]').attr('placeholder', max);
 	},
-	append: function(attribute){
-		this.$el.append(this.template({attribute: attribute}));
-		this.setValues(attribute);
+	append: function(numericAttributes){
+		this.$el.append(this.template(this.model.attributes));
+		this.setValues(numericAttributes[0], this.model.get('layerName'));
+	},
+	select: function(e){
+		var select = $(e.target);
+		this.setValues(select.val(), select.attr('name'));
 	}
 });
 
+//model for reexpress widget
 var ReexpressModel = Backbone.Model.extend({
 	defaults: {
-		iconName: '',
+		layer: {},
+		techniqueType: '',
+		techniqueTypeClass: '',
 		layerName: '',
-		className: ''
-	}
-});
-
-//view for reexpress buttons
-var ReexpressView = Backbone.View.extend({
-	events: {
-		"click": "setTechnique"
+		layerNameClass: '',
+		layerId: 0
 	},
-	setTechnique: function(e){},
-	render: function(){
-		var html = '<button type="button" name="'+ this.model.get('layerName').replace(/\s|\:/g, '-') +'" class="'+ this.model.get('className') +'"><img class="icon" src="img/icons/'+ this.model.get('iconName') +'.png">'+ this.model.get('iconName').replace(/_|\:/g, ' ') +'</button>';
-		this.$el.html(html);
-		return html;
+	initialize: function(){
+		//set other attributes based on layer
+		if (this.attributes.layer){
+			var layer = this.get('layer');
+			this.set({
+				layerName: layer.layerName,
+				layerNameClass: layer.className,
+				techniqueType: layer.techniqueType,
+				techniqueTypeClass: layer.techniqueType.replace(/\s/g, ''),
+				layerId: layer._leaflet_id
+			});
+		};
 	}
 });
 
+//view for reexpress widget section
+var ReexpressSectionView = Backbone.View.extend({
+	el: '.reexpress-control-container',
+	template: _.template( $('#reexpress-section-template').html() ),
+	initialize: function(){
+		this.$el.append(this.template(this.model.attributes));
+	}
+})
+
+//view for reexpress radio buttons
+var ReexpressInputView = Backbone.View.extend({
+	template: _.template( $('#reexpress-input-template').html() ),
+	setTechnique: function(e){},
+	getEl: function(){
+		return $('#'+this.model.get('layerNameClass')+'-reexpress-section');
+	},
+	setSection: function(){
+		new ReexpressSectionView({model: this.model});
+	},
+	setEvents: function(){
+		//set click listener
+		var setTechnique = this.setTechnique;
+		this.$el.find('input.'+this.model.get('techniqueTypeClass')).click(setTechnique);
+	},
+	render: function(){
+		//instantiate reexpress section if needed
+		if (this.getEl().length == 0){ this.setSection() };
+		//set el as section div
+		this.$el = this.getEl();
+		//add input div for technique
+		this.$el.append(this.template(this.model.attributes));
+		//set event listeners
+		this.setEvents();
+	}
+});
+
+//model for resymbolize widget
+var ResymbolizeModel = ReexpressModel.extend({
+	classificationType: '',
+	classificationModel: {},
+	range: [],
+	domain: [],
+	min: 0,
+	max: 0,
+	scale: function(){}
+});
+
+//view for resymbolize widget section
+var ResymbolizeSectionView = ReexpressSectionView.extend({
+	el: '.resymbolize-control-container',
+	template: _.template( $('#resymbolize-section-template').html() )
+});
+
+//view for reclassify section of resymbolize widget
+var ReclassifyView = ReexpressInputView.extend({
+	template: _.template( $('#reclassify-template').html() ),
+	resymbolize: function(scale){},
+	setScale: function(){
+		var classificationModel = this.model.get('classificationModel'),
+			scale = classificationModel.scale(this.model.get('domain'), this.model.get('range'));
+			this.model.set('scale', scale);
+			this.resymbolize(scale);
+	},
+	setClassification: function(view, classificationType){
+		//get correct reclassify div
+		var classifyDiv = view.$el.children('.reclassify');
+		//set classification type in select element if first run
+		if (typeof classificationType == 'undefined'){
+			classificationType = view.model.get('classificationType');
+			classifyDiv.find('select[name=classification]').val(classificationType);
+			//hide class breaks
+			classifyDiv.children('.class-breaks').hide();
+		} else {
+			//set classification type in model
+			view.model.set('classificationType', classificationType);
+			//create new classification from classification type
+			var classificationModel = classification.where({type: classificationType})[0];
+			view.model.set('classificationModel', classificationModel);
+			//if user defined classification, reset classification
+			if (classificationType == 'user defined'){
+				view.setClassBreaks(view);
+				return;
+			} else {
+				//reset domain to undo user defined class breaks
+				view.model.set('domain', view.model.get('allvalues'));
+			};
+			//set a new scale and reclassify
+			view.setScale();
+		};
+		view.setClassBreaks();
+	},
+	setNClasses: function(view, nClasses){
+		//get DOM elements
+		var classifyDiv = view.$el.children('.reclassify'),
+			nClassesSelect = classifyDiv.find('.n-classes select'),
+			inputsDiv = classifyDiv.find('.class-break-inputs');
+		//set up classes if the first run
+		if (typeof nClasses == 'undefined'){
+			var nClasses = view.model.get('nClasses'),
+				min = view.model.get('min'),
+				max = view.model.get('max');
+			//add min and max values
+			classifyDiv.find('.class-min').html(min);
+			classifyDiv.find('.class-max').html(max);
+			//add a special option if the number of classes is out of range
+			if (nClasses < 2 || nClasses > 9){
+				classifyDiv.find('.class-break-inputs').prepend('<option value="-1"></option>');
+			};
+			//set correct number of classes in select element
+			if (nClasses > 1 && nClasses < 10){
+				nClassesSelect.val(String(nClasses));
+			} else {
+				nClassesSelect.val('-1');
+			};
+		} else {
+			//set the new number of classes
+			view.model.set('nClasses', nClasses);
+			//trigger set classes event for recolor view to pick up on
+			view.model.trigger('setNClasses');
+			//set display of class break inputs
+			inputsDiv.find('span').each(function(){
+				var i = Number($(this).attr('class').split('cb-')[1]);
+				if (i < nClasses-1){
+					$(this).show();
+				} else {
+					$(this).children('input').val('');
+					$(this).hide();
+				}
+			});
+			//designate new range for scale
+			var scale = view.model.get('scale'),
+				range = scale.range(),
+				newRange = [];
+			if (!view.model.attributes.colorbrewer){
+				var interpolator = d3.interpolate(range[0], range[range.length-1]);
+				for (var i = 0; i < nClasses; i++){
+					newRange.push(interpolator(i/(nClasses-1)));
+				};
+			} else {
+				//if colorbrewer scale specified, set as range
+				newRange = colorbrewer[view.model.get('colorbrewer')][nClasses];
+			};
+			view.model.set('range', newRange);
+			//if user defined classification, reset classification
+			if (view.model.get('classificationType') == 'user defined'){
+				view.setClassBreaks(view);
+				return;
+			};
+			view.setScale();
+		};
+		view.setClassBreaks();
+	},
+	setClassBreaks: function(view){
+		var reclassify = true;
+		//use the parameter to determine if setting or using input values
+		if (typeof view == 'undefined'){
+			view = this;
+			reclassify = false;
+		};
+		//get DOM elements
+		var classifyDiv = view.$el.children('.reclassify'),
+			inputsDiv = classifyDiv.find('.class-break-inputs');
+		//get necessary variables
+		var scale = view.model.get('scale'),
+			domain = scale.domain(),
+			range = scale.range(),
+			classificationType = view.model.get('classificationType');
+		if (reclassify){
+			//get input values
+			var classBreaks = [];
+			inputsDiv.find('input').each(function(){
+				var val = $(this).val();
+				if (val != '' && !isNaN(parseFloat(val))){
+					classBreaks.push(parseFloat(val));
+				}
+			});
+			//set domain based on input values
+			view.model.set('domain', classBreaks);
+			view.setScale();
+		} else {
+			//hide nClasses div for unclassed
+			var nClassesDiv = this.$el.find('.n-classes');
+			if (classificationType == 'unclassed'){
+				nClassesDiv.hide();
+			} else {
+				nClassesDiv.show();
+			};
+			//set input values
+			//for natural breaks, domain array is class breaks array
+			if (classificationType == 'natural breaks'){
+				inputsDiv.show();
+				_.each(domain, function(d, i){
+					inputsDiv.find('.cb-'+i+' input').val(d);
+				});
+			//for unclassed, no class breaks
+			} else if (classificationType == 'unclassed'){
+				inputsDiv.find('input').val('');
+			//for quantile and equal interval, set class breaks according to range extents
+			} else if (classificationType == 'quantile' || classificationType == 'equal interval') {
+				inputsDiv.show();
+				_.each(range, function(r, i){
+					if (i < range.length-1){
+						inputsDiv.find('.cb-'+i+' input').val(scale.invertExtent(r)[1]);
+					};
+				});
+			};
+			//don't reset inputs for user defined
+		};
+	},
+	setForm: function(){
+		//set model variables
+		var scale = this.model.get('scale'),
+			domain = this.model.get('domain');
+		this.model.set('allvalues', domain);
+		this.model.set('nClasses', scale.range().length);
+		this.model.set('range', scale.range());
+		this.model.set('min', domain[0]);
+		this.model.set('max', domain[domain.length-1]);
+		//set classification model
+		var classificationModel = classification.where({type: this.model.get('classificationType')})[0];
+		this.model.set('classificationModel', classificationModel);
+		//get class break template
+		var cbTemplate = _.template( $('#class-break-input-template').html() );
+		//set 8 class break inputs
+		for (var i = 0; i < 8; i++){
+			//set display and values based on number of classes
+			var display = i < scale.range().length-1 ? 'inline' : 'none';
+			this.$el.find('.class-break-inputs').append(cbTemplate({
+				index: i, 
+				display: display
+			}));
+		};
+		//call setup methods
+		this.setNClasses(this);
+		this.setClassification(this);
+
+	},
+	getEl: function(){
+		return $('#'+this.model.get('layerNameClass')+'-'+this.model.get('techniqueTypeClass')+'-resymbolize-section');
+	},
+	setSection: function(){
+		new ResymbolizeSectionView({model: this.model});
+	},
+	setEvents: function(){
+		//set reclassify form
+		this.setForm();
+		//alias methods
+		var view = this,
+			setClassification = this.setClassification,
+			setNClasses = this.setNClasses,
+			setClassBreaks = this.setClassBreaks;
+		
+		//set reclassification listener on classification dropdown
+		this.$el.find('select[name=classification]').change(function(){
+			//get classification parameters
+			var classificationType = $(this).val(),
+				parent = $(this).parents('.reclassify');
+			if ($(this).val() == 'user defined'){
+				//show class breaks
+				parent.find('.class-breaks').show();
+			} else {
+				//hide class breaks
+				parent.find('.class-breaks').hide();
+			};
+			//reset classification
+			setClassification(view, classificationType);
+		});
+		//set reclassification listener on nClasses dropdown
+		this.$el.find('select[name=n-classes]').change(function(){
+			setNClasses(view, $(this).val());
+		});
+		//set reclassification listener on class breaks keyup
+		var timeout = setTimeout(function(){},0);
+		this.$el.find('.class-break input').keyup(function(){
+			clearTimeout(timeout);
+			timeout = setTimeout(function(){ setClassBreaks(view) }, 1000);
+		});
+	}
+});
+
+//view for recolor section of resymbolize widget
+var RecolorView = ReclassifyView.extend({
+	template: _.template( $('#recolor-template').html() ),
+	setTechnique: function(){
+		var techniqueType = this.model.get('techniqueType');
+		if (techniqueType == 'choropleth'){
+			this.$el.find('.recolor input').hide();
+			this.setColorSwatches();
+		} else if (techniqueType == 'proportional symbol'){
+			this.$el.find('.recolor select').hide();
+		};
+	},
+	setColorSwatches: function(){
+		//get variables
+		view = this,
+			nClasses = this.model.get('nClasses');
+		//retrieve templates
+		var optionTemplate = _.template( $('#color-scale-option-template').html() ),
+			swatchTemplate = _.template( $('#color-swatch-template').html() );
+		//get select element
+		var select = this.$el.find('.color-scale');
+		//clear select in case previously filled
+		select.empty();
+		//set options and swatches
+		for (var scheme in colorbrewer){
+			//only include schemes that have full number of classes
+			if (colorbrewer[scheme][nClasses]){
+				//set option
+				select.append(optionTemplate({colorcode: scheme}));
+				var option = this.$el.find('.color-scale option[value='+scheme+']');
+				//add swatches to option
+				_.each(colorbrewer[scheme][nClasses], function(color){
+					option.append(swatchTemplate({
+						stroke: '#000',
+						fillColor: color
+					}));
+				});
+			};
+		};
+		//set reclassify event listener
+		select.change(function(){
+			//set range to new color scale array
+			var range = colorbrewer[$(this).val()][nClasses];
+			view.model.set('range', range);
+			//reset scale and reclassify
+			view.setScale();
+		});
+	},
+	setLabelAttribute: function(){
+		var techniqueType = this.model.get('techniqueType'),
+			label = false;
+		if (techniqueType == 'choropleth'){
+			label = 'Color scale';
+			this.$el.find('input').hide();
+			this.setColorSwatches();
+		} else if (techniqueType == 'proportional symbol'){
+			label = 'Symbol color';
+			this.$el.find('.recolor select').hide();
+		};
+		this.model.set('label', label);
+	},
+	initialize: function(){
+		this.setLabelAttribute();
+	},
+	setEvents: function(){
+		//call setup methods
+		this.setTechnique();
+		this.model.on('setNClasses', this.setColorSwatches, this);
+	}
+});
+
+//view for rescale section of resymbolize widget
+var RescaleView = RecolorView.extend({
+	template: _.template( $('#rescale-template').html() ),
+	setLabelAttribute: function(){
+		var techniqueType = this.model.get('techniqueType'),
+			label = false;
+		if (techniqueType == 'proportional symbol'){
+			label = 'Symbol color';
+		} else if (techniqueType == 'dot' || techniqueType == 'isarithm'){
+			label = 'Interval';
+		};
+		this.model.set('label', label);
+	}
+});
 
 /************** map.library ****************/
 
@@ -378,18 +1082,75 @@ var LeafletMap = Backbone.View.extend({
 	events: {
 		'click .reexpress': 'reexpress'
 	},
+	offLayers: {},
+	//all available interactions
+	interactions: {
+		zoom: false,
+		pan: false,
+		retrieve: false,
+		overlay: false,
+		search: false,
+		filter: false,
+		sequence: false,
+		reexpress: false,
+		resymbolize: false,
+		reproject: false
+	},
 	render: function(){
 		this.$el.html("<div id='map'>");
+		this.model.set('allFeatures', []);
 		return this;
+	},
+	addLayer: function(layerId){
+		this.offLayers[layerId].addTo(this.map);
+		delete this.offLayers[layerId];
+	},
+	removeLayer: function(layerId){
+		this.offLayers[layerId] = this.map._layers[layerId];
+		this.map.removeLayer(this.map._layers[layerId]);
 	},
 	setBaseLayer: function(baseLayer, i){
 		//create leaflet tile layer
 		var leafletBaseLayer = L.tileLayer(baseLayer.source, baseLayer.layerOptions);
 		leafletBaseLayer.layerName = baseLayer.name;
+		//need to pre-assign layerId for tile layers...for unknown reason
+		leafletBaseLayer._leaflet_id = Math.round(Math.random()*10000);
+		var layerId = leafletBaseLayer._leaflet_id;
 		//only add first base layer to the map
-		if (i==0){ leafletBaseLayer.addTo(this.map); };
+		if (i==0){ 
+			leafletBaseLayer.addTo(this.map);
+		} else {
+			this.offLayers[layerId] = leafletBaseLayer;
+		};
 		//add to array of base layers
 		this.model.attributes.leafletBaseLayers.push(leafletBaseLayer);
+		//add to underlay control
+		var view = this,
+			map = this.map;
+		var underlayControlModel = new UnderlayControlModel({
+			layerName: baseLayer.name,
+			layerId: layerId,
+		});
+		var underlayControlView = new UnderlayControlView({model: underlayControlModel});
+		//toggleLayer function must be defined for leaflet view
+		underlayControlView.toggleLayer = function(layerId, addLayer){
+			//turn clicked layer on
+			if (!map._layers[layerId] && view.offLayers[layerId]){
+				view.addLayer(layerId);
+			};
+			//turn other layers off
+			$('.underlay-control-layer').each(function(){
+				var thisId = $(this).attr('id').split('-')[2];
+				if (layerId != thisId && map._layers[thisId]){
+					view.removeLayer(thisId);
+				};
+			});
+		};
+		underlayControlView.render();
+		//check the layer that is on the map
+		if (this.map._layers[layerId]){
+			$('#underlay-layer-'+layerId+' input').prop('checked', true);
+		};
 		//trigger done event
 		if (i == this.model.get('baseLayers').length-1){ this.trigger('baseLayersDone') };
 	},
@@ -400,401 +1161,769 @@ var LeafletMap = Backbone.View.extend({
 		feature.geometry.coordinates = [center.lng, center.lat];
 		return feature;
 	},
-	setDataLayer: function(dataLayer, i){
-		//global array to hold non-mapped layers
-		if (!window.offLayers){ window.offLayers = []; };
-		//get layer options
-		var dataLayerOptions = dataLayer.layerOptions;
-		//create a layer for each technique
-		_.each(dataLayer.techniques, function(technique, a){
-			//get model based on technique type
-			var dataLayerModel = new techniquesObj[technique.type];
-			//pass in necessary values
-			dataLayerModel.set({
-				classificationType: technique.classification,
-				expressedAttribute: dataLayer.expressedAttribute,
-				classes: technique.classes,
-				dataLayer: dataLayer
-			});
-			//set up AJAX callback
-			dataLayerModel.once('done', function(){
-				var model = this.model, view = this;
-				var layerName = dataLayerModel.get('dataLayer').name;
-				var className = layerName.replace(/\s|\:/g, '-');
-				function style(feature){
-					//combine layer options objects from config file and feature properties
-					//classification will take precedence over base options
-					return _.defaults(feature.properties.layerOptions, dataLayerOptions);
+	setTechniques: function(dataLayerModel){
+		//variables needed by internal functions
+		var view = this, 
+			model = view.model,
+			map = view.map;
+		//add new features to collection of all features
+		model.attributes.allFeatures = _.union(model.attributes.allFeatures, dataLayerModel.get('features'));
+		//trigger event for features
+		view.trigger(dataLayerModel.get('className')+'-features-added');
+
+		//Leaflet layer style function
+		function style(feature){
+			//combine layer options objects from config file and feature properties
+			//classification will take precedence over base options
+			return _.defaults(feature.properties.layerOptions, dataLayerModel.get('layerOptions'));
+		};
+
+		//create a new Leaflet layer for each technique
+		_.each(dataLayerModel.get('techniques'), function(technique, i){
+			//instantiate new model based on technique type and combine with data layer model
+			var techniqueModel = new techniquesObj[technique.type]({techniqueIndex: i});
+			_.defaults(techniqueModel, dataLayerModel);
+			_.extend(techniqueModel.attributes, dataLayerModel.attributes);
+			//set model classification
+			techniqueModel.setClasses();
+
+			//add popups to layer
+			function onEachFeature(feature, layer){
+				if (!feature.layers){ feature.layers = [] };
+				feature.layers.push(layer); //bind layer to feature for search
+				var popupContent = "<table>";
+				if (dataLayerModel.attributes.displayAttributes){
+					dataLayerModel.get('displayAttributes').forEach(function(attr){
+						popupContent += "<tr><td class='attr'>"+attr+":</td><td>"+feature.properties[attr]+"</td></tr>";
+					});
+				} else {
+					var attr = dataLayerModel.get('expressedAttribute');
+					popupContent += "<tr><td class='attr'>"+attr+":</td><td>"+feature.properties[attr]+"</td></tr>";
 				};
-				//implement retrieve interaction if listed in config file
-				function onEachFeature(feature, layer){
-					feature.layer = layer; //bind layer to feature for search
-					if (model.get('interactions.retrieve')){
-						var popupContent = "<table>";
-						if (dataLayer.displayAttributes){
-							dataLayer.displayAttributes.forEach(function(attr){
-								popupContent += "<tr><td class='attr'>"+attr+":</td><td>"+feature.properties[attr]+"</td></tr>";
-							});
-						} else {
-							var attr = dataLayerModel.get('expressedAttribute');
-							popupContent += "<tr><td class='attr'>"+attr+":</td><td>"+feature.properties[attr]+"</td></tr>";
-						};
-						popupContent += "</table>";
-						layer.bindPopup(popupContent);
-						if (model.get('interactions.retrieve.event') == 'hover'){
-							layer.on({
-								mouseover: function(){
-									//fix for popup flicker
-									var bounds = this.getBounds();
-									var maxLat = bounds.getNorth();
-									var midLng = bounds.getCenter().lng;
-									this.openPopup([maxLat, midLng]);
-								},
-								mouseout: function(){ this.closePopup() }
-							});
-						};
-						layer.on('popupopen', function(){
-							view.trigger('popupopen');
-						});
+				popupContent += "</table>";
+				layer.bindPopup(popupContent);
+				if (model.get('interactions.retrieve.event') == 'hover'){
+					layer.on({
+						mouseover: function(){
+							//fix for popup flicker
+							var bounds = this.getBounds();
+							var maxLat = bounds.getNorth();
+							var midLng = bounds.getCenter().lng;
+							this.openPopup([maxLat, midLng]);
+						},
+						mouseout: function(){ this.closePopup() }
+					});
+				};
+				layer.on('popupopen', function(){
+					//only trigger event if popup is visible
+					if ($('.leaflet-popup-pane').css('display') != 'none'){
+						view.trigger('popupopen');
 					};
-				};
+				});
+			};
+			//Leaflet overlay options
+			var overlayOptions = {
+				onEachFeature: onEachFeature,
+				style: style,
+				className: dataLayerModel.get('className')
+			};
+
+			//special processing for prop symbol maps
+			if (technique.type == 'proportional symbol'){
 				//implement pointToLayer conversion for proportional symbol maps
 				function pointToLayer(feature, latlng){
-					var markerOptions = _.extend(feature.properties.layerOptions, dataLayerOptions);
-					if (dataLayerModel.get('symbol') == 'circle'){
+					var markerOptions = style(feature);
+					if (techniqueModel.get('symbol') == 'circle' || !techniqueModel.attributes.symbol){
 						return L.circleMarker(latlng, markerOptions);
 					} else {
 						var width = markerOptions.radius * 2;
 						var icon = L.icon({
-							iconUrl: dataLayerModel.get('symbol'),
+							iconUrl: techniqueModel.get('symbol'),
 							iconSize: [width, width]
 						});
 						return L.marker(latlng, {icon: icon})
-					};	
-				};
-				//add Leaflet overlay
-				var overlayOptions = {
-					onEachFeature: onEachFeature,
-					style: style,
-					className: className
-				};
-				if (dataLayerModel.get('techniqueType') == 'proportional symbol'){
-					//turn any non-point features into point features
-					var newFeatures = _.map(dataLayerModel.get('features'), function(feature){
-						if (feature.geometry.type != 'Point'){
-							return this.polygonToPoint(feature);
-						} else {
-							return feature;
-						};
-					}, this);
-					dataLayerModel.set('features', newFeatures);
-					//add pointToLayer to create prop symbols
-					overlayOptions.pointToLayer = pointToLayer;
-				};
-				var leafletDataLayer = L.geoJson(dataLayerModel.get('features'), overlayOptions);
-				leafletDataLayer.layerName = layerName;
-				leafletDataLayer.techniqueType = technique.type;
-				//render immediately by default
-				if (a==0 && (typeof dataLayer.renderOnLoad === 'undefined' || dataLayer.renderOnLoad == 'true')){
-					leafletDataLayer.addTo(this.map);
-					//reset cursor if needed
-					if (!model.get('interactions.retrieve') && model.get('interactions.pan')){
-						$("."+className).css('cursor', "grab");
 					};
-				} else {
-					//stick it in offLayers array
-					offLayers.push(leafletDataLayer);
-				}
-				//add to layers
-				model.attributes.leafletDataLayers.push(leafletDataLayer);
-				//trigger done event
-				if (i == model.get('dataLayers').length-1){ this.trigger('dataLayersDone') };
-			}, this);
-			//go get the data!
-			dataLayerModel.fetch({url: dataLayer.source});
-		}, this);
-	},
-	getFeatures: function(){
-		//collect all dataLayers' features in one features array
-		var features = [];
-		_.each(this.model.get('leafletDataLayers'), function(dataLayer){
-			var geoJsonFeatures = dataLayer.toGeoJSON().features;
-			features = features.concat(geoJsonFeatures);
-		}, this);
-		return features;
-	},
-	hideLabels: function(){
-		//if overlay is absent, hide all checkboxes
-		if (!this.model.get('interactions.overlay')){
-			$('.leaflet-control-layers-overlays input').hide();
-		};
-		//temporarily hide all labels with reexpress buttons
-		$('.reexpress').parents('label').hide();
-		//hide unchecked labels with buttons--kinda hacky, but can't figure out another way
-		$('.leaflet-control-layers-overlays label').each(function(){
-			var label = $(this);
-			var reexpressSpan = label.find('.reexpress');
-			var button = $(this).find('button');
-			var input = $(this).find('input');
-			input.off();
-			//inactivate both buttons if layer is unchecked
-			input.on('change', function(){
-				if (button.length > 0){
-					if ($(this).prop('checked')){
-						label.find('button[class="inactive now"]').attr('class', 'active');
+				};
+				//turn any non-point features into point features
+				var newFeatures = _.map(techniqueModel.get('features'), function(feature){
+					if (feature.geometry.type != 'Point'){
+						return this.polygonToPoint(feature);
 					} else {
-						label.find('button[class=active]').attr('class', 'inactive now');
-						button.click(function(e){ e.preventDefault() });
+						return feature;
+					};
+				}, this);
+				techniqueModel.set('features', newFeatures);
+				//add pointToLayer to create prop symbols
+				overlayOptions.pointToLayer = pointToLayer;
+			};
+			//instantiate Leaflet layer
+			var leafletDataLayer = L.geoJson(techniqueModel.get('features'), overlayOptions),
+				layerId = leafletDataLayer._leaflet_id;
+			leafletDataLayer.model = techniqueModel;
+			leafletDataLayer.layerName = techniqueModel.get('name');
+			leafletDataLayer.className = techniqueModel.get('className');
+			leafletDataLayer.techniqueType = technique.type;
+
+			//render immediately by default
+			if (i==0 && (typeof dataLayerModel.get('renderOnLoad') === 'undefined' || dataLayerModel.get('renderOnLoad') == true)){
+				//add layer to map
+				leafletDataLayer.addTo(map);
+			} else {
+				//stick it in offLayers array
+				view.offLayers[layerId] = leafletDataLayer;
+			};
+			//add to layers
+			model.attributes.leafletDataLayers.push(leafletDataLayer);
+
+			//interval needed to keep checking if layer not yet fully processed
+			var interval = setInterval(triggerDone, 100);
+			function triggerDone(){
+				//check to make sure layer has been fully processed
+				if (map.hasLayer(leafletDataLayer) || view.offLayers[layerId]){
+					clearInterval(interval);
+					//if the last layer, trigger the done event
+					if (dataLayerModel.id == model.get('dataLayers').length-1 && techniqueModel.get('techniqueIndex') == techniqueModel.get('techniques').length-1){
+						view.trigger('dataLayersDone');
 					};
 				};
-			});
-			if (reexpressSpan.length > 0){
-				//if the label's checkbox is checked, set to visible
-				if (input.prop('checked')){
-					var dataLayerName = button.attr('name');
-					//find all labels for same dataLayer and reset classes
-					$('.leaflet-control-layers-overlays').find('button[name="'+ dataLayerName +'"]').parents('.reexpress').attr('class', 'reexpress');
-					//set only buttons belonging to checked layer to visible
-					reexpressSpan.attr('class', 'reexpress visible');
-				};
-			};
-		});
-		//show only one label for each dataLayer, even if renderOnLoad is false
-		$('.visible').parents('label').show();
-	},
-	addOverlayControl: function(){
-		//add layer control if it wasn't created for underlay
-		if (!this.layerControl){
-			this.layerControl = L.control.layers().addTo(this.map);
-		};
-		//add each overlay to layers control
-		_.each(this.model.get('leafletDataLayers'), function(overlay){
-			//only add listed layers or multiple techniques of dataLayers if reexpress interaction
-			if (_.indexOf(this.model.get('interactions.overlay.dataLayers'), overlay.layerName) > -1 || (this.model.get('interactions.reexpress') && _.findWhere(this.model.get('dataLayers'), {name: overlay.layerName}).techniques.length > 1)){
-				//for reexpress interaction, replace overlay.layerName with html for span placeholders
-				if (this.model.get('interactions.reexpress')){
-					var layerName = this.addReexpress(overlay.layerName, overlay.techniqueType);
-					this.layerControl.addOverlay(overlay, layerName);
-				} else {
-					this.layerControl.addOverlay(overlay, overlay.layerName);
-				};
-			};
-		}, this);
-		//set custom interaction for logging
-		var view = this;
-		this.map.on('overlayadd overlayremove', function(){
-			if (!view.reexpressed){ view.trigger('overlay'); };
-		});
-		this.hideLabels();
-	},
-	addUnderlayControl: function(){
-		//add layer control if it wasn't created for overlay
-		if (!this.layerControl){
-			this.layerControl = L.control.layers().addTo(this.map);
-		};
-		//add each base layer to layers control
-		_.each(this.model.get('leafletBaseLayers'), function(baseLayer){
-			this.layerControl.addBaseLayer(baseLayer, baseLayer.layerName);
+			};			
 		}, this);
 	},
-	addSearch: function(){
-		var model = this.model;
-		function showResultFct(feature, container){
-			props = feature.properties;
-	        _.each(model.get('interactions.search.attributes'), function(attribute){
-	        	var span = L.DomUtil.create('span', null, container);
-	        	span.innerHTML = "<b>"+attribute+"</b>: "+props[attribute]+"<br>";
-	        }, this);
-		}
-		//add search control to map
-		var searchControl = L.control.fuseSearch({
-			position: 'topleft',
-			showResultFct: showResultFct
-		}).addTo(this.map);
-		//get features array
-		var features = this.getFeatures();
-		//index features for search
-		searchControl.indexFeatures(features, this.model.get('interactions.search.attributes'));
-		//add search event
-		var view = this,
-			timeout = window.setTimeout(function(){}, 0);
-		$(".search-input").on('keyup', function(){ 
-			clearTimeout(timeout);
-			timeout = window.setTimeout(function(){ view.trigger('search'); }, 1000)
-		});
+	setDataLayer: function(dataLayer, i){
+		//global object to hold non-mapped layers
+		if (!window.offLayers){ window.offLayers = {}; };
+		//replace any periods in name and set class name
+		dataLayer.name = dataLayer.name.replace(/\./g, '');
+		dataLayer.className = dataLayer.name.replace(/\s/g, '-');
+		//instantiate model for data layer
+		var dataLayerModel = new DataLayerModel(dataLayer);
+		//handle for determining layer order
+		dataLayerModel.set('id', i);
+		//get data and create thematic layers
+		dataLayerModel.on('sync', this.setTechniques, this);
+		dataLayerModel.fetch({url: dataLayer.source});
 	},
-	addFilter: function(){
+	CustomControl: function(controlName, position){
 		var model = this.model;
 		var map = this.map;
-		//extend Leaflet controls to create filter control
-		var FilterControl = L.Control.extend({
+		//extend Leaflet controls to create control
+		var Control = L.Control.extend({
 			options: {
-				position: 'bottomleft'
+				position: position
 			},
 			onAdd: function(map){
-				//create container for filter control
-				var container = L.DomUtil.create('div', 'filter-control-container control-container');
-				container.innerHTML = '<img src="js/lib/leaflet/images/filter.png">';
-				//kill map interactions under filter control
+				//create container for control
+				var container = L.DomUtil.create('div', controlName+'-control-container control-container');
+				//add name and icon if not the interaction buttons
+				if (controlName != 'interaction'){
+					container.innerHTML = '<img class="icon" src="img/icons/'+controlName+'.png" alt="'+controlName+'" title="'+controlName+'"><span class="control-title">'+controlName+'</span>';
+					$(container).hide();
+				};
+				//kill map interactions under control
 				L.DomEvent.addListener(container, 'mousedown click dblclick', function(e) {
 					L.DomEvent.stopPropagation(e);
 				});
 				return container;
 			}
 		});
-		//add filter control to map
-		map.addControl(new FilterControl());
-
-		//applyFilter function references map, so must be created here
-		var applyFilter = function(attribute, values){
-			//helpful abbreviations
-			var min = values[0], max = values[1];
-			//remove layers outside of filter range
-			map.eachLayer(function(layer){
-				if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
-					var layerValue = layer.feature.properties[attribute];
-					//if value falls outside range, remove from map and stick in removed layers array
-					if (layerValue < min || layerValue > max){
-						map.removeLayer(layer);
-						offLayers.push(layer);
-					};
-				};
-			});
-			//add layers within filter range
-			_.each(offLayers, function(layer){
-				if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
-					var layerValue = layer.feature.properties[attribute];
-					//if value within range, add to map and remove from removed layers array
-					if (layerValue > min && layerValue < max){
-						layer.addTo(map);
-						offLayers = _.without(offLayers, layer);
-					};
-				};
-			});
-		};
-		//get interaction variables
-		var filterLayers = model.get('interactions.filter.dataLayers'),
-			controlType = model.get('interactions.filter.tool');
-		//set a tool for each included data layer
-		_.each(model.get('dataLayers'), function(dataLayer){
-			//test for inclusion of data layer in filter interaction
-			if (_.indexOf(filterLayers, dataLayer.name) > -1){
-				//get filter properties
-				var attributes = dataLayer.displayAttributes;
-				//set a filter tool
-				var filterModel = new FilterModel({layerName: datalayer.name, attributes: attributes, tool: controlType, map: this.map, features: this.getFeatures()});
-				//filter view options
-				var filterViewOptions = {
-					model: filterModel, 
-					applyFilter: applyFilter
-				};
-				//create filter view
-				var filterView = controlType == 'logic' ? new FilterLogicView(filterViewOptions) : new FilterSliderView(filterViewOptions);
-				filterView.render();
-			};
-			
-		}, this);
-		//trigger filter event on slider stop or logic filter entry
-		var view = this, 
-			timeout = window.setTimeout(function(){}, 0);
-		$('.range-slider').on('slidestop', function(){ view.trigger('filter'); });
-		$('.filter-row input').on('keyup', function(){
-			clearTimeout(timeout);
-			timeout = window.setTimeout(function(){ view.trigger('filter'); }, 1000);
-		});
+		return Control;
 	},
-	addReexpress: function(layerName, techniqueType){
-		//function to render buttons
-		var techniques = _.findWhere(this.model.get('dataLayers'), {name: layerName}).techniques;
-		//if multiple available techniques, add button for each
-		if (techniques.length > 1){
-			var layerNameHtml = layerName +': ';
-			var spanClass = 'reexpress';
-			_.each(techniques, function(technique, i){
-				var state = technique.type == techniqueType ? 'active' : 'inactive';
-				spanClass += i == 0 && technique.type == techniqueType ? ' visible' : '';
-				//ReexpressView can be used to create buttons or button html
-				var reexpressButton = new ReexpressView({
-					model: new ReexpressModel({
-						iconName: technique.type.replace(/\s|\:/g, '_'),
-						layerName: layerName,
-						className: state
-					})
-				});
-				//here we use it to just create html
-				layerNameHtml += '<span class="'+spanClass+'">'+ reexpressButton.render() +'</span>'; 
+	layerChange: function(e){
+		//edit legend
+		var legendEntry = $('#legend-'+e.layer._leaflet_id);
+		legendEntry.length > 0 && e.type == 'layeradd' ? legendEntry.show() : legendEntry.hide();
+	},
+	addLegend: function(){
+		var model = this.model,
+			map = this.map;
+		//add legend control
+		var CustomControl = this.CustomControl('legend', 'bottomright');
+		this.legendControl = new CustomControl();
+		//need to actually create SVGs in onAdd() function to work correctly
+		this.legendControl.onAdd = function(map){
+			//create container for control
+			var container = L.DomUtil.create('div', 'legend-control-container control-container');
+			var innerHTML = '<div class="open button" title="click to open legend"><img src="img/icons/legend.png" alt="legend"><span class="control-title">Legend</span></div><div id="legend-wrapper">';
+			//add legend entry for each visible data layer
+			_.each(model.get('leafletDataLayers'), function(layer, i){
+				var id = 'legend-'+layer._leaflet_id;
+				//only show immediately if layer is visible
+				var display = map.hasLayer(layer) ? 'block' : 'none';
+				innerHTML += '<div id="'+id+'" style="display: '+display+';"><p class="legend-layer-title">'+layer.layerName+' '+layer.techniqueType+'<br/>Attribute: '+layer.model.get('expressedAttribute')+'</p>';
+				var legendView = new LegendLayerView({model: layer.model});
+				innerHTML += legendView.$el[0].outerHTML + '</div>';
 			}, this);
-			//add reexpress buttons to layers control
-			return layerNameHtml;
-		} else {
-			//no buttons
-			return layerName;
+			innerHTML += '</div>';
+			container.innerHTML = innerHTML;
+
+			//kill map interactions under control
+			L.DomEvent.addListener(container, 'mousedown click dblclick', function(e) {
+				L.DomEvent.stopPropagation(e);
+			});
+			return container;
 		};
+		//add legend to the map
+		this.map.addControl(this.legendControl);
+		//add close button
+		var closeButton = _.template( $('#close-button-template').html() );
+		$('.legend-control-container').append(closeButton({x: $('.legend-control-container').width() - 20 + "px"}));
+		//add open and close listeners
+		$('.legend-control-container .open').click(function(){
+			$('#legend-wrapper, .legend-control-container .close').show();
+		});
+		$('.legend-control-container .close').click(function(){
+			$('#legend-wrapper, .legend-control-container .close').hide();
+		});
+		//hide everything but icon to start
+		$('#legend-wrapper').hide();
 	},
-	reexpress: function(e){
-		var view = this,
-			map = view.map,
-			button = $(e.target),
-			span = button.parent(),
-			spanParent = span.parent(),
-			dataLayerName = button.attr('name'),
-			techniqueType = button.children('img').attr('src').split('/')[2];
-			techniqueType = techniqueType.substring(0, techniqueType.indexOf('.')).replace(/_|\:/g, ' ');
-		//set variable to prevent overlay interaction from triggering
-		view.reexpressed = true;
-		setTimeout(function(){ view.reexpressed = false; }, 500);
-		//trigger reexpress interaction
-		view.trigger('reexpress');
-		//check each layer on the map for a name match
-		map.eachLayer(function(layer){
-			if (layer.layerName && layer.layerName.replace(/\s|\:/g, '-') == dataLayerName){
-				//remove the layer from the map to replace with other technique
-				map.removeLayer(layer);
-				offLayers.push(layer);
-				//if a layer with the correct technique exists, put it on the map
-				_.each(offLayers, function(offLayer){
-					if (offLayer.layerName == layer.layerName && offLayer.techniqueType == techniqueType){
-						offLayer.addTo(map);
-						offLayers = _.without(offLayers, offLayer);
-						return false;
+	setMapInteractions: {
+		zoom: function(controlView, leafletView){
+			var map = leafletView.map;
+			//set on/off scripts
+			controlView.addInteraction = function(){
+				map.touchZoom.enable();
+				map.scrollWheelZoom.enable();
+				map.doubleClickZoom.enable();
+				map.boxZoom.enable();
+				map.keyboard._setZoomOffset(1);
+			};
+			controlView.removeInteraction = function(){
+				map.touchZoom.disable();
+				map.scrollWheelZoom.disable();
+				map.doubleClickZoom.disable();
+				map.boxZoom.disable();
+				map.keyboard._setZoomOffset(0);
+			};
+			//add zoom control to map
+			L.control.zoom({position: 'bottomleft'}).addTo(map);
+			//customize zoom control style
+			var zoomControl = $('.leaflet-control-zoom');
+			zoomControl.css({
+				border: '2px solid #000',
+				'box-shadow': 'none',
+				'float': 'none',
+				margin: '10px auto 0',
+				opacity: '0.5',
+				width: '26px'
+			});
+			zoomControl.wrap('<div class="zoom-control-container control-container leaflet-control">');
+			var zoomContainer = $('.zoom-control-container');
+			zoomContainer.prepend('<img class="icon" src="img/icons/zoom.png" alt="zoom" title="zoom"><span class="control-title">zoom</span>');
+			//hide zoom control
+			zoomContainer.hide();
+			//set message for first click alert
+			controlView.message = 'In addition to the zoom tool, you can use a mouse scroll wheel, double-click, shift-click-drag, or the + and - keys to zoom on a desktop computer, and pinch to zoom on a touch-enabled device.';
+			return controlView;
+		},
+		pan: function(controlView, leafletView){
+			var map = leafletView.map;
+			//on/off scripts
+			controlView.addInteraction = function(){
+				map.dragging.enable();
+				map.keyboard._setPanOffset(80);
+				//set cursor to grab if no retrieve
+				if (!leafletView.interactions.retrieve || leafletView.interactions.retrieve == 'inactive'){
+					$('.leaflet-interactive').css('cursor', 'grab');
+				};				
+			};
+			controlView.removeInteraction = function(){
+				map.dragging.disable();
+				map.keyboard._setPanOffset(0);
+				//set cursor to pointer if no retrieve
+				if (!leafletView.interactions.retrieve || leafletView.interactions.retrieve == 'inactive'){
+					$('.leaflet-interactive').css('cursor', 'default');
+				};
+			};
+			//add pan control to map and hide
+			var PanControl = leafletView.CustomControl('pan', 'bottomleft');
+			var panControl = new PanControl();
+			map.addControl(panControl);
+			var panControlView = new PanControlView();
+			//widget-based pan-handler
+			panControlView.panMap = function(target){
+				switch (target){
+					case 'pan-up':
+						map.panBy([0, -80]); break;
+					case 'pan-left':
+						map.panBy([-80, 0]); break;
+					case 'pan-right':
+						map.panBy([80, 0]); break;
+					case 'pan-down':
+						map.panBy([0, 80]); break;
+				};
+			};
+			$('.pan-control-container').hide();
+			//set message for first click alert
+			controlView.message = 'In addition to the pan tool, you can click and drag the map or use the arrow keys to pan the map on a desktop computer, or touch and drag with one finger to pan the map on a touch-enabled device.';
+			return controlView;
+		},
+		retrieve: function(controlView, leafletView){
+			var map = leafletView.map;
+			//on/off scripts
+			controlView.addInteraction = function(){
+				//close any hidden-but-open popups
+				map.closePopup();
+				$('.leaflet-popup-pane').show();
+				$('.leaflet-interactive').removeAttr('style');
+			};
+			controlView.removeInteraction = function(){
+				$('.leaflet-popup-pane').hide();
+				//set cursor to grab if pan active or default if not
+				if (leafletView.interactions.pan == 'active'){
+					$('.leaflet-interactive').css('cursor', 'grab');
+				} else {
+					$('.leaflet-interactive').css('cursor', 'default');
+				};
+			};
+			//add retrieve-control-container class to allow popup pane show/hide
+			var popupPane = $('.leaflet-popup-pane');
+			popupPane.attr('class', popupPane.attr('class') + ' retrieve-control-container');
+			//set message for first click alert
+			controlView.message = 'Retrieve information by clicking a map feature to open a pop-up on the feature.';
+			return controlView;
+		},
+		overlay: function(controlView, leafletView){
+			var map = leafletView.map,
+				offLayers = leafletView.offLayers;
+			//add overlay control
+			var OverlayControl = leafletView.CustomControl('overlay', 'bottomleft');
+			var overlayControl = new OverlayControl();
+			map.addControl(overlayControl);
+
+			//add to overlay control
+			leafletView.on('dataLayersDone', function(){
+				_.each(leafletView.model.get('leafletDataLayers'), function(dataLayer){
+					var layerId = dataLayer._leaflet_id;
+					var overlayControlModel = new OverlayControlModel({
+						layerName: dataLayer.layerName,
+						layerId: layerId,
+						techniqueType: dataLayer.techniqueType
+					});
+					var overlayControlView = new OverlayControlView({model: overlayControlModel});
+					//toggleLayer function must be defined for leaflet view
+					overlayControlView.toggleLayer = function(layerId, addLayer){
+						//trigger interaction logging if toggle was not due to reexpression
+						if (!leafletView.reexpressed){ leafletView.trigger('overlay'); };
+						//turn layer on/off
+						if (map._layers[layerId] && !addLayer){
+							leafletView.removeLayer(layerId);
+						} else if (!map._layers[layerId] && offLayers[layerId]){
+							leafletView.addLayer(layerId);
+						};
+					};
+					overlayControlView.render();
+					//only show the layers that are on the map
+					if (offLayers[layerId]){
+						$('#overlay-layer-'+layerId).hide();
+					} else {
+						$('#overlay-layer-'+layerId+' input').prop('checked', true);
+					};
+				}, this);
+			}, this);
+
+			return controlView;
+		},
+		underlay: function(controlView, leafletView){
+			var map = leafletView.map;
+			//add overlay control
+			var UnderlayControl = leafletView.CustomControl('underlay', 'bottomleft');
+			var underlayControl = new UnderlayControl();
+			map.addControl(underlayControl);
+			return controlView;
+		},
+		search: function(controlView, leafletView){
+			var map = leafletView.map;
+			//add search control to map and hide
+			var SearchControl = leafletView.CustomControl('search', 'bottomleft');
+			var searchControl = new SearchControl();
+			map.addControl(searchControl);
+			var searchInputView = new SearchInputView();
+			searchInputView.on('reset', function(){
+				map.setView(leafletView.model.get('mapOptions').center, leafletView.model.get('mapOptions').zoom);
+				map.closePopup();
+			}, this);
+			$('.search-control-container').hide();
+			//instantiate a view to call and display results
+			var searchView = new SearchView();
+			//function to show popup for clicked feature
+			searchView.selectFeature = function(e, result){
+				//reveal popups pane if retrieve is off
+				map.closePopup();
+				$('.leaflet-popup-pane').show();
+				//open the retrieve popup or just the feature name if no retrieve
+				_.each(result.layers, function(layer){
+					if (map.hasLayer(layer)){
+						if (layer._popup){
+							layer.openPopup();
+						} else {
+							layer.openPopup(result.properties.name);
+						};
+						//reset map center to avoid overlapping search box
+						var center = layer.getBounds ? layer.getBounds().getCenter() : layer.getLatLng();
+						map.setView(center, null, {pan: {animate: false}});
+						map.panBy([-50, 0]);
+						//disable further popups if retrieve is off
+						if (leafletView.interactions.retrieve == 'inactive'){
+							layer.on('popupclose', function(){
+								$('.retrieve-control-container').hide();
+								layer.off('popupclose');
+							});
+						};
+					}
+				}, this);
+			};
+			//replace search model when mapped layers change
+			function setSearchInput(){
+				//reset search widget content
+				$('#search-box input').val('');
+				$('#search-results-box').empty();
+				var allFeatures = [];
+				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					if (map.hasLayer(layer)){
+						allFeatures = _.union(allFeatures, layer.toGeoJSON().features);
+					};
+				});
+				var options = {
+					keys: ['properties.name']
+				};
+				//create a model for the data
+				var searchModel = new SearchModel({
+					allFeatures: allFeatures,
+					searchOptions: options
+				});
+				//build Fuse search
+				searchModel.createSearch();
+				searchView.model = searchModel;
+			};
+			//reset widget on add and layer change
+			controlView.addInteraction = setSearchInput;
+			map.on('layeradd layerremove', setSearchInput);
+			//return UI
+			return controlView;
+		},
+		filter: function(controlView, leafletView){
+			var map = leafletView.map,
+				offLayers = leafletView.offLayers;
+			//add control to map
+			var CustomControl = leafletView.CustomControl('filter', 'bottomleft');
+			var filterControl = new CustomControl();
+			map.addControl(filterControl);
+
+			//applyFilter function references map, so must be created here
+			function applyFilter(attribute, values){
+				//helpful abbreviations
+				var min = values[0], max = values[1];
+				//remove layers outside of filter range
+				map.eachLayer(function(layer){
+					if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
+						var layerValue = layer.feature.properties[attribute];
+						//if value falls outside range, remove from map and stick in removed layers array
+						if (layerValue < min || layerValue > max){
+							map.removeLayer(layer);
+							offLayers[layer._leaflet_id + '-filter'] = layer;
+						};
+					};
+				});
+				//add layers within filter range
+				_.each(offLayers, function(layer){
+					if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
+						var layerValue = layer.feature.properties[attribute];
+						//if value within range, add to map and remove from removed layers array
+						if (layerValue > min && layerValue < max){
+							layer.addTo(map);
+							delete offLayers[layer._leaflet_id + '-filter'];
+						};
+					};
+				});
+			};
+			//get interaction variables
+			var filterLayers = leafletView.model.get('interactions.filter.dataLayers'),
+				controlType = leafletView.model.get('interactions.filter.tool');
+			//set a tool for each included data layer
+			_.each(leafletView.model.get('dataLayers'), function(dataLayer){
+				//test for inclusion of data layer in filter interaction
+				if (_.indexOf(filterLayers, dataLayer.name) > -1){
+					//get filter properties
+					var attributes = dataLayer.displayAttributes;
+					//create filter view
+					var filterView = controlType == 'logic' ? new FilterLogicView({applyFilter: applyFilter}) : new FilterSliderView({applyFilter: applyFilter});
+					//dataLayer className hasn't been defined yet, so must use name here
+					var className = dataLayer.name.replace(/\./g, '').replace(/\s/g, '-');
+					//when the features are loaded, render the tool
+					leafletView.once(className+'-features-added', function(){
+						//set a filter tool
+						var filterModel = new FilterModel({layerName: dataLayer.className, attributes: attributes, tool: controlType, map: map, features: leafletView.model.get('allFeatures')});
+						filterView.model = filterModel;
+						filterView.render();
+						//trigger filter event on slider stop or logic filter entry
+						var timeout = window.setTimeout(function(){}, 0);
+						$('#'+dataLayer.className+'-slider').on('slidestop', function(){ leafletView.trigger('filter'); });
+						$('#'+dataLayer.className+'-logic-div input').on('keyup', function(){
+							clearTimeout(timeout);
+							timeout = window.setTimeout(function(){ leafletView.trigger('filter'); }, 1000);
+						});
+					});
+				};
+			}, leafletView);
+			//function to reset filter inputs
+			controlView.removeInteraction = function(){
+				//reset filter sliders
+				$('.range-slider').each(function(){
+					var layerName = $(this).attr('id').split('-');
+					layerName.pop();
+					layerName = layerName.join('-');
+					var sliderOptions = $(this).slider('option');
+					$(this).slider('values', [sliderOptions.min, sliderOptions.max]);
+					$('#'+layerName+'-labels .left').text(sliderOptions.min);
+					$('#'+layerName+'-labels .right').text(sliderOptions.max);
+				});
+				//reset logic inputs
+				$('.filter-row input').val('');
+				//reset layers
+				_.each(offLayers, function(layer){
+					if (offLayers[layer._leaflet_id + '-filter']){
+						layer.addTo(map);
+						delete offLayers[layer._leaflet_id + '-filter'];
+					};
+				});
+			};
+			//update filter on overlay change
+			leafletView.map.on('layeradd layerremove', function(e){
+				if (e.layer.className){
+					var layerName = e.layer.className;
+					if (e.type == 'layeradd'){
+						//enable filtering
+						$('#'+layerName+'-slider').slider('enable');
+						$('#'+layerName+'-logic-div input').removeProp('disabled');
+					} else {
+						//reset and disable filter sliders
+						var sliderOptions = $('#'+layerName+'-slider').slider('option');
+						$('#'+layerName+'-slider').slider('values', [sliderOptions.min, sliderOptions.max]);
+						$('#'+layerName+'-labels .left').text(sliderOptions.min);
+						$('#'+layerName+'-labels .right').text(sliderOptions.max);
+						$('#'+layerName+'-slider').slider('disable');
+						//reset and disable logic inputs
+						$('#'+layerName+'-logic-div input').val('');
+						$('#'+layerName+'-logic-div input').prop('disabled', true);
+					}
+				};	
+			});
+
+			return controlView;
+		},
+		reexpress: function(controlView, leafletView){
+			var map = leafletView.map,
+				offLayers = leafletView.offLayers;
+
+			//add control to map
+			var CustomControl = leafletView.CustomControl('reexpress', 'bottomleft');
+			var reexpressControl = new CustomControl();
+			map.addControl(reexpressControl);
+
+			//set inputs
+			function setInputs(){
+				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					//create reexpressModel for layer
+					var reexpressModel = new ReexpressModel({ layer:layer });
+					//instantiate section and input views
+					var reexpressInputView = new ReexpressInputView({model: reexpressModel});
+					reexpressInputView.setTechnique = function(e){
+						var target = $(e.target),
+							targetVal = target.val(),
+							inputs = target.parents('.reexpress-section').find('input');
+						//remove all map layers for given data layer
+						_.each(inputs, function(input){
+							var inputVal = $(input).val();
+							//this ensures single-technique layers can be moved to top
+							if (leafletView.map._layers[inputVal]){
+								leafletView.removeLayer(inputVal);
+								//fire reexpress event if layer was changed
+								if (inputVal != targetVal){
+									leafletView.trigger('reexpress');
+								};
+							};
+							//hide overlay control inputs for inactive layers
+							if (inputVal != targetVal){
+								$('#overlay-layer-'+inputVal).hide();
+							};
+						});
+						//add selected map layer
+						if (!map._layers[targetVal]){
+							leafletView.addLayer(targetVal);
+							//show corresponding overlay control input
+							$('#overlay-layer-'+targetVal+' input').prop('checked', true);
+							$('#overlay-layer-'+targetVal).show();
+						};
+						//set cursor based on presence of other interactions
+						if (leafletView.interactions.retrieve == 'active'){
+							$('.leaflet-interactive').css('cursor', 'pointer');
+						} else if (leafletView.interactions.pan == 'active'){
+							$('.leaflet-interactive').css('cursor', 'grab');
+						} else {
+							$('.leaflet-interactive').css('cursor', 'default');
+						};
+					};
+					//render input views
+					reexpressInputView.render();
+				}, this);
+			};
+			//function to check radio for currently expressed layers
+			function resetTechniques(){
+				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					if (map.hasLayer(layer)){
+						var techniqueType = layer.techniqueType.replace(/\s/g, '');
+						//check the radio button for layer in reexpress widget
+						$('.reexpress-control-container input[name='+layer.className+'].'+techniqueType).prop('checked', true);
 					};
 				}, this);
 			};
-		});
-		//switch labels in layers control
-		this.hideLabels();
+			//add data layers after loaded
+			leafletView.on('dataLayersDone', function(){
+				setInputs();
+				resetTechniques();
+			}, this);
+			//disable reexpress for data layers not shown on map
+			map.on('layeradd layerremove', function(e){
+				if (e.layer.className && e.layer.techniqueType){
+					var layerSection = $('#'+e.layer.className+'-reexpress-section');
+					if (e.type == 'layerremove'){
+						layerSection.find('input').prop('disabled', true);
+						layerSection.find('label').css('opacity', '0.5');
+					} else {
+						layerSection.find('input').removeProp('disabled');
+						layerSection.find('label').css('opacity', '1');
+					};
+				};
+			});
+			return controlView;
+		},
+		resymbolize: function(controlView, leafletView){
+			var map = leafletView.map;
+			//add control to map
+			var CustomControl = leafletView.CustomControl('resymbolize', 'bottomleft');
+			var resymbolizeControl = new CustomControl();
+			map.addControl(resymbolizeControl);
+			//set resymbolize tools
+			function setTools(){
+				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					var expressedAttribute = layer.model.get('expressedAttribute'),
+						technique = layer.model.get('techniques')[layer.model.get('techniqueIndex')];
+					//create resymbolizeModel for layer
+					var resymbolizeModel = new ResymbolizeModel({
+						layer: layer,
+						classificationType: technique.classification,
+						domain: getAllAttributeValues(layer.toGeoJSON().features, expressedAttribute),
+						scale: layer.model.get('scale')
+					});
+				
+					if (layer.techniqueType == 'choropleth'){
+						//add colorbrewer scheme name if used
+						if (typeof technique.classes == 'string'){
+							resymbolizeModel.set('colorbrewer', technique.classes.split('.')[0]);
+						};
+						//instantiate appropriate views
+						var reclassifyView = new ReclassifyView({model: resymbolizeModel}),
+							recolorView = new RecolorView({model: resymbolizeModel});
+						//designate resymbolize function specific to Leaflet
+						reclassifyView.resymbolize = function(scale){
+							layer.eachLayer(function(sublayer){
+								var style = {
+									fillColor: scale(sublayer.feature.properties[expressedAttribute])
+								};
+								sublayer.setStyle(style);
+							});
+						};
+						//recolor method is reclassification
+						recolorView.resymbolize = reclassifyView.resymbolize;
+						//render views
+						reclassifyView.render();
+						recolorView.render();
+					} else if (layer.techniqueType == 'proportional symbol'){
+						//instantiate appropriate views
+						var reclassifyView = new ReclassifyView({model: resymbolizeModel}),
+							rescaleView = new RescaleView({model: resymbolizeModel}),
+							recolorView = new RecolorView({model: resymbolizeModel});
+						//designate resymbolize function specific to Leaflet
+						reclassifyView.resymbolize = function(scale){
+							layer.eachLayer(function(sublayer){
+								var radius = scale(sublayer.feature.properties[expressedAttribute]);
+								sublayer.setRadius(radius);
+							});
+						};
+						recolorView.recolor = function(color){
+
+						};
+						//render views
+						reclassifyView.render();
+						// recolorView.render();
+					}
+
+				}, this);
+			};
+
+			//add tools for data layers after loaded
+			leafletView.on('dataLayersDone', function(){
+				setTools();
+			}, this);
+
+			return controlView;
+		},
+		reproject: function(controlView, leafletView){
+			return controlView;
+		}
 	},
-	setMapInteractions: function(){
-		//remove default zoom control and interactions if no zoom interaction
-		if (!this.model.get('interactions.zoom')){
-			this.model.set('mapOptions.zoomControl', false);
-			this.model.set('mapOptions.touchZoom', false);
-			this.model.set('mapOptions.scrollWheelZoom', false);
-			this.model.set('mapOptions.doubleClickZoom', false);
-			this.model.set('mapOptions.boxZoom', false);
+	setInteractionControls: function(){
+		//set no-interaction map option defaults
+		var noInteraction = {
+			zoomControl: false,
+			touchZoom: false,
+			scrollWheelZoom: false,
+			doubleClickZoom: false,
+			boxZoom: false,
+			dragging: false,
+			keyboardPanOffset: 0,
+			keyboardZoomOffset: 0
 		};
-		//remove default panning interaction if no pan interaction
-		if (!this.model.get('interactions.pan')){
-			this.model.set('mapOptions.dragging', false);
-		};
-		//set layers control for overlay and reexpress interactions
-		if ((this.model.get('interactions.overlay') && this.model.get('interactions.overlay.dataLayers') && this.model.get('interactions.overlay.dataLayers').length > 0) || (this.model.get('interactions.reexpress') && _.some(this.model.get('dataLayers'), function(layer){
-			return layer.techniques.length > 1
-		}))){
-			this.on('dataLayersDone', this.addOverlayControl, this);
-		};
-		//set layers control for underlay interaction
-		if (this.model.get('interactions.underlay')){
-			this.on('baseLayersDone', this.addUnderlayControl, this);
-		};
-		//set search control for search interaction
-		if (this.model.get('interactions.search') && this.model.get('interactions.search.attributes') && this.model.get('interactions.search.attributes').length > 0){
-			this.on('dataLayersDone', this.addSearch, this);
-		};
-		//set filter control for filter interaction
-		if (this.model.get('interactions.filter') && this.model.get('interactions.filter.dataLayers') && this.model.get('interactions.filter.dataLayers').length > 0){
-			this.on('dataLayersDone', this.addFilter, this);
-		};
+		var mapOptions = this.model.get('mapOptions');
+		this.model.set('mapOptions', _.extend(mapOptions, noInteraction));
+		//once map has been set, add interaction UI controls
+		this.on('mapset', function(){
+			var map = this.map;
+			//set interaction toggle buttons control
+			var InteractionControl = this.CustomControl('interaction', 'topright');
+			var interactionControl = new InteractionControl();
+			interactionControl.addTo(map);
+			//create new button for each interaction
+			for (var interaction in this.model.get('interactions')){
+				//instantiate model
+				var interactionControlModel = new InteractionControlModel({interaction: interaction});
+				//instantiate view
+				var interactionToggleView = new InteractionToggleView({model: interactionControlModel});
+				//listen for toggle to set status of interaction in map view
+				interactionToggleView.on('toggle', function(e){
+					this.interactions[e.interaction] = e.state;
+				}, this);
+				//add controls and scripts for each included interaction
+				if (this.setMapInteractions[interaction]){
+					interactionToggleView = this.setMapInteractions[interaction](interactionToggleView, this);
+					//change interaction property of Leaflet view from false to 'inactive'
+					this.interactions[interaction] = 'inactive';
+				};
+				//render interaction toggle button
+				interactionToggleView.render();
+			};
+		}, this);
+
+		this.on('dataLayersDone', function(){
+			//set legend control
+			if (typeof this.model.get('mapOptions.legend') == 'undefined' || this.model.get('mapOptions.legend')){
+				this.addLegend();
+			};
+			//prevent retrieve by default
+			$('.leaflet-popup-pane').hide();
+			$('.leaflet-interactive').css('cursor', 'default');
+		}, this);
 	},
 	logInteractions: function(){
 		//designate events to listen to with contexts for each interaction
@@ -819,7 +1948,7 @@ var LeafletMap = Backbone.View.extend({
 	},
 	setMap: function(){
 		//configure map interactions
-		this.setMapInteractions();
+		this.setInteractionControls();
 		//create Leaflet layers arrays
 		this.model.set({
 			leafletBaseLayers: [],
@@ -828,6 +1957,13 @@ var LeafletMap = Backbone.View.extend({
 
 		//instantiate map
 		this.map = L.map('map', this.model.get('mapOptions'));
+
+		//trigger mapset event
+		this.trigger('mapset');
+
+		//set layer change listener
+		var layerChange = this.layerChange;
+		this.map.on('layeradd layerremove', layerChange);
 
 		//add initial tile layers
 		var baseLayers = this.model.get('baseLayers');
