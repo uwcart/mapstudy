@@ -79,13 +79,7 @@
 		"techniques": [{
 			"type": "choropleth",
 			"classification": "quantile",
-			"classes": [
-				"#FEEDDE",
-				"#FDBE85",
-				"#FD8D3C",
-				"#E6550D",
-				"#A63603"
-			]
+			"classes": "Oranges.5"
 		},{
 			"type": "proportional symbol",
 			"classification": "unclassed",

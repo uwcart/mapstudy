@@ -450,9 +450,9 @@ An `unclassed` classification creates a [linear scale](https://github.com/mbosto
 
 #### map.dataLayers[i].techniques[i].classes
 
-			-"classes"-: []
+			-"classes"-: -[]- -colorbrewer code.number of classes-
 
-An array containing the output values for each class. Required if `classification` is used. Array values should be numerical for proportional symbol maps&mdash;representing the diameter or width of each feature's symbol&mdash;and hexadecimal color strings for a choropleth map (e.g., `"#FFFFFF"`). The number of values in the array will correspond with the number of classes created. For choropleth maps, unless testing various color schemes, it is recommended you choose a colorblind-safe color scheme from [Colorbrewer](http://colorbrewer2.org/).
+An array containing the output values for each class or the name of a [ColorBrewer](http://colorbrewer2.org/) classification scheme. Required if `classification` is used. Array values should be numerical for proportional symbol maps&mdash;representing the diameter or width of each feature's symbol&mdash;and hexadecimal color strings for a choropleth map (e.g., `"#FFFFFF"`). The number of values in the array will correspond with the number of classes created. For choropleth maps only, if a ColorBrewer scheme is used, the value should be a string in the format `"code.number"`; for example, `"BuGn.5"` will create a five-class, blue-green color scheme. Scheme codes are shown at the top of the EXPORT panel on the lower-right of the ColorBrewer interface. Unless testing various color schemes, it is recommended you choose a colorblind-safe, sequential color scheme. If the `resymbolize` interaction is included, it is recommended to use a ColorBrewer code instead of an array of hex values, as reclassification by the user may result in an interpolated color scheme that differs spectrally from the original array of colors.
 
 #### map.dataLayers[i].techniques[i].symbol
 

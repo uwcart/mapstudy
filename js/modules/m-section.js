@@ -132,11 +132,19 @@ var Choropleth = Backbone.Model.extend({
 		var expressedAttribute = this.get('expressedAttribute'),
 			techniqueIndex = this.get('techniqueIndex'),
 			technique = this.get('techniques')[techniqueIndex];
+		//retrieve ColorBrewer scheme if classes is a colorbrewer code
+		var classes;
+		if (typeof technique.classes == 'string'){
+			var colorcode = technique.classes.split('.');
+			classes = colorbrewer[colorcode[0]][Number(colorcode[1])];
+		} else {
+			classes = technique.classes;
+		};
 		//get all of the values for the attribute by which the data will be classed
 		var values = getAllAttributeValues(this.get('features'), expressedAttribute);
 		//get the d3 scale for the chosen classification scheme
 		var classificationModel = classification.where({type: technique.classification})[0];
-		var scale = classificationModel.scale(values, technique.classes);
+		var scale = classificationModel.scale(values, classes);
 		//use scale and attribute to set layer options
 		_.each(this.get('features'), function(feature){
 			feature.properties.layerOptions = this.setLayerOptions(feature, scale, expressedAttribute);
@@ -831,14 +839,14 @@ var ReclassifyView = ReexpressInputView.extend({
 			var scale = view.model.get('scale'),
 				range = scale.range(),
 				newRange = [];
-			if (!view.model.attributes.colorScale){
+			if (!view.model.attributes.colorbrewer){
 				var interpolator = d3.interpolate(range[0], range[range.length-1]);
 				for (var i = 0; i < nClasses; i++){
 					newRange.push(interpolator(i/(nClasses-1)));
 				};
 			} else {
 				//if colorbrewer scale specified, set as range
-				newRange = colorbrewer[view.model.get('colorScale')][nClasses];
+				newRange = colorbrewer[view.model.get('colorbrewer')][nClasses];
 			};
 			view.model.set('range', newRange);
 			//if user defined classification, reset classification
@@ -1743,19 +1751,25 @@ var LeafletMap = Backbone.View.extend({
 			//set resymbolize tools
 			function setTools(){
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
-					var expressedAttribute = layer.model.get('expressedAttribute');
+					var expressedAttribute = layer.model.get('expressedAttribute'),
+						technique = layer.model.get('techniques')[layer.model.get('techniqueIndex')];
 					//create resymbolizeModel for layer
 					var resymbolizeModel = new ResymbolizeModel({
 						layer: layer,
-						classificationType: layer.model.get('techniques')[layer.model.get('techniqueIndex')].classification,
+						classificationType: technique.classification,
 						domain: getAllAttributeValues(layer.toGeoJSON().features, expressedAttribute),
 						scale: layer.model.get('scale')
 					});
 				
 					if (layer.techniqueType == 'choropleth'){
+						//add colorbrewer scheme name if used
+						if (typeof technique.classes == 'string'){
+							resymbolizeModel.set('colorbrewer', technique.classes.split('.')[0]);
+						};
+						//instantiate appropriate views
 						var reclassifyView = new ReclassifyView({model: resymbolizeModel}),
 							recolorView = new RecolorView({model: resymbolizeModel});
-
+						//designate reclassify function specific to Leaflet
 						reclassifyView.reclassify = function(scale){
 							layer.eachLayer(function(sublayer){
 								var style = {
@@ -1763,8 +1777,8 @@ var LeafletMap = Backbone.View.extend({
 								};
 								sublayer.setStyle(style);
 							});
-						}
-
+						};
+						//render views
 						reclassifyView.render();
 						recolorView.render();
 					}
