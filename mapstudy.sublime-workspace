@@ -4,6 +4,38 @@
 		"selected_items":
 		[
 			[
+				"setClass",
+				"setClassBreaks"
+			],
+			[
+				"express",
+				"expressedAttribute"
+			],
+			[
+				"set",
+				"setNClasses"
+			],
+			[
+				"classif",
+				"classificationType"
+			],
+			[
+				"classification",
+				"classificationModel"
+			],
+			[
+				"class",
+				"classificationType"
+			],
+			[
+				"nCla",
+				"nClasses"
+			],
+			[
+				"nC",
+				"nClasses"
+			],
+			[
 				"length",
 				"length-1"
 			],
@@ -94,10 +126,6 @@
 			[
 				"id",
 				"id"
-			],
-			[
-				"express",
-				"expressedAttributes"
 			],
 			[
 				"expressed",
@@ -486,34 +514,6 @@
 			[
 				"se",
 				"sequenceControl"
-			],
-			[
-				"scale",
-				"scaleFactor"
-			],
-			[
-				"geo",
-				"geojsonMarkerOptions"
-			],
-			[
-				"on",
-				"onEachFeature"
-			],
-			[
-				"proper",
-				"property"
-			],
-			[
-				"back",
-				"background-color"
-			],
-			[
-				"read",
-				"readyState"
-			],
-			[
-				"ajax",
-				"ajaxRequest"
 			]
 		]
 	},
@@ -531,7 +531,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 11293,
+				"buffer_size": 11332,
 				"line_ending": "Unix"
 			}
 		},
@@ -539,7 +539,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 59076,
+				"buffer_size": 64913,
 				"line_ending": "Windows"
 			}
 		},
@@ -630,6 +630,14 @@
 			{
 				"buffer_size": 4149,
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/lib/colorbrewer.js",
+			"settings":
+			{
+				"buffer_size": 18990,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -802,6 +810,39 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"classificationModel",
+			"setTimeout",
+			"this",
+			"natural breaks",
+			"setClassBreaks",
+			"ResymbolizeModel",
+			"getallattributevalues",
+			"getall",
+			"allvalues",
+			"ReclassifyView",
+			"classification",
+			"console.log",
+			".reclassify",
+			"reclassify",
+			"console",
+			"n-classes",
+			"this",
+			"setClassBreaks",
+			"this",
+			"ResymbolizeModel",
+			"classification",
+			"reclassify",
+			"classificationModel",
+			"this.model.get('classification'",
+			"this.model.set('classification'",
+			"classificationString",
+			"classification",
+			"var classification",
+			"classification",
+			"min",
+			"nClasses",
+			"classification",
+			"setEvents",
 			"ResymbolizeModel",
 			"resymbolize:",
 			"classification",
@@ -896,40 +937,7 @@
 			"reexpress",
 			"ReexpressModel",
 			"layerNameClass",
-			"ReexpressModel",
-			"ReexpressView",
-			"reexpress",
-			"console",
-			"SearchInputView",
-			"console",
-			"search-control",
-			"SearchView",
-			"result-",
-			"search",
-			"console.log",
-			"-features-added",
-			"result.",
-			"console",
-			"result.",
-			"'layer'+",
-			"layer+",
-			"onEachFeature",
-			"selectFeature",
-			"SearchModel",
-			"selectFeature",
-			"SearchModel",
-			"setSearchInput",
-			"search",
-			"setBaseLayer",
-			"console",
-			".replace",
-			"ReexpressView",
-			"DataLayerModel",
-			"addDataLayer",
-			"ReexpressModel",
-			".replace",
-			"layerName",
-			"console"
+			"ReexpressModel"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -937,6 +945,12 @@
 		"regex": false,
 		"replace_history":
 		[
+			"view",
+			"this.model.get('classificationType'",
+			"this.model.set('classificationType'",
+			"classificationType",
+			"this.min",
+			"this.nClasses",
 			"label",
 			"\"12\"",
 			"\"11\"",
@@ -1058,13 +1072,7 @@
 			"figure3.6",
 			"figure3.7",
 			"figure3.8",
-			"figure3.9",
-			"figure3.10",
-			"figure3.11",
-			"figure3.12",
-			"figure3.13",
-			"Example 3.5",
-			"Example 3.4"
+			"figure3.9"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1109,15 +1117,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 11293,
+						"buffer_size": 11332,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7874,
-								7874
+								8100,
+								8100
 							]
 						],
 						"settings":
@@ -1127,7 +1135,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3063.0,
+						"translation.y": 3191.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1137,15 +1145,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 59076,
+						"buffer_size": 64913,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								24157,
-								24157
+								23145,
+								23145
 							]
 						],
 						"settings":
@@ -1155,7 +1163,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 15111.0,
+						"translation.y": 14911.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1448,6 +1456,32 @@
 						"settings":
 						{
 							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "js/lib/colorbrewer.js",
+					"settings":
+					{
+						"buffer_size": 18990,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,

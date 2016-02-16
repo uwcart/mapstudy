@@ -1743,11 +1743,12 @@ var LeafletMap = Backbone.View.extend({
 			//set resymbolize tools
 			function setTools(){
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					var expressedAttribute = layer.model.get('expressedAttribute');
 					//create resymbolizeModel for layer
 					var resymbolizeModel = new ResymbolizeModel({
 						layer: layer,
 						classificationType: layer.model.get('techniques')[layer.model.get('techniqueIndex')].classification,
-						domain: getAllAttributeValues(layer.toGeoJSON().features, layer.model.get('expressedAttribute')),
+						domain: getAllAttributeValues(layer.toGeoJSON().features, expressedAttribute),
 						scale: layer.model.get('scale')
 					});
 				
@@ -1755,6 +1756,14 @@ var LeafletMap = Backbone.View.extend({
 						var reclassifyView = new ReclassifyView({model: resymbolizeModel}),
 							recolorView = new RecolorView({model: resymbolizeModel});
 
+						reclassifyView.reclassify = function(scale){
+							layer.eachLayer(function(sublayer){
+								var style = {
+									fillColor: scale(sublayer.feature.properties[expressedAttribute])
+								};
+								sublayer.setStyle(style);
+							});
+						}
 
 						reclassifyView.render();
 						recolorView.render();
