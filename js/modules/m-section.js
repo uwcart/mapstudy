@@ -761,10 +761,7 @@ var ResymbolizeSectionView = ReexpressSectionView.extend({
 //view for reclassify section of resymbolize widget
 var ReclassifyView = ReexpressInputView.extend({
 	template: _.template( $('#reclassify-template').html() ),
-	reclassify: function(scale){
-		console.log(scale.domain(), scale.range());
-		console.log(scale(this.model.get('min')), scale(this.model.get('max')));
-	},
+	reclassify: function(scale){},
 	setScale: function(){
 		var classificationModel = this.model.get('classificationModel'),
 			scale = classificationModel.scale(this.model.get('domain'), this.model.get('range'));
@@ -825,6 +822,8 @@ var ReclassifyView = ReexpressInputView.extend({
 		} else {
 			//set the new number of classes
 			view.model.set('nClasses', nClasses);
+			//trigger set classes event for recolor view to pick up on
+			view.model.trigger('setNClasses');
 			//set display of class break inputs
 			inputsDiv.find('span').each(function(){
 				var i = Number($(this).attr('class').split('cb-')[1]);
@@ -886,6 +885,13 @@ var ReclassifyView = ReexpressInputView.extend({
 			view.model.set('domain', classBreaks);
 			view.setScale();
 		} else {
+			//hide nClasses div for unclassed
+			var nClassesDiv = this.$el.find('.n-classes');
+			if (classificationType == 'unclassed'){
+				nClassesDiv.hide();
+			} else {
+				nClassesDiv.show();
+			};
 			//set input values
 			//for natural breaks, domain array is class breaks array
 			if (classificationType == 'natural breaks'){
@@ -982,21 +988,71 @@ var ReclassifyView = ReexpressInputView.extend({
 //view for recolor section of resymbolize widget
 var RecolorView = ReclassifyView.extend({
 	template: _.template( $('#recolor-template').html() ),
-	setEvents: function(){
-		//set reclassify events here
+	setTechnique: function(){
+		var techniqueType = this.model.get('techniqueType');
+		if (techniqueType == 'choropleth'){
+			this.$el.find('.recolor input').hide();
+			this.setColorSwatches();
+		} else if (techniqueType == 'proportional symbol'){
+			this.$el.find('.recolor select').hide();
+		};
+	},
+	setColorSwatches: function(){
+		//get variables
+		view = this,
+			nClasses = this.model.get('nClasses');
+		//retrieve templates
+		var optionTemplate = _.template( $('#color-scale-option-template').html() ),
+			swatchTemplate = _.template( $('#color-swatch-template').html() );
+		//get select element
+		var select = this.$el.find('.color-scale');
+		//clear select in case previously filled
+		select.empty();
+		//set options and swatches
+		for (var scheme in colorbrewer){
+			//only include schemes that have full number of classes
+			if (colorbrewer[scheme][nClasses]){
+				//set option
+				select.append(optionTemplate({colorcode: scheme}));
+				var option = this.$el.find('.color-scale option[value='+scheme+']');
+				//add swatches to option
+				_.each(colorbrewer[scheme][nClasses], function(color){
+					option.append(swatchTemplate({
+						stroke: '#000',
+						fillColor: color
+					}));
+				});
+			};
+		};
+		//set reclassify event listener
+		select.change(function(){
+			//set range to new color scale array
+			var range = colorbrewer[$(this).val()][nClasses];
+			view.model.set('range', range);
+			//reset scale and reclassify
+			view.setScale();
+		});
 	},
 	setLabelAttribute: function(){
 		var techniqueType = this.model.get('techniqueType'),
 			label = false;
 		if (techniqueType == 'choropleth'){
 			label = 'Color scale';
+			this.$el.find('input').hide();
+			this.setColorSwatches();
 		} else if (techniqueType == 'proportional symbol'){
 			label = 'Symbol color';
+			this.$el.find('.recolor select').hide();
 		};
 		this.model.set('label', label);
 	},
 	initialize: function(){
 		this.setLabelAttribute();
+	},
+	setEvents: function(){
+		//call setup methods
+		this.setTechnique();
+		this.model.on('setNClasses', this.setColorSwatches, this);
 	}
 });
 
@@ -1778,6 +1834,7 @@ var LeafletMap = Backbone.View.extend({
 								sublayer.setStyle(style);
 							});
 						};
+						recolorView.reclassify = reclassifyView.reclassify;
 						//render views
 						reclassifyView.render();
 						recolorView.render();

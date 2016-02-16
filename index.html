@@ -192,8 +192,12 @@
             </div>
         </script>
 
-        <script type="text/template" id="color-swatch">
-            <div class="color-swatch <%= color %>" style="border: 1px solid <%= stroke %>; background-color: <%= fill %>"></div>
+        <script type="text/template" id="color-scale-option-template">
+            <option value="<%= colorcode %>"></option>
+        </script>
+
+        <script type="text/template" id="color-swatch-template">
+            <span class="color-swatch" style="background-color: <%= fillColor %>"></span>
         </script>
 
         <script type="text/template" id="choropleth-legend-template">
