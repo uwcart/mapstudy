@@ -245,9 +245,9 @@ var LegendLayerView = Backbone.View.extend({
 			this.model.set('svgHeight', 13 * range.length + 6);
 		};
 		//only build classes for classed classification
+		var y = 0;
 		if (domain.length > 2 || range.length > 2){
 			//add a symbol for each class
-			var y = 0;
 			for (var i = range.length-1; i >= 0; i--){
 				var domainvals = scale.invertExtent(range[i]);
 				//fill in min and max values for natural breaks threshold scale
@@ -262,12 +262,11 @@ var LegendLayerView = Backbone.View.extend({
 				y++;
 			};
 		} else {
-			range = range.reverse(),
-			domain = domain.reverse();
 			//add a symbol for lowest and highest values
-			_.each(range, function(rangeval, i){
-				this.append(rangeval, domain[i], i);
-			}, this);
+			for (var i = range.length-1; i >= 0; i--){
+				this.append(range[i], domain[i], y);
+				y++;
+			};
 		};
 		//set svg dimensions
 		this.$el.attr({
@@ -790,9 +789,17 @@ var ReclassifyView = ReexpressInputView.extend({
 			} else {
 				//reset domain to undo user defined class breaks
 				view.model.set('domain', view.model.get('allvalues'));
+				//if unclassified, reset range to highest and lowest classes
+				if (classificationType == 'unclassed'){
+					var range = view.model.get('range');
+					view.model.set('range', [range[0], range[range.length-1]]);
+					//set a new scale and reclassify
+					view.setScale();
+				} else {
+					//reset range using correct number of classes
+					view.setNClasses(view, view.model.get('nClasses'));
+				};
 			};
-			//set a new scale and reclassify
-			view.setScale();
 		};
 		view.setClassBreaks();
 	},
@@ -809,9 +816,13 @@ var ReclassifyView = ReexpressInputView.extend({
 			//add min and max values
 			classifyDiv.find('.class-min').html(min);
 			classifyDiv.find('.class-max').html(max);
+			//only add 2-class option if proportional symbol
+			if (view.model.get('techniqueType') == 'proportional symbol'){
+				nClassesSelect.prepend('<option value="2">2</option>');
+			};
 			//add a special option if the number of classes is out of range
 			if (nClasses < 2 || nClasses > 9){
-				classifyDiv.find('.class-break-inputs').prepend('<option value="-1"></option>');
+				nClassesSelect.prepend('<option value="-1"></option>');
 			};
 			//set correct number of classes in select element
 			if (nClasses > 1 && nClasses < 10){
@@ -872,6 +883,13 @@ var ReclassifyView = ReexpressInputView.extend({
 			domain = scale.domain(),
 			range = scale.range(),
 			classificationType = view.model.get('classificationType');
+		//hide nClasses div for unclassed
+		var nClassesDiv = view.$el.find('.n-classes');
+		if (classificationType == 'unclassed'){
+			nClassesDiv.hide();
+		} else {
+			nClassesDiv.show();
+		};
 		if (reclassify){
 			//get input values
 			var classBreaks = [];
@@ -885,13 +903,6 @@ var ReclassifyView = ReexpressInputView.extend({
 			view.model.set('domain', classBreaks);
 			view.setScale();
 		} else {
-			//hide nClasses div for unclassed
-			var nClassesDiv = this.$el.find('.n-classes');
-			if (classificationType == 'unclassed'){
-				nClassesDiv.hide();
-			} else {
-				nClassesDiv.show();
-			};
 			//set input values
 			//for natural breaks, domain array is class breaks array
 			if (classificationType == 'natural breaks'){
@@ -1806,6 +1817,18 @@ var LeafletMap = Backbone.View.extend({
 			var CustomControl = leafletView.CustomControl('resymbolize', 'bottomleft');
 			var resymbolizeControl = new CustomControl();
 			map.addControl(resymbolizeControl);
+			//show/hide data layer tools when layers change
+			function toggleTools(){
+				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					var layerToolsDiv = $('#'+layer.className+'-'+layer.techniqueType.replace(/\s/g,'')+'-resymbolize-section');
+					//show or hide tools for layer
+					if (map.hasLayer(layer)){
+						layerToolsDiv.show();
+					} else {
+						layerToolsDiv.hide();
+					};
+				});
+			};
 			//set resymbolize tools
 			function setTools(){
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
@@ -1861,9 +1884,13 @@ var LeafletMap = Backbone.View.extend({
 						//render views
 						reclassifyView.render();
 						// recolorView.render();
-					}
-
+					};
 				}, this);
+
+				//switch which tools are visible when layers change
+				map.on('layeradd layerremove', toggleTools);
+				//set initial visibility
+				toggleTools();
 			};
 
 			//add tools for data layers after loaded
