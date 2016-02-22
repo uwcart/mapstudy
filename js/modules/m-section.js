@@ -422,7 +422,7 @@ var RetrieveControlView = InteractionControlView.extend({
 	el: '.retrieve-control-container',
 	template: _.template( $('#popup-line-template').html() ),
 	retrieve: function(attributes){
-		$('.retrieve-attributes').empty();
+		$('.retrieve-attributes').html('Click a map feature');
 		if (typeof attributes != 'undefined'){
 			_.each(attributes, function(attribute){
 				$('.retrieve-attributes').append(this.template({
@@ -433,7 +433,7 @@ var RetrieveControlView = InteractionControlView.extend({
 		};
 	},
 	initialize: function(){
-		this.$el.append('<div class="retrieve-attributes">');
+		this.$el.append('<div class="retrieve-attributes">Click a map feature</div>');
 		return this;
 	}
 });
@@ -1557,10 +1557,12 @@ var LeafletMap = Backbone.View.extend({
 			controlView.addInteraction = function(){
 				//close any hidden-but-open popups
 				map.closePopup();
+				$('.leaflet-popup-pane').show();
 				$('.leaflet-interactive').removeAttr('style');
 				map.on('popupopen', triggerRetrieve);
 			};
 			controlView.removeInteraction = function(){
+				$('.leaflet-popup-pane').hide();
 				//set cursor to grab if pan active or default if not
 				if (leafletView.interactions.pan == 'active'){
 					$('.leaflet-interactive').css('cursor', 'grab');
