@@ -1431,7 +1431,8 @@ var LeafletMap = Backbone.View.extend({
 	},
 	setMapInteractions: {
 		zoom: function(controlView, leafletView){
-			var map = leafletView.map;
+			var map = leafletView.map,
+				zoomOptions = leafletView.model.get('interactions').zoom;
 			//object to reference zoom interface options to Leaflet methods
 			var interfaceMethods = {
 				touch: map.touchZoom,
@@ -1440,8 +1441,6 @@ var LeafletMap = Backbone.View.extend({
 				box: map.boxZoom,
 				keyboard: map.keyboard
 			};
-			//get interface options
-			var zoomOptions = leafletView.model.get('interactions').zoom;
 			//set on/off scripts
 			controlView.addInteraction = function(){
 				for (var method in interfaceMethods){
@@ -1487,15 +1486,34 @@ var LeafletMap = Backbone.View.extend({
 			return controlView;
 		},
 		pan: function(controlView, leafletView){
-			var map = leafletView.map;
+			var map = leafletView.map,
+				panOptions = leafletView.model.get('interactions').pan,
+				autopan = false;
+			//event listener to log pan interaction
+			function triggerPan(){
+				if (!autopan){
+					leafletView.trigger('pan');
+				};
+			};
+			//set timer to avoid autopan triggering	
+			map.on('autopanstart', function(){
+				autopan = true;
+				setTimeout(function(){ autopan = false }, 500);
+			});
 			//on/off scripts
 			controlView.addInteraction = function(){
-				map.dragging.enable();
-				map.keyboard._setPanOffset(80);
+				//if interface option is not set to false, add it
+				if (!panOptions.interface || !panOptions.interface.hasOwnProperty('drag') || panOptions.interface.drag){
+					map.dragging.enable();
+				};
+				if (!panOptions.interface || !panOptions.interface.hasOwnProperty('keyboard') || panOptions.interface.keyboard){
+					map.keyboard._setPanOffset(80);
+				};
 				//set cursor to grab if no retrieve
 				if (!leafletView.interactions.retrieve || leafletView.interactions.retrieve == 'inactive'){
 					$('.leaflet-interactive').css('cursor', 'grab');
-				};				
+				};
+				map.on('moveend', triggerPan);
 			};
 			controlView.removeInteraction = function(){
 				map.dragging.disable();
@@ -1504,23 +1522,27 @@ var LeafletMap = Backbone.View.extend({
 				if (!leafletView.interactions.retrieve || leafletView.interactions.retrieve == 'inactive'){
 					$('.leaflet-interactive').css('cursor', 'default');
 				};
+				map.off('moveend', triggerPan);
 			};
-			//add pan control to map and hide
-			var PanControl = leafletView.CustomControl('pan', 'bottomleft');
-			var panControl = new PanControl();
-			map.addControl(panControl);
-			var panControlView = new PanControlView();
-			//widget-based pan-handler
-			panControlView.panMap = function(target){
-				switch (target){
-					case 'pan-up':
-						map.panBy([0, -80]); break;
-					case 'pan-left':
-						map.panBy([-80, 0]); break;
-					case 'pan-right':
-						map.panBy([80, 0]); break;
-					case 'pan-down':
-						map.panBy([0, 80]); break;
+			//if widget is not set to false, add it
+			if (!panOptions.interface || !panOptions.interface.hasOwnProperty('widget') || panOptions.interface.widget){
+				//add pan control to map and hide
+				var PanControl = leafletView.CustomControl('pan', 'bottomleft');
+				var panControl = new PanControl();
+				map.addControl(panControl);
+				var panControlView = new PanControlView();
+				//widget-based pan-handler
+				panControlView.panMap = function(target){
+					switch (target){
+						case 'pan-up':
+							map.panBy([0, -80]); break;
+						case 'pan-left':
+							map.panBy([-80, 0]); break;
+						case 'pan-right':
+							map.panBy([80, 0]); break;
+						case 'pan-down':
+							map.panBy([0, 80]); break;
+					};
 				};
 			};
 			$('.pan-control-container').hide();
@@ -2047,7 +2069,7 @@ var LeafletMap = Backbone.View.extend({
 		//designate events to listen to with contexts for each interaction
 		var interactionCreation = {
 			zoom: {zoomstart: this.map},
-			pan: {dragend: this.map},
+			pan: {pan: this},
 			retrieve: {retrieve: this},
 			overlay: {overlay: this},
 			underlay: {baselayerchange: this.map},
