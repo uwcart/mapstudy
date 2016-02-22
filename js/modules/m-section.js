@@ -1432,13 +1432,30 @@ var LeafletMap = Backbone.View.extend({
 	setMapInteractions: {
 		zoom: function(controlView, leafletView){
 			var map = leafletView.map;
+			//object to reference zoom interface options to Leaflet methods
+			var interfaceMethods = {
+				touch: map.touchZoom,
+				scrollWheel: map.scrollWheelZoom,
+				doubleClick: map.doubleClickZoom,
+				box: map.boxZoom,
+				keyboard: map.keyboard
+			};
+			//get interface options
+			var zoomOptions = leafletView.model.get('interactions').zoom;
 			//set on/off scripts
 			controlView.addInteraction = function(){
-				map.touchZoom.enable();
-				map.scrollWheelZoom.enable();
-				map.doubleClickZoom.enable();
-				map.boxZoom.enable();
-				map.keyboard._setZoomOffset(1);
+				for (var method in interfaceMethods){
+					//skip any interface methods set to false
+					if (zoomOptions.interface && zoomOptions.interface.hasOwnProperty(method) && zoomOptions.interface[method] == false){
+						continue;
+					};
+					//enable other methods
+					if (method == 'keyboard'){
+						interfaceMethods[method]._setZoomOffset(1);
+					} else {
+						interfaceMethods[method].enable();
+					}
+				};
 			};
 			controlView.removeInteraction = function(){
 				map.touchZoom.disable();
@@ -1447,23 +1464,26 @@ var LeafletMap = Backbone.View.extend({
 				map.boxZoom.disable();
 				map.keyboard._setZoomOffset(0);
 			};
-			//add zoom control to map
-			L.control.zoom({position: 'bottomleft'}).addTo(map);
-			//customize zoom control style
-			var zoomControl = $('.leaflet-control-zoom');
-			zoomControl.css({
-				border: '2px solid #000',
-				'box-shadow': 'none',
-				'float': 'none',
-				margin: '10px auto 0',
-				opacity: '0.5',
-				width: '26px'
-			});
-			zoomControl.wrap('<div class="zoom-control-container control-container leaflet-control">');
-			var zoomContainer = $('.zoom-control-container');
-			zoomContainer.prepend('<img class="icon" src="img/icons/zoom.png" alt="zoom" title="zoom"><span class="control-title">zoom</span>');
-			//hide zoom control
-			zoomContainer.hide();
+			//if widget is not set to false, add it
+			if (!zoomOptions.interface || !zoomOptions.interface.hasOwnProperty('widget') || zoomOptions.interface.widget){
+				//add zoom control to map
+				L.control.zoom({position: 'bottomleft'}).addTo(map);
+				//customize zoom control style
+				var zoomControl = $('.leaflet-control-zoom');
+				zoomControl.css({
+					border: '2px solid #000',
+					'box-shadow': 'none',
+					'float': 'none',
+					margin: '10px auto 0',
+					opacity: '0.5',
+					width: '26px'
+				});
+				zoomControl.wrap('<div class="zoom-control-container control-container leaflet-control">');
+				var zoomContainer = $('.zoom-control-container');
+				zoomContainer.prepend('<img class="icon" src="img/icons/zoom.png" alt="zoom" title="zoom"><span class="control-title">zoom</span>');
+				//hide zoom control
+				zoomContainer.hide();
+			};
 			return controlView;
 		},
 		pan: function(controlView, leafletView){

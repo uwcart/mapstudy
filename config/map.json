@@ -11,7 +11,8 @@
 			"logging": true
 		},
 		"zoom": {
-			"logging": true
+			"logging": true,
+			"interface": {}
 		},
 		"overlay": {
 			"logging": true,
