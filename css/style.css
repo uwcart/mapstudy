@@ -294,6 +294,14 @@ svg {
     margin-left: 10px;
 }
 
+.retrieve-line {
+    margin: 0;
+}
+
+.retrieve-attributes {
+    text-align: left;
+}
+
 .overlay-control-layer {
     padding-top: 5px;
 }

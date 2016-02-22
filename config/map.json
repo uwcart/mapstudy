@@ -2,7 +2,10 @@
 	"library": "Leaflet",
 	"interactions": {
 		"retrieve": {
-			"logging": true
+			"logging": true,
+			"interface": {
+				"popup": false
+			}
 		},
 		"pan": {
 			"logging": true

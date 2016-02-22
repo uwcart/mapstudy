@@ -346,7 +346,6 @@ var InteractionControlModel = Backbone.Model.extend({
 var InteractionToggleView = Backbone.View.extend({
 	el: '.interaction-control-container',
 	template: _.template( $('#interaction-control-template').html() ),
-	message: '',
 	addInteraction: function(){},
 	removeInteraction: function(){},
 	toggle: function(e, toggleView){
@@ -379,19 +378,13 @@ var InteractionToggleView = Backbone.View.extend({
 			state: state,
 			interaction: interaction
 		});
-		//display message about the interaction on first click
-		if (toggleView.message){ alert(toggleView.message); };
 	},
 	render: function(){
 		this.$el.append(this.template(this.model.attributes));
 		var toggleView = this,
-			toggle = this.toggle,
-			firstClick = true;
+			toggle = this.toggle;
 		this.$el.children('.'+this.model.get('interaction')+'-control').click(function(e){
-			//only display message on first click
-			toggleView.message = toggleView.message.length > 0 && firstClick ? toggleView.message : false;
 			toggle(e, toggleView);
-			firstClick = false;
 		});
 	},
 	initialize: function(){
@@ -421,6 +414,27 @@ var PanControlView = InteractionControlView.extend({
 	pan: function(e){
 		var targetId = $(e.target).attr('id') ? $(e.target).attr('id') : $(e.target).parent().attr('id');
 		this.panMap(targetId);
+	}
+});
+
+//view for retrieve interaction
+var RetrieveControlView = InteractionControlView.extend({
+	el: '.retrieve-control-container',
+	template: _.template( $('#popup-line-template').html() ),
+	retrieve: function(attributes){
+		$('.retrieve-attributes').empty();
+		if (typeof attributes != 'undefined'){
+			_.each(attributes, function(attribute){
+				$('.retrieve-attributes').append(this.template({
+					attribute: attribute.attribute,
+					value: attribute.value
+				}));
+			}, this);
+		};
+	},
+	initialize: function(){
+		this.$el.append('<div class="retrieve-attributes">');
+		return this;
 	}
 });
 
@@ -1232,7 +1246,10 @@ var LeafletMap = Backbone.View.extend({
 				var popupContent = "<table>";
 				if (dataLayerModel.attributes.displayAttributes){
 					dataLayerModel.get('displayAttributes').forEach(function(attr){
-						popupContent += "<tr><td class='attr'>"+attr+":</td><td>"+feature.properties[attr]+"</td></tr>";
+						popupContent += _.template($('#popup-line-template').html())({
+							attribute: attr,
+							value: feature.properties[attr]
+						});
 					});
 				} else {
 					var attr = dataLayerModel.get('expressedAttribute');
@@ -1252,12 +1269,6 @@ var LeafletMap = Backbone.View.extend({
 						mouseout: function(){ this.closePopup() }
 					});
 				};
-				layer.on('popupopen', function(){
-					//only trigger event if popup is visible
-					if ($('.leaflet-popup-pane').css('display') != 'none'){
-						view.trigger('popupopen');
-					};
-				});
 			};
 			//Leaflet overlay options
 			var overlayOptions = {
@@ -1339,7 +1350,10 @@ var LeafletMap = Backbone.View.extend({
 		dataLayerModel.set('id', i);
 		//get data and create thematic layers
 		dataLayerModel.on('sync', this.setTechniques, this);
-		dataLayerModel.fetch({url: dataLayer.source});
+		dataLayerModel.fetch({
+			url: dataLayer.source,
+			async: false
+		});
 	},
 	CustomControl: function(controlName, position){
 		var model = this.model;
@@ -1450,8 +1464,6 @@ var LeafletMap = Backbone.View.extend({
 			zoomContainer.prepend('<img class="icon" src="img/icons/zoom.png" alt="zoom" title="zoom"><span class="control-title">zoom</span>');
 			//hide zoom control
 			zoomContainer.hide();
-			//set message for first click alert
-			controlView.message = 'In addition to the zoom tool, you can use a mouse scroll wheel, double-click, shift-click-drag, or the + and - keys to zoom on a desktop computer, and pinch to zoom on a touch-enabled device.';
 			return controlView;
 		},
 		pan: function(controlView, leafletView){
@@ -1492,33 +1504,52 @@ var LeafletMap = Backbone.View.extend({
 				};
 			};
 			$('.pan-control-container').hide();
-			//set message for first click alert
-			controlView.message = 'In addition to the pan tool, you can click and drag the map or use the arrow keys to pan the map on a desktop computer, or touch and drag with one finger to pan the map on a touch-enabled device.';
 			return controlView;
 		},
 		retrieve: function(controlView, leafletView){
 			var map = leafletView.map;
-			//on/off scripts
+			//listener handler for posting retrieve interaction
+			function triggerRetrieve(){
+				leafletView.trigger('retrieve');
+			};
 			controlView.addInteraction = function(){
 				//close any hidden-but-open popups
 				map.closePopup();
-				$('.leaflet-popup-pane').show();
 				$('.leaflet-interactive').removeAttr('style');
+				map.on('popupopen', triggerRetrieve);
 			};
 			controlView.removeInteraction = function(){
-				$('.leaflet-popup-pane').hide();
 				//set cursor to grab if pan active or default if not
 				if (leafletView.interactions.pan == 'active'){
 					$('.leaflet-interactive').css('cursor', 'grab');
 				} else {
 					$('.leaflet-interactive').css('cursor', 'default');
 				};
+				map.off('popupopen', triggerRetrieve);
 			};
-			//add retrieve-control-container class to allow popup pane show/hide
-			var popupPane = $('.leaflet-popup-pane');
-			popupPane.attr('class', popupPane.attr('class') + ' retrieve-control-container');
-			//set message for first click alert
-			controlView.message = 'Retrieve information by clicking a map feature to open a pop-up on the feature.';
+			//get interface options
+			var retrieveOptions = leafletView.model.get('interactions').retrieve;
+			//add retrieve window if not included in options or true
+			if (!retrieveOptions.interface || typeof retrieveOptions.interface.window == 'undefined' || retrieveOptions.interface.window == true){
+				//add retrieve control to map and hide
+				var RetrieveControl = leafletView.CustomControl('retrieve', 'bottomleft');
+				var retrieveControl = new RetrieveControl();
+				map.addControl(retrieveControl);
+				//instantiate view
+				var retrieveControlView = new RetrieveControlView();
+				map.on('popupopen', function(p){
+					$('.retrieve-attributes').html(p.popup.getContent());
+				});
+				map.on('popupclose', function(){
+					retrieveControlView.retrieve();
+				});
+			};
+			//make popups visible if not included in options or true
+			if (!retrieveOptions.interface || typeof retrieveOptions.interface.popup == 'undefined' || retrieveOptions.interface.popup == true){
+				//add retrieve-control-container class to allow popup pane show/hide
+				var popupPane = $('.leaflet-popup-pane');
+				popupPane.attr('class', popupPane.attr('class') + ' retrieve-control-container');
+			};
 			return controlView;
 		},
 		overlay: function(controlView, leafletView){
@@ -1997,7 +2028,7 @@ var LeafletMap = Backbone.View.extend({
 		var interactionCreation = {
 			zoom: {zoomstart: this.map},
 			pan: {dragend: this.map},
-			retrieve: {popupopen: this},
+			retrieve: {retrieve: this},
 			overlay: {overlay: this},
 			underlay: {baselayerchange: this.map},
 			search: {search: this},

@@ -61,6 +61,10 @@
             </div>
         </script>
 
+        <script type="text/template" id="popup-line-template">
+            <tr><td class='attr'><%= attribute %>:</td><td><%= value %></td></tr>
+        </script>
+
         <script type="text/template" id="overlay-control-template">
             <div class="overlay-control-layer <%= techniqueType %>-layer layer-<%= layerId %>" id="overlay-layer-<%= layerId %>">
                 <input type="checkbox" name="overlay-input" value="<%= layerId %>">

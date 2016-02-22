@@ -102,9 +102,22 @@ An object containing the interactions that should be enabled on the map. Each in
 
 #### map.interactions.zoom
 
-		-"zoom"-: { -"logging"- }
+		-"zoom"-: { -"logging"- -"interface"- }
 
 Zoom interaction. Must be included to allow the user to change the zoom level/scale of the map. If an empty object, `logging` is considered to be `false`.
+
+#### map.interactions.zoom.interface
+
+		-"interface"-: { 
+			-"touch"-
+			-"scrollWheel"-
+			-"doubleClick"-
+			-"box"-
+			-"keyboard"-
+			-"widget"-
+		}
+
+How to implement zoom. Each key implements a boolean value and is `true` by default. `"touch"` enables pinch-zoom on touch-enabled devices. `"scrollWheel"` enables zooming with the scroll wheel on a wheeled mouse. `"doubleClick"` enables zooming in with a mouse double-click or a double-tap on touch-enabled devices. `"box"` enables box-zoom using a mouse and the shift key. `"keyboard"` enables zooming with the + and - keys on a keyboard; it is recommended to keep this option `true` for accessibility. `"widget"` implements a zoom widget with + and - buttons in the lower-left corner of the map.
 
 #### map.interactions[interaction].logging
 
@@ -114,9 +127,15 @@ Whether the interaction should be logged. False by default. Available for each i
 
 #### map.interactions.pan
 
-		-"pan"-: { -"logging"- }
+		-"pan"-: { -"logging"- -"interface"- }
 
 Pan interaction. Must be included to allow the user to change map center by dragging the map.
+
+#### map.interactions.pan.interface
+
+		-"interface"-: { -"drag"- -"keyboard"- -"widget"- }
+
+How to implement pan. Each key implements a boolean value and is `true` by default. `"drag"` enables panning by cliking and dragging or finger-dragging on the map. `"keyboard"` enables panning using the arrow keys of a keyboard; it is recommended to keep this option `true` for accessibility. `"widget"` implements a pan widget with arrow buttons in the lower-left corner of the map.
 
 #### map.interactions.rotate
 
@@ -126,9 +145,15 @@ Rotate interaction. Allows the user to rotate the map. Only available with Mapbo
 
 #### map.interactions.retrieve
 
-		-"retrieve"-: { -"logging"- }
+		-"retrieve"-: { -"logging"- -"interface"- }
 
-Retrieve interaction. Implemented as a pop-up on the map. If an empty object, options are considered to be defaults.
+Retrieve interaction. Allows the user to get information about features through a popup and/or window.
+
+#### map.interactions.retrieve.interface
+
+		-"interface"-: { -"popup"- -"window"- }
+
+How to implement retrieve. Each key implements a boolean value and is `true` by default. `"popup"` gives the user access to popups on each data layer feature that show all of the feature's display attributes. `"window"` implements a widget-like information window in the lower-left corner of the map where information about each feature is displayed when the feature is clicked on.
 
 #### map.interactions.overlay
 
