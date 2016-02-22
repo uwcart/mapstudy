@@ -999,13 +999,38 @@ var ReclassifyView = ReexpressInputView.extend({
 //view for recolor section of resymbolize widget
 var RecolorView = ReclassifyView.extend({
 	template: _.template( $('#recolor-template').html() ),
+	recolor: function(color){},
 	setTechnique: function(){
 		var techniqueType = this.model.get('techniqueType');
 		if (techniqueType == 'choropleth'){
 			this.$el.find('.recolor input').hide();
 			this.setColorSwatches();
 		} else if (techniqueType == 'proportional symbol'){
+			var colorInput = this.$el.find('.recolor input');
+			//hacky way to set default color of input if color is not a hex value
+			if (this.model.get('color').indexOf('#') == -1){
+				//set background color of input
+				colorInput.css('background-color', this.model.get('color'));
+				//get rgb color value and convert to hex value
+				var rgb = colorInput.css('background-color').replace(/rgb\(|\)/g, '').split(','),
+					red = parseInt(rgb[0]), green = parseInt(rgb[1]), blue = parseInt(rgb[2]),
+					//from http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb response by FilipeC
+					rgb2 = blue | (green << 8) | (red << 16),
+					hex = '#' + (0x1000000 + rgb2).toString(16).slice(1);
+				//remove background color of input
+				colorInput.removeAttr('style');
+			} else {
+				var hex = this.model.get('color');
+			};
+			//set default color of input 
+			colorInput.attr('value', hex);
+			//hide color scale select
 			this.$el.find('.recolor select').hide();
+			//add color change event
+			var recolor = this.recolor;
+			colorInput.change(function(){
+				recolor($(this).val());
+			});
 		};
 	},
 	setColorSwatches: function(){
@@ -1865,6 +1890,17 @@ var LeafletMap = Backbone.View.extend({
 						reclassifyView.render();
 						recolorView.render();
 					} else if (layer.techniqueType == 'proportional symbol'){
+						//add symbol color to model
+						var layerOptions = layer.model.get('layerOptions');
+						var color;
+						if (layerOptions.fillColor){
+							color = layerOptions.fillColor;
+						} else if (layerOptions.fill){
+							color = layerOptions.fill;
+						} else {
+							color = "#000";
+						};
+						resymbolizeModel.set('color', color);
 						//instantiate appropriate views
 						var reclassifyView = new ReclassifyView({model: resymbolizeModel}),
 							rescaleView = new RescaleView({model: resymbolizeModel}),
@@ -1883,7 +1919,7 @@ var LeafletMap = Backbone.View.extend({
 						};
 						//render views
 						reclassifyView.render();
-						// recolorView.render();
+						recolorView.render();
 					};
 				}, this);
 
