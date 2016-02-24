@@ -4,6 +4,66 @@
 		"selected_items":
 		[
 			[
+				"has",
+				"hasOwnProperty"
+			],
+			[
+				"zoom",
+				"zoomOptions"
+			],
+			[
+				"interface",
+				"interfaceMethods"
+			],
+			[
+				"double",
+				"doubleClickZoom"
+			],
+			[
+				"scroll",
+				"scrollWheelZoom"
+			],
+			[
+				"trigg",
+				"triggerRetrieve"
+			],
+			[
+				"popu",
+				"popup-line-template"
+			],
+			[
+				"retr",
+				"retrieve-attributes"
+			],
+			[
+				"retrieveCont",
+				"retrieveControlView"
+			],
+			[
+				"retrieve",
+				"retrieveControlView"
+			],
+			[
+				"retrie",
+				"retrieveControlView"
+			],
+			[
+				"display",
+				"displayAttributes"
+			],
+			[
+				"Retr",
+				"RetrieveControlView"
+			],
+			[
+				"retri",
+				"retrieve-attributes"
+			],
+			[
+				"fill",
+				"fillColor"
+			],
+			[
 				"resy",
 				"resymbolize"
 			],
@@ -142,10 +202,6 @@
 			[
 				"apply",
 				"applyFilter"
-			],
-			[
-				"retr",
-				"retrieve-control"
 			],
 			[
 				"retrieve-contro",
@@ -404,10 +460,6 @@
 				"leafletDataLayer"
 			],
 			[
-				"retrie",
-				"retrieveAttributes"
-			],
-			[
 				"dum",
 				"var_dump"
 			],
@@ -462,58 +514,6 @@
 			[
 				"stroke",
 				"stroke-width"
-			],
-			[
-				"csv",
-				"csvData"
-			],
-			[
-				"s",
-				"box-shadow"
-			],
-			[
-				"font-",
-				"font-size"
-			],
-			[
-				"create",
-				"createDropdown"
-			],
-			[
-				"left",
-				"leftMargin"
-			],
-			[
-				"top",
-				"topBottomMargin"
-			],
-			[
-				"domain",
-				"domainArray"
-			],
-			[
-				"france",
-				"franceRegions"
-			],
-			[
-				"europe",
-				"europeCountries"
-			],
-			[
-				"transfor",
-				"transformOrigin"
-			],
-			[
-				"mapT",
-				"mapTransform"
-			],
-			[
-				"mapTran",
-				"mapTransform"
-			],
-			[
-				"prev",
-				"previewHeight"
 			]
 		]
 	},
@@ -531,7 +531,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 11394,
+				"buffer_size": 11558,
 				"line_ending": "Unix"
 			}
 		},
@@ -539,7 +539,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 69680,
+				"buffer_size": 73472,
 				"line_ending": "Windows"
 			}
 		},
@@ -547,7 +547,7 @@
 			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 8955,
+				"buffer_size": 9038,
 				"line_ending": "Unix"
 			}
 		},
@@ -563,7 +563,7 @@
 			"file": "doc/API.md",
 			"settings":
 			{
-				"buffer_size": 29260,
+				"buffer_size": 30988,
 				"line_ending": "Windows"
 			}
 		},
@@ -579,7 +579,7 @@
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 2339,
+				"buffer_size": 2613,
 				"line_ending": "Windows",
 				"name": "["
 			}
@@ -794,6 +794,46 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"RetrieveControlView",
+			"retrieve",
+			"pan:",
+			"trigger(",
+			"legend-wrapper",
+			"legend",
+			"console",
+			"RetrieveControlView",
+			"popupopen",
+			"retrieve:",
+			"popupopen",
+			"setTechniques",
+			"dataLayerModel",
+			"techniquesObj",
+			"dataLayersDone",
+			"RetrieveControlView",
+			"table",
+			"td",
+			"popup",
+			"RetrieveControlView",
+			"retrieve:",
+			"retrieve",
+			"InteractionToggleView",
+			".leaflet-popup-pane",
+			"RetrieveControlView",
+			"PanControlView",
+			"pan",
+			"PanControlView",
+			".pan",
+			"panMap",
+			"panControlView",
+			"RetrieveControlView",
+			"PanControlView",
+			"panMap",
+			"message",
+			"retrieve",
+			"console",
+			"RecolorView",
+			"setColorSwatches",
+			"RecolorView",
 			"console",
 			"hide",
 			"ReclassifyView",
@@ -881,47 +921,7 @@
 			"svgWidth",
 			"append",
 			"label",
-			"choropleth-legend-template",
-			"console",
-			"ReexpressModel",
-			"resymbolize",
-			"12",
-			"11",
-			"10",
-			"9",
-			"8",
-			"7",
-			"6",
-			"5",
-			"4",
-			"3",
-			"classes",
-			"classification",
-			"resymbolize",
-			"setInteractionControls",
-			"layerChange",
-			"console",
-			"leafletView.interactions",
-			"pan:",
-			"activate",
-			"InteractionToggleView",
-			"toggle",
-			"InteractionToggleView",
-			"reproject",
-			"resymbolize",
-			"rotate",
-			"interactions:",
-			"reexpress",
-			"cursor",
-			"PanControlView",
-			"pan:",
-			"pan",
-			"pan:",
-			"'pan'",
-			"this.pan",
-			"pan",
-			"OverlayControlView",
-			"overlay"
+			"choropleth-legend-template"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1067,7 +1067,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 7,
 			"sheets":
 			[
 				{
@@ -1101,15 +1101,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 11394,
+						"buffer_size": 11558,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7070,
-								7070
+								733,
+								733
 							]
 						],
 						"settings":
@@ -1119,7 +1119,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2851.0,
+						"translation.y": 340.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1129,15 +1129,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 69680,
+						"buffer_size": 73472,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								65079,
-								65079
+								12852,
+								12852
 							]
 						],
 						"settings":
@@ -1147,7 +1147,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 38087.0,
+						"translation.y": 8431.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1157,15 +1157,15 @@
 					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 8955,
+						"buffer_size": 9038,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5145,
-								5145
+								4895,
+								4895
 							]
 						],
 						"settings":
@@ -1175,7 +1175,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 5965.0,
+						"translation.y": 5605.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1212,15 +1212,15 @@
 					"file": "doc/API.md",
 					"settings":
 					{
-						"buffer_size": 29260,
+						"buffer_size": 30988,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								27070,
-								27070
+								8543,
+								8543
 							]
 						],
 						"settings":
@@ -1229,7 +1229,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 12111.0,
+						"translation.y": 3611.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1265,15 +1265,15 @@
 					"file": "config/map.json",
 					"settings":
 					{
-						"buffer_size": 2339,
+						"buffer_size": 2613,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1743,
-								1736
+								2475,
+								2475
 							]
 						],
 						"settings":
@@ -1284,7 +1284,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1320.0,
+						"translation.y": 2327.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1327,8 +1327,8 @@
 						"selection":
 						[
 							[
-								39006,
-								39008
+								800,
+								800
 							]
 						],
 						"settings":

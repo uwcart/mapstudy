@@ -65,63 +65,18 @@
 			}
 	}],
 	"dataLayers": [{
-		"name": "US States",
-		"source": "data/us-states.geojson",
-		"postgisTable": "",
-		"renderOnLoad": true,
-		"expressedAttribute": "Density (ppl/sq. mile)",
-		"displayAttributes": [
-			"name", 
-			"Density (ppl/sq. mile)"
-		],
+		"name": "Population Density",
+		"source": "data/wi-tracts-point.geojson",
+		"expressedAttribute": "density",
 		"layerOptions": {
-			"fillOpacity": 0.8,
 			"color": "black",
 			"weight": 1,
-			"opacity": 1,
-			"fillColor": "#FD8D3C"
+			"opacity": 0.8
 		},
 		"techniques": [{
-			"type": "choropleth",
-			"classification": "quantile",
-			"classes": "Oranges.5"
-		},{
-			"type": "proportional symbol",
-			"classification": "unclassed",
-			"classes": [
-				5,
-				20
-			]
-		}]
-	},
-	{
-		"name": "Cities Layer",
-		"source": "data/city-data.geojson",
-		"expressedAttribute": "2011",
-		"displayAttributes": [
-			"name", 
-			"2005",
-			"2006",
-			"2007",
-			"2008",
-			"2009",
-			"2010",
-			"2011"
-		],
-		"layerOptions": {
-			"fillOpacity": 0.8,
-			"color": "white",
-			"fillColor": "blue",
-			"opacity": 1,
-			"weight": 1
-		},
-		"techniques": [{
-			"type": "proportional symbol",
-			"classification": "unclassed",
-			"classes": [
-				5,
-				20
-			]
+			"type": "isarithmic",
+			"interval": 20,
+			"size": 1
 		}]
 	}]
 }

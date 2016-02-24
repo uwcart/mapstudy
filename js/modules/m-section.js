@@ -128,7 +128,7 @@ var Choropleth = Backbone.Model.extend({
 			fillColor: scale(parseFloat(feature.properties[expressedAttribute]))
 		};
 	},
-	setClasses: function(){
+	symbolize: function(){
 		var expressedAttribute = this.get('expressedAttribute'),
 			techniqueIndex = this.get('techniqueIndex'),
 			technique = this.get('techniques')[techniqueIndex];
@@ -172,10 +172,58 @@ var ProportionalSymbol = Choropleth.extend({
 	}
 });
 
+var Isarithmic = Backbone.Model.extend({
+	defaults: {
+		interval: 1,
+		techniqueType: 'isarithmic'
+	},
+	symbolize: function(){
+		//get all of the attribute values to set breaks
+		var features = this.get('features'),
+			technique = this.get('techniques')[this.get('techniqueIndex')],
+			interval = technique.interval ? technique.interval : 10,
+			size = technique.size ? technique.size: null,
+			expressedAttribute = this.get('expressedAttribute'),
+			values = getAllAttributeValues(features, expressedAttribute),
+			breaks = [];
+
+		//EQUAL INTERVAL CLASSIFICATION 
+
+		//set interval and size
+		this.set('interval', interval);
+		this.set('size', size);
+		//set breaks as set of interval multiples in attribute value domain
+		for (var i = 0; i < values[values.length-1]; i += interval){
+			if (i >= values[0]){
+				breaks.push(i);
+			};
+		};
+		//put features in FeatureCollection object for turf
+		var featureCollection = {
+			type: "FeatureCollection",
+			features: features
+		};
+		//return isarithms
+		var isarithms = turf.isolines(featureCollection, expressedAttribute, interval*2, breaks);
+		//add an object for layer options
+		_.each(isarithms.features, function(feature){
+			feature.properties.layerOptions = {};
+			//if size is included, set as layer option
+			if (size != null && !isNaN(size)){
+				feature.properties.layerOptions['stroke-width'] = size;
+				//leaflet pseudo-css
+				feature.properties.layerOptions.weight = size;
+			};
+		});
+		this.set('features', isarithms);
+	}
+})
+
 //an object references technique classes to their types
 var techniquesObj = {
 	'choropleth': Choropleth,
-	'proportional symbol': ProportionalSymbol
+	'proportional symbol': ProportionalSymbol,
+	'isarithmic': Isarithmic
 };
 
 //view for legend creation
@@ -224,50 +272,94 @@ var LegendLayerView = Backbone.View.extend({
 		$('.legend-control-container').append(this.$el);
 	},
 	initialize: function(){
-		//get output range and input domain values
-		var scale = this.model.get('scale'),
-			range = scale.range(),
-			domain = scale.domain();
-		//get expressed attribute
-		var expressedAttribute = this.model.get('expressedAttribute');
-		//calculate svg height
-		if (!isNaN(parseFloat(range[range.length-1]))){ //if range is a number, treat as prop symbol
-			//set max radius
-			this.model.set('maxRadius', parseFloat(range[range.length-1]));
-			//svg height should be whichever is larger, label heights or largest circle diameter
-			var heightArray = [
-				13 * range.length + 6, 
-				parseFloat(range[range.length-1]) * 2 + 6
-			];
-			heightArray.sort(function(a,b){ return b-a });
-			this.model.set('svgHeight', heightArray[0]);
-		} else {
-			this.model.set('svgHeight', 13 * range.length + 6);
+		//set styles according to layer options
+		var css = {},
+			layerOptions = this.model.get('layerOptions');
+		//deal with special Leaflet options
+		var leafletOptionsKey = {
+			fillColor: 'fill',
+			fillOpacity: 'fill-opacity',
+			color: 'stroke',
+			weight: 'stroke-width',
+			opacity: 'stroke-opacity',
+			dashArray: 'stroke-dasharray',
+			linecap: 'stroke-linecap',
+			linejoin: 'stroke-linejoin'
 		};
-		//only build classes for classed classification
-		var y = 0;
-		if (domain.length > 2 || range.length > 2){
-			//add a symbol for each class
-			for (var i = range.length-1; i >= 0; i--){
-				var domainvals = scale.invertExtent(range[i]);
-				//fill in min and max values for natural breaks threshold scale
-				if (typeof domainvals[0] == 'undefined'){
-					domainvals[0] = d3.min(getAllAttributeValues(this.model.get('features'), expressedAttribute));
-				} else if (typeof domainvals[1] == 'undefined'){
-					domainvals[1] = d3.max(getAllAttributeValues(this.model.get('features'), expressedAttribute));
+		//add layer options to css object
+		for (var option in layerOptions){
+			//add real CSS keys in place of fake Leaflet ones
+			if (leafletOptionsKey.hasOwnProperty(option) && !css.hasOwnProperty(leafletOptionsKey[option])){
+				css[leafletOptionsKey[option]] = layerOptions[option];
+			};
+			css[option] = layerOptions[option];
+		};
+		//set legend elements
+		var techniqueType = this.model.get('techniqueType');
+		//only use scale for choropleth and prop symbol layers
+		if (techniqueType == 'choropleth' || techniqueType == 'proportional symbol'){
+			//get output range and input domain values
+			var scale = this.model.get('scale'),
+				range = scale.range(),
+				domain = scale.domain();
+			//get expressed attribute
+			var expressedAttribute = this.model.get('expressedAttribute');
+			//calculate svg height
+			if (!isNaN(parseFloat(range[range.length-1]))){ //if range is a number, treat as prop symbol
+				//set max radius
+				this.model.set('maxRadius', parseFloat(range[range.length-1]));
+				//svg height should be whichever is larger, label heights or largest circle diameter
+				var heightArray = [
+					13 * range.length + 6, 
+					parseFloat(range[range.length-1]) * 2 + 6
+				];
+				heightArray.sort(function(a,b){ return b-a });
+				this.model.set('svgHeight', heightArray[0]);
+			} else {
+				this.model.set('svgHeight', 13 * range.length + 6);
+			};
+			//only build classes for classed classification
+			var y = 0;
+			if (domain.length > 2 || range.length > 2){
+				//add a symbol for each class
+				for (var i = range.length-1; i >= 0; i--){
+					var domainvals = scale.invertExtent(range[i]);
+					//fill in min and max values for natural breaks threshold scale
+					if (typeof domainvals[0] == 'undefined'){
+						domainvals[0] = d3.min(getAllAttributeValues(this.model.get('features'), expressedAttribute));
+					} else if (typeof domainvals[1] == 'undefined'){
+						domainvals[1] = d3.max(getAllAttributeValues(this.model.get('features'), expressedAttribute));
+					};
+					//add visual element and label for each class
+					this.append(range[i], domainvals, y);
+					//count up to put swatches in correct order
+					y++;
 				};
-				//add visual element and label for each class
-				this.append(range[i], domainvals, y);
-				//count up to put swatches in correct order
-				y++;
+			} else {
+				//add a symbol for lowest and highest values
+				for (var i = range.length-1; i >= 0; i--){
+					this.append(range[i], domain[i], y);
+					y++;
+				};
 			};
-		} else {
-			//add a symbol for lowest and highest values
-			for (var i = range.length-1; i >= 0; i--){
-				this.append(range[i], domain[i], y);
-				y++;
+		} else if (techniqueType == 'isarithmic'){
+			//get interval and size
+			var interval = this.model.get('interval'),
+				size = this.model.get('size');
+			//override stroke width with size if present
+			if (size != null && !isNaN(size)){
+				css['stroke-width'] = size;
 			};
+			//set legend line
+			this.append(css.stroke, 'Line interval: '+interval, 0);
+			//set stroke width
+			if (css.hasOwnProperty('stroke-width')){
+				this.$el.find('path').attr('stroke-width', css['stroke-width']);
+			};
+			//set svg height
+			this.model.set('svgHeight', 16);
 		};
+		
 		//set svg dimensions
 		this.$el.attr({
 			width: this.model.get('svgWidth'),
@@ -275,24 +367,8 @@ var LegendLayerView = Backbone.View.extend({
 			xmlns: 'http://www.w3.org/2000/svg',
 			version: '1.1'
 		});
+		
 		//style according to layer options
-		var css = {},
-			layerOptions = this.model.get('layerOptions');
-		for (var option in layerOptions){
-			//assign options that may apply
-			css[option] = layerOptions[option];
-			//deal with special Leaflet options
-			switch (option){
-				case 'fillColor': css.fill = layerOptions[option]; break;
-				case 'fillOpacity': css['fill-opacity'] = layerOptions[option]; break;
-				case 'color': css.stroke = layerOptions[option]; break;
-				case 'weight': css['stroke-width'] = layerOptions[option]; break;
-				case 'opacity': css['stroke-opacity'] = layerOptions[option]; break;
-				case 'dashArray': css['stroke-dasharray'] = layerOptions[option]; break;
-				case 'linecap': css['stroke-linecap'] = layerOptions[option]; break;
-				case 'linejoin': css['stroke-linejoin'] = layerOptions[option]; break;
-			};
-		};
 		for (var style in css){
 			this.$el.children('rect').each(function(){
 				//don't override rectangle color
@@ -1236,8 +1312,8 @@ var LeafletMap = Backbone.View.extend({
 			var techniqueModel = new techniquesObj[technique.type]({techniqueIndex: i});
 			_.defaults(techniqueModel, dataLayerModel);
 			_.extend(techniqueModel.attributes, dataLayerModel.attributes);
-			//set model classification
-			techniqueModel.setClasses();
+			//set model classification, isarithms, or dots
+			techniqueModel.symbolize();
 
 			//add popups to layer
 			function onEachFeature(feature, layer){
