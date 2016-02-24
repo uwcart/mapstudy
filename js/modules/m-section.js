@@ -16,6 +16,18 @@ function getAllAttributeValues(features, attribute){
 	return values;
 };
 
+function polygonToPoint(feature){
+	//get polygon centroid
+	var point = turf.centroid(feature);
+	//transfer other feature properties
+	for (var key in feature){
+		if (key != 'geometry'){
+			point[key] = feature[key];
+		};
+	};
+	return point;
+};
+
 /*************************** map.dataLayer ***************************/
 
 //basic model to hold geojson and data layer options
@@ -159,7 +171,21 @@ var ProportionalSymbol = Choropleth.extend({
 		symbol: 'circle',
 		techniqueType: 'proportional symbol'
 	},
+	polygonsToPoints: function(rawfeatures){
+		var features = [];
+		//transform polygon features into point features
+		_.each(rawfeatures, function(rawfeature){
+			if (rawfeature.geometry.type == 'Polygon') {
+				features.push(polygonToPoint(rawfeature));
+			} else {
+				features.push(rawfeature);
+			}
+		});
+		return features;
+	},
 	setLayerOptions: function(feature, scale, expressedAttribute){
+		//turn any polygons into points
+		this.set('features', this.polygonsToPoints(this.get('features')));
 		//ensure scale range values are numbers
 		var range = _.map(scale.range(), function(val){
 			return parseFloat(val);
@@ -179,16 +205,25 @@ var Isarithmic = Backbone.Model.extend({
 	},
 	symbolize: function(){
 		//get all of the attribute values to set breaks
-		var features = this.get('features'),
+		var rawfeatures = this.get('features'),
 			technique = this.get('techniques')[this.get('techniqueIndex')],
 			interval = technique.interval ? technique.interval : 10,
 			size = technique.size ? technique.size: null,
 			expressedAttribute = this.get('expressedAttribute'),
-			values = getAllAttributeValues(features, expressedAttribute),
+			values = getAllAttributeValues(rawfeatures, expressedAttribute),
+			features = [],
 			breaks = [];
-
-		//EQUAL INTERVAL CLASSIFICATION 
-
+		//transform polygon features into point features
+		_.each(rawfeatures, function(rawfeature){
+			//filter out features with null and non-numeric values
+			if (rawfeature.properties[expressedAttribute] != null && !isNaN(Number(rawfeature.properties[expressedAttribute]))){
+				if (rawfeature.geometry.type == 'Polygon') {
+					features.push(polygonToPoint(rawfeature));
+				} else {
+					features.push(rawfeature);
+				}
+			};
+		});
 		//set interval and size
 		this.set('interval', interval);
 		this.set('size', size);
@@ -204,7 +239,8 @@ var Isarithmic = Backbone.Model.extend({
 			features: features
 		};
 		//return isarithms
-		var isarithms = turf.isolines(featureCollection, expressedAttribute, interval*2, breaks);
+		var resolution = Math.round(Math.sqrt(features.length)*2);
+		var isarithms = turf.isolines(featureCollection, expressedAttribute, resolution, breaks);
 		//add an object for layer options
 		_.each(isarithms.features, function(feature){
 			feature.properties.layerOptions = {};
@@ -1289,11 +1325,28 @@ var LeafletMap = Backbone.View.extend({
 		feature.geometry.coordinates = [center.lng, center.lat];
 		return feature;
 	},
+	topoToGeoJSON: function(transform, arcs, objects, crs){
+		//recreate topojson topology
+		var topology = {
+			type: 'Topology',
+			transform: transform,
+			arcs: arcs,
+			objects: objects,
+			crs: crs
+		};
+		//use topojson.js to translate first object in topology
+		return topojson.feature(topology, objects[Object.keys(objects)[0]]);
+	},
 	setTechniques: function(dataLayerModel){
 		//variables needed by internal functions
 		var view = this, 
 			model = view.model,
 			map = view.map;
+		//translate topojson
+		if (dataLayerModel.attributes.type && dataLayerModel.get('type') == 'Topology'){
+			var featureCollection = view.topoToGeoJSON(dataLayerModel.get('transform'), dataLayerModel.get('arcs'), dataLayerModel.get('objects'), dataLayerModel.get('crs'));
+			dataLayerModel.set('features', featureCollection.features);
+		};
 		//add new features to collection of all features
 		model.attributes.allFeatures = _.union(model.attributes.allFeatures, dataLayerModel.get('features'));
 		//trigger event for features
@@ -1369,15 +1422,6 @@ var LeafletMap = Backbone.View.extend({
 						return L.marker(latlng, {icon: icon})
 					};
 				};
-				//turn any non-point features into point features
-				var newFeatures = _.map(techniqueModel.get('features'), function(feature){
-					if (feature.geometry.type != 'Point'){
-						return this.polygonToPoint(feature);
-					} else {
-						return feature;
-					};
-				}, this);
-				techniqueModel.set('features', newFeatures);
 				//add pointToLayer to create prop symbols
 				overlayOptions.pointToLayer = pointToLayer;
 			};
@@ -1426,10 +1470,22 @@ var LeafletMap = Backbone.View.extend({
 		dataLayerModel.set('id', i);
 		//get data and create thematic layers
 		dataLayerModel.on('sync', this.setTechniques, this);
-		dataLayerModel.fetch({
-			url: dataLayer.source,
-			async: false
-		});
+		if (dataLayer.source.indexOf('postgis:') != -1){
+			//fetch features from postgis database
+			dataLayerModel.fetch({
+				url: 'php/getData.php',
+				async: false,
+				data: {
+					table: dataLayer.source.split('postgis:')[1]
+				}
+			});
+		} else {
+			//fetch features from geojson or topojson
+			dataLayerModel.fetch({
+				url: dataLayer.source,
+				async: false
+			});
+		};
 	},
 	CustomControl: function(controlName, position){
 		var model = this.model;

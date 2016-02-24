@@ -12,6 +12,9 @@
 		},
 		{
 			"path": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab"
+		},
+		{
+			"path": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz"
 		}
 	]
 }

@@ -66,31 +66,17 @@
 	}],
 	"dataLayers": [{
 		"name": "Population Density",
-		"source": "data/wi-tracts-poly.topojson",
+		"source": "data/wi-tracts-point.geojson",
 		"expressedAttribute": "density",
 		"layerOptions": {
 			"color": "black",
 			"weight": 1,
-			"opacity": 0.8,
-			"fillColor": "#FD8D3C"
+			"opacity": 0.8
 		},
 		"techniques": [{
 			"type": "isarithmic",
 			"interval": 20,
 			"size": 1
-		},
-		{
-			"type": "proportional symbol",
-			"classification": "unclassed",
-			"classes": [
-				5,
-				20
-			]
-		},
-		{
-			"type": "choropleth",
-			"classification": "quantile",
-			"classes": "Oranges.5"
 		}]
 	}]
 }

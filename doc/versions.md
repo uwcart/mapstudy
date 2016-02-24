@@ -20,6 +20,8 @@
 
 - D3 3.5.6
 
+- TopoJSON 1.0
+
 - ColorBrewer
 
 - jscolor 2.0.4

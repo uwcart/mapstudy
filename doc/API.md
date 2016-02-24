@@ -491,7 +491,7 @@ Symbol to use for proportional symbol or dot map. Optional; default is `circle`.
 
 The data interval by which to separate isarithms on an isarithmic map, or the ratio of data value to one dot for a dot map. Optional. Unavailable for choropleth or proportional symbol maps.
 
-For an isarithmic map, there are two ways to determine line separation. One way is to designate a value for `interval` by which each line will be separated on the map. The other is to omit `interval`, include `"classification": "equal interval"`, and to include `classes` as an array with a number of arbitrary values corresponding to the desired number of isarithms on the map. If both `interval` and `classification` are omitted, the default line separation will be 10.
+For an isarithmic map, `interval` is the value by which each line will be separated on the map. If  omitted, the default line separation will be 10.
 
 For a dot map, the value of `interval` is the denominator by which the feature's expressed attribute value will be divided to determine the number of dots to add within the boundaries of a feature. Omitting `interval` will result in a default of one dot for every 10 units. For example, if the expressed attribute value for a feature is `15,607`, by default there will be 1,561 dots scattered within that feature's boundaries. Designating `interval` as `1` will result in a dot being added for each whole number increase in the expressed attribute value, resulting in a true dot (as opposed to dot density) map.
 
