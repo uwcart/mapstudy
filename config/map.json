@@ -45,8 +45,8 @@
 		}
 	},
 	"mapOptions": {
-		"center": [39.83,-98.583],
-		"zoom": 3,
+		"center": [45,-90],
+		"zoom": 7,
 		"minZoom": 3,
 		"maxZoom": 13
 	},
@@ -72,6 +72,7 @@
 			"color": "black",
 			"weight": 1,
 			"opacity": 0.8,
+			"fillOpacity": 0.8,
 			"fillColor": "#FD8D3C"
 		},
 		"techniques": [{

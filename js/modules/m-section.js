@@ -7,11 +7,13 @@
 //produce numeric values array from GeoJSON features
 function getAllAttributeValues(features, attribute){
 	//get attribute values for all features with given attribute
-	var values = _.map(features, function(feature){
-		return parseFloat(feature.properties[attribute]);
+	var values = []
+	_.each(features, function(feature){
+		var value = parseFloat(feature.properties[attribute]);
+		if (!isNaN(value) && value != null){
+			values.push(value);
+		};
 	});
-	//strip any NaNs and sort
-	values = _.without(values, NaN);
 	values.sort(function(a,b){ return a-b });
 	return values;
 };
@@ -135,9 +137,20 @@ var Choropleth = Backbone.Model.extend({
 		techniqueType: 'choropleth'
 	},
 	setLayerOptions: function(feature, scale, expressedAttribute){
-		//set a new fillColor property for each feature with the class color value
-		return {
-			fillColor: scale(parseFloat(feature.properties[expressedAttribute]))
+		//weed out NaN and null values
+		var value = parseFloat(feature.properties[expressedAttribute]);
+		if (!isNaN(value) && value != null){
+			//set a new fillColor property for each feature with the class color value
+			return {
+				fillColor: scale(value),
+				fill: scale(value)
+			};
+		} else {
+			//set opacity to 0 for null or non-numeric values
+			return {
+				fillOpacity: 0,
+				'fill-opacity': 0
+			};
 		};
 	},
 	symbolize: function(){
