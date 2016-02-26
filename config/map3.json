@@ -76,9 +76,8 @@
 			"fillColor": "#FD8D3C"
 		},
 		"techniques": [{
-			"type": "isarithmic",
-			"interval": 20,
-			"size": 1
+			"type": "heat",
+			"size": 0.5
 		},
 		{
 			"type": "proportional symbol",

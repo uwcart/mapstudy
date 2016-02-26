@@ -32,6 +32,8 @@
 
 - Fuse 1.3.0
 
+- Heatmapjs 2.0.2
+
 # Example files:
 
 - *us-states.geojson* -- shamelessly stolen from [Leaflet Interactive Choropleth Map tutorial](http://leafletjs.com/examples/choropleth.html)

@@ -184,21 +184,24 @@ var ProportionalSymbol = Choropleth.extend({
 		symbol: 'circle',
 		techniqueType: 'proportional symbol'
 	},
-	polygonsToPoints: function(rawfeatures){
+	polygonsToPoints: function(rawfeatures, expressedAttribute){
 		var features = [];
 		//transform polygon features into point features
 		_.each(rawfeatures, function(rawfeature){
-			if (rawfeature.geometry.type == 'Polygon') {
-				features.push(polygonToPoint(rawfeature));
-			} else {
-				features.push(rawfeature);
-			}
+			//filter out features with null and non-numeric values
+			if (rawfeature.properties[expressedAttribute] != null && !isNaN(Number(rawfeature.properties[expressedAttribute]))){
+				if (rawfeature.geometry.type == 'Polygon' || rawfeature.geometry.type == 'MultiPolygon') {
+					features.push(polygonToPoint(rawfeature));
+				} else {
+					features.push(rawfeature);
+				};
+			};
 		});
 		return features;
 	},
 	setLayerOptions: function(feature, scale, expressedAttribute){
 		//turn any polygons into points
-		this.set('features', this.polygonsToPoints(this.get('features')));
+		this.set('features', this.polygonsToPoints(this.get('features'), expressedAttribute));
 		//ensure scale range values are numbers
 		var range = _.map(scale.range(), function(val){
 			return parseFloat(val);
@@ -211,32 +214,20 @@ var ProportionalSymbol = Choropleth.extend({
 	}
 });
 
-var Isarithmic = Backbone.Model.extend({
+var Isarithmic = ProportionalSymbol.extend({
 	defaults: {
 		interval: 1,
 		techniqueType: 'isarithmic'
 	},
 	symbolize: function(){
 		//get all of the attribute values to set breaks
-		var rawfeatures = this.get('features'),
+		var expressedAttribute = this.get('expressedAttribute'),
+			features = this.polygonsToPoints(this.get('features'), expressedAttribute),
 			technique = this.get('techniques')[this.get('techniqueIndex')],
 			interval = technique.interval ? technique.interval : 10,
 			size = technique.size ? technique.size: null,
-			expressedAttribute = this.get('expressedAttribute'),
-			values = getAllAttributeValues(rawfeatures, expressedAttribute),
-			features = [],
+			values = getAllAttributeValues(features, expressedAttribute),
 			breaks = [];
-		//transform polygon features into point features
-		_.each(rawfeatures, function(rawfeature){
-			//filter out features with null and non-numeric values
-			if (rawfeature.properties[expressedAttribute] != null && !isNaN(Number(rawfeature.properties[expressedAttribute]))){
-				if (rawfeature.geometry.type == 'Polygon') {
-					features.push(polygonToPoint(rawfeature));
-				} else {
-					features.push(rawfeature);
-				}
-			};
-		});
 		//set interval and size
 		this.set('interval', interval);
 		this.set('size', size);
@@ -266,13 +257,61 @@ var Isarithmic = Backbone.Model.extend({
 		});
 		this.set('features', isarithms);
 	}
-})
+});
+
+var Heat = Isarithmic.extend({
+	defaults: {
+		techniqueType: 'heat'
+	},
+	featuresToDataPoints: function(features, expressedAttribute){
+		//return data usable to leaflet-heatmap
+		var data = [];
+		_.each(features, function(feature){
+			var datum = {
+				lat: feature.geometry.coordinates[1],
+				lng: feature.geometry.coordinates[0]
+			};
+			datum[expressedAttribute] = feature.properties[expressedAttribute];
+			data.push(datum);
+		});
+		return data;
+	},
+	symbolize: function(){
+		var expressedAttribute = this.get('expressedAttribute'),
+			features = this.polygonsToPoints(this.get('features'), expressedAttribute),
+			values = getAllAttributeValues(features, expressedAttribute),
+			points = this.featuresToDataPoints(features, expressedAttribute),
+			technique = this.get('techniques')[this.get('techniqueIndex')],
+			size = technique.size ? technique.size : 1;
+		//leaflet heatmap layer data
+		var data = {
+			max: values[values.length-1],
+			data: points
+		};
+		//leaflet heatmap layer config
+		var heatmapConfig = {
+			radius: size,
+			maxOpacity: 0.8,
+			scaleRadius: true,
+			useLocalExtrema: true,
+			latField: 'lat',
+			lngField: 'lng',
+			valueField: expressedAttribute
+		};
+		//leaflet heatmap layer instance
+		var heatmapLayer = new HeatmapOverlay(heatmapConfig);
+		console.log(data);
+		heatmapLayer.setData(data);
+		this.set('heatmapLayer', heatmapLayer);
+	}
+});
 
 //an object references technique classes to their types
 var techniquesObj = {
 	'choropleth': Choropleth,
 	'proportional symbol': ProportionalSymbol,
-	'isarithmic': Isarithmic
+	'isarithmic': Isarithmic,
+	'heat': Heat
 };
 
 //view for legend creation
@@ -1439,8 +1478,12 @@ var LeafletMap = Backbone.View.extend({
 				overlayOptions.pointToLayer = pointToLayer;
 			};
 			//instantiate Leaflet layer
-			var leafletDataLayer = L.geoJson(techniqueModel.get('features'), overlayOptions),
-				layerId = leafletDataLayer._leaflet_id;
+			if (technique.type == 'heat'){
+				var leafletDataLayer = techniqueModel.get('heatmapLayer');
+			} else {
+				var leafletDataLayer = L.geoJson(techniqueModel.get('features'), overlayOptions);
+			};
+			var	layerId = leafletDataLayer._leaflet_id;
 			leafletDataLayer.model = techniqueModel;
 			leafletDataLayer.layerName = techniqueModel.get('name');
 			leafletDataLayer.className = techniqueModel.get('className');
@@ -1838,7 +1881,7 @@ var LeafletMap = Backbone.View.extend({
 				$('#search-results-box').empty();
 				var allFeatures = [];
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
-					if (map.hasLayer(layer)){
+					if (layer.techniqueType != 'heat' && map.hasLayer(layer)){
 						allFeatures = _.union(allFeatures, layer.toGeoJSON().features);
 					};
 				});
@@ -2077,6 +2120,10 @@ var LeafletMap = Backbone.View.extend({
 			//set resymbolize tools
 			function setTools(){
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					//no heat maps!
+					if (layer.techniqueType == 'heat'){
+						return false;
+					};
 					var expressedAttribute = layer.model.get('expressedAttribute'),
 						technique = layer.model.get('techniques')[layer.model.get('techniqueIndex')];
 					//create resymbolizeModel for layer
