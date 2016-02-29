@@ -359,6 +359,15 @@ var LegendLayerView = Backbone.View.extend({
 		//append svg to legend container
 		$('.legend-control-container').append(this.$el);
 	},
+	setSvgDims: function(){
+		//set svg dimensions
+		this.$el.attr({
+			width: this.model.get('svgWidth'),
+			height: this.model.get('svgHeight'),
+			xmlns: 'http://www.w3.org/2000/svg',
+			version: '1.1'
+		});
+	},
 	initialize: function(){
 		//set styles according to layer options
 		var css = {},
@@ -430,6 +439,8 @@ var LegendLayerView = Backbone.View.extend({
 					y++;
 				};
 			};
+			//set svg dimensions
+			this.setSvgDims();
 		} else if (techniqueType == 'isarithmic'){
 			//get interval and size
 			var interval = this.model.get('interval'),
@@ -446,15 +457,32 @@ var LegendLayerView = Backbone.View.extend({
 			};
 			//set svg height
 			this.model.set('svgHeight', 16);
+			//set svg dimensions
+			this.setSvgDims();
+		} else if (techniqueType == 'heat'){
+			//get size and domain
+			var size = this.model.get('size'),
+				allValues = getAllAttributeValues(this.model.get('features'), this.model.get('expressedAttribute')),
+				min = allValues[0],
+				max = allValues[allValues.length-1],
+				domain = [min, max];
+			//set default size
+			if (size == null || isNaN(size)){
+				size = 1;
+			};
+			//add legend line
+			this.append(size, domain, 0);
+			//set svg height
+			this.model.set('svgHeight', 20);
+			//set svg dimensions
+			this.setSvgDims();
+			//wrap in a heat-mappable div
+			var wrapper = $('<div class="heatmap-legend-wrapper">');
+			wrapper = this.$el.wrap(wrapper);
+			this.$el = wrapper.parent();
+			//add div for heatmap
+			this.$el.prepend('<div class="heatmap-symbol">');
 		};
-		
-		//set svg dimensions
-		this.$el.attr({
-			width: this.model.get('svgWidth'),
-			height: this.model.get('svgHeight'),
-			xmlns: 'http://www.w3.org/2000/svg',
-			version: '1.1'
-		});
 		
 		//style according to layer options
 		for (var style in css){
@@ -1604,6 +1632,25 @@ var LeafletMap = Backbone.View.extend({
 		};
 		//add legend to the map
 		this.map.addControl(this.legendControl);
+		//add heatmap symbol for heatmaps
+		$('.heatmap-symbol').each(function(){
+			var domain = $(this).parent().find('text').html().split(' - ');
+			var heatmapInstance = h337.create({
+				container: this,
+				radius: 10,
+				maxOpacity: 0.8
+			});
+			heatmapInstance.setData({
+				max: domain[1],
+				min: domain[0],
+				data: [{
+					x: 10,
+	                y: 10,
+	                value: domain[1]
+				}]
+			});
+		});
+		
 		//add close button
 		var closeButton = _.template( $('#close-button-template').html() );
 		$('.legend-control-container').append(closeButton({x: $('.legend-control-container').width() - 20 + "px"}));
