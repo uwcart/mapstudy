@@ -31,7 +31,7 @@
 		},
 		"filter": {
 			"dataLayers": [
-				"US States", 
+				"Population Density", 
 				"Cities Layer"
 			],
 			"tool": "slider",

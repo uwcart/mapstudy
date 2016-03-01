@@ -276,33 +276,11 @@ var Heat = Isarithmic.extend({
 		});
 		return data;
 	},
+	setHeatmap: function(model){
+		//library specific
+	},
 	symbolize: function(){
-		var expressedAttribute = this.get('expressedAttribute'),
-			features = this.polygonsToPoints(this.get('features'), expressedAttribute),
-			values = getAllAttributeValues(features, expressedAttribute),
-			points = this.featuresToDataPoints(features, expressedAttribute),
-			technique = this.get('techniques')[this.get('techniqueIndex')],
-			size = technique.size ? technique.size : 1;
-		//leaflet heatmap layer data
-		var data = {
-			max: values[values.length-1],
-			data: points
-		};
-		//leaflet heatmap layer config
-		var heatmapConfig = {
-			radius: size,
-			maxOpacity: 0.8,
-			scaleRadius: true,
-			useLocalExtrema: true,
-			latField: 'lat',
-			lngField: 'lng',
-			valueField: expressedAttribute
-		};
-		//leaflet heatmap layer instance
-		var heatmapLayer = new HeatmapOverlay(heatmapConfig);
-		console.log(data);
-		heatmapLayer.setData(data);
-		this.set('heatmapLayer', heatmapLayer);
+		this.setHeatmap(this);
 	}
 });
 
@@ -736,6 +714,7 @@ var SearchView = Backbone.View.extend({
 var FilterModel = Backbone.Model.extend({
 	defaults: {
 		layerName: '',
+		className: '',
 		attributes: [],
 		tool: "slider",
 		features: {}
@@ -754,7 +733,7 @@ var FilterSliderView = Backbone.View.extend({
 		var select = $(e.target);
 		this.setSlider(select.val(), select.attr('name'));
 	},
-	setSlider: function(attribute, layerName){
+	setSlider: function(attribute, className){
 		//get attribute values for all features with given attribute
 		var allAttributeValues = getAllAttributeValues(this.model.get('features'), attribute);
 		//set values for slider
@@ -789,15 +768,15 @@ var FilterSliderView = Backbone.View.extend({
 		min = Math.floor(min / step) * step - step;
 		max = Math.ceil(max / step) * step + step;
 		//add labels
-		var labelsDiv = this.$el.find("#"+layerName+"-labels");
+		var labelsDiv = this.$el.find("#"+className+"-labels");
 		labelsDiv.children(".left").html(min);
 		labelsDiv.children(".right").html(max);
 		//to pass to slide callback
 		var applyFilter = this.applyFilter;
 		//call once to reset layer
-		applyFilter(attribute, [min, max]);
+		applyFilter(attribute, [min, max], true);
 		//set slider
-		this.$el.find("#"+layerName+"-slider").slider({
+		this.$el.find("#"+className+"-slider").slider({
 			range: true,
 			min: min, //change
 			max: max, //change
@@ -814,7 +793,7 @@ var FilterSliderView = Backbone.View.extend({
 		//add line for data layer
 		this.$el.append(this.template(this.model.attributes));
 		//add slider for first attribute
-		this.setSlider(numericAttributes[0], this.model.get('layerName'));
+		this.setSlider(numericAttributes[0], this.model.get('className'));
 	},
 	render: function(){
 		//get all numeric attributes for data layer
@@ -828,7 +807,7 @@ var FilterSliderView = Backbone.View.extend({
 		if (numericAttributes.length > 0){ this.append(numericAttributes); };
 		//add dropdown option for each attribute
 		var optionTemplate = _.template($('#filter-options-template').html()),
-			select = this.$el.find('select[name=' + this.model.get('layerName') + ']');
+			select = this.$el.find('select[name=' + this.model.get('className') + ']');
 		_.each(numericAttributes, function(attribute){
 			select.append(optionTemplate({attribute: attribute}))
 		}, this);
@@ -865,19 +844,19 @@ var FilterLogicView = FilterSliderView.extend({
 		//go!
 		this.applyFilter(attribute, values);
 	},
-	setValues: function(attribute, layerName){
+	setValues: function(attribute, className){
 		//get attribute values for all features with given attribute
 		var allAttributeValues = getAllAttributeValues(this.model.get('features'), attribute);
 		//set values for inputs
 		var min = _.min(allAttributeValues),
 			max = _.max(allAttributeValues);
-		var parentDiv = this.$el.find('select[name='+layerName+']').parent();
+		var parentDiv = this.$el.find('select[name='+className+']').parent();
 		parentDiv.children('input[name=value1]').attr('placeholder', min);
 		parentDiv.children('input[name=value2]').attr('placeholder', max);
 	},
 	append: function(numericAttributes){
 		this.$el.append(this.template(this.model.attributes));
-		this.setValues(numericAttributes[0], this.model.get('layerName'));
+		this.setValues(numericAttributes[0], this.model.get('className'));
 	},
 	select: function(e){
 		var select = $(e.target);
@@ -1445,6 +1424,35 @@ var LeafletMap = Backbone.View.extend({
 			var techniqueModel = new techniquesObj[technique.type]({techniqueIndex: i});
 			_.defaults(techniqueModel, dataLayerModel);
 			_.extend(techniqueModel.attributes, dataLayerModel.attributes);
+			if (technique.type == 'heat'){
+				techniqueModel.setHeatmap = function(tModel){
+					var expressedAttribute = tModel.get('expressedAttribute'),
+						features = tModel.polygonsToPoints(tModel.get('features'), expressedAttribute),
+						values = getAllAttributeValues(features, expressedAttribute),
+						points = tModel.featuresToDataPoints(features, expressedAttribute),
+						technique = tModel.get('techniques')[tModel.get('techniqueIndex')],
+						size = technique.size ? technique.size : 1;
+					//leaflet heatmap layer data
+					var data = {
+						max: values[values.length-1],
+						data: points
+					};
+					//leaflet heatmap layer config
+					var heatmapConfig = {
+						radius: size,
+						maxOpacity: 0.8,
+						scaleRadius: true,
+						useLocalExtrema: true,
+						latField: 'lat',
+						lngField: 'lng',
+						valueField: expressedAttribute
+					};
+					//leaflet heatmap layer instance
+					var heatmapLayer = new HeatmapOverlay(heatmapConfig);
+					heatmapLayer.setData(data);
+					tModel.set('heatmapLayer', heatmapLayer);
+				};
+			};
 			//set model classification, isarithms, or dots
 			techniqueModel.symbolize();
 
@@ -1959,7 +1967,7 @@ var LeafletMap = Backbone.View.extend({
 			map.addControl(filterControl);
 
 			//applyFilter function references map, so must be created here
-			function applyFilter(attribute, values){
+			function applyFilter(attribute, values, init){
 				//helpful abbreviations
 				var min = values[0], max = values[1];
 				//remove layers outside of filter range
@@ -1971,6 +1979,44 @@ var LeafletMap = Backbone.View.extend({
 							map.removeLayer(layer);
 							offLayers[layer._leaflet_id + '-filter'] = layer;
 						};
+					};
+					//special processing for heat map layer
+					if (layer.techniqueType && layer.techniqueType == 'heat' && typeof init == 'undefined' && layer._data[0].hasOwnProperty(attribute)){
+						//add off data object if it doesn't exist
+						if (!leafletView.hasOwnProperty('offData')){
+							leafletView.offData = {};
+						};
+						//add a specific data array for the layer
+						if (!leafletView.offData.hasOwnProperty(layer.layerName)){
+							leafletView.offData[layer.layerName] = [];
+						};
+						var layerData = layer._data,
+							newData = [],
+							offData = leafletView.offData[layer.layerName];
+						//remove data that fall within filter range from offData array and add to layer
+						_.each(offData, function(datum){
+							if (datum[attribute] >= min && datum[attribute] <= max){
+								newData.push(datum);
+								offData = _.without(offData, datum);
+							};
+						});
+						//pass new offData array to view object
+						leafletView.offData[layer.layerName] = offData;
+						//remove data that fall outside of filter range from layer and put in offData array
+						_.each(layerData, function(datum){
+							var newDatum = {
+								lat: datum.latlng.lat,
+								lng: datum.latlng.lng
+							};
+							newDatum[attribute] = datum[attribute];
+							if (datum[attribute] < min || datum[attribute] > max){
+								leafletView.offData[layer.layerName].push(newDatum);
+							} else {
+								newData.push(newDatum);
+							};
+						});
+						//reset heatmap layer
+						layer.setData({data: newData});
 					};
 				});
 				//add layers within filter range
@@ -1984,6 +2030,7 @@ var LeafletMap = Backbone.View.extend({
 						};
 					};
 				});
+
 			};
 			//get interaction variables
 			var filterLayers = leafletView.model.get('interactions.filter.dataLayers'),
@@ -1993,7 +2040,7 @@ var LeafletMap = Backbone.View.extend({
 				//test for inclusion of data layer in filter interaction
 				if (_.indexOf(filterLayers, dataLayer.name) > -1){
 					//get filter properties
-					var attributes = dataLayer.displayAttributes;
+					var attributes = dataLayer.displayAttributes || [dataLayer.expressedAttribute];
 					//create filter view
 					var filterView = controlType == 'logic' ? new FilterLogicView({applyFilter: applyFilter}) : new FilterSliderView({applyFilter: applyFilter});
 					//dataLayer className hasn't been defined yet, so must use name here
@@ -2001,7 +2048,7 @@ var LeafletMap = Backbone.View.extend({
 					//when the features are loaded, render the tool
 					leafletView.once(className+'-features-added', function(){
 						//set a filter tool
-						var filterModel = new FilterModel({layerName: dataLayer.className, attributes: attributes, tool: controlType, map: map, features: leafletView.model.get('allFeatures')});
+						var filterModel = new FilterModel({layerName: dataLayer.name, className: dataLayer.className, attributes: attributes, tool: controlType, map: map, features: leafletView.model.get('allFeatures')});
 						filterView.model = filterModel;
 						filterView.render();
 						//trigger filter event on slider stop or logic filter entry
