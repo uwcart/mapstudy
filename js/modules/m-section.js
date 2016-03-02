@@ -219,18 +219,14 @@ var Isarithmic = ProportionalSymbol.extend({
 		interval: 1,
 		techniqueType: 'isarithmic'
 	},
-	symbolize: function(){
-		//get all of the attribute values to set breaks
-		var expressedAttribute = this.get('expressedAttribute'),
-			features = this.polygonsToPoints(this.get('features'), expressedAttribute),
-			technique = this.get('techniques')[this.get('techniqueIndex')],
-			interval = technique.interval ? technique.interval : 10,
-			size = technique.size ? technique.size: null,
+	setIsarithms: function(interval){
+		var size = this.get('size'),
+			features = this.get('pointFeatures'),
+			expressedAttribute = this.get('expressedAttribute'),
 			values = getAllAttributeValues(features, expressedAttribute),
 			breaks = [];
-		//set interval and size
+		//set interval
 		this.set('interval', interval);
-		this.set('size', size);
 		//set breaks as set of interval multiples in attribute value domain
 		for (var i = 0; i < values[values.length-1]; i += interval){
 			if (i >= values[0]){
@@ -255,7 +251,21 @@ var Isarithmic = ProportionalSymbol.extend({
 				feature.properties.layerOptions.weight = size;
 			};
 		});
-		this.set('features', isarithms);
+		this.set('features', isarithms.features);
+
+	},
+	symbolize: function(){
+		//get all of the attribute values to set breaks
+		var expressedAttribute = this.get('expressedAttribute'),
+			technique = this.get('techniques')[this.get('techniqueIndex')],
+			interval = technique.interval || 10;
+		//set point feature set to enable resymbolize
+		this.set({
+			pointFeatures: this.polygonsToPoints(this.get('features'), expressedAttribute),
+			size: technique.size || null
+		});
+		//the rest should be reusable to enable resymbolize
+		this.setIsarithms(interval);
 	}
 });
 
@@ -280,6 +290,9 @@ var Heat = Isarithmic.extend({
 		//library specific
 	},
 	symbolize: function(){
+		var technique = this.get('techniques')[this.get('techniqueIndex')],
+			size = technique.size ? technique.size: null;
+		this.set('size', size);
 		this.setHeatmap(this);
 	}
 });
@@ -1281,33 +1294,6 @@ var RecolorView = ReclassifyView.extend({
 //view for rescale section of resymbolize widget
 var RescaleView = RecolorView.extend({
 	template: _.template( $('#rescale-template').html() ),
-	setTechnique: function(){
-		var techniqueType = this.model.get('techniqueType'),
-			minInput = this.$el.find('input[name=scale-value-min]'),
-			maxInput = this.$el.find('input[name=scale-value-max]'),
-			view = this,
-			model = this.model;
-		if (techniqueType == 'proportional symbol'){
-			var scale = model.get('scale'),
-				range = scale.range();
-			//pre-set input values
-			minInput.val(range[0]);
-			maxInput.val(range[range.length-1]);
-
-			view.$el.find('.rescale input').keyup(function(){
-				var min = minInput.val().length > 0 ? parseFloat(minInput.val()) : 0,
-					max = parseFloat(maxInput.val()),
-					classificationType = view.$el.find('select[name=classification]').val();
-				if (!isNaN(min) && !isNaN(max)){
-					model.set('range', [min, max]);
-				};
-				view.setClassification(view, classificationType);
-			});
-		};
-
-
-
-	},
 	setLabelAttribute: function(){
 		var techniqueType = this.model.get('techniqueType'),
 			label = false;
@@ -1315,13 +1301,55 @@ var RescaleView = RecolorView.extend({
 			label = 'Symbol radii';
 		} else if (techniqueType == 'heat'){
 			label = 'Point radius';
-		} else if (techniqueType == 'dot' || techniqueType == 'isarithm'){
+		} else if (techniqueType == 'dot' || techniqueType == 'isarithmic'){
 			label = 'Interval';
 		};
 		this.model.set('rescaleLabel', label);
 	},
 	setEvents: function(){
-		this.setTechnique();
+		var techniqueType = this.model.get('techniqueType'),
+			minInput = this.$el.find('input[name=scale-value-min]'),
+			maxInput = this.$el.find('input[name=scale-value-max]'),
+			view = this,
+			model = this.model,
+			timeout = setTimeout(function(){},0);
+		if (techniqueType == 'proportional symbol'){
+			var scale = model.get('scale'),
+				range = scale.range();
+			//pre-set input values
+			minInput.val(range[0]);
+			maxInput.val(range[range.length-1]);
+			//set keyup listener
+			view.$el.find('.rescale input').keyup(function(){
+				clearTimeout(timeout);
+				timeout = setTimeout(function(){
+					var min = minInput.val().length > 0 ? parseFloat(minInput.val()) : 0,
+						max = parseFloat(maxInput.val()),
+						classificationType = view.$el.find('select[name=classification]').val();
+					if (!isNaN(min) && !isNaN(max)){
+						model.set('range', [min, max]);
+						view.setClassification(view, classificationType);
+					};
+				}, 500);
+			});
+		} else {
+			//hide min input and min/max labels
+			view.$el.find('.scale-value-hideable').hide();
+			var layerModel = model.get('layer').model,
+				inputVal = layerModel.get('interval') || layerModel.get('size');
+			maxInput.val(inputVal);
+			//set keyup listener
+			maxInput.keyup(function(){
+				clearTimeout(timeout);
+				timeout = setTimeout(function(){
+					//param is isarithm interval or point radius
+					var param = parseFloat(maxInput.val());
+					if (!isNaN(param)){
+						view.resymbolize(param);
+					};
+				}, 500);
+			});
+		};
 	}
 });
 
@@ -2245,20 +2273,20 @@ var LeafletMap = Backbone.View.extend({
 			//set resymbolize tools
 			function setTools(){
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
-					//no heat maps!
-					if (layer.techniqueType == 'heat'){
-						return false;
-					};
 					var expressedAttribute = layer.model.get('expressedAttribute'),
 						technique = layer.model.get('techniques')[layer.model.get('techniqueIndex')];
 					//create resymbolizeModel for layer
 					var resymbolizeModel = new ResymbolizeModel({
-						layer: layer,
-						classificationType: technique.classification,
-						domain: getAllAttributeValues(layer.toGeoJSON().features, expressedAttribute),
-						scale: layer.model.get('scale')
+						layer: layer
 					});
-				
+					if (layer.techniqueType != 'heat'){
+						resymbolizeModel.set({
+							classificationType: technique.classification,
+							domain: getAllAttributeValues(layer.toGeoJSON().features, expressedAttribute),
+							scale: layer.model.get('scale')
+						});
+					};
+
 					if (layer.techniqueType == 'choropleth'){
 						//add colorbrewer scheme name if used
 						if (typeof technique.classes == 'string'){
@@ -2275,6 +2303,7 @@ var LeafletMap = Backbone.View.extend({
 								};
 								sublayer.setStyle(style);
 							});
+							leafletView.trigger('resymbolize');
 						};
 						//recolor method is reclassification
 						recolorView.resymbolize = reclassifyView.resymbolize;
@@ -2303,6 +2332,7 @@ var LeafletMap = Backbone.View.extend({
 								var radius = scale(sublayer.feature.properties[expressedAttribute]);
 								sublayer.setRadius(radius);
 							});
+							leafletView.trigger('resymbolize');
 						};
 						//rescaleView also changes radius with new scale
 						rescaleView.resymbolize = reclassifyView.resymbolize;
@@ -2311,14 +2341,46 @@ var LeafletMap = Backbone.View.extend({
 							layer.eachLayer(function(sublayer){
 								sublayer.setStyle({fillColor: color});
 							});
+							leafletView.trigger('resymbolize');
 						};
 						//render views
 						reclassifyView.render();
 						rescaleView.render();
 						recolorView.render();
+					} else if (layer.techniqueType == 'isarithmic'){
+						//instantiate just rescale view
+						var rescaleView = new RescaleView({model: resymbolizeModel});
+						//designate resymbolize function specific to Leaflet
+						rescaleView.resymbolize = function(interval){
+							//remove all isarithms from layer group
+							layer.clearLayers();
+							//reset isarithms
+							layer.model.setIsarithms(interval);
+							//add new isarithms to layer group
+							_.each(layer.model.get('features'), function(isarithm, i){
+								layer.addLayer(L.geoJson(isarithm, {
+									style: _.defaults(isarithm.properties.layerOptions, layer.model.get('layerOptions'))
+								}));
+							});
+						};
+						//render rescale view
+						rescaleView.render();
+					} else if (layer.techniqueType == 'heat'){
+						//instantiate just rescale view
+						var rescaleView = new RescaleView({model: resymbolizeModel});
+						//designate resymbolize function specific to Leaflet
+						rescaleView.resymbolize = function(radius){
+							//reset heatmap
+							layer.cfg.radius = radius;
+							layer._draw();
+							leafletView.trigger('resymbolize');
+						};
+						//render rescale view
+						rescaleView.render();
+					} else if (layer.techniqueType == 'dot'){
+
 					};
 				}, this);
-
 				//switch which tools are visible when layers change
 				map.on('layeradd layerremove', toggleTools);
 				//set initial visibility
@@ -2398,7 +2460,8 @@ var LeafletMap = Backbone.View.extend({
 			underlay: {baselayerchange: this.map},
 			search: {search: this},
 			filter: {filter: this},
-			reexpress: {reexpress: this}
+			reexpress: {reexpress: this},
+			resymbolize: {resymbolize: this}
 		};
 		//create a new interaction object for each interaction with logging
 		var interactions = this.model.get('interactions');

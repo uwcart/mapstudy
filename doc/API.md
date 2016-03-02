@@ -457,7 +457,7 @@ An array of objects containing the thematic mapping techniques, including the ma
 
 			"type": -"choropleth"- -"proportional symbol"- -"dot"- -"isarithmic"- -"heat"-
 
-The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Required. Note that only a data layer with a `proportional symbol`, `isarithmic`, or `heat` technique type can use point feature data. The `retrieve` interaction is not available for `heat` map layers.
+The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Required. Note that only a data layer with a `proportional symbol`, `isarithmic`, or `heat` technique type can use point feature data. The `retrieve` and `search` interactions are not available for `heat` map layers, and `search` is not available for `isarithmic` layers.
 
 #### map.dataLayers[i].techniques[i].classification
 
