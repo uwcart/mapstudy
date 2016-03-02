@@ -178,18 +178,17 @@
 
         <script type="text/template" id="rescale-template">
             <div id="<%= layerNameClass %>-<%= techniqueTypeClass %>-rescale" class="rescale">
-                <label><%= label %>: </label>
-                <select class="scale-method">
-                    <option value="power">x<sup>y</sup></option>
-                    <option value="multiply">&times;</option>
-                </select>
-                <input name="scale-value" type="text" size="3">
+                <label><%= rescaleLabel %>: </label>
+                <label for="scale-value-min" class="scale-value-hideable">min: </label>
+                <input name="scale-value-min" class="scale-value-hideable" type="text" size="3">
+                <label for="scale-value-max" class="scale-value-hideable">max: </label>
+                <input name="scale-value-max" type="text" size="3">
             </div>
         </script>
 
         <script type="text/template" id="recolor-template">
             <div id="<%= layerNameClass %>-<%= techniqueTypeClass %>-recolor" class="recolor">
-                <label><%= label %>: </label>
+                <label><%= recolorLabel %>: </label>
                 <select class="color-scale">
                 </select>
                 <input type="color" name="fill-color">

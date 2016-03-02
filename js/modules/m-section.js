@@ -969,7 +969,7 @@ var ReclassifyView = ReexpressInputView.extend({
 			view.model.set('classificationModel', classificationModel);
 			//if user defined classification, reset classification
 			if (classificationType == 'user defined'){
-				view.setClassBreaks(view);
+				view.setNClasses(view, view.model.get('nClasses'));
 				return;
 			} else {
 				//reset domain to undo user defined class breaks
@@ -1002,7 +1002,7 @@ var ReclassifyView = ReexpressInputView.extend({
 			classifyDiv.find('.class-min').html(min);
 			classifyDiv.find('.class-max').html(max);
 			//only add 2-class option if proportional symbol
-			if (view.model.get('techniqueType') == 'proportional symbol'){
+			if (view.model.get('techniqueType') == 'proportional symbol' && nClassesSelect.children('option[value=2]').length == 0){
 				nClassesSelect.prepend('<option value="2">2</option>');
 			};
 			//add a special option if the number of classes is out of range
@@ -1031,8 +1031,7 @@ var ReclassifyView = ReexpressInputView.extend({
 				}
 			});
 			//designate new range for scale
-			var scale = view.model.get('scale'),
-				range = scale.range(),
+			var range = view.model.get('range'),
 				newRange = [];
 			if (!view.model.attributes.colorbrewer){
 				var interpolator = d3.interpolate(range[0], range[range.length-1]);
@@ -1066,7 +1065,7 @@ var ReclassifyView = ReexpressInputView.extend({
 		//get necessary variables
 		var scale = view.model.get('scale'),
 			domain = scale.domain(),
-			range = scale.range(),
+			range = view.model.get('range'),
 			classificationType = view.model.get('classificationType');
 		//hide nClasses div for unclassed
 		var nClassesDiv = view.$el.find('.n-classes');
@@ -1267,7 +1266,7 @@ var RecolorView = ReclassifyView.extend({
 			label = 'Symbol color';
 			this.$el.find('.recolor select').hide();
 		};
-		this.model.set('label', label);
+		this.model.set('recolorLabel', label);
 	},
 	initialize: function(){
 		this.setLabelAttribute();
@@ -1282,15 +1281,47 @@ var RecolorView = ReclassifyView.extend({
 //view for rescale section of resymbolize widget
 var RescaleView = RecolorView.extend({
 	template: _.template( $('#rescale-template').html() ),
+	setTechnique: function(){
+		var techniqueType = this.model.get('techniqueType'),
+			minInput = this.$el.find('input[name=scale-value-min]'),
+			maxInput = this.$el.find('input[name=scale-value-max]'),
+			view = this,
+			model = this.model;
+		if (techniqueType == 'proportional symbol'){
+			var scale = model.get('scale'),
+				range = scale.range();
+			//pre-set input values
+			minInput.val(range[0]);
+			maxInput.val(range[range.length-1]);
+
+			view.$el.find('.rescale input').keyup(function(){
+				var min = minInput.val().length > 0 ? parseFloat(minInput.val()) : 0,
+					max = parseFloat(maxInput.val()),
+					classificationType = view.$el.find('select[name=classification]').val();
+				if (!isNaN(min) && !isNaN(max)){
+					model.set('range', [min, max]);
+				};
+				view.setClassification(view, classificationType);
+			});
+		};
+
+
+
+	},
 	setLabelAttribute: function(){
 		var techniqueType = this.model.get('techniqueType'),
 			label = false;
 		if (techniqueType == 'proportional symbol'){
-			label = 'Symbol color';
+			label = 'Symbol radii';
+		} else if (techniqueType == 'heat'){
+			label = 'Point radius';
 		} else if (techniqueType == 'dot' || techniqueType == 'isarithm'){
 			label = 'Interval';
 		};
-		this.model.set('label', label);
+		this.model.set('rescaleLabel', label);
+	},
+	setEvents: function(){
+		this.setTechnique();
 	}
 });
 
@@ -2273,6 +2304,9 @@ var LeafletMap = Backbone.View.extend({
 								sublayer.setRadius(radius);
 							});
 						};
+						//rescaleView also changes radius with new scale
+						rescaleView.resymbolize = reclassifyView.resymbolize;
+						//recolor function takes a single color as parameter rather than scale
 						recolorView.recolor = function(color){
 							layer.eachLayer(function(sublayer){
 								sublayer.setStyle({fillColor: color});
@@ -2280,6 +2314,7 @@ var LeafletMap = Backbone.View.extend({
 						};
 						//render views
 						reclassifyView.render();
+						rescaleView.render();
 						recolorView.render();
 					};
 				}, this);
