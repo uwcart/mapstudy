@@ -311,6 +311,9 @@ var LegendLayerView = Backbone.View.extend({
 	id: function(){
 		return this.model.get('className') + '-' + this.model.get('techniqueType').replace(/\s/g, '-') + '-legend';
 	},
+	className: function(){
+		return this.model.get('techniqueType').replace(/\s/g, '-') + '-legend';
+	},
 	append: function(range, domain, i){
 		var techniqueType = this.model.get('techniqueType');
 		template = _.template( $('#'+techniqueType.replace(/\s/g, '-')+'-legend-template').html() );
@@ -406,6 +409,8 @@ var LegendLayerView = Backbone.View.extend({
 			} else {
 				this.model.set('svgHeight', 13 * range.length + 6);
 			};
+			//remove earlier svg width
+			this.model.set('svgWidth', 0);
 			//only build classes for classed classification
 			var y = 0;
 			if (domain.length > 2 || range.length > 2){
@@ -895,7 +900,7 @@ var ReexpressModel = Backbone.Model.extend({
 				layerName: layer.layerName,
 				layerNameClass: layer.className,
 				techniqueType: layer.techniqueType,
-				techniqueTypeClass: layer.techniqueType.replace(/\s/g, ''),
+				techniqueTypeClass: layer.techniqueType.replace(/\s/g, '-'),
 				layerId: layer._leaflet_id
 			});
 		};
@@ -959,11 +964,31 @@ var ResymbolizeSectionView = ReexpressSectionView.extend({
 var ReclassifyView = ReexpressInputView.extend({
 	template: _.template( $('#reclassify-template').html() ),
 	resymbolize: function(scale){},
+	setLegend: function(){
+		//get svg
+		var legendSvg = $('#'+this.model.get('layerNameClass')+'-'+this.model.get('techniqueTypeClass')+'-legend');
+		if (legendSvg.length > 0){
+			var legendModel = this.model.get('layer').model,
+				legendView = new LegendLayerView({model: legendModel}),
+				svgHeight = legendModel.get('svgHeight'),
+				svgWidth = legendModel.get('svgWidth');
+			//reset legend contents
+			legendSvg.html(legendView.$el.html());
+			//reset svg dimensions
+			legendSvg.attr({
+				width: svgWidth,
+				height: svgHeight
+			});
+		};
+	},
 	setScale: function(){
 		var classificationModel = this.model.get('classificationModel'),
 			scale = classificationModel.scale(this.model.get('domain'), this.model.get('range'));
-			this.model.set('scale', scale);
-			this.resymbolize(scale);
+		this.model.set('scale', scale);
+		//need to reset layer model scale to update legend
+		this.model.attributes.layer.model.set('scale', scale);
+		this.resymbolize(scale);
+		this.setLegend();
 	},
 	setClassification: function(view, classificationType){
 		//get correct reclassify div
@@ -1197,8 +1222,15 @@ var ReclassifyView = ReexpressInputView.extend({
 var RecolorView = ReclassifyView.extend({
 	template: _.template( $('#recolor-template').html() ),
 	recolor: function(color){},
+	setLegendColor: function(model, color){
+		//get svg
+		var legendSvg = $('#'+model.get('layerNameClass')+'-'+model.get('techniqueTypeClass')+'-legend');
+		//change circle fill color
+		legendSvg.children('circle').css('fill', color);
+	},
 	setTechnique: function(){
-		var techniqueType = this.model.get('techniqueType');
+		var techniqueType = this.model.get('techniqueType'),
+			model = this.model;
 		if (techniqueType == 'choropleth'){
 			this.$el.find('.recolor input').hide();
 			this.setColorSwatches();
@@ -1224,9 +1256,11 @@ var RecolorView = ReclassifyView.extend({
 			//hide color scale select
 			this.$el.find('.recolor select').hide();
 			//add color change event
-			var recolor = this.recolor;
+			var recolor = this.recolor,
+				setLegendColor = this.setLegendColor;
 			colorInput.change(function(){
 				recolor($(this).val());
+				setLegendColor(model, $(this).val());
 			});
 		};
 	},
@@ -1346,6 +1380,7 @@ var RescaleView = RecolorView.extend({
 					var param = parseFloat(maxInput.val());
 					if (!isNaN(param)){
 						view.resymbolize(param);
+						view.setLegend();
 					};
 				}, 500);
 			});
@@ -1720,7 +1755,7 @@ var LeafletMap = Backbone.View.extend({
 		
 		//add close button
 		var closeButton = _.template( $('#close-button-template').html() );
-		$('.legend-control-container').append(closeButton({x: $('.legend-control-container').width() - 20 + "px"}));
+		$('.legend-control-container').prepend(closeButton());
 		//add open and close listeners
 		$('.legend-control-container .open').click(function(){
 			$('#legend-wrapper, .legend-control-container .close').show();
@@ -2226,7 +2261,7 @@ var LeafletMap = Backbone.View.extend({
 			function resetTechniques(){
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
 					if (map.hasLayer(layer)){
-						var techniqueType = layer.techniqueType.replace(/\s/g, '');
+						var techniqueType = layer.techniqueType.replace(/\s/g, '-');
 						//check the radio button for layer in reexpress widget
 						$('.reexpress-control-container input[name='+layer.className+'].'+techniqueType).prop('checked', true);
 					};
@@ -2261,7 +2296,7 @@ var LeafletMap = Backbone.View.extend({
 			//show/hide data layer tools when layers change
 			function toggleTools(){
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
-					var layerToolsDiv = $('#'+layer.className+'-'+layer.techniqueType.replace(/\s/g,'')+'-resymbolize-section');
+					var layerToolsDiv = $('#'+layer.className+'-'+layer.techniqueType.replace(/\s/g,'-')+'-resymbolize-section');
 					//show or hide tools for layer
 					if (map.hasLayer(layer)){
 						layerToolsDiv.show();

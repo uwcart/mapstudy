@@ -4,6 +4,34 @@
 		"selected_items":
 		[
 			[
+				"isa",
+				"isarithm"
+			],
+			[
+				"trigg",
+				"triggerResymbolize"
+			],
+			[
+				"leafl",
+				"leafletView"
+			],
+			[
+				"resym",
+				"resymbolize"
+			],
+			[
+				"tech",
+				"techniqueType"
+			],
+			[
+				"nCla",
+				"nClassesSelect"
+			],
+			[
+				"pro",
+				"proportional"
+			],
+			[
 				"attr",
 				"attributes"
 			],
@@ -18,10 +46,6 @@
 			[
 				"leaflet",
 				"leafletDataLayer"
-			],
-			[
-				"tech",
-				"technique"
 			],
 			[
 				"heat",
@@ -68,10 +92,6 @@
 				"linecap"
 			],
 			[
-				"isa",
-				"isarithmic"
-			],
-			[
 				"technique",
 				"techniqueType"
 			],
@@ -94,10 +114,6 @@
 			[
 				"scroll",
 				"scrollWheelZoom"
-			],
-			[
-				"trigg",
-				"triggerRetrieve"
 			],
 			[
 				"popu",
@@ -146,10 +162,6 @@
 			[
 				"nClass",
 				"nClassesSelect"
-			],
-			[
-				"nCla",
-				"nClassesDiv"
 			],
 			[
 				"nCl",
@@ -408,10 +420,6 @@
 				"newClass"
 			],
 			[
-				"leafl",
-				"leafletDataLayers"
-			],
-			[
 				"geoJ",
 				"geoJson"
 			],
@@ -506,14 +514,6 @@
 			[
 				"baseLayers",
 				"baseLayersDone"
-			],
-			[
-				"leaf",
-				"leafletDataLayer"
-			],
-			[
-				"dum",
-				"var_dump"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 12267,
+				"buffer_size": 12359,
 				"line_ending": "Unix"
 			}
 		},
@@ -531,7 +531,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 82518,
+				"buffer_size": 86225,
 				"line_ending": "Windows"
 			}
 		},
@@ -563,7 +563,7 @@
 			"file": "doc/API.md",
 			"settings":
 			{
-				"buffer_size": 30665,
+				"buffer_size": 30819,
 				"line_ending": "Windows"
 			}
 		},
@@ -600,11 +600,11 @@
 			}
 		},
 		{
-			"file": "config/map1.json",
+			"file": "js/lib/colorbrewer.js",
 			"settings":
 			{
-				"buffer_size": 2422,
-				"line_ending": "Windows"
+				"buffer_size": 18990,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -632,6 +632,9 @@
 	},
 	"file_history":
 	[
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/wi-tracts-point.topojson",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map1.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet-heatmap.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/test.html",
 		"/C/temp/lower48.geojson",
@@ -642,7 +645,6 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map3.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map4.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/ma4.json",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/svg-area-heatmap.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/heatmap.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/versions.md",
@@ -757,9 +759,7 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/lib/ss.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v6.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/interactive-multivariate-choropleth-map-d3/js/main.js",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module8/files/figures/figure2.1.svg",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/css/actual_style.css",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/login.js"
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module8/files/figures/figure2.1.svg"
 	],
 	"find":
 	{
@@ -777,6 +777,39 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"console",
+			"setDataLayer",
+			"dataLayers",
+			"isarithmic",
+			"setIsarithms",
+			"techniquesObj",
+			"RescaleView",
+			"interval",
+			"RescaleView",
+			"timeout",
+			"setTimeout",
+			"timeout",
+			"RescaleView",
+			"setTimeout",
+			"resymbolize:",
+			"filter",
+			"heat",
+			"RescaleView",
+			"heat",
+			"domain(",
+			"console",
+			"setScale",
+			"setClassBreaks",
+			"setClassification",
+			"range",
+			"classificationModel",
+			"setTechnique",
+			"RescaleView",
+			"setHeatmap",
+			"heat",
+			"heatmapInstance",
+			"choropleth",
+			"heat",
 			"console",
 			"FilterLogicView",
 			"layerName",
@@ -871,40 +904,7 @@
 			"table",
 			"td",
 			"popup",
-			"RetrieveControlView",
-			"retrieve:",
-			"retrieve",
-			"InteractionToggleView",
-			".leaflet-popup-pane",
-			"RetrieveControlView",
-			"PanControlView",
-			"pan",
-			"PanControlView",
-			".pan",
-			"panMap",
-			"panControlView",
-			"RetrieveControlView",
-			"PanControlView",
-			"panMap",
-			"message",
-			"retrieve",
-			"console",
-			"RecolorView",
-			"setColorSwatches",
-			"RecolorView",
-			"console",
-			"hide",
-			"ReclassifyView",
-			".hide",
-			"ReclassifyView",
-			"'range",
-			"this.model.set('range",
-			"ReclassifyView",
-			"range",
-			"ReclassifyView",
-			"reclassifyView",
-			"RecolorView",
-			".reclassify"
+			"RetrieveControlView"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1044,13 +1044,13 @@
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -1058,15 +1058,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 12267,
+						"buffer_size": 12359,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4931,
-								4931
+								8768,
+								8768
 							]
 						],
 						"settings":
@@ -1076,7 +1076,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1791.0,
+						"translation.y": 3511.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1086,15 +1086,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 82518,
+						"buffer_size": 86225,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								48610,
-								48610
+								50173,
+								50177
 							]
 						],
 						"settings":
@@ -1104,7 +1104,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 30451.0,
+						"translation.y": 31431.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1176,8 +1176,8 @@
 						"selection":
 						[
 							[
-								572,
-								572
+								252,
+								252
 							]
 						],
 						"settings":
@@ -1186,7 +1186,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 439.0,
+						"translation.y": 840.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1196,15 +1196,15 @@
 					"file": "doc/API.md",
 					"settings":
 					{
-						"buffer_size": 30665,
+						"buffer_size": 30819,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								29716,
-								29716
+								25914,
+								25914
 							]
 						],
 						"settings":
@@ -1213,7 +1213,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 13251.0,
+						"translation.y": 11971.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1310,8 +1310,8 @@
 						"selection":
 						[
 							[
-								3549020,
-								3549027
+								3548976,
+								3548976
 							]
 						],
 						"settings":
@@ -1326,27 +1326,26 @@
 				},
 				{
 					"buffer": 10,
-					"file": "config/map1.json",
+					"file": "js/lib/colorbrewer.js",
 					"settings":
 					{
-						"buffer_size": 2422,
+						"buffer_size": 18990,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1946,
-								2419
+								132,
+								136
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1919.0,
+						"translation.y": 5499.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
