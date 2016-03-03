@@ -20,7 +20,7 @@ function getAllAttributeValues(features, attribute){
 
 function polygonToPoint(feature){
 	//get polygon centroid
-	var point = turf.centroid(feature);
+	var point = turf.pointOnSurface(feature);
 	//transfer other feature properties
 	for (var key in feature){
 		if (key != 'geometry'){
@@ -291,18 +291,71 @@ var Heat = Isarithmic.extend({
 	},
 	symbolize: function(){
 		var technique = this.get('techniques')[this.get('techniqueIndex')],
-			size = technique.size ? technique.size: null;
+			size = technique.size || null;
 		this.set('size', size);
 		this.setHeatmap(this);
 	}
 });
+
+var Dot = Backbone.Model.extend({
+	defaults: {
+		techniqueIndex: 0,
+		techniqueType: 'dot'
+	},
+	polygonsToDots: function(){
+		var expressedAttribute = this.get('expressedAttribute'),
+			polygons = this.get('features'),
+			points = [];
+		_.each(polygons, function(polygon){
+			var n = Math.round(polygon.properties[expressedAttribute] / this.get('interval'));
+			while (n--){
+				//get polygon bounding box
+				var bbox = turf.extent(polygon);
+				//generate points within bounding box until one falls within polygon
+				//processing time may be problematic, esp. for larger n values or more irregular features
+				var generatePoint = true;
+				while (generatePoint){
+					var point = turf.random('point', 1, {bbox: bbox});
+					point = point.features[0];
+					generatePoint = !turf.inside(point, polygon);
+				};
+				point.properties = polygon.properties;
+				point.properties.layerOptions = {
+					radius: this.get('size'),
+					weight: 0,
+					'stroke-width': 0,
+					fillColor: '#000',
+					fill: '#000',
+					fillOpacity: 1,
+					'fill-opacity': 1
+				};
+				points.push(point);
+			};
+		}, this);
+		this.set({
+			polygonFeatures: polygons,
+			features: points
+		});
+	},
+	symbolize: function(){
+		var technique = this.get('techniques')[this.get('techniqueIndex')],
+			size = technique.size || 1,
+			interval = technique.interval || 10;
+		this.set({
+			size: size,
+			interval: interval
+		});
+		this.polygonsToDots();
+	}
+})
 
 //an object references technique classes to their types
 var techniquesObj = {
 	'choropleth': Choropleth,
 	'proportional symbol': ProportionalSymbol,
 	'isarithmic': Isarithmic,
-	'heat': Heat
+	'heat': Heat,
+	'dot': Dot
 };
 
 //view for legend creation
@@ -1606,6 +1659,14 @@ var LeafletMap = Backbone.View.extend({
 				};
 				//add pointToLayer to create prop symbols
 				overlayOptions.pointToLayer = pointToLayer;
+			} else if (technique.type == 'dot'){
+				//implement pointToLayer conversion
+				function pointToLayer(feature, latlng){
+					var markerOptions = style(feature);
+					return L.circleMarker(latlng, markerOptions);
+				};
+				//add pointToLayer to create dots
+				overlayOptions.pointToLayer = pointToLayer;
 			};
 			//instantiate Leaflet layer
 			if (technique.type == 'heat'){
@@ -2397,6 +2458,7 @@ var LeafletMap = Backbone.View.extend({
 									style: _.defaults(isarithm.properties.layerOptions, layer.model.get('layerOptions'))
 								}));
 							});
+							leafletView.trigger('resymbolize');
 						};
 						//render rescale view
 						rescaleView.render();

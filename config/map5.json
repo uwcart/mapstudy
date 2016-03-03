@@ -65,19 +65,6 @@
 			}
 	}],
 	"dataLayers": [{
-		"name": "US Population",
-		"source": "data/us-states-pop.geojson",
-		"expressedAttribute": "population",
-		"displayAttributes": [
-			"name",
-			"population"
-		],
-		"techniques": [{
-			"type": "dot",
-			"interval": 100000
-		}]
-	},
-	{
 		"name": "Population Density",
 		"source": "data/us-states.geojson",
 		"expressedAttribute": "Density (ppl/sq. mile)",
@@ -93,6 +80,9 @@
 			"fillColor": "#FD8D3C"
 		},
 		"techniques": [{
+			"type": "dot"
+		},
+		{
 			"type": "proportional symbol",
 			"classification": "unclassed",
 			"classes": [
@@ -104,6 +94,36 @@
 			"type": "choropleth",
 			"classification": "quantile",
 			"classes": "Oranges.5"
+		}]
+	},
+	{
+		"name": "Cities Layer",
+		"source": "data/city-data.geojson",
+		"expressedAttribute": "2011",
+		"displayAttributes": [
+			"name", 
+			"2005",
+			"2006",
+			"2007",
+			"2008",
+			"2009",
+			"2010",
+			"2011"
+		],
+		"layerOptions": {
+			"fillOpacity": 0.8,
+			"color": "white",
+			"fillColor": "blue",
+			"opacity": 1,
+			"weight": 1
+		},
+		"techniques": [{
+			"type": "proportional symbol",
+			"classification": "unclassed",
+			"classes": [
+				5,
+				20
+			]
 		}]
 	}]
 }

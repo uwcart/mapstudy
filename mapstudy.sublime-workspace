@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"setLe",
+				"setLegendColor"
+			],
+			[
+				"legen",
+				"legendModel"
+			],
+			[
+				"layerNa",
+				"layerNameClass"
+			],
+			[
 				"isa",
 				"isarithm"
 			],
@@ -364,10 +376,6 @@
 				"InteractionControlView"
 			],
 			[
-				"legen",
-				"legendEntry"
-			],
-			[
 				"index",
 				"indexOf"
 			],
@@ -506,14 +514,6 @@
 			[
 				"search",
 				"search"
-			],
-			[
-				"leafletDataLay",
-				"leafletDataLayer"
-			],
-			[
-				"baseLayers",
-				"baseLayersDone"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 12359,
+				"buffer_size": 12343,
 				"line_ending": "Unix"
 			}
 		},
@@ -531,7 +531,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 86225,
+				"buffer_size": 87430,
 				"line_ending": "Windows"
 			}
 		},
@@ -539,7 +539,7 @@
 			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 9134,
+				"buffer_size": 9000,
 				"line_ending": "Unix"
 			}
 		},
@@ -777,6 +777,25 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"trigger",
+			"console",
+			"rescaleView",
+			"heatmap-symbol",
+			"heat",
+			"recolor",
+			"checked",
+			"input",
+			".close",
+			"svgWidth",
+			"svgHeight",
+			"resymbolize:",
+			"proportionalsymbol",
+			"LegendLayerView",
+			"scale",
+			"LegendLayerView",
+			"techniqueTypeClass",
+			"ResymbolizeView",
+			"id",
 			"console",
 			"setDataLayer",
 			"dataLayers",
@@ -885,25 +904,6 @@
 			"setClasses",
 			"getAllAttributeValues",
 			"setLayerOptions",
-			"RetrieveControlView",
-			"retrieve",
-			"pan:",
-			"trigger(",
-			"legend-wrapper",
-			"legend",
-			"console",
-			"RetrieveControlView",
-			"popupopen",
-			"retrieve:",
-			"popupopen",
-			"setTechniques",
-			"dataLayerModel",
-			"techniquesObj",
-			"dataLayersDone",
-			"RetrieveControlView",
-			"table",
-			"td",
-			"popup",
 			"RetrieveControlView"
 		],
 		"highlight": true,
@@ -1050,7 +1050,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -1058,15 +1058,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 12359,
+						"buffer_size": 12343,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8768,
-								8768
+								10602,
+								10602
 							]
 						],
 						"settings":
@@ -1076,7 +1076,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3511.0,
+						"translation.y": 4431.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1086,15 +1086,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 86225,
+						"buffer_size": 87430,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								50173,
-								50177
+								81578,
+								81578
 							]
 						],
 						"settings":
@@ -1104,7 +1104,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 31431.0,
+						"translation.y": 48651.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1114,15 +1114,15 @@
 					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 9134,
+						"buffer_size": 9000,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5403,
-								5403
+								4305,
+								4305
 							]
 						],
 						"settings":
@@ -1132,7 +1132,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 6291.0,
+						"translation.y": 4911.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1176,8 +1176,8 @@
 						"selection":
 						[
 							[
-								252,
-								252
+								1724,
+								1724
 							]
 						],
 						"settings":
@@ -1186,7 +1186,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 840.0,
+						"translation.y": 1140.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

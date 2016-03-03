@@ -457,13 +457,13 @@ An array of objects containing the thematic mapping techniques, including the ma
 
 			"type": -"choropleth"- -"proportional symbol"- -"dot"- -"isarithmic"- -"heat"-
 
-The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Required. Note that only a data layer with a `proportional symbol`, `isarithmic`, or `heat` technique type can use point feature data. The `retrieve` and `search` interactions are not available for `heat` map layers, and `search` is not available for `isarithmic` layers.
+The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Required. Note that only a data layer with a `proportional symbol`, `isarithmic`, or `heat` technique type can use point feature data, but all technique types can use polygon data. The `retrieve` and `search` interactions are not available for `heat` map layers, and `search` is not available for `isarithmic` layers.
 
 #### map.dataLayers[i].techniques[i].classification
 
 			"classification": -"quantile"- -"equal interval"- -"natural breaks"- -"unclassed"-
 
-The classification technique for a choropleth or proportional symbol map. Which techique is chosen determines how the data values of the `expressedAttribute` are grouped for display on the map. Required for `choropleth` and `proportional symbol` types, optional for `isarithmic` type, and unavailable for `dot` type.
+The classification technique for a choropleth or proportional symbol map. Which techique is chosen determines how the data values of the `expressedAttribute` are grouped for display on the map. Required for `choropleth` and `proportional symbol` types, and unavailable for `isarithmic`, `heat`, and `dot` type.
 
 A `quantile` classification groups the data into classes with an equal *number of* data values in each class. This works best when you want to create a map with the same number of features in each class but don't care about how wide the class ranges are.
 
@@ -483,7 +483,7 @@ An array containing the output values for each class or the name of a [ColorBrew
 
 			-"symbol"-: -"circle"- -image url-
 
-Symbol to use for proportional symbol or dot map. Optional; default is `circle`. Not available to choropleth or isarithmic maps. For proportional symbol maps, if the dataset consists of point features, symbols will be placed on point coordinates; otherwise, symbols will be placed on the centroids of polygon features. While use of something other than `circle` for a dot map is possible, it is not recommended.
+Symbol to use for proportional symbol map. Optional; default is `circle`. Not available to choropleth or isarithmic maps. For proportional symbol maps, if the dataset consists of point features, symbols will be placed on point coordinates; otherwise, symbols will be placed on the centroids of polygon features.
 
 #### map.dataLayers[i].techniques[i].interval
 
@@ -493,10 +493,10 @@ The data interval by which to separate isarithms on an isarithmic map, or the ra
 
 For an isarithmic map, `interval` is the value by which each line will be separated on the map. If  omitted, the default line separation will be 10.
 
-For a dot map, the value of `interval` is the denominator by which the feature's expressed attribute value will be divided to determine the number of dots to add within the boundaries of a feature. Omitting `interval` will result in a default of one dot for every 10 units. For example, if the expressed attribute value for a feature is `15,607`, by default there will be 1,561 dots scattered within that feature's boundaries. Designating `interval` as `1` will result in a dot being added for each whole number increase in the expressed attribute value, resulting in a true dot (as opposed to dot density) map.
+For a dot map, the value of `interval` is the denominator by which the feature's expressed attribute value will be divided to determine the number of dots to add within the boundaries of a feature. Omitting `interval` will result in a default of one dot for every 10 units. For example, if the expressed attribute value for a feature is `15,607`, by default there will be 1,561 dots scattered within that feature's boundaries. Designating `interval` as `1` will result in a dot being added for each whole number increase in the expressed attribute value, resulting in a true dot (as opposed to dot density) map. The larger the `interval`, the fewer dots will be created, and vice-versa. Note that the more dots are created, *and the more irregular the polygons in the dataset*, the longer the map will take to render. It is not recommended to use an `interval` that will create more than 10,000 dots total.
 
 #### map.dataLayers[i].techniques[i].size
 
 			-"size"-: size
 
-The size of dots on a dot map or isarithms on an isarithmic map; a number. Not available for other technique types. Optional; default is 1 pixel. For a dot map, `size` is the dot diameter or `symbol` width. For an isarithmic map, `size` is the line width of each isarithm.
+The size of dots on a dot map or isarithms on an isarithmic map; a number. Not available for other technique types. Optional; default is 1 pixel. For a dot map, `size` is the dot radius. For an isarithmic map, `size` is the line width of each isarithm.
