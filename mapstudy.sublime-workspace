@@ -523,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 12343,
+				"buffer_size": 12589,
 				"line_ending": "Unix"
 			}
 		},
@@ -531,7 +531,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 87430,
+				"buffer_size": 93832,
 				"line_ending": "Windows"
 			}
 		},
@@ -555,7 +555,7 @@
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 2370,
+				"buffer_size": 2161,
 				"line_ending": "Windows"
 			}
 		},
@@ -563,7 +563,7 @@
 			"file": "doc/API.md",
 			"settings":
 			{
-				"buffer_size": 30819,
+				"buffer_size": 31034,
 				"line_ending": "Windows"
 			}
 		},
@@ -606,6 +606,22 @@
 				"buffer_size": 18990,
 				"line_ending": "Unix"
 			}
+		},
+		{
+			"file": "data/us-states.geojson",
+			"settings":
+			{
+				"buffer_size": 90012,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/us-states-pop.geojson",
+			"settings":
+			{
+				"buffer_size": 106065,
+				"line_ending": "Unix"
+			}
 		}
 	],
 	"build_system": "",
@@ -632,6 +648,8 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Carl/Downloads/Book2.csv",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/us-states.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/wi-tracts-point.topojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map1.json",
@@ -680,7 +698,6 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet/leaflet.fusesearch.css",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/jquery-ui/jquery-ui.theme.css",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/time-series-prop-map-leaflet/time-series-prop-map/data/city-data.json",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/us-states.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/app.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/api.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/architecture.md",
@@ -758,8 +775,7 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/lib/ss2.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/lib/ss.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v6.md",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/interactive-multivariate-choropleth-map-d3/js/main.js",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module8/files/figures/figure2.1.svg"
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/interactive-multivariate-choropleth-map-d3/js/main.js"
 	],
 	"find":
 	{
@@ -777,6 +793,21 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"svgHeight",
+			"cy",
+			"LegendLayerView",
+			"label",
+			"LegendLayerView",
+			"dot",
+			"polygonToPoint",
+			"POPULATION",
+			"DENSITY",
+			"NAME",
+			"Dot",
+			"setBaseLayer",
+			"techniquesObj",
+			"symbol",
+			"classification",
 			"trigger",
 			"console",
 			"rescaleView",
@@ -889,22 +920,7 @@
 			"interval",
 			"Isarithmic",
 			"template",
-			"LegendLayerView",
-			"console",
-			"techniquesObj",
-			"LegendLayerView",
-			"legendView",
-			"LegendLayerView",
-			"id",
-			"LegendLayerView",
-			"techniquesObj",
-			"id",
-			"id()",
-			"symbolize",
-			"setClasses",
-			"getAllAttributeValues",
-			"setLayerOptions",
-			"RetrieveControlView"
+			"LegendLayerView"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -912,6 +928,9 @@
 		"regex": false,
 		"replace_history":
 		[
+			"population",
+			"density",
+			"name",
 			"className",
 			"tModel",
 			"symbolize",
@@ -1036,15 +1055,12 @@
 			"Figure 3.11",
 			"Figure 3.12",
 			"Figure 3.13",
-			"figure3.2",
-			"figure3.3",
-			"figure3.4",
-			"figure3.5"
+			"figure3.2"
 		],
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": false,
+		"whole_word": true,
 		"wrap": true
 	},
 	"groups":
@@ -1058,15 +1074,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 12343,
+						"buffer_size": 12589,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10602,
-								10602
+								10681,
+								10681
 							]
 						],
 						"settings":
@@ -1076,7 +1092,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4431.0,
+						"translation.y": 4271.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1086,15 +1102,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 87430,
+						"buffer_size": 93832,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								81578,
-								81578
+								14185,
+								14185
 							]
 						],
 						"settings":
@@ -1104,7 +1120,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 48651.0,
+						"translation.y": 11551.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1169,15 +1185,15 @@
 					"file": "config/map.json",
 					"settings":
 					{
-						"buffer_size": 2370,
+						"buffer_size": 2161,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1724,
-								1724
+								1604,
+								1604
 							]
 						],
 						"settings":
@@ -1186,7 +1202,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1140.0,
+						"translation.y": 1240.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1196,15 +1212,15 @@
 					"file": "doc/API.md",
 					"settings":
 					{
-						"buffer_size": 30819,
+						"buffer_size": 31034,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								25914,
-								25914
+								31034,
+								31034
 							]
 						],
 						"settings":
@@ -1213,7 +1229,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 11971.0,
+						"translation.y": 13411.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1346,6 +1362,59 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 5499.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "data/us-states.geojson",
+					"settings":
+					{
+						"buffer_size": 90012,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								993,
+								993
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "data/us-states-pop.geojson",
+					"settings":
+					{
+						"buffer_size": 106065,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								47969,
+								47969
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

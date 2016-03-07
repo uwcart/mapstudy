@@ -32,7 +32,7 @@
 		"filter": {
 			"dataLayers": [
 				"Population Density", 
-				"Cities Layer"
+				"US Population"
 			],
 			"tool": "slider",
 			"logging": true
@@ -70,11 +70,12 @@
 		"expressedAttribute": "population",
 		"displayAttributes": [
 			"name",
-			"population"
+			"population",
+			"density"
 		],
 		"techniques": [{
 			"type": "dot",
-			"interval": 100000
+			"interval": 1000000
 		}]
 	},
 	{

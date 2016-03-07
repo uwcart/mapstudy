@@ -239,7 +239,7 @@ Reexpress interaction. For each visible data layer, allows the user to change th
 
 		-"resymbolize"-: { -"logging"- -"reclassify"- -"rescale"- -"recolor"- }
 
-Resymbolize interaction. Allows the user to manipulate the classification scheme via the legend. If included, users will be able to change the classification parameters of graduated maps (choropleth or proportional symbol), change the symbol scale or interval (proportional symbol, dot, isarithm), and/or change the symbol color (choropleth and proportional symbol). If `reclassify`, `rescale`, and `recolor` are all omitted, all of their functionality will be included by default; if one or more are included, only those that are included as `true` will be available.
+Resymbolize interaction. Allows the user to manipulate the classification scheme via the legend. If included, users will be able to change the classification parameters of graduated maps (choropleth or proportional symbol), change the symbol scale or interval (proportional symbol, dot, isarithm, or heat), and/or change the symbol color (choropleth or proportional symbol). If `reclassify`, `rescale`, or `recolor` are omitted, their functionality will be included by default.
 
 #### map.interactions.resymbolize.reclassify
 

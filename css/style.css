@@ -336,6 +336,29 @@ svg {
     margin-left: 30px;
 }
 
+.rendering-progress-bar {
+    margin-top: 5px;
+    color: red;
+}
+
+.progress-bar-border {
+    border: 1px solid black;
+    border-radius: 2px;
+    width: 100px;
+    height: 10px;
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.progress-bar-fill {
+    background-color: red;
+    color: red;
+    display: inline-block;
+    border-radius: 1px;
+    height: 10px;
+}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */

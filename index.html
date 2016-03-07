@@ -183,6 +183,12 @@
                 <input name="scale-value-min" class="scale-value-hideable" type="text" size="3">
                 <label for="scale-value-max" class="scale-value-hideable">max: </label>
                 <input name="scale-value-max" type="text" size="3">
+                <div class="rendering-progress-bar" style="display: none;">
+                    Rendering&mdash;please wait... 
+                    <div class="progress-bar-border">
+                        <div class="progress-bar-fill">.</div>
+                    </div>
+                </div>
             </div>
         </script>
 
@@ -224,6 +230,11 @@
 
         <script type="text/template" id="heat-symbol-template">
             <div class="heatmap-symbol"></div>
+        </script>
+
+        <script type="text/template" id="dot-legend-template">
+            <circle cx="<%= cx %>" cy="<%= svgHeight - range*2 - 3 %>" r="<%= range %>"/>
+            <text x="<%= cx * 2 %>" y="<%= y + 13 %>"><%= label %></text>
         </script>
 
         <script type="text/template" id="close-button-template">

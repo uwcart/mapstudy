@@ -18,21 +18,19 @@
 		"overlay": {
 			"logging": true,
 			"dataLayers": [
-				"US States",
-				"Cities Layer"
+				"Population Density"
 			]
 		},
 		"underlay": {
 			"logging": true
 		},
 		"search": {
-			"attributes": ["name", "Density (ppl/sq. mile)"],
+			"attributes": ["name", "density"],
 			"logging": true
 		},
 		"filter": {
 			"dataLayers": [
-				"US States", 
-				"Cities Layer"
+				"Population Density"
 			],
 			"tool": "slider",
 			"logging": true
