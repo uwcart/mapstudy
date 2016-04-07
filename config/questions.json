@@ -34,9 +34,7 @@
 					"ask": "",
 					"description": "",
 					"input": {
-						"type": "checkbox",
-						"label": "",
-						"checked": true
+						"type": "text",
 					}
 				}
 			],

@@ -65,7 +65,7 @@
 					{
 						"blocks": [
 							{
-								"description": "Some information or instructions..."
+								"ask": "Some information or instructions..."
 							}
 						]
 					}

@@ -1,8 +1,24 @@
 # API Documentation
 
+## Contents
+
+### [About the docs](#about-the-api-documentation)
+
+### [Setup](#setup)
+
+### [Config files](#config-files)
+
+- ### [Styles](#stylesjson)
+
+- ### [Map](#mapjson)
+
+- ### [Questions](#mapjson)
+
+- ### [Param](#paramphp)
+
 ## About the API documentation
 
-MapStudy is a flexible framework for creating map-based survey applications. It includes a range of components that are selected by setting and extending the options in the *.json* files within the *config* directory. For now, those files must be edited manually in a basic text editor such as Sublime or Notepad++. Hopefully there will eventually be a helper GUI for setting up the config files. 
+MapStudy is a flexible framework for creating map-based survey applications. It includes a range of components that are selected by setting and extending the options in the *.json* files within the *config* directory. For now, those files must be edited manually in a basic text editor such as Sublime or Notepad++. Hopefully there will eventually be a helper GUI for setting up the config files.
 
 The API documentation lists the available options in the config files. Each option is shown as code, with the option key to the left of a semicolon and each explicit possible value `-between dashes-`.
 
@@ -467,13 +483,13 @@ An object or URL string pointing to a JSON file containing [Leaflet Path options
 
 An array of objects containing the thematic mapping techniques, including the map type and classification parameters for the data layer. At least one technique object is required. The first technique object in the array will be used for the layer's initial expression; all other techniques for the layer will only be available to the user if `map.interactions.reexpress` is included.
 
-#### map.dataLayers[i].techniques[i].type
+#### map.dataLayers[i].techniques[ii].type
 
 			"type": -"choropleth"- -"proportional symbol"- -"dot"- -"isarithmic"- -"heat"-
 
 The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Required. Note that only a data layer with a `proportional symbol`, `isarithmic`, or `heat` technique type can use point feature data, but all technique types can use polygon data. The `retrieve` and `search` interactions are not available for `heat` map layers, and `search` is not available for `isarithmic` layers.
 
-#### map.dataLayers[i].techniques[i].classification
+#### map.dataLayers[i].techniques[ii].classification
 
 			"classification": -"quantile"- -"equal interval"- -"natural breaks"- -"unclassed"-
 
@@ -487,19 +503,19 @@ A `natural breaks` classification uses the [Cartesian k-means](http://www.cs.tor
 
 An `unclassed` classification creates a [linear scale](https://github.com/mbostock/d3/wiki/Quantitative-Scales#linear-scales) to map each input data value to an output value interpolated between the first two values given in the `classes` array. Thus, it results in a map with no defined classes. This is the most common classification for proportional symbol maps and the least common for choropleth maps.
 
-#### map.dataLayers[i].techniques[i].classes
+#### map.dataLayers[i].techniques[ii].classes
 
 			-"classes"-: -[]- -colorbrewer code.number of classes-
 
 An array containing the output values for each class or the name of a [ColorBrewer](http://colorbrewer2.org/) classification scheme. Required if `classification` is used. Array values should be numerical for proportional symbol maps&mdash;representing the diameter or width of each feature's symbol&mdash;and hexadecimal color strings for a choropleth map (e.g., `"#FFFFFF"`). The number of values in the array will correspond with the number of classes created. For choropleth maps only, if a ColorBrewer scheme is used, the value should be a string in the format `"code.number"`; for example, `"BuGn.5"` will create a five-class, blue-green color scheme. Scheme codes are shown at the top of the EXPORT panel on the lower-right of the ColorBrewer interface. Unless testing various color schemes, it is recommended you choose a colorblind-safe, sequential color scheme. If the `resymbolize` interaction is included, it is recommended to use a ColorBrewer code instead of an array of hex values, as reclassification by the user may result in an interpolated color scheme that differs spectrally from the original array of colors.
 
-#### map.dataLayers[i].techniques[i].symbol
+#### map.dataLayers[i].techniques[ii].symbol
 
 			-"symbol"-: -"circle"- -image url-
 
 Symbol to use for proportional symbol map. Optional; default is `circle`. Not available to choropleth or isarithmic maps. For proportional symbol maps, if the dataset consists of point features, symbols will be placed on point coordinates; otherwise, symbols will be placed on the centroids of polygon features.
 
-#### map.dataLayers[i].techniques[i].interval
+#### map.dataLayers[i].techniques[ii].interval
 
 			-"interval"-: value interval
 
@@ -509,7 +525,7 @@ For an isarithmic map, `interval` is the value by which each line will be separa
 
 For a dot map, the value of `interval` is the denominator by which the feature's expressed attribute value will be divided to determine the number of dots to add within the boundaries of a feature. Omitting `interval` will result in a default of one dot for every 10 units. For example, if the expressed attribute value for a feature is `15,607`, by default there will be 1,561 dots scattered within that feature's boundaries. Designating `interval` as `1` will result in a dot being added for each whole number increase in the expressed attribute value, resulting in a true dot (as opposed to dot density) map. The larger the `interval`, the fewer dots will be created, and vice-versa. Note that the more dots are created, *and the more irregular the polygons in the dataset*, the longer the map will take to render. It is not recommended to use an `interval` that will create more than 10,000 dots total.
 
-#### map.dataLayers[i].techniques[i].size
+#### map.dataLayers[i].techniques[ii].size
 
 			-"size"-: size
 
@@ -530,3 +546,154 @@ This config file holds the configuration options necessary to create the survey 
 			...
 		]
 	}
+
+#### questions.fullpage
+
+	-"fullpage"-: -true- -false-
+
+Whether or not the questions page should take up the entire width of the content window in a one-column layout. This option is useful for informed consent pages, tutorial pages, and other pages that do not need to be accompanied by a map.
+
+#### questions.sets
+
+	"sets": [
+		{
+			"blocks": [],
+			"buttons": []
+		}
+	]
+
+The sets of questions and buttons that are viewable to the user at one time.
+
+#### questions.sets[i].blocks
+
+	"blocks": [
+		{
+			-"label"-,
+			-"title"-,
+			"ask",
+			-"description"-,
+			-"input"-
+		}
+	]
+
+A single question along with accompanying content and answer input(s). Each question block appears on the page as a unit, vertically separated from other question blocks.
+
+#### questions.sets[i].buttons
+
+	"buttons": [
+		-"next"-,
+		-"back"-,
+		-"save"-,
+		-"submit"-
+	]
+
+Buttons that should be included at the bottom of the question set, below all of the blocks. The `next` button takes the user to the next question set, or to the next page if the end of the `sets` array has been reached. The `back` button takes the user to the previous question set, or to the previous page if the beginning of the `sets` array has been reached. The `save` button saves the participant's answers and position in the survey, enabling them to complete the survey at a later time; for this button to work, a database must be set up and working database parameters included in the *params.php* config file. The `submit` button submits the participant's answers, either via e-mail or to the database depending on the content of *params.php*, **and** takes the participant to the next page (which may or may not be the final page of the survey).
+
+#### questions.sets[i].blocks[ii].label
+
+	-"label"-: text string (<=20 characters)
+
+Label for the question in the CSV or database table of responses. Optional. Must be 20 characters or less. If no label is provided, a label will be automatically generated consisting of the page, set, block, and input indexes (for example, "p1s3b1i0").
+
+#### questions.sets[i].blocks[ii].title
+
+	-"title"-: text string
+
+Title for the question. Optional. If included, the question title will appear in bold at the top of the question block.
+
+#### questions.sets[i].blocks[ii].ask
+
+	"ask": HTML string
+
+The question ask. Required. The question ask will appear in normal font below the title (if included) and above the other elements of the block (if included). It need not be a literal question; any text or html (such as image elements) may be included.
+
+#### questions.sets[i].blocks[ii].ask
+
+	-"description"-: HTML string
+
+Further description tied to the question ask. Optional. Description text will appear in italicized font below the ask and above the other elements of the block (if included). Any text or html (such as image elements) may be included.
+
+#### questions.sets[i].blocks[ii].input
+
+	-"input"-: {
+		-"required"-,
+		"type",
+		-"options"-: [],
+		-"items"-: []
+	}
+
+The answer input associated with the question. Optional. Appears below the ask and description (if included).
+
+#### questions.sets[i].blocks[ii].input.required
+
+	-"required"-: -true- -false-
+
+Whether the participant must provide input before moving to the next set. Optional; default is `false`.
+
+#### questions.sets[i].blocks[ii].input.type
+
+	"type": -"text"- -"paragraph"- -"checkboxes"- -"radios"- -"dropdown"- -"matrix"- -"rank"-
+
+The type of answer input. Required if `input` is included with the block. Options are:
+
+- `text`: A one-line text box.
+
+- `paragraph`: A multi-line text box that may be expanded by the participant.
+
+- `checkboxes`: A set of checkboxes allowing the participant to select more than one answer from a list of potential answers. Requires `items` array.
+
+- `radios`: A set of radio buttons allowing the participant to select only one answer from a list of potential answers. Requires `options` array.
+
+- `dropdown`: A dropdown menu allowing the participant to select only one answer from a list of potential answers. Requires `options` array.
+
+- `matrix`: A table of radio buttons allowing the participant to select one answer from a list of potential answers for each item in a list of items. This is useful for Likert scale questions. Requires both `options` array and `items` array.
+
+- `rank`: A list of items allowing the user to reorder the items. Requires `items` array.
+
+#### questions.sets[i].blocks[ii].input.options
+
+	-"options"-: [
+		{
+			"text",
+			-"value"-
+		}
+	]
+
+An array of input options. Required by `radios`, `dropdown`, and `matrix` input types; ignored otherwise.
+
+#### questions.sets[i].blocks[ii].input.options[iii].text
+
+	"text": text string
+
+The text to display to the participant for the option. Required if `options` is included.
+
+#### questions.sets[i].blocks[ii].input.options[iii].value
+
+	-"value"-: text string
+
+The value to display in the resulting data cell for the question block or item if the option is selected. Optional. If omitted, the option `text` will be recorded as the value.
+
+#### questions.sets[i].blocks[ii].input.items
+
+	-"items"-: [
+		{
+			"text",
+			-"label"-
+		}
+	]
+
+An array of input items. Required by `checkboxes`, `matrix`, and `rank` input types; ignored otherwise.
+
+#### questions.sets[i].blocks[ii].input.items[iii].text
+
+	"text": text string
+
+The text to display to the participant for the item. Required if `items` is included.
+
+#### questions.sets[i].blocks[ii].input.options[iii].label
+
+	-"label"-: text string (<= 20 characters)
+
+What to label the column for the item in the resulting data. Optional. Each item will be given its own column in the data table. If no `label` is provided for the item, a label will be automatically generated consisting of the page, set, block, input, and item indexes (for example, "p1s3b1i0it2")
+
+For each item column, if the input type is `checkboxes`, each item's cell value will be recorded as `1` if the box is checked and no data if not checked. If the type is `matrix`, each item's cell value will correspond to the value of the selected option. If the type is `rank`, the cell value will be given the item's rank, starting at 1 for the top item.
