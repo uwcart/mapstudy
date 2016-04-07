@@ -4,6 +4,30 @@
 		"selected_items":
 		[
 			[
+				"classification",
+				"classificationType"
+			],
+			[
+				"recla",
+				"reclassify"
+			],
+			[
+				"reclass",
+				"reclassify"
+			],
+			[
+				"recl",
+				"reclassify"
+			],
+			[
+				"progress",
+				"progressBar"
+			],
+			[
+				"circle",
+				"circleMarker"
+			],
+			[
 				"setLe",
 				"setLegendColor"
 			],
@@ -184,10 +208,6 @@
 				"nClassesDiv"
 			],
 			[
-				"reclass",
-				"reclassifyView"
-			],
-			[
 				"swat",
 				"swatchTemplate"
 			],
@@ -212,10 +232,6 @@
 				"classificationType"
 			],
 			[
-				"classification",
-				"classificationModel"
-			],
-			[
 				"class",
 				"classificationType"
 			],
@@ -230,10 +246,6 @@
 			[
 				"recolor",
 				"recolorView"
-			],
-			[
-				"recla",
-				"reclassifyView"
 			],
 			[
 				"resymboli",
@@ -502,18 +514,6 @@
 			[
 				"und",
 				"undefined"
-			],
-			[
-				"initial",
-				"initialize"
-			],
-			[
-				"background",
-				"background-color"
-			],
-			[
-				"search",
-				"search"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 12589,
+				"buffer_size": 12884,
 				"line_ending": "Unix"
 			}
 		},
@@ -531,7 +531,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 93832,
+				"buffer_size": 94070,
 				"line_ending": "Windows"
 			}
 		},
@@ -539,23 +539,15 @@
 			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 9000,
+				"buffer_size": 9394,
 				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "js/modules/app.js",
-			"settings":
-			{
-				"buffer_size": 1620,
-				"line_ending": "Windows"
 			}
 		},
 		{
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 2161,
+				"buffer_size": 2176,
 				"line_ending": "Windows"
 			}
 		},
@@ -563,64 +555,8 @@
 			"file": "doc/API.md",
 			"settings":
 			{
-				"buffer_size": 31034,
+				"buffer_size": 30943,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "php/interactions.php",
-			"settings":
-			{
-				"buffer_size": 129,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
-			"settings":
-			{
-				"buffer_size": 2694,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "data/city-data.geojson",
-			"settings":
-			{
-				"buffer_size": 4149,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "data/wi-tracts-poly.topojson",
-			"settings":
-			{
-				"buffer_size": 3759345,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "js/lib/colorbrewer.js",
-			"settings":
-			{
-				"buffer_size": 18990,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "data/us-states.geojson",
-			"settings":
-			{
-				"buffer_size": 90012,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "data/us-states-pop.geojson",
-			"settings":
-			{
-				"buffer_size": 106065,
-				"line_ending": "Unix"
 			}
 		}
 	],
@@ -648,19 +584,26 @@
 	},
 	"file_history":
 	[
-		"/C/Users/Carl/Downloads/Book2.csv",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/php/interactions.php",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/us-states-pop.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/us-states.geojson",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/colorbrewer.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/wi-tracts-poly.topojson",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/city-data.geojson",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/app.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map3.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map2.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map5.json",
+		"/C/Users/Carl/Downloads/Book2.csv",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/wi-tracts-point.topojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map1.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet-heatmap.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/test.html",
 		"/C/temp/lower48.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/LICENSE.txt",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/colorbrewer.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/js/main.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map2.json",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map3.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map4.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/ma4.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/svg-area-heatmap.js",
@@ -670,7 +613,6 @@
 		"/C/temp/lower48contour.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/lower48.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/lib/LICENSE.txt",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/wi-tracts-poly.topojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map.bak.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/.gitignore",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module2/debug.js",
@@ -689,7 +631,6 @@
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/Module6.html",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.bak.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/index.bak.html",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
 		"/C/Users/Carl/Downloads/LeafletSlider-master/LeafletSlider-master/SliderControl.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/jquery-ui/jquery-ui.css",
 		"/C/Users/Carl/Downloads/jquery-ui-1.11.4.custom/jquery-ui-1.11.4.custom/jquery-ui.js",
@@ -770,12 +711,7 @@
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2014_Fall/Labs/Lab2-D3/coordinated_viz_example_code/js/main.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/css/style.css",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/index.html",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/js/main_noaxis.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/css/style_noaxis.css",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/lib/ss2.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/lib/ss.js",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v6.md",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/interactive-multivariate-choropleth-map-d3/js/main.js"
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/js/main_noaxis.js"
 	],
 	"find":
 	{
@@ -790,9 +726,53 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": false,
+		"case_sensitive": true,
 		"find_history":
 		[
+			"console",
+			"RecolorView",
+			"ReclassifyView",
+			"reclassifyView",
+			"resymbolize:",
+			"css",
+			"RescaleView",
+			"onEachFeature",
+			"iew.onEachFeature",
+			"onEachFeature",
+			"console",
+			"input[name=scale-value-max",
+			"techniquesObj",
+			"setDots",
+			"setIsarithms",
+			"RescaleView",
+			"density\": 0",
+			"population\": 0",
+			"population",
+			"FilterSliderView",
+			"filter",
+			"-1000",
+			"-10",
+			"-10000",
+			"tool",
+			"interactions.filter.tool",
+			"FilterModel",
+			"slider",
+			"filter:",
+			"SearchModel",
+			"polygonToPoint",
+			"setDataLayers",
+			"Search",
+			"console",
+			"console.log",
+			"console",
+			"SearchModel",
+			"console",
+			"id",
+			"SearchModel",
+			"search",
+			"SearchModel",
+			"this",
+			"this.model",
 			"svgHeight",
 			"cy",
 			"LegendLayerView",
@@ -876,51 +856,7 @@
 			"setData",
 			"without",
 			"_.without",
-			"heatmapLayer",
-			"this",
-			"setHeatmap",
-			"heatmapLayer",
-			");\n",
-			"heatmapLayer",
-			"heat",
-			"LegendLayerView",
-			"console",
-			"LegendLayerView",
-			"Legend",
-			"leaflet",
-			".leaflet",
-			"legend",
-			"setSearchInput",
-			"polygonToPoint",
-			"heat",
-			"techniquesObj",
-			"setLayerOptions",
-			"rawfeatures",
-			"techniquesObj",
-			"console",
-			"symbolize",
-			"polygonToPoint",
-			"console",
-			"topojson",
-			"setTechniques",
-			"DataLayerModel",
-			"setTechniques",
-			"DataLayerModel",
-			"setDataLayer",
-			");\n",
-			"Isarithmic",
-			"dataLayersDone",
-			"techniquesObj",
-			"interval",
-			"proportional symbol",
-			"getAllAttributeValues",
-			"default",
-			"techniquesObj",
-			"LegendLayerView",
-			"interval",
-			"Isarithmic",
-			"template",
-			"LegendLayerView"
+			"heatmapLayer"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -928,6 +864,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"view",
+			"model",
 			"population",
 			"density",
 			"name",
@@ -1053,14 +991,12 @@
 			"Figure 3.9",
 			"Figure 3.10",
 			"Figure 3.11",
-			"Figure 3.12",
-			"Figure 3.13",
-			"figure3.2"
+			"Figure 3.12"
 		],
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
@@ -1074,15 +1010,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 12589,
+						"buffer_size": 12884,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10681,
-								10681
+								9083,
+								9083
 							]
 						],
 						"settings":
@@ -1092,7 +1028,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4271.0,
+						"translation.y": 3611.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1102,15 +1038,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 93832,
+						"buffer_size": 94070,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								14185,
-								14185
+								84699,
+								84699
 							]
 						],
 						"settings":
@@ -1120,7 +1056,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 11551.0,
+						"translation.y": 50371.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1130,15 +1066,15 @@
 					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 9000,
+						"buffer_size": 9394,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4305,
-								4305
+								5598,
+								5598
 							]
 						],
 						"settings":
@@ -1148,152 +1084,17 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4911.0,
+						"translation.y": 6651.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "js/modules/app.js",
-					"settings":
-					{
-						"buffer_size": 1620,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								94,
-								94
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
 					"file": "config/map.json",
 					"settings":
 					{
-						"buffer_size": 2161,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1604,
-								1604
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1240.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "doc/API.md",
-					"settings":
-					{
-						"buffer_size": 31034,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								31034,
-								31034
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 13411.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "php/interactions.php",
-					"settings":
-					{
-						"buffer_size": 129,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								129,
-								129
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
-					"settings":
-					{
-						"buffer_size": 2694,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								806,
-								806
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 600.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "data/city-data.geojson",
-					"settings":
-					{
-						"buffer_size": 4149,
+						"buffer_size": 2176,
 						"regions":
 						{
 						},
@@ -1306,7 +1107,8 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1315,106 +1117,28 @@
 					"type": "text"
 				},
 				{
-					"buffer": 9,
-					"file": "data/wi-tracts-poly.topojson",
+					"buffer": 4,
+					"file": "doc/API.md",
 					"settings":
 					{
-						"buffer_size": 3759345,
+						"buffer_size": 30943,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3548976,
-								3548976
+								12391,
+								12391
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 687171.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "js/lib/colorbrewer.js",
-					"settings":
-					{
-						"buffer_size": 18990,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								132,
-								136
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 5499.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "data/us-states.geojson",
-					"settings":
-					{
-						"buffer_size": 90012,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								993,
-								993
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "data/us-states-pop.geojson",
-					"settings":
-					{
-						"buffer_size": 106065,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								47969,
-								47969
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 5771.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

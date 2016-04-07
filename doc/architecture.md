@@ -1,10 +1,22 @@
-# Modules
+# Pages
+
+*A page is defined as one M-section and one Q-section (one map and one set of questions that go with that map). Each page is defined by including a **map** config file and **questions** config file with the page number just to the left of the .json file extension in the config folder; for example:*
+	
+- **map1.json** and **questions1.json**,
+- **map2.json** and **questions2.json**,
+- etc...
+
+*To ensure that each regular two-column page loads and displays properly, you must include **both** a map and a questions config file for each page, named according to the convention above. If the application has only a single page, the config files should be named map1.json and questions1.json, respectively.*
+
+*To include a consent form, instructions, or other full-page content, include **only** a questions config file for the given page, and set `fullpage` to `true` under the module's Q-section feature.*
+
+# Map Module
 
 **Bolded items are high priority for implementation**
 
 [Items in brackets are aspirational]
 
-## M-section
+### M-section
 
 *This section includes the modules necessary to create the map, which is situated on the left side of the page at a desktop aspect ratio, or on top if mobile.*
 
@@ -58,9 +70,13 @@
 	- Selected attributes
 	- options]
 
-## Q-section
+## Questions Module
+
+### Q-section
 
 *This section includes the survey question modules, which appear on the right or bottom of the page, in a nested heirarchy. A Q-set module is a set of child modules displayed on the page at once. Q-sets are displayed in the order in which they are declared. A Q-block is a question block that contains the question and/or Q-inputs for the answer(s). A Q-input is one input element and any associated prompt or label belonging to a Q-block. A Q-button is on the same level as a Q-block and contains a Back, Next, or Submit button.*
+
+- Fullpage? (boolean; default false)
 
 ### Q-set
 
@@ -77,7 +93,7 @@ Requirements:
 
 Dependency: Q-set
 
-- Reset numbering? (boolean)
+- Reset numbering? (boolean; default false)
 - Question title
 - Question ask
 - Question description

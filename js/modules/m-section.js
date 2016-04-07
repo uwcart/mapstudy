@@ -1481,9 +1481,6 @@ var RescaleView = RecolorView.extend({
 //Leaflet
 var LeafletMap = Backbone.View.extend({
 	el: '#m',
-	initialize: function(){
-
-	},
 	events: {
 		'click .reexpress': 'reexpress'
 	},
@@ -2715,12 +2712,18 @@ function setMapView(options){
 /************** map config ****************/
 
 var MapConfig = Backbone.DeepModel.extend({
-	url: "config/map.json"
+	url: ""
 });
 
-//get map configuration options
-var mapConfig = new MapConfig();
-mapConfig.on('sync', setMapView);
-mapConfig.fetch();
+var _page = 0;
+//trigger next page
+document.on('>>', function(){
+	_page++;
+	//get map configuration options
+	var mapConfig = new MapConfig();
+	mapConfig.url = "config/map"+_page+".json";
+	mapConfig.on('sync', setMapView);
+	mapConfig.fetch();
+});
 
 })();
