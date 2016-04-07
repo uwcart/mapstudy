@@ -1,14 +1,85 @@
 # Pages
 
-*A page is defined as one M-section and one Q-section (one map and one set of questions that go with that map). Each page is defined by including a **map** config file and **questions** config file with the page number just to the left of the .json file extension in the config folder; for example:*
+*A page is defined as one M-section and one Q-section (one map and one set of questions that go with that map). Pages are stored in a `pages` array, the outermost property of the map.json and questions.json config files. Each page is designated by creating an M-section object in map.json and a Q-section object in questions.json at the same index in each respective `pages` array. For example:
 	
-- **map1.json** and **questions1.json**,
-- **map2.json** and **questions2.json**,
-- etc...
+	//in map.json:
+	{
+		pages: [
+			{
+				"page": 1,
+				"library": "Leaflet",
+				...
+			},
+			{
+				"page": 2,
+				"library": "Leaflet",
+				...
+			},
+			...
+		]
+	}
 
-*To ensure that each regular two-column page loads and displays properly, you must include **both** a map and a questions config file for each page, named according to the convention above. If the application has only a single page, the config files should be named map1.json and questions1.json, respectively.*
+	//in questions.json:
+	{
+		pages: [
+			{
+				"page": 1,
+				"sets": [
+					...
+				]
+			},
+			{
+				"page": 2,
+				"sets": [
+					...
+				]
+			},
+			...
+		]
+	}
 
-*To include a consent form, instructions, or other full-page content, include **only** a questions config file for the given page, and set `fullpage` to `true` under the module's Q-section feature.*
+*To ensure that each regular two-column page loads and displays properly, you must include **both** an M-section object in map.json and a Q-section object in questions.json at the **same index**. In the example above, the `page` property of each object is merely a reminder of which object one is looking at and does nothing programmatically; all options are set based on the array index. If the application has only a single page, there need only be one of each object.*
+
+*To include a consent form, instructions, or other full-page content, include a complete Q-section object and an empty M-section object at the same index in each `pages` array, and set the Q-section `fullpage` property to `true`; for example:*
+
+	//in map.json:
+	{
+		pages: [
+			{},
+			{
+				"page": 2,
+				"library": "Leaflet",
+				...
+			},
+			...
+		]
+	}
+
+	//in questions.json:
+	{
+		pages: [
+			{
+				"page": 1,
+				"fullpage": true,
+				"sets": [
+					{
+						"blocks": [
+							{
+								"description": "Some information or instructions..."
+							}
+						]
+					}
+				]
+			},
+			{
+				"page": 2,
+				"sets": [
+					...
+				]
+			},
+			...
+		]
+	}
 
 # Map Module
 

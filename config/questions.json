@@ -1,7 +1,6 @@
 {
 	"sets": [
 		{
-			"page": 1,
 			"blocks": [
 				{
 					"reset-numbering": true,
@@ -29,7 +28,6 @@
 			]
 		},
 		{
-			"page": 2,
 			"blocks": [
 				{
 					"title": "",

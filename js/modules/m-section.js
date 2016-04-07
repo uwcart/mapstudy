@@ -2,6 +2,8 @@
 
 (function(){
 
+var _options = {}, _page = 0;
+
 /************************ helper functions ***************************/
 
 //produce numeric values array from GeoJSON features
@@ -2705,25 +2707,30 @@ var LeafletMap = Backbone.View.extend({
 /************** set map view ****************/
 
 function setMapView(options){
-	var mapView = eval("new " + options.get('library') + "Map({model: options})");
+	_options = options || _options;
+	var Page = Backbone.DeepModel.extend(),
+		page = new Page();
+	page.attributes = _options.get('pages')[_page];
+	var mapView = eval("new " + page.get('library') + "Map({model: page})");
 	mapView.render().setMap();
 };
 
 /************** map config ****************/
 
 var MapConfig = Backbone.DeepModel.extend({
-	url: ""
+	url: "config/map.json"
 });
+//get map configuration options
+var mapConfig = new MapConfig();
+mapConfig.on('sync', setMapView);
+mapConfig.fetch();
 
-var _page = 0;
 //trigger next page
 document.on('>>', function(){
 	_page++;
-	//get map configuration options
-	var mapConfig = new MapConfig();
-	mapConfig.url = "config/map"+_page+".json";
-	mapConfig.on('sync', setMapView);
-	mapConfig.fetch();
+	if (_options.attributes.hasOwnProperty("pages") && _options.get('pages').length > _page){
+		setMapView();
+	};
 });
 
 })();

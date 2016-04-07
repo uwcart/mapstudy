@@ -76,6 +76,20 @@ An HTML string that will be added to the section. The `content` of the `header` 
 
 This config file holds the configuration options necessary to create the map. MapStudy will eventually support creating web maps with interaction logging in [Leaflet](http://leafletjs.com/), [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/), and [D3](http://d3js.org/), and maps with no interaction logging as any of the first three plus a static image, REST service, or embedded iframe with any other web mapping service (e.g. [CartoDB](https://cartodb.com/) and [ArcGIS Online Viewer](https://www.arcgis.com/home/webmap/viewer.html)).
 
+In the descriptions below, `map` refers to each object in the map.json `pages` array. The map.json file should be structured thus:
+
+	{
+		"pages": [
+			{
+				//map options for page 1
+			},
+			{
+				//map options for page 2
+			},
+			...
+		]
+	}
+
 #### map.library
 
 	"library": -"Leaflet"- -"Mapbox-GL"- -"D3"- -"image"- -"REST"- -"iframe"-
@@ -500,3 +514,19 @@ For a dot map, the value of `interval` is the denominator by which the feature's
 			-"size"-: size
 
 The size of dots on a dot map or isarithms on an isarithmic map; a number. Not available for other technique types. Optional; default is 1 pixel. For a dot map, `size` is the dot radius. For an isarithmic map, `size` is the line width of each isarithm.
+
+### questions.json
+
+This config file holds the configuration options necessary to create the survey questions and other content. In the descriptions below, `questions` refers to each object in the questions.json `pages` array. The questions.json file should be structured thus:
+
+	{
+		"pages": [
+			{
+				//questions for page 1
+			},
+			{
+				//questions for page 2
+			},
+			...
+		]
+	}

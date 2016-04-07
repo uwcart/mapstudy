@@ -12,9 +12,11 @@ $('#nextpage').click(function(){
 
 
 
+var _page = 0;
+//trigger next page
+document.on('>>', function(){
+	_page++;
+	//put some stuff here
+});
 
-
-
-//load first page
-document.trigger('>>');
 })();
