@@ -241,6 +241,54 @@
             <a class="close" title="close" style="display: none;">&times;</a>
         </script>
 
+        <script type="text/template" id="text-input-template">
+            <input type="text" name="<%= label %>">
+        </script>
+
+        <script type="text/template" id="paragraph-input-template">
+            <textarea rows="4" name="<%= label %>">
+        </script>
+
+        <script type="text/template" id="checkbox-input-template">
+            <div class="input <%= label %>">
+                <input type="checkbox" value="1" name="<%= label %>"><%= text %>
+            </div>
+        </script>
+
+        <script type="text/template" id="input-div-template">
+            <div class="input <%= className %>"></div>
+        </script>
+
+        <script type="text/template" id="radio-input-template">
+            <input type="radio" value="<%= value %>" name="<%= label %>">
+        </script>
+
+        <script type="text/template" id="matrix-table-template">
+            <table class="<%= label %>">
+                <tr><td></td></tr>
+            </table>
+        </script>
+
+        <script type="text/template" id="matrix-option-text-template">
+            <td class="option"><%= text %></td>
+        </script>
+
+        <script type="text/template" id="matrix-item-text-template">
+            <tr class="input <%= className %>"><td><%= text %></td></tr>
+        </script>
+
+        <script type="text/template" id="matrix-input-template">
+            <td class="option"><input type="radio" value="<%= value %>" name="<%= label %>"></td>
+        </script>
+
+        <script type="text/template" id="dropdown-input-template">
+            <option value="<%= value %>"><%= text %></option>
+        </script>
+
+        <script type="text/template" id="dropdown-select-template">
+            <select class="input<%= className %>" name="<%= label %>"></select>
+        </script>
+
         <!-- Supported libraries -->
         <script type="text/javascript" src="js/lib/jquery.js"></script>
         <script type="text/javascript" src="js/lib/jquery-ui/jquery-ui.js"></script>

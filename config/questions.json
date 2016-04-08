@@ -1,46 +1,229 @@
 {
-	"sets": [
+	"pages": [
 		{
-			"blocks": [
+			"sets": [
 				{
-					"reset-numbering": true,
-					"title": "",
-					"ask": "",
-					"description": "",
-					"input": {
-						"type": "text",
-						"prompt": ""
-					}
+					"set": 1,
+					"blocks": [
+						{
+							"reset-numbering": true,
+							"title": "Name",
+							"ask": "What is thy name?",
+							"description": "Gimme a name!",
+							"input": {
+								"type": "text",
+								"required": true
+							}
+						},
+						{
+							"title": "Quest",
+							"ask": "What is thy quest?",
+							"description": "",
+							"input": {
+								"type": "paragraph"
+							}
+						},
+						{
+							"title": "Color",
+							"ask": "What is thy favorite color?",
+							"input": {
+								"type": "checkboxes",
+								"items": [
+									{
+										"text": "Green."
+									},
+									{
+										"text": "No, no--blue!"
+									}
+								]
+							}
+						},
+						{
+							"title": "Airspeed Velocity",
+							"ask": "What is the airspeed velocity of an unladen swallow?",
+							"input": {
+								"type": "matrix",
+								"items": [
+									{
+										"text": "African",
+										"label": "african swallow does this really cut off at 20 characters?"
+									},
+									{
+										"text": "European"
+									}
+								],
+								"options": [
+									{
+										"text": "10 kph"
+									},
+									{
+										"text": "20 kph"
+									},
+									{
+										"text": "30 kph"
+									},
+									{
+										"text": "I don't know!",
+										"value": "dunno"
+									}
+								]
+							}
+						},
+						{
+							"title": "Swallow Type",
+							"ask": "African or European?",
+							"input": {
+								"required": true,
+								"type": "radios",
+								"options": [
+									{
+										"text": "African"
+									},
+									{
+										"text": "European"
+									},
+									{
+										"text": "I don't know that!",
+										"value": "aaaaaaaaaaaaaaaah!"
+									}
+								]
+							}
+						},
+						{
+							"ask": "How far were you catapulted?",
+							"description": "aaaaaaaaaaaaaaaah!",
+							"input": {
+								"type": "dropdown",
+								"items": [
+									{
+										"text": "1 km"
+									},
+									{
+										"text": "2 km"
+									},
+									{
+										"text": "to the moon!"
+									}
+								]
+							}
+						}
+					],
+					"buttons": [
+						"next"
+					]
 				},
 				{
-					"title": "",
-					"ask": "",
-					"description": "",
-					"input": {
-						"type": "matrix",
-						"options": [],
-						"items": [],
-					}
+					"set": 2,
+					"blocks": [
+						{
+							"title": "",
+							"ask": "",
+							"description": "",
+							"input": {
+								"type": "text"
+							}
+						}
+					],
+					"buttons": [
+						"back",
+						"submit"
+					]
 				}
-			],
-			"buttons": [
-				"next"
 			]
 		},
 		{
-			"blocks": [
+			"fullpage": true,
+			"sets": [
 				{
-					"title": "",
-					"ask": "",
-					"description": "",
-					"input": {
-						"type": "text",
-					}
+					"blocks": [
+						{
+							"reset-numbering": true,
+							"title": "",
+							"ask": "",
+							"description": "",
+							"input": {
+								"type": "text",
+								"prompt": ""
+							}
+						},
+						{
+							"title": "",
+							"ask": "",
+							"description": "",
+							"input": {
+								"type": "matrix",
+								"options": [],
+								"items": []
+							}
+						}
+					],
+					"buttons": [
+						"next"
+					]
+				},
+				{
+					"blocks": [
+						{
+							"title": "",
+							"ask": "",
+							"description": "",
+							"input": {
+								"type": "text"
+							}
+						}
+					],
+					"buttons": [
+						"back",
+						"submit"
+					]
 				}
-			],
-			"buttons": [
-				"back",
-				"submit"
+			]
+		},
+		{
+			"sets": [
+				{
+					"blocks": [
+						{
+							"reset-numbering": true,
+							"title": "",
+							"ask": "",
+							"description": "",
+							"input": {
+								"type": "text",
+								"prompt": ""
+							}
+						},
+						{
+							"title": "",
+							"ask": "",
+							"description": "",
+							"input": {
+								"type": "matrix",
+								"options": [],
+								"items": []
+							}
+						}
+					],
+					"buttons": [
+						"next"
+					]
+				},
+				{
+					"blocks": [
+						{
+							"title": "",
+							"ask": "",
+							"description": "",
+							"input": {
+								"type": "text"
+							}
+						}
+					],
+					"buttons": [
+						"back",
+						"submit"
+					]
+				}
 			]
 		}
 	]

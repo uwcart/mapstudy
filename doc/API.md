@@ -2,19 +2,19 @@
 
 ## Contents
 
-### [About the docs](#about-the-api-documentation)
+#### [About the docs](#about-the-api-documentation)
 
-### [Setup](#setup)
+#### [Setup](#setup)
 
-### [Config files](#config-files)
+#### [Config files](#config-files)
 
-- ### [Styles](#stylesjson)
+#### &emsp;[Styles](#stylesjson)
 
-- ### [Map](#mapjson)
+#### &emsp;[Map](#mapjson)
 
-- ### [Questions](#mapjson)
+#### &emsp;[Questions](#questionsjson)
 
-- ### [Param](#paramphp)
+#### &emsp;[Param](#paramphp)
 
 ## About the API documentation
 
@@ -593,7 +593,7 @@ Buttons that should be included at the bottom of the question set, below all of 
 
 	-"label"-: text string (<=20 characters)
 
-Label for the question in the CSV or database table of responses. Optional. Must be 20 characters or less. If no label is provided, a label will be automatically generated consisting of the page, set, block, and input indexes (for example, "p1s3b1i0").
+Label for the question in the CSV or database table of responses. Optional. Must be 20 characters or less. If no label is provided, a label will be automatically generated consisting of the page, set, block, and input indexes (for example, "p1s3b1").
 
 #### questions.sets[i].blocks[ii].title
 
@@ -694,6 +694,6 @@ The text to display to the participant for the item. Required if `items` is incl
 
 	-"label"-: text string (<= 20 characters)
 
-What to label the column for the item in the resulting data. Optional. Each item will be given its own column in the data table. If no `label` is provided for the item, a label will be automatically generated consisting of the page, set, block, input, and item indexes (for example, "p1s3b1i0it2")
+What to label the column for the item in the resulting data. Optional. Each item will be given its own column in the data table. If no `label` is provided for the item, a label will be automatically generated consisting of the page, set, block, input, and item indexes (for example, "p1s3b1it0")
 
 For each item column, if the input type is `checkboxes`, each item's cell value will be recorded as `1` if the box is checked and no data if not checked. If the type is `matrix`, each item's cell value will correspond to the value of the selected option. If the type is `rank`, the cell value will be given the item's rank, starting at 1 for the top item.

@@ -2711,8 +2711,10 @@ function setMapView(options){
 	var Page = Backbone.DeepModel.extend(),
 		page = new Page();
 	page.attributes = _options.get('pages')[_page];
-	var mapView = eval("new " + page.get('library') + "Map({model: page})");
-	mapView.render().setMap();
+	if (page.attributes.hasOwnProperty('library')){
+		var mapView = eval("new " + page.get('library') + "Map({model: page})");
+		mapView.render().setMap();
+	};
 };
 
 /************** map config ****************/
@@ -2727,6 +2729,9 @@ mapConfig.fetch();
 
 //trigger next page
 document.on('>>', function(){
+	//reset map and questions
+	$('#q').removeAttr('style');
+	$('#m').show();
 	_page++;
 	if (_options.attributes.hasOwnProperty("pages") && _options.get('pages').length > _page){
 		setMapView();
