@@ -376,7 +376,7 @@ svg {
     padding-right: 5px;
 }
 
-.ask, .input {
+.ask, .input, .title {
     margin: 1px 0;
 }
 
@@ -384,8 +384,8 @@ svg {
     margin: 1px 0 2px 0;
 }
 
-.title {
-    margin-bottom: 1px;
+.block {
+    margin-bottom: 15px;
 }
 
 input[type=text], textarea {
@@ -402,6 +402,13 @@ td, th {
 
 .option {
     text-align: center;
+}
+
+.rank-item {
+    border: 1px solid #999;
+    padding: 2px;
+    background-color: #EFEFEF;
+    cursor: pointer;
 }
 
 /* ==========================================================================

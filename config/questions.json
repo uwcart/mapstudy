@@ -94,7 +94,7 @@
 							"description": "aaaaaaaaaaaaaaaah!",
 							"input": {
 								"type": "dropdown",
-								"items": [
+								"options": [
 									{
 										"text": "1 km"
 									},
@@ -103,6 +103,26 @@
 									},
 									{
 										"text": "to the moon!"
+									}
+								]
+							}
+						},
+						{
+							"ask": "Rank the importance of the following:",
+							"input": {
+								"type": "rank",
+								"items": [
+									{
+										"text": "bird"
+									},
+									{
+										"text": "fish"
+									},
+									{
+										"text": "monkeybrains"
+									},
+									{
+										"text": "your mom"
 									}
 								]
 							}

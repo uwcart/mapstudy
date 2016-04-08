@@ -250,7 +250,7 @@
         </script>
 
         <script type="text/template" id="checkbox-input-template">
-            <div class="input <%= label %>">
+            <div class="<%= label %>">
                 <input type="checkbox" value="1" name="<%= label %>"><%= text %>
             </div>
         </script>
@@ -287,6 +287,14 @@
 
         <script type="text/template" id="dropdown-select-template">
             <select class="input<%= className %>" name="<%= label %>"></select>
+        </script>
+
+        <script type="text/template" id="rank-input-template">
+            <div class="rank-item <%= label %>">
+                <span class="value"><%= value %></span>
+                <span class="text"><%= text %></span>
+                <input type="hidden" name="<%= label %>" value="<%= value %>">
+            </div>
         </script>
 
         <!-- Supported libraries -->

@@ -47,12 +47,14 @@ var CheckboxesInputView = TextInputView.extend({
 		//get or create item label
 		var label = item.hasOwnProperty('label') && item.label.length > 0 ? item.label.substring(0,20) : this.model.get('label')+"i"+i;
 		//append item input
-		this.$el.append(this.template({
+		this.$el.find('.input').append(this.template({
 			label: label,
-			text: item.text
+			text: item.text,
+			value: i+1
 		}));
 	},
 	render: function(){
+		this.$el.append('<div class="input">');
 		var items = this.model.get('items');
 		_.each(items, this.appendItem, this);
 		this.required();
@@ -91,18 +93,18 @@ var RadiosInputView = CheckboxesInputView.extend({
 var DropdownInputView = RadiosInputView.extend({
 	template: _.template( $('#dropdown-input-template').html() ),
 	render: function(){
-		//append select element
 		var className = '',
-			selectTemplate = _.template( $('#dropdown-select-template').html() );
+			selectTemplate = _.template( $('#dropdown-select-template').html() ),
+			options = this.model.get('options');
 		for (var i=0; i<options.length; i++){
 			className += ' ' + i;
 		};
+		//append select element
 		this.$el.append(selectTemplate({
 			className: className,
 			label: this.model.get('label')
 		}));
 		//append options to select
-		var options = this.model.get('options');
 		_.each(options, this.appendOption, this);
 		this.required();
 	}
@@ -144,8 +146,33 @@ var MatrixInputView = RadiosInputView.extend({
 	}
 });
 
-var RankInputView = TextInputView.extend({
-
+var RankInputView = CheckboxesInputView.extend({
+	template: _.template( $('#rank-input-template').html() ),
+	events: {
+		"sortstop .input": "resort"
+	},
+	resort: function(){
+		var items = this.$el.find('.rank-item');
+		items.sort(function(a, b){
+			return $(a).offset().top > $(b).offset().top;
+		});
+		_.each(items, function(item, i){
+			$(item).find('.value').text(String(i+1));
+			$(item).find('input').val(String(i+1));
+		});
+	},
+	render: function(){
+		this.$el.append('<div class="input">');
+		var items = this.model.get('items');
+		_.each(items, this.appendItem, this);
+		//make input sortable
+		this.$el.find('.input').sortable({
+			axis: "y",
+			containment: "parent"
+		});
+		//sort listener rearranges values
+		this.required();
+	}
 });
 
 var InputViews = {
