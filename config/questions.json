@@ -46,10 +46,11 @@
 								"items": [
 									{
 										"text": "African",
-										"label": "african swallow does this really cut off at 20 characters?"
+										"label": "african"
 									},
 									{
-										"text": "European"
+										"text": "European",
+										"label": "european"
 									}
 								],
 								"options": [
@@ -88,7 +89,18 @@
 									}
 								]
 							}
-						},
+						}
+					],
+					"buttons": [
+						"submit",
+						"back",
+						"next",
+						"save"
+					]
+				},
+				{
+					"set": 2,
+					"blocks": [
 						{
 							"ask": "How far were you catapulted?",
 							"description": "aaaaaaaaaaaaaaaah!",
@@ -129,23 +141,8 @@
 						}
 					],
 					"buttons": [
-						"next"
-					]
-				},
-				{
-					"set": 2,
-					"blocks": [
-						{
-							"title": "",
-							"ask": "",
-							"description": "",
-							"input": {
-								"type": "text"
-							}
-						}
-					],
-					"buttons": [
 						"back",
+						"save",
 						"submit"
 					]
 				}

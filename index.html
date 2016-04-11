@@ -246,7 +246,7 @@
         </script>
 
         <script type="text/template" id="paragraph-input-template">
-            <textarea rows="4" name="<%= label %>">
+            <textarea rows="4" name="<%= label %>"></textarea>
         </script>
 
         <script type="text/template" id="checkbox-input-template">
@@ -286,7 +286,9 @@
         </script>
 
         <script type="text/template" id="dropdown-select-template">
-            <select class="input<%= className %>" name="<%= label %>"></select>
+            <select class="input<%= className %>" name="<%= label %>">
+                <option value=""><em>Select answer</em></option>
+            </select>
         </script>
 
         <script type="text/template" id="rank-input-template">
@@ -295,6 +297,10 @@
                 <span class="text"><%= text %></span>
                 <input type="hidden" name="<%= label %>" value="<%= value %>">
             </div>
+        </script>
+
+        <script type="text/template" id="questions-button-template">
+            <button type="button" name="<%= buttonName %>" class="<%= buttonName %>"><%= buttonCap %></button>
         </script>
 
         <!-- Supported libraries -->

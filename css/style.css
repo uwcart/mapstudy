@@ -408,7 +408,22 @@ td, th {
     border: 1px solid #999;
     padding: 2px;
     background-color: #EFEFEF;
-    cursor: pointer;
+    cursor: grab;
+}
+
+span.value {
+    font-style: italic;
+    width: 15px;
+    display: inline-block;
+}
+
+.buttons {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.buttons button {
+    margin: 0 10px 10px 10px;
 }
 
 /* ==========================================================================

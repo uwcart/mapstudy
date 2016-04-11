@@ -29,16 +29,13 @@ var TextInputView = Backbone.View.extend({
 	},
 	render: function(){
 		this.$el.append(this.template({label: this.model.get('label')}));
+		_options.attributes.data[this.model.get('label')] = "";
 		this.required();
 	}
 });
 
 var ParagraphInputView = TextInputView.extend({
-	template: _.template( $('#paragraph-input-template').html() ),
-	render: function(){
-		this.$el.append(this.template({label: this.model.get('label')}));
-		this.required();
-	}
+	template: _.template( $('#paragraph-input-template').html() )
 });
 
 var CheckboxesInputView = TextInputView.extend({
@@ -52,6 +49,7 @@ var CheckboxesInputView = TextInputView.extend({
 			text: item.text,
 			value: i+1
 		}));
+		_options.attributes.data[label] = "";
 	},
 	render: function(){
 		this.$el.append('<div class="input">');
@@ -86,6 +84,7 @@ var RadiosInputView = CheckboxesInputView.extend({
 			this.appendOption(option, i);
 			this.appendOptionText(option, i);
 		}, this);
+		_options.attributes.data[this.model.get('label')] = "";
 		this.required();
 	}
 });
@@ -106,6 +105,7 @@ var DropdownInputView = RadiosInputView.extend({
 		}));
 		//append options to select
 		_.each(options, this.appendOption, this);
+		_options.attributes.data[this.model.get('label')] = "";
 		this.required();
 	}
 });
@@ -131,6 +131,7 @@ var MatrixInputView = RadiosInputView.extend({
 		_.each(options, function(option){
 			this.appendOption(option, i, label);
 		}, this);
+		_options.attributes.data[label] = "";
 	},
 	render: function(){
 		//append table to block div
@@ -231,7 +232,39 @@ var BlockView = Backbone.View.extend({
 			});
 			inputView.render();
 		};
-		$('#q').append(this.$el);
+		$('#q form').append(this.$el);
+	}
+});
+
+/****************** buttons ********************/
+
+var ButtonModel = Backbone.Model.extend({
+	initialize: function(){
+		var buttonName = this.get('buttonName'),
+			buttonCap = buttonName.substring(0,1).toUpperCase() + buttonName.substring(1);
+		this.set('buttonCap', buttonCap);
+	}
+});
+
+var ButtonView = Backbone.View.extend({
+	el: '.buttons',
+	template: _.template( $('#questions-button-template').html() ),
+	render: function(){
+		this.$el.append(this.template(this.model.attributes));
+	}
+});
+
+/******************** data *********************/
+
+var Data = Backbone.Model.extend({
+	url: 'php/data.php',
+	record: function(){
+		var date = new Date();
+		this.set('timestamp', date.toUTCString());
+		this.save();
+	},
+	initialize: function(){
+		this.record();
 	}
 });
 
@@ -275,16 +308,77 @@ var Questions = Backbone.View.extend({
 		var blockView = new BlockView({model: blockModel});
 		blockView.render();
 	},
+	renderButton: function(button){
+		var buttonModel = new ButtonModel({buttonName: button});
+		var buttonView = new ButtonView({model: buttonModel});
+		buttonView.render();
+	},
+	renderButtons: function(buttons){
+		//append div for buttons
+		this.$el.append('<div class="buttons"></div>');
+		//sort buttons to be added
+		var order = {
+			back: 0,
+			next: 1,
+			save: 2,
+			submit: 3
+		};
+		buttons.sort(function(a,b){	return order[a] - order[b];	});
+		//add each button
+		_.each(buttons, this.renderButton, this);
+	},
 	render: function(){
+		//erase current contents of questions section
+		this.$el.empty().append('<form>');
+		//get current set
 		var qset = this.model.get('sets')[_set];
+		//render blocks
 		_.each(qset.blocks, this.renderBlock, this);
+		//render buttons
+		this.renderButtons(qset.buttons);
 	},
 	addData: function(input){
-		_options.attributes.data[input.name] = input.value;
+		if (input.value.length > 0){
+			_options.attributes.data[input.name] = input.value;
+		};
+	},
+	validate: function(){
+		var go = true;
+		$('.required').each(function(){
+			var required = $(this).parent(),
+				inputSet = required.find('input[type=checkbox], input[type=radio]'),
+				textbox = required.find('input[type=text]'),
+				textarea = required.find('textarea'),
+				select = required.find('select'),
+				inputNames = [];
+			//take care of checked inputs first
+			inputSet.each(function(){
+				inputNames.push($(this).attr('name'));
+			});
+			inputNames = _.uniq(inputNames);
+			inputNames.forEach(function(name){
+				if (required.find('input[name='+name+']:checked').length == 0){ go = false };
+			});
+			//test for text in text fields and for dropdown value
+			if (textbox.length > 0 && textbox.val().length == 0){ go = false };
+			if (textarea.length > 0 && textarea.val().length == 0){ go = false };
+			if (select.length > 0 && select.val().length == 0){go = false};
+		});
+		return go;
 	},
 	record: function(){
-		var inputs = this.$el.serializeArray();
-		_.each(inputs, this.addData, this);
+		//get all input values in set
+		var inputs = this.$el.find('form').serializeArray();
+		//check for required answers
+		if (this.validate()){
+			_.each(inputs, this.addData, this);
+		} else {
+			alert("Please answer all of the required questions (marked with a red star).");
+			return false;
+		};
+		//record data
+		console.log(_options.get('data'));
+		var dataModel = new Data(_options.get('data'));
 	},
 	next: function(){
 		//record data for the current set
@@ -310,6 +404,7 @@ var Questions = Backbone.View.extend({
 	},
 	save: function(){
 		//save data to database and alert user to their anonymous user id
+		this.record();
 	},
 	submit: function(){
 		//send all data to server for database or e-mail to admin
