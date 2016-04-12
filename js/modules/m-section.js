@@ -582,15 +582,14 @@ var Interaction = Backbone.Model.extend({
 	defaults: {
 		interaction: "",
 		timestamp: "",
-		userId: userId,
-		question: 0
+		pid: pid
 	},
 	url: "php/interactions.php",
 	record: function(){
 		var date = new Date();
+		console.log(Date.now());
 		this.set({
-			timestamp: date.toUTCString(),
-			question: question
+			timestamp: date.toUTCString()
 		});
 		this.save();
 	},

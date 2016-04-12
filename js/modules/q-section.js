@@ -6,7 +6,7 @@
 // 	document.trigger('>>');
 // })
 
-var _options = {}, _page = 0, _set = 0, _block = 0;
+var _options = {};
 
 /*************** answer inputs *****************/
 
@@ -31,6 +31,8 @@ var TextInputView = Backbone.View.extend({
 		this.$el.append(this.template({label: this.model.get('label')}));
 		_options.attributes.data[this.model.get('label')] = "";
 		this.required();
+		//assign any value stored in _options data
+		
 	}
 });
 
@@ -42,7 +44,7 @@ var CheckboxesInputView = TextInputView.extend({
 	template: _.template( $('#checkbox-input-template').html() ),
 	appendItem: function(item, i){
 		//get or create item label
-		var label = item.hasOwnProperty('label') && item.label.length > 0 ? item.label.substring(0,20) : this.model.get('label')+"i"+i;
+		var label = item.hasOwnProperty('label') && item.label.length > 0 ? item.label.substring(0,20) : this.model.get('label')+"i"+(i+1);
 		//append item input
 		this.$el.find('.input').append(this.template({
 			label: label,
@@ -56,6 +58,8 @@ var CheckboxesInputView = TextInputView.extend({
 		var items = this.model.get('items');
 		_.each(items, this.appendItem, this);
 		this.required();
+		//assign any values stored in _options data
+		
 	}
 });
 
@@ -86,6 +90,8 @@ var RadiosInputView = CheckboxesInputView.extend({
 		}, this);
 		_options.attributes.data[this.model.get('label')] = "";
 		this.required();
+		//assign any values stored in _options data
+		
 	}
 });
 
@@ -107,6 +113,8 @@ var DropdownInputView = RadiosInputView.extend({
 		_.each(options, this.appendOption, this);
 		_options.attributes.data[this.model.get('label')] = "";
 		this.required();
+		//assign any values stored in _options data
+		
 	}
 });
 
@@ -125,7 +133,7 @@ var MatrixInputView = RadiosInputView.extend({
 			text: item.text
 		}));
 		//get or create item label
-		var label = item.hasOwnProperty('label') && item.label.length > 0 ? item.label.substring(0,20) : this.model.get('label')+"i"+i;
+		var label = item.hasOwnProperty('label') && item.label.length > 0 ? item.label.substring(0,20) : this.model.get('label')+"i"+(i+1);
 		//append each option input
 		var options = this.model.get('options');
 		_.each(options, function(option){
@@ -144,6 +152,8 @@ var MatrixInputView = RadiosInputView.extend({
 		var items = this.model.get('items');
 		_.each(items, this.appendItem, this);
 		this.required();
+		//assign any values stored in _options data
+		
 	}
 });
 
@@ -173,6 +183,8 @@ var RankInputView = CheckboxesInputView.extend({
 		});
 		//sort listener rearranges values
 		this.required();
+		//assign any values stored in _options data
+
 	}
 });
 
@@ -201,7 +213,7 @@ var BlockModel = Backbone.Model.extend({
 var BlockView = Backbone.View.extend({
 	tagName: 'div',
 	setLabel: function(){
-		return "p"+_page+"s"+_set+"b"+_block;
+		return "p"+(_page+1)+"s"+(_set+1)+"b"+(_block+1);
 	},
 	render: function(){
 		//create label if none
@@ -260,7 +272,7 @@ var Data = Backbone.Model.extend({
 	url: 'php/data.php',
 	record: function(){
 		var date = new Date();
-		this.set('timestamp', date.toUTCString());
+		this.set('updatetime', date.toUTCString());
 		this.save();
 	},
 	initialize: function(){
@@ -338,9 +350,7 @@ var Questions = Backbone.View.extend({
 		this.renderButtons(qset.buttons);
 	},
 	addData: function(input){
-		if (input.value.length > 0){
-			_options.attributes.data[input.name] = input.value;
-		};
+		_options.attributes.data[input.name] = input.value;
 	},
 	validate: function(){
 		var go = true;
@@ -377,23 +387,22 @@ var Questions = Backbone.View.extend({
 			return false;
 		};
 		//record data
-		console.log(_options.get('data'));
 		var dataModel = new Data(_options.get('data'));
+		return true;
 	},
 	next: function(){
 		//record data for the current set
-		this.record();
-		//render the next set or page
-		_set++;
-		if (_set < this.model.get('sets').length){
-			this.render();
-		} else {
-			document.trigger('>>');
+		if (this.record('set')){
+			//render the next set or page
+			_set++;
+			if (_set < this.model.get('sets').length){
+				this.render();
+			} else {
+				document.trigger('>>');
+			};
 		};
 	},
 	back: function(){
-		//record data for the current set
-		this.record();
 		//render the previous set or page
 		_set--;
 		if (_set > -1){
@@ -404,13 +413,13 @@ var Questions = Backbone.View.extend({
 	},
 	save: function(){
 		//save data to database and alert user to their anonymous user id
-		this.record();
+		this.record('save');
 	},
 	submit: function(){
 		//send all data to server for database or e-mail to admin
-
-		//go to next page
-		document.trigger('>>');
+		if (this.record('submit')){
+			document.trigger('>>');
+		};
 	}
 });
 
@@ -421,7 +430,7 @@ function setQuestions(options){
 	_options = options || _options;
 	//add data object to hold all recorded data
 	_options.set('data', {
-		userId: Math.round(Math.random() * 1000000000)
+		pid: pid
 	});
 	//load new questions for the current page
 	var Page = Backbone.DeepModel.extend(),

@@ -1,7 +1,9 @@
 //main application script
 
-var userId = Math.round(Math.random() * 1000000);
-var question = 0;
+var pid = Math.round(Math.random() * 1000000000),
+	_page = 0, 
+	_set = 0, 
+	_block = 0;
 
 _.extend(document, Backbone.Events);
 

@@ -14,6 +14,8 @@
 
 #### &emsp;[Questions](#questionsjson)
 
+#### &emsp;[Conditions](#conditionsjson)
+
 #### &emsp;[Param](#paramphp)
 
 ## About the API documentation
@@ -694,6 +696,148 @@ The text to display to the participant for the item. Required if `items` is incl
 
 	-"label"-: text string (<= 20 characters)
 
-What to label the column for the item in the resulting data. Optional. Each item will be given its own column in the data table. If no `label` is provided for the item, a label will be automatically generated consisting of the page, set, block, input, and item indexes (for example, "p1s3b1it0")
+What to label the column for the item in the resulting data. Optional. Each item will be given its own column in the data table. If no `label` is provided for the item, a label will be automatically generated consisting of the page, set, block, input, and item indexes (for example, "p1s3b1i1")
 
 For each item column, if the input type is `checkboxes`, each item's cell value will be recorded as `1` if the box is checked and no data if not checked. If the type is `matrix`, each item's cell value will correspond to the value of the selected option. If the type is `rank`, the cell value will be given the item's rank, starting at 1 for the top item.
+
+
+
+### conditions.json
+
+This config file holds the options necessary to create different test conditions using the application pages. This is useful for creating a randomized or factorial study design. If this file is absent, all participants will see every page in the order in which they are listed in map.json and questions.json. Unlike the previous two config files, the outer level of conditions.json is an array rather than an object. The array contains an object for each condition that a participant could be assigned. Thus, the structure looks like this: 
+
+	[
+		{
+			// Condition 1
+		},
+		{
+			// Condition 2
+		},
+		{
+			// Condition 3
+		},
+		...
+	]
+
+Every participant will be assigned one and only one condition for the duration of their experience with the application. The options available for each condition are as follows:
+
+#### conditions[i].pages
+
+	"pages": -[]- -[[]]-
+
+An array or nested array of the page numbers to be included in the condition, in the order in which they will be shown to participants assigned this condition. Required. The first page of the application is designated `1`, the second `2`, etc. If given an empty array (`[]`), all pages of the application will be presented to participants assigned the condition. If given a nested array with `randomOrder` set to `true`, only pages within inner array(s) will be randomized (see [below](#conditionsirandomorder)).
+
+#### conditions[i].weight
+
+	-"weight"-: number between 0 and 1
+
+A weight that determines the frequency with which the condition is assigned. Optional. If weights are not included, the conditions will be randomly assigned with equal frequency for each. If included, all condition weights must sum to 1.
+
+#### conditions[i].randomOrder
+
+	-"randomOrder"-: -true- -false-
+
+Whether to randomize the order in which pages of the condition are displayed. Optional; default is `false`. If set to `true` and `pages` is a single-level array, all pages included in the condition will be shown in random order. If set to `true` and `pages` is a nested array, only those pages listed in the inner array(s) will be shown in random order. For example:
+
+	{
+		"pages": [1, [2, 3, 4], 5, [6, 7]],
+		"randomOrder": true
+	}
+
+In the example above, the participant will first be shown page 1, then pages 2, 3, and 4 in random order, then page 5, then pages 6 and 7 in random order.
+
+
+
+### param.php
+
+This config file holds the configuration options necessary to access the database in which the form data and interaction logs are to be stored and/or e-mail the data from each participant as spreadsheet files.
+
+#### Configuring the database
+
+A database is the recommended way to store the form and interaction data created by the MapStudy application. The framework supports database connections through the PHP PDO (PHP Data Objects) interface. Cubrid, FreeTDS (SyBase and Microsoft SQL Server), Firebird, IBM DB2, IBM Informix Dynamic Server, MySQL, Oracle Call Interface, ODBC v3, PostgreSQL, SQLite, Microsoft Azure SQL Database, and 4D databases are supported. The application will automatically generate the following tables:
+
+- **Participant Data**: One data table will be generated per participant to hold that participant's answers, named using the convention `user012345678_data` where `012345678` is the participant ID. Each row will correspond to a question block. The first column will be the question labels as defined in questions.json or automatically generated for the question if no label is provided (see label generation for [blocks](#questionssetsiblocksiilabel) and [items](#questionssetsiblocksiiinputoptionsiiilabel)), the second column will be the text of each question, and the third column will be the answers provided by the participant.
+
+- **Participant Interactions**: One interactions table will be generated per participant, named using the convention `user012345678_interactions` where `012345678` is a randomly-generated participant ID. The table will be formatted as follows:
+
+<table>
+	<tbody>
+		<tr><th>timestamp</th><th>interaction</th><th>page</th><th>set</th></tr>
+		<tr><td>1460400580071</td><td>zoom</td><td>1</td><td>1</td>
+		<tr><td>1460400852625</td><td>pan</td><td>1</td><td>1</td>
+		<tr><td>1460400860265</td><td>retrieve</td><td>1</td><td>2</td>
+		<tr><td>etc...</td><td></td><td></td><td></td>
+	</tbody>
+<table>
+
+- **Master Data**: One master data table will be generated to display all participants' answers, named `data_master`. The table will include columns for the participant ID (`pid`), time last updated (`last_updated`; in standard UTC format), each question block and item (labeled as above), and a timestamp (in milliseconds) for each submission point labeled as `p1s1_submit`, where `p1s1` represents the page number and set number of any question set that includes a submit button.
+
+- **Master Interactions**: One master interactions table will be generated to display all participants' interactions, named `interactions_master`. The table will include columns for the participant ID (`pid`), one column for each interaction included in map.json (`zoom`, `pan`, etc.) showing total hit counts for that interaction, and an `int_string` column showing a comma-separated list of all interactions in the order in which they occurred.
+
+- **Data By Page**: One table for each page of the application, labeled `data_page1`, `data_page2`, etc., to display the answers of all participants who submitted answers for that page. The table will include the columns from the `data_master` table that are relevant to the given page. This feature accommodates very long surveys and those for which at least some participants will see only certain pages.
+
+- **Interactions By Page**: One table for each page of the application, labeled `interactions_page1`, interactions_page2`, etc., to display the interactions of all participants who submitted answers for that page. The table will include columns for the participant ID (`pid`), one column for each interaction included for that page in map.json (`zoom`, `pan`, etc.), and an `int_string` column showing a comma-separated list of all interactions in the order in which they occurred.
+
+To interact with a database, the following variables must be included in param.php:
+
+#### $dbtype
+
+	$dbtype = -'cubrid'- -'dblib'- -'firebird'- -'ibm'- -'informix'- -'mysql'- -'oci'- -'odbc'- -'pgsql'- -'sqlite'- -'sqlsrv'- -'4d'-;
+
+The type of database. The database types listed above are supported. See [this page](http://php.net/manual/en/pdo.drivers.php) for more information on PHP database drivers.
+
+#### $dbhost
+
+	$dbhost = 'hostname';
+
+The host name of the database server. Typically an IP or DNS address.
+
+#### $dbport
+
+	$dbport = '5432';
+
+The port number for the database server.
+
+#### $dbname
+
+	$dbname = 'database name';
+
+The database name.
+
+#### $dbuser
+
+	$dbuser = 'user';
+
+The database user name. The user provided should have create, read, and update privileges for the database.
+
+#### $dbpassword
+
+	$dbpassword = 'password';
+
+The password for the database user provided for $dbuser.
+
+Alternately, or in addition to the database, the application may be configured to send the collected data and interactions to an e-mail address when they are submitted. Only the two participant tables will be e-mailed. To configure e-mail, include the following variables in param.php:
+
+#### $email
+
+	$email = 'mail@email.com';
+
+The e-mail address to which the data should be sent.
+
+#### $from
+
+	$from = 'Name <mail@email.com>';
+
+The e-mail From field.
+
+#### $subject
+
+	$subject = 'Subject';
+
+The subject line of the e-mail
+
+#### $message
+
+	$message = 'Message';
+
+The content of the e-mail message. CSV files holding the participant data will be attached automatically.
