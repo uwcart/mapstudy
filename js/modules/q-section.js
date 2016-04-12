@@ -29,10 +29,9 @@ var TextInputView = Backbone.View.extend({
 	},
 	render: function(){
 		this.$el.append(this.template({label: this.model.get('label')}));
-		_options.attributes.data[this.model.get('label')] = "";
 		this.required();
 		//assign any value stored in _options data
-		
+
 	}
 });
 
@@ -51,7 +50,6 @@ var CheckboxesInputView = TextInputView.extend({
 			text: item.text,
 			value: i+1
 		}));
-		_options.attributes.data[label] = "";
 	},
 	render: function(){
 		this.$el.append('<div class="input">');
@@ -88,7 +86,6 @@ var RadiosInputView = CheckboxesInputView.extend({
 			this.appendOption(option, i);
 			this.appendOptionText(option, i);
 		}, this);
-		_options.attributes.data[this.model.get('label')] = "";
 		this.required();
 		//assign any values stored in _options data
 		
@@ -111,7 +108,6 @@ var DropdownInputView = RadiosInputView.extend({
 		}));
 		//append options to select
 		_.each(options, this.appendOption, this);
-		_options.attributes.data[this.model.get('label')] = "";
 		this.required();
 		//assign any values stored in _options data
 		
@@ -139,7 +135,6 @@ var MatrixInputView = RadiosInputView.extend({
 		_.each(options, function(option){
 			this.appendOption(option, i, label);
 		}, this);
-		_options.attributes.data[label] = "";
 	},
 	render: function(){
 		//append table to block div
@@ -183,8 +178,6 @@ var RankInputView = CheckboxesInputView.extend({
 		});
 		//sort listener rearranges values
 		this.required();
-		//assign any values stored in _options data
-
 	}
 });
 
@@ -346,6 +339,32 @@ var Questions = Backbone.View.extend({
 		var qset = this.model.get('sets')[_set];
 		//render blocks
 		_.each(qset.blocks, this.renderBlock, this);
+		//assign any values stored in data
+		var data = _options.get('data');
+		for (var label in data){
+			this.$el.find('input[type=text][name="'+label+'"], input[type=hidden][name="'+label+'"], textarea[name="'+label+'"], select[name="'+label+'"]').val(data[label]);
+			this.$el.find('input[type=checkbox][name="'+label+'"][value="'+data[label]+'"], input[type=radio][name="'+label+'"][value="'+data[label]+'"]').attr('checked', 'checked');
+		};
+		//re-sort rank inputs
+		$('.ui-sortable').each(function(){
+			var items = [], sortable = $(this);
+			sortable.children('.rank-item').each(function(){
+				var val = $(this).children('input').val();
+				$(this).children('.value').text(val);
+				var item = {
+					val: val,
+					el: $(this)
+				};
+				items.push(item);
+			});
+			sortable.children('.rank-item').remove();
+			items.sort(function (a, b){
+				return a.val > b.val;
+			});
+			items.forEach(function(item){
+				sortable.append(item.el[0]);
+			});
+		});
 		//render buttons
 		this.renderButtons(qset.buttons);
 	},

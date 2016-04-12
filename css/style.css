@@ -409,6 +409,7 @@ td, th {
     padding: 2px;
     background-color: #EFEFEF;
     cursor: grab;
+    margin: 4px 0;
 }
 
 span.value {

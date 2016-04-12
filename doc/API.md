@@ -776,7 +776,7 @@ A database is the recommended way to store the form and interaction data created
 
 - **Data By Page**: One table for each page of the application, labeled `data_page1`, `data_page2`, etc., to display the answers of all participants who submitted answers for that page. The table will include the columns from the `data_master` table that are relevant to the given page. This feature accommodates very long surveys and those for which at least some participants will see only certain pages.
 
-- **Interactions By Page**: One table for each page of the application, labeled `interactions_page1`, interactions_page2`, etc., to display the interactions of all participants who submitted answers for that page. The table will include columns for the participant ID (`pid`), one column for each interaction included for that page in map.json (`zoom`, `pan`, etc.), and an `int_string` column showing a comma-separated list of all interactions in the order in which they occurred.
+- **Interactions By Page**: One table for each page of the application, labeled `interactions_page1`, `interactions_page2`, etc., to display the interactions of all participants who submitted answers for that page. The table will include columns for the participant ID (`pid`), one column for each interaction included for that page in map.json (`zoom`, `pan`, etc.), and an `int_string` column showing a comma-separated list of all interactions in the order in which they occurred.
 
 To interact with a database, the following variables must be included in param.php:
 
