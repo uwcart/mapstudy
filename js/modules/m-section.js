@@ -2,7 +2,7 @@
 
 (function(){
 
-var _options = {}, _page = 0;
+var _options = {};
 
 /************************ helper functions ***************************/
 
@@ -177,7 +177,7 @@ var Choropleth = Backbone.Model.extend({
 			feature.id = feature.id || i;
 			feature.properties.layerOptions = this.setLayerOptions(feature, scale, expressedAttribute);
 		}, this);
-		this.set('scale', scale);
+		this.attributes.scale = scale;
 	}
 });
 
@@ -204,7 +204,7 @@ var ProportionalSymbol = Choropleth.extend({
 	},
 	setLayerOptions: function(feature, scale, expressedAttribute){
 		//turn any polygons into points
-		this.set('features', this.polygonsToPoints(this.get('features'), expressedAttribute));
+		this.attributes.features = this.polygonsToPoints(this.get('features'), expressedAttribute);
 		//ensure scale range values are numbers
 		var range = _.map(scale.range(), function(val){
 			return parseFloat(val);
@@ -229,7 +229,7 @@ var Isarithmic = ProportionalSymbol.extend({
 			values = getAllAttributeValues(features, expressedAttribute),
 			breaks = [];
 		//set interval
-		this.set('interval', interval);
+		this.attributes.interval = interval;
 		//set breaks as set of interval multiples in attribute value domain
 		for (var i = 0; i < values[values.length-1]; i += interval){
 			if (i >= values[0]){
@@ -254,7 +254,7 @@ var Isarithmic = ProportionalSymbol.extend({
 				feature.properties.layerOptions.weight = size;
 			};
 		});
-		this.set('features', isarithms.features);
+		this.attributes.features = isarithms.features;
 
 	},
 	symbolize: function(){
@@ -263,10 +263,8 @@ var Isarithmic = ProportionalSymbol.extend({
 			technique = this.get('techniques')[this.get('techniqueIndex')],
 			interval = technique.interval || 10;
 		//set point feature set to enable resymbolize
-		this.set({
-			pointFeatures: this.polygonsToPoints(this.get('features'), expressedAttribute),
-			size: technique.size || null
-		});
+		this.attributes.pointFeatures = this.polygonsToPoints(this.get('features'), expressedAttribute);
+		this.attributes.size = technique.size || null;
 		//the rest should be reusable to enable resymbolize
 		this.setIsarithms(interval);
 	}
@@ -295,7 +293,7 @@ var Heat = Isarithmic.extend({
 	symbolize: function(){
 		var technique = this.get('techniques')[this.get('techniqueIndex')],
 			size = technique.size || null;
-		this.set('size', size);
+		this.attributes.size = size;
 		this.setHeatmap(this);
 	}
 });
@@ -337,19 +335,15 @@ var Dot = Backbone.Model.extend({
 				points.push(point);
 			};
 		}, this);
-		this.set({
-			polygonFeatures: polygons,
-			features: points
-		});
+		this.attributes.polygonFeatures = polygons;
+		this.attributes.features = points;
 	},
 	symbolize: function(){
 		var technique = this.get('techniques')[this.get('techniqueIndex')],
 			size = technique.size || 1,
 			interval = technique.interval || 10;
-		this.set({
-			size: size,
-			interval: interval
-		});
+		this.attributes.size = size;
+		this.attributes.interval = interval;
 		this.polygonsToDots();
 	}
 })
@@ -401,7 +395,7 @@ var LegendLayerView = Backbone.View.extend({
 		};
 		//reset svg width based on current width
 		if (!this.model.get('svgWidth') || attributes.svgWidth > this.model.get('svgWidth')){
-			this.model.set('svgWidth', attributes.svgWidth);
+			this.model.attributes.svgWidth = attributes.svgWidth;
 		};
 		//append a symbol for each class
 		var newline = template(attributes);
@@ -431,19 +425,19 @@ var LegendLayerView = Backbone.View.extend({
 			//calculate svg height
 			if (!isNaN(parseFloat(range[range.length-1]))){ //if range is a number, treat as prop symbol
 				//set max radius
-				view.model.set('maxRadius', parseFloat(range[range.length-1]));
+				view.model.attributes.maxRadius = parseFloat(range[range.length-1]);
 				//svg height should be whichever is larger, label heights or largest circle diameter
 				var heightArray = [
 					13 * range.length + 6, 
 					parseFloat(range[range.length-1]) * 2 + 6
 				];
 				heightArray.sort(function(a,b){ return b-a });
-				view.model.set('svgHeight', heightArray[0]);
+				view.model.attributes.svgHeight = heightArray[0];
 			} else {
-				view.model.set('svgHeight', 13 * range.length + 6);
+				view.model.attributes.svgHeight = 13 * range.length + 6;
 			};
 			//remove earlier svg width
-			view.model.set('svgWidth', 0);
+			view.model.attributes.svgWidth = 0;
 			//only build classes for classed classification
 			var y = 0;
 			if (domain.length > 2 || range.length > 2){
@@ -489,7 +483,7 @@ var LegendLayerView = Backbone.View.extend({
 				view.$el.find('path').attr('stroke-width', view.css['stroke-width']);
 			};
 			//set svg height
-			view.model.set('svgHeight', 16);
+			view.model.attributes.svgHeight = 16;
 			//set svg dimensions
 			view.setSvgDims();
 		},
@@ -507,7 +501,7 @@ var LegendLayerView = Backbone.View.extend({
 			//add legend line
 			view.append(size, domain, 0);
 			//set svg height
-			view.model.set('svgHeight', 20);
+			view.model.attributes.svgHeight = 20;
 			//set svg dimensions
 			view.setSvgDims();
 			//wrap in a heat-mappable div
@@ -526,9 +520,9 @@ var LegendLayerView = Backbone.View.extend({
 				size = 1;
 			};
 			//set radius for cx attribute
-			view.model.set('maxRadius', size);
+			view.model.attributes.maxRadius = size;
 			//set svg height
-			view.model.set('svgHeight', 16+size*2-2);
+			view.model.attributes.svgHeight = 16+size*2-2;
 			//add legend line
 			view.append(size, interval, 0);
 			//set svg dimensions
@@ -587,10 +581,7 @@ var Interaction = Backbone.Model.extend({
 	url: "php/interactions.php",
 	record: function(){
 		var date = new Date();
-		console.log(Date.now());
-		this.set({
-			timestamp: date.toUTCString()
-		});
+		this.attributes.timestamp = date.toUTCString();
 		this.save();
 	},
 	create: function(events){
@@ -758,10 +749,10 @@ var SearchModel = Backbone.Model.extend({
 		result: []
 	},
 	createSearch: function(){
-		this.set('fuse', new Fuse(this.get('allFeatures'), this.get('searchOptions')));
+		this.attributes.fuse = new Fuse(this.get('allFeatures'), this.get('searchOptions'));
 	},
 	search: function(){
-		this.set('result', this.get('fuse').search(this.get('term')));
+		this.attributes.result = this.get('fuse').search(this.get('term'));
 	}
 });
 
@@ -790,7 +781,7 @@ var SearchView = Backbone.View.extend({
 	selectFeature: function(e, result){},
 	search: function(e){
 		//define search term
-		this.model.set('term', $(e.target).val());
+		this.model.attributes.term = $(e.target).val();
 		//get results
 		this.model.search();
 		//reset html
@@ -1069,9 +1060,9 @@ var ReclassifyView = ReexpressInputView.extend({
 	setScale: function(){
 		var classificationModel = this.model.get('classificationModel') || classification.where({type: this.model.get('classificationType')})[0],
 			scale = classificationModel.scale(this.model.get('domain'), this.model.get('range'));
-		this.model.set('scale', scale);
+		this.model.attributes.scale = scale;
 		//need to reset layer model scale to update legend
-		this.model.attributes.layer.model.set('scale', scale);
+		this.model.attributes.layer.model.attributes.scale = scale;
 		this.resymbolize(scale);
 		this.setLegend();
 	},
@@ -1086,10 +1077,10 @@ var ReclassifyView = ReexpressInputView.extend({
 			classifyDiv.children('.class-breaks').hide();
 		} else {
 			//set classification type in model
-			view.model.set('classificationType', classificationType);
+			view.model.attributes.classificationType = classificationType;
 			//create new classification from classification type
 			var classificationModel = classification.where({type: classificationType})[0];
-			view.model.set('classificationModel', classificationModel);
+			view.model.attributes.classificationModel = classificationModel;
 			//if user defined classification, reset classification
 			if (classificationType == 'user defined'){
 				view.setNClasses(view, view.model.get('nClasses'));
@@ -1097,12 +1088,12 @@ var ReclassifyView = ReexpressInputView.extend({
 			} else {
 				//reset domain to undo user defined class breaks
 				if (typeof view.model.get('allvalues') != 'undefined'){
-					view.model.set('domain', view.model.get('allvalues'));
+					view.model.attributes.domain = view.model.get('allvalues');
 				};
 				//if unclassified, reset range to highest and lowest classes
 				if (classificationType == 'unclassed'){
 					var range = view.model.get('range');
-					view.model.set('range', [range[0], range[range.length-1]]);
+					view.model.attributes.range = [range[0], range[range.length-1]];
 					//set a new scale and reclassify
 					view.setScale();
 				} else {
@@ -1142,7 +1133,7 @@ var ReclassifyView = ReexpressInputView.extend({
 			};
 		} else {
 			//set the new number of classes
-			view.model.set('nClasses', nClasses);
+			view.model.attributes.nClasses = nClasses;
 			//trigger set classes event for recolor view to pick up on
 			view.model.trigger('setNClasses');
 			//set display of class break inputs
@@ -1167,7 +1158,7 @@ var ReclassifyView = ReexpressInputView.extend({
 				//if colorbrewer scale specified, set as range
 				newRange = colorbrewer[view.model.get('colorbrewer')][nClasses];
 			};
-			view.model.set('range', newRange);
+			view.model.attributes.range = newRange;
 			//if user defined classification, reset classification
 			if (view.model.get('classificationType') == 'user defined'){
 				view.setClassBreaks(view);
@@ -1209,7 +1200,7 @@ var ReclassifyView = ReexpressInputView.extend({
 				}
 			});
 			//set domain based on input values
-			view.model.set('domain', classBreaks);
+			view.model.attributes.domain = classBreaks;
 			view.setScale();
 		} else {
 			//set input values
@@ -1238,14 +1229,14 @@ var ReclassifyView = ReexpressInputView.extend({
 		//set model variables
 		var scale = this.model.get('scale'),
 			domain = this.model.get('domain');
-		this.model.set('allvalues', domain);
-		this.model.set('nClasses', scale.range().length);
-		this.model.set('range', scale.range());
-		this.model.set('min', domain[0]);
-		this.model.set('max', domain[domain.length-1]);
+		this.model.attributes.allvalues = domain;
+		this.model.attributes.nClasses = scale.range().length;
+		this.model.attributes.range = scale.range();
+		this.model.attributes.min = domain[0];
+		this.model.attributes.max = domain[domain.length-1];
 		//set classification model
 		var classificationModel = classification.where({type: this.model.get('classificationType')})[0];
-		this.model.set('classificationModel', classificationModel);
+		this.model.attributes.classificationModel = classificationModel;
 		//get class break template
 		var cbTemplate = _.template( $('#class-break-input-template').html() );
 		//set 8 class break inputs
@@ -1382,10 +1373,10 @@ var RecolorView = ReclassifyView.extend({
 		//set reclassify event listener
 		select.change(function(){
 			//set colorbrewer array
-			view.model.set('colorbrewer', $(this).val());
+			view.model.attributes.colorbrewer = $(this).val();
 			//set range to new color scale array
 			var range = colorbrewer[$(this).val()][nClasses];
-			view.model.set('range', range);
+			view.model.attributes.range = range;
 			//reset scale and reclassify
 			view.setScale();
 		});
@@ -1401,7 +1392,7 @@ var RecolorView = ReclassifyView.extend({
 			label = 'Symbol color';
 			this.$el.find('.recolor select').hide();
 		};
-		this.model.set('recolorLabel', label);
+		this.model.attributes.recolorLabel = label;
 	},
 	initialize: function(){
 		this.setLabelAttribute();
@@ -1426,7 +1417,7 @@ var RescaleView = RecolorView.extend({
 		} else if (techniqueType == 'dot' || techniqueType == 'isarithmic'){
 			label = 'Interval';
 		};
-		this.model.set('rescaleLabel', label);
+		this.model.attributes.rescaleLabel = label;
 	},
 	setEvents: function(){
 		var techniqueType = this.model.get('techniqueType'),
@@ -1449,7 +1440,7 @@ var RescaleView = RecolorView.extend({
 						max = parseFloat(maxInput.val()),
 						classificationType = view.$el.find('select[name=classification]').val() || model.get('classificationType');
 					if (!isNaN(min) && !isNaN(max)){
-						model.set('range', [min, max]);
+						model.attributes.range = [min, max];
 						view.setClassification(view, classificationType);
 					};
 				}, 500);
@@ -1501,7 +1492,7 @@ var LeafletMap = Backbone.View.extend({
 	},
 	render: function(){
 		this.$el.html("<div id='map'>");
-		this.model.set('allFeatures', []);
+		this.model.attributes.allFeatures = [];
 		return this;
 	},
 	addLayer: function(layerId){
@@ -1618,7 +1609,7 @@ var LeafletMap = Backbone.View.extend({
 		//translate topojson
 		if (dataLayerModel.attributes.type && dataLayerModel.get('type') == 'Topology'){
 			var featureCollection = view.topoToGeoJSON(dataLayerModel.get('transform'), dataLayerModel.get('arcs'), dataLayerModel.get('objects'), dataLayerModel.get('crs'));
-			dataLayerModel.set('features', featureCollection.features);
+			dataLayerModel.attributes.features = featureCollection.features;
 		};
 		//add new features to collection of all features
 		model.attributes.allFeatures = _.union(model.attributes.allFeatures, dataLayerModel.get('features'));
@@ -1664,7 +1655,7 @@ var LeafletMap = Backbone.View.extend({
 					//leaflet heatmap layer instance
 					var heatmapLayer = new HeatmapOverlay(heatmapConfig);
 					heatmapLayer.setData(data);
-					tModel.set('heatmapLayer', heatmapLayer);
+					tModel.attributes.heatmapLayer = heatmapLayer;
 				};
 			};
 			//set model classification, isarithms, or dots
@@ -1751,7 +1742,7 @@ var LeafletMap = Backbone.View.extend({
 		//instantiate model for data layer
 		var dataLayerModel = new DataLayerModel(dataLayer);
 		//handle for determining layer order
-		dataLayerModel.set('id', i);
+		dataLayerModel.attributes.id = i;
 		//get data and create thematic layers
 		dataLayerModel.on('sync', this.setTechniques, this);
 		if (dataLayer.source.indexOf('postgis:') != -1){
@@ -2441,7 +2432,7 @@ var LeafletMap = Backbone.View.extend({
 					if (layer.techniqueType == 'choropleth'){
 						//add colorbrewer scheme name if used
 						if (typeof technique.classes == 'string'){
-							resymbolizeModel.set('colorbrewer', technique.classes.split('.')[0]);
+							resymbolizeModel.attributes.colorbrewer = technique.classes.split('.')[0];
 						};
 						//instantiate appropriate views
 						var reclassifyView = new ReclassifyView({model: resymbolizeModel}),
@@ -2472,7 +2463,7 @@ var LeafletMap = Backbone.View.extend({
 						} else {
 							color = "#000";
 						};
-						resymbolizeModel.set('color', color);
+						resymbolizeModel.attributes.color = color;
 						//instantiate appropriate views
 						var reclassifyView = new ReclassifyView({model: resymbolizeModel}),
 							rescaleView = new RescaleView({model: resymbolizeModel}),
@@ -2610,7 +2601,7 @@ var LeafletMap = Backbone.View.extend({
 			keyboardZoomOffset: 0
 		};
 		var mapOptions = this.model.get('mapOptions');
-		this.model.set('mapOptions', _.extend(mapOptions, noInteraction));
+		this.model.attributes.mapOptions = _.extend(mapOptions, noInteraction);
 		//once map has been set, add interaction UI controls
 		this.on('mapset', function(){
 			var map = this.map;
@@ -2675,14 +2666,10 @@ var LeafletMap = Backbone.View.extend({
 		//configure map interactions
 		this.setInteractionControls();
 		//create Leaflet layers arrays
-		this.model.set({
-			leafletBaseLayers: [],
-			leafletDataLayers: []
-		});
-
+		this.model.attributes.leafletBaseLayers = [];
+		this.model.attributes.leafletDataLayers = [];
 		//instantiate map
 		this.map = L.map('map', this.model.get('mapOptions'));
-
 		//trigger mapset event
 		this.trigger('mapset');
 
@@ -2707,13 +2694,24 @@ var LeafletMap = Backbone.View.extend({
 
 function setMapView(options){
 	_options = options || _options;
+	if (!_options.attributes.hasOwnProperty('maps')){
+		_options.attributes.maps = {};
+	};
 	var Page = Backbone.DeepModel.extend(),
 		page = new Page();
 	page.attributes = _options.get('pages')[_page];
-	if (page.attributes.hasOwnProperty('library')){
-		var mapView = eval("new " + page.get('library') + "Map({model: page})");
-		mapView.render().setMap();
-	};
+	var mapView;
+	if (_options.attributes.maps.hasOwnProperty(_page)){
+		mapView = _options.get('maps')[_page];
+		mapView.render();
+		mapView.setMap();
+	} else {
+		if (page.attributes.hasOwnProperty('library')){
+			mapView = eval("new " + page.get('library') + "Map({model: page})");
+			_options.attributes.maps[_page] = mapView;
+			mapView.render().setMap();
+		};
+	}
 };
 
 /************** map config ****************/
@@ -2726,15 +2724,26 @@ var mapConfig = new MapConfig();
 mapConfig.on('sync', setMapView);
 mapConfig.fetch();
 
-//trigger next page
-document.on('>>', function(){
+function resetMap(){
+	_page = _pages[_pagesi]-1;
 	//reset map and questions
 	$('#q').removeAttr('style');
 	$('#m').show();
-	_page++;
 	if (_options.attributes.hasOwnProperty("pages") && _options.get('pages').length > _page){
 		setMapView();
 	};
+};
+
+//trigger next page
+document.on('>>', function(){
+	_pagesi++;
+	resetMap();
+});
+
+//trigger previous page
+document.on('<<', function(){
+	_pagesi--;
+	resetMap();
 });
 
 })();

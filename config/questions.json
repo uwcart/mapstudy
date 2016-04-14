@@ -1,6 +1,7 @@
 {
 	"pages": [
 		{
+			"page": 1,
 			"sets": [
 				{
 					"set": 1,
@@ -149,6 +150,7 @@
 			]
 		},
 		{
+			"page": 2,
 			"fullpage": true,
 			"sets": [
 				{
@@ -162,20 +164,34 @@
 								"type": "text",
 								"prompt": ""
 							}
-						},
+						}
+					],
+					"buttons": [
+						"next",
+						"back"
+					]
+				}
+			]
+		},
+		{
+			"page": 3,
+			"sets": [
+				{
+					"blocks": [
 						{
+							"reset-numbering": true,
 							"title": "",
 							"ask": "",
 							"description": "",
 							"input": {
-								"type": "matrix",
-								"options": [],
-								"items": []
+								"type": "paragraph",
+								"prompt": ""
 							}
 						}
 					],
 					"buttons": [
-						"next"
+						"next",
+						"back"
 					]
 				},
 				{
@@ -197,11 +213,11 @@
 			]
 		},
 		{
+			"page": 4,
 			"sets": [
 				{
 					"blocks": [
 						{
-							"reset-numbering": true,
 							"title": "",
 							"ask": "",
 							"description": "",
@@ -209,22 +225,18 @@
 								"type": "text",
 								"prompt": ""
 							}
-						},
-						{
-							"title": "",
-							"ask": "",
-							"description": "",
-							"input": {
-								"type": "matrix",
-								"options": [],
-								"items": []
-							}
 						}
 					],
 					"buttons": [
-						"next"
+						"next",
+						"back"
 					]
-				},
+				}
+			]
+		},
+		{
+			"page": 5,
+			"sets": [
 				{
 					"blocks": [
 						{
@@ -232,13 +244,34 @@
 							"ask": "",
 							"description": "",
 							"input": {
-								"type": "text"
+								"type": "text",
+								"prompt": ""
 							}
 						}
 					],
 					"buttons": [
-						"back",
-						"submit"
+						"next"
+					]
+				}
+			]
+		},
+		{
+			"page": 6,
+			"sets": [
+				{
+					"blocks": [
+						{
+							"title": "",
+							"ask": "",
+							"description": "",
+							"input": {
+								"type": "text",
+								"prompt": ""
+							}
+						}
+					],
+					"buttons": [
+						"next"
 					]
 				}
 			]

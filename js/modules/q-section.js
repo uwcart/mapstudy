@@ -6,7 +6,8 @@
 // 	document.trigger('>>');
 // })
 
-var _options = {};
+var _options = {},
+	questions;
 
 /*************** answer inputs *****************/
 
@@ -298,10 +299,6 @@ var Questions = Backbone.View.extend({
 		}
 	},
 	initialize: function(){
-		//reset question set counter
-		_set = 0;
-		this.$el.empty();
-		this.resize(this);
 		var view = this;
 		$(window).resize(function(){
 			view.resize(view);
@@ -409,11 +406,14 @@ var Questions = Backbone.View.extend({
 		var dataModel = new Data(_options.get('data'));
 		return true;
 	},
-	next: function(){
+	next: function(e){
+		console.log('next', e);
 		//record data for the current set
 		if (this.record('set')){
+			this.$el.empty();
 			//render the next set or page
 			_set++;
+			// console.log(_set, this.model.get('sets').length);
 			if (_set < this.model.get('sets').length){
 				this.render();
 			} else {
@@ -422,6 +422,7 @@ var Questions = Backbone.View.extend({
 		};
 	},
 	back: function(){
+		this.$el.empty();
 		//render the previous set or page
 		_set--;
 		if (_set > -1){
@@ -437,6 +438,7 @@ var Questions = Backbone.View.extend({
 	submit: function(){
 		//send all data to server for database or e-mail to admin
 		if (this.record('submit')){
+			this.$el.empty();
 			document.trigger('>>');
 		};
 	}
@@ -445,16 +447,22 @@ var Questions = Backbone.View.extend({
 /*************** set questions *****************/
 
 function setQuestions(options){
-	//set global _options variable to config model
-	_options = options || _options;
-	//add data object to hold all recorded data
-	_options.set('data', {
-		pid: pid
-	});
-	//load new questions for the current page
+	console.log(_pages, _page);
+	//reset question set counter
+	_set = 0;
+	if (typeof options != 'undefined'){
+		//set global _options variable to config model
+		_options = options;
+		//add data object to hold all recorded data
+		_options.set('data', {
+			pid: pid
+		});
+		questions = new Questions();
+	};
 	var Page = Backbone.DeepModel.extend(),
 		page = new Page(_options.get('pages')[_page]);
-	var questions = new Questions({model: page});
+	questions.model = page;
+	questions.resize(questions);
 	questions.render();
 };
 
@@ -468,12 +476,13 @@ var qConfig = new QuestionsConfig();
 qConfig.on('sync', setQuestions);
 qConfig.fetch();
 
-//trigger next page
-document.on('>>', function(){
-	_page++;
+function resetQuestions(){
 	if (_options.attributes.hasOwnProperty("pages") && _options.get('pages').length > _page){
 		setQuestions();
 	};
-});
+};
 
+//trigger next page
+document.on('>>', resetQuestions);
+document.on('<<', resetQuestions);
 })();
