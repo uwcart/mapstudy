@@ -972,13 +972,11 @@ var ReexpressModel = Backbone.Model.extend({
 		//set other attributes based on layer
 		if (this.attributes.layer){
 			var layer = this.get('layer');
-			this.set({
-				layerName: layer.layerName,
-				layerNameClass: layer.className,
-				techniqueType: layer.techniqueType,
-				techniqueTypeClass: layer.techniqueType.replace(/\s/g, '-'),
-				layerId: layer._leaflet_id
-			});
+			this.attributes.layerName = layer.layerName;
+			this.attributes.layerNameClass = layer.className;
+			this.attributes.techniqueType = layer.techniqueType;
+			this.attributes.techniqueTypeClass = layer.techniqueType.replace(/\s/g, '-');
+			this.attributes.layerId = layer._leaflet_id;
 		};
 	}
 });
@@ -2422,11 +2420,9 @@ var LeafletMap = Backbone.View.extend({
 						layer: layer
 					});
 					if (layer.techniqueType != 'heat'){
-						resymbolizeModel.set({
-							classificationType: technique.classification,
-							domain: getAllAttributeValues(layer.toGeoJSON().features, expressedAttribute),
-							scale: layer.model.get('scale')
-						});
+						resymbolizeModel.attributes.classificationType = technique.classification;
+						resymbolizeModel.attributes.domain = getAllAttributeValues(layer.toGeoJSON().features, expressedAttribute);
+						resymbolizeModel.attributes.scale = layer.model.get('scale');
 					};
 
 					if (layer.techniqueType == 'choropleth'){
@@ -2662,9 +2658,11 @@ var LeafletMap = Backbone.View.extend({
 			};
 		};
 	},
-	setMap: function(){
-		//configure map interactions
-		this.setInteractionControls();
+	setMap: function(newmap){
+		if (newmap){
+			//configure map interactions
+			this.setInteractionControls();
+		};
 		//create Leaflet layers arrays
 		this.model.attributes.leafletBaseLayers = [];
 		this.model.attributes.leafletDataLayers = [];
@@ -2685,8 +2683,10 @@ var LeafletMap = Backbone.View.extend({
 		var dataLayers = this.model.get('dataLayers');
 		_.each(dataLayers, this.setDataLayer, this);
 
-		//set interaction logging
-		this.logInteractions();
+		if (newmap){
+			//set interaction logging
+			this.logInteractions();
+		};
 	}
 });
 
@@ -2704,12 +2704,12 @@ function setMapView(options){
 	if (_options.attributes.maps.hasOwnProperty(_page)){
 		mapView = _options.get('maps')[_page];
 		mapView.render();
-		mapView.setMap();
+		mapView.setMap(false);
 	} else {
 		if (page.attributes.hasOwnProperty('library')){
 			mapView = eval("new " + page.get('library') + "Map({model: page})");
 			_options.attributes.maps[_page] = mapView;
-			mapView.render().setMap();
+			mapView.render().setMap(true);
 		};
 	}
 };

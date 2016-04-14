@@ -483,6 +483,8 @@ function resetQuestions(){
 };
 
 //trigger next page
-document.on('>>', resetQuestions);
-document.on('<<', resetQuestions);
+document.on({
+	'>>': resetQuestions,
+	'<<': resetQuestions
+});
 })();
