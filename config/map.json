@@ -1,5 +1,6 @@
 {
 	"pages": [
+		{},
 		{
 			"page": 1,
 			"library": "Leaflet",
@@ -98,7 +99,6 @@
 				}]
 			}]
 		},
-		{},
 		{
 			"page": 3,
 			"library": "Leaflet",
