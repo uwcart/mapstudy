@@ -100,6 +100,8 @@ _.extend(document, Backbone.Events);
 			};
 			//set new page
 			_page = _pages[0]-1;
+			//trigger map and question loading
+			document.trigger('init');
 		},
 		chooseCondition: function(){
 			var choiceMin = 0,

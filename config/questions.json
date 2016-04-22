@@ -259,6 +259,19 @@
 					]
 				}
 			]
+		},
+		{
+			"page": 7,
+			"fullpage": true,
+			"sets": [
+				{
+					"blocks": [
+						{
+							"ask": "Thank you for taking this survey. You really rock."
+						}
+					]
+				}
+			]
 		}
 	]
 }

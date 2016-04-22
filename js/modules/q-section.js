@@ -31,8 +31,6 @@ var TextInputView = Backbone.View.extend({
 	render: function(){
 		this.$el.append(this.template({label: this.model.get('label')}));
 		this.required();
-		//assign any value stored in _options data
-
 	}
 });
 
@@ -57,8 +55,6 @@ var CheckboxesInputView = TextInputView.extend({
 		var items = this.model.get('items');
 		_.each(items, this.appendItem, this);
 		this.required();
-		//assign any values stored in _options data
-		
 	}
 });
 
@@ -88,8 +84,6 @@ var RadiosInputView = CheckboxesInputView.extend({
 			this.appendOptionText(option, i);
 		}, this);
 		this.required();
-		//assign any values stored in _options data
-		
 	}
 });
 
@@ -110,8 +104,6 @@ var DropdownInputView = RadiosInputView.extend({
 		//append options to select
 		_.each(options, this.appendOption, this);
 		this.required();
-		//assign any values stored in _options data
-		
 	}
 });
 
@@ -136,6 +128,7 @@ var MatrixInputView = RadiosInputView.extend({
 		_.each(options, function(option){
 			this.appendOption(option, i, label);
 		}, this);
+		this.$el.find('span.'+label).html(item.text);
 	},
 	render: function(){
 		//append table to block div
@@ -148,8 +141,6 @@ var MatrixInputView = RadiosInputView.extend({
 		var items = this.model.get('items');
 		_.each(items, this.appendItem, this);
 		this.required();
-		//assign any values stored in _options data
-		
 	}
 });
 
@@ -266,7 +257,10 @@ var Data = Backbone.Model.extend({
 	url: 'php/data.php',
 	record: function(){
 		var date = new Date();
-		this.set('updatetime', date.toUTCString());
+		this.set('updatetime', {
+			name: 'updatetime',
+		 	value: date.toUTCString()
+		});
 		this.save();
 	},
 	initialize: function(){
@@ -338,10 +332,10 @@ var Questions = Backbone.View.extend({
 		_.each(qset.blocks, this.renderBlock, this);
 		//assign any values stored in data
 		var data = _options.get('data');
-		for (var label in data){
-			this.$el.find('input[type=text][name="'+label+'"], input[type=hidden][name="'+label+'"], textarea[name="'+label+'"], select[name="'+label+'"]').val(data[label]);
-			this.$el.find('input[type=checkbox][name="'+label+'"][value="'+data[label]+'"], input[type=radio][name="'+label+'"][value="'+data[label]+'"]').attr('checked', 'checked');
-		};
+		_.each(data, function(d){
+			this.$el.find('input[type=text][name="'+d.name+'"], input[type=hidden][name="'+d.name+'"], textarea[name="'+d.name+'"], select[name="'+d.name+'"]').val(d.value);
+			this.$el.find('input[type=checkbox][name="'+d.name+'"][value="'+d.value+'"], input[type=radio][name="'+d.name+'"][value="'+d.value+'"]').attr('checked', 'checked');
+		}, this);
 		//re-sort rank inputs
 		$('.ui-sortable').each(function(){
 			var items = [], sortable = $(this);
@@ -366,7 +360,11 @@ var Questions = Backbone.View.extend({
 		this.renderButtons(qset.buttons);
 	},
 	addData: function(input){
-		_options.attributes.data[input.name] = input.value;
+		var askText = $('[name='+input.name+']').parents('.block').find('.ask').html(),
+			itemText = $('[name='+input.name+']').parent().find('.item').html();
+		input.ask = typeof itemText == 'undefined' ? askText : askText + '_' + itemText;
+		input.page = _page+1;
+		_options.attributes.data[input.name] = input;
 	},
 	validate: function(){
 		var go = true;
@@ -407,13 +405,11 @@ var Questions = Backbone.View.extend({
 		return true;
 	},
 	next: function(e){
-		console.log('next', e);
 		//record data for the current set
 		if (this.record('set')){
 			this.$el.empty();
 			//render the next set or page
 			_set++;
-			// console.log(_set, this.model.get('sets').length);
 			if (_set < this.model.get('sets').length){
 				this.render();
 			} else {
@@ -447,7 +443,6 @@ var Questions = Backbone.View.extend({
 /*************** set questions *****************/
 
 function setQuestions(options){
-	console.log(_pages, _page);
 	//reset question set counter
 	_set = 0;
 	if (typeof options != 'undefined'){
@@ -455,7 +450,10 @@ function setQuestions(options){
 		_options = options;
 		//add data object to hold all recorded data
 		_options.set('data', {
-			pid: pid
+			pid: {
+				name: 'pid',
+				value: pid
+			}
 		});
 		questions = new Questions();
 	};
@@ -468,13 +466,15 @@ function setQuestions(options){
 
 /************** questions config **************/
 
-var QuestionsConfig = Backbone.DeepModel.extend({
-	url: "config/questions.json"
-});
-//get questions configuration options
-var qConfig = new QuestionsConfig();
-qConfig.on('sync', setQuestions);
-qConfig.fetch();
+function config(){
+	var QuestionsConfig = Backbone.DeepModel.extend({
+		url: "config/questions.json"
+	});
+	//get questions configuration options
+	var qConfig = new QuestionsConfig();
+	qConfig.on('sync', setQuestions);
+	qConfig.fetch();
+};
 
 function resetQuestions(){
 	if (_options.attributes.hasOwnProperty("pages") && _options.get('pages').length > _page){
@@ -487,4 +487,6 @@ document.on({
 	'>>': resetQuestions,
 	'<<': resetQuestions
 });
+
+document.on('init', config);
 })();

@@ -2716,13 +2716,15 @@ function setMapView(options){
 
 /************** map config ****************/
 
-var MapConfig = Backbone.DeepModel.extend({
-	url: "config/map.json"
-});
-//get map configuration options
-var mapConfig = new MapConfig();
-mapConfig.on('sync', setMapView);
-mapConfig.fetch();
+function config(){
+	var MapConfig = Backbone.DeepModel.extend({
+		url: "config/map.json"
+	});
+	//get map configuration options
+	var mapConfig = new MapConfig();
+	mapConfig.on('sync', setMapView);
+	mapConfig.fetch();
+};
 
 function resetMap(){
 	_page = _pages[_pagesi]-1;
@@ -2745,5 +2747,7 @@ document.on('<<', function(){
 	_pagesi--;
 	resetMap();
 });
+
+document.on('init', config);
 
 })();
