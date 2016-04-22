@@ -251,7 +251,7 @@
 
         <script type="text/template" id="checkbox-input-template">
             <div class="<%= label %>">
-                <input type="checkbox" value="1" name="<%= label %>"><%= text %>
+                <input type="checkbox" value="1" name="<%= label %>"><span class="item"><%= text %></span>
             </div>
         </script>
 
@@ -278,7 +278,7 @@
         </script>
 
         <script type="text/template" id="matrix-input-template">
-            <td class="option"><input type="radio" value="<%= value %>" name="<%= label %>"></td>
+            <td class="option"><span class="<%= label %> item" style="display:none;"></span><input type="radio" value="<%= value %>" name="<%= label %>"></td>
         </script>
 
         <script type="text/template" id="dropdown-input-template">
@@ -294,7 +294,7 @@
         <script type="text/template" id="rank-input-template">
             <div class="rank-item <%= label %>">
                 <span class="value"><%= value %></span>
-                <span class="text"><%= text %></span>
+                <span class="item"><%= text %></span>
                 <input type="hidden" name="<%= label %>" value="<%= value %>">
             </div>
         </script>

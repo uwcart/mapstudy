@@ -756,9 +756,9 @@ This config file holds the configuration options necessary to access the databas
 
 A database is the recommended way to store the form and interaction data created by the MapStudy application. The framework supports database connections through the PHP PDO (PHP Data Objects) interface. Cubrid, FreeTDS (SyBase and Microsoft SQL Server), Firebird, IBM DB2, IBM Informix Dynamic Server, MySQL, Oracle Call Interface, ODBC v3, PostgreSQL, SQLite, Microsoft Azure SQL Database, and 4D databases are supported. The application will automatically generate the following tables:
 
-- **Participant Data**: One data table will be generated per participant to hold that participant's answers, named using the convention `user012345678_data` where `012345678` is the participant ID. Each row will correspond to a question block. The first column will be the question labels as defined in questions.json or automatically generated for the question if no label is provided (see label generation for [blocks](#questionssetsiblocksiilabel) and [items](#questionssetsiblocksiiinputoptionsiiilabel)), the second column will be the text of each question, and the third column will be the answers provided by the participant.
+- **Participant Data**: One data table will be generated per participant to hold that participant's answers, named using the convention `p012345678_data` where `012345678` is the participant ID. Each row will correspond to a question block. The first column will be the question labels as defined in questions.json or automatically generated for the question if no label is provided (see label generation for [blocks](#questionssetsiblocksiilabel) and [items](#questionssetsiblocksiiinputoptionsiiilabel)), the second column will be the text of each question, and the third column will be the answers provided by the participant.
 
-- **Participant Interactions**: One interactions table will be generated per participant, named using the convention `user012345678_interactions` where `012345678` is a randomly-generated participant ID. The table will be formatted as follows:
+- **Participant Interactions**: One interactions table will be generated per participant, named using the convention `p012345678_interactions` where `012345678` is a randomly-generated participant ID. The table will be formatted as follows:
 
 <table>
 	<tbody>
