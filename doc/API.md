@@ -692,7 +692,7 @@ An array of input items. Required by `checkboxes`, `matrix`, and `rank` input ty
 
 The text to display to the participant for the item. Required if `items` is included.
 
-#### questions.sets[i].blocks[ii].input.options[iii].label
+#### questions.sets[i].blocks[ii].input.items[iii].label
 
 	-"label"-: text string (<= 20 characters)
 
