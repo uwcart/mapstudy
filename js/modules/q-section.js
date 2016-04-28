@@ -55,6 +55,12 @@ var CheckboxesInputView = TextInputView.extend({
 		var items = this.model.get('items');
 		_.each(items, this.appendItem, this);
 		this.required();
+		this.$el.find('input').click(function(){
+			if (!$(this).is(':checked')){
+				_options.attributes.data[$(this).attr('name')].value = '';
+				_options.attributes.data[$(this).attr('name')].tmsp = Date.now();
+			};			
+		});
 	}
 });
 
@@ -364,6 +370,7 @@ var Questions = Backbone.View.extend({
 			itemText = $('[name='+input.name+']').parent().find('.item').html();
 		input.ask = typeof itemText == 'undefined' ? askText : askText + '_' + itemText;
 		input.page = _page+1;
+		input.tmsp = Date.now();
 		_options.attributes.data[input.name] = input;
 	},
 	validate: function(){
@@ -446,6 +453,7 @@ function setQuestions(options){
 	//reset question set counter
 	_set = 0;
 	if (typeof options != 'undefined'){
+		var dataModel = new Data(options.attributes);
 		//set global _options variable to config model
 		_options = options;
 		//add data object to hold all recorded data

@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"choice",
+				"choiceMax"
+			],
+			[
 				"colu",
 				"columns"
 			],
@@ -510,10 +514,6 @@
 			[
 				"ex",
 				"expressedAttribute"
-			],
-			[
-				"attribute",
-				"attributeDiv"
 			]
 		]
 	},
@@ -528,10 +528,18 @@
 			}
 		},
 		{
+			"file": "js/modules/app.js",
+			"settings":
+			{
+				"buffer_size": 3792,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 95349,
+				"buffer_size": 95408,
 				"line_ending": "Windows"
 			}
 		},
@@ -539,7 +547,7 @@
 			"file": "js/modules/q-section.js",
 			"settings":
 			{
-				"buffer_size": 13753,
+				"buffer_size": 13952,
 				"line_ending": "Windows"
 			}
 		},
@@ -555,7 +563,7 @@
 			"file": "php/data.php",
 			"settings":
 			{
-				"buffer_size": 4868,
+				"buffer_size": 5451,
 				"line_ending": "Windows"
 			}
 		},
@@ -584,10 +592,10 @@
 			}
 		},
 		{
-			"file": "js/modules/app.js",
+			"file": "config/conditions.json",
 			"settings":
 			{
-				"buffer_size": 3725,
+				"buffer_size": 164,
 				"line_ending": "Windows"
 			}
 		}
@@ -758,9 +766,19 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": false,
+		"case_sensitive": true,
 		"find_history":
 		[
+			"updatetime",
+			"_options.attributes.data",
+			"Data",
+			"_options.attributes.",
+			"Data",
+			"console",
+			"_page",
+			"renderButtons",
+			"_page",
+			"setCondition",
 			"data_page_",
 			"UPDATE",
 			"data",
@@ -878,17 +896,7 @@
 			"interactions.filter.tool",
 			"FilterModel",
 			"slider",
-			"filter:",
-			"SearchModel",
-			"polygonToPoint",
-			"setDataLayers",
-			"Search",
-			"console",
-			"console.log",
-			"console",
-			"SearchModel",
-			"console",
-			"id"
+			"filter:"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1034,7 +1042,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 5,
 			"sheets":
 			[
 				{
@@ -1067,18 +1075,18 @@
 				},
 				{
 					"buffer": 1,
-					"file": "js/modules/m-section.js",
+					"file": "js/modules/app.js",
 					"settings":
 					{
-						"buffer_size": 95349,
+						"buffer_size": 3792,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								93866,
-								93866
+								2479,
+								2479
 							]
 						],
 						"settings":
@@ -1088,25 +1096,25 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 55703.0,
+						"translation.y": 1260.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "js/modules/q-section.js",
+					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 13753,
+						"buffer_size": 95408,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7452,
-								7452
+								95401,
+								95373
 							]
 						],
 						"settings":
@@ -1116,13 +1124,41 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4931.0,
+						"translation.y": 56487.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
+					"file": "js/modules/q-section.js",
+					"settings":
+					{
+						"buffer_size": 13952,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10756,
+								10756
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7231.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
 					"file": "doc/API.md",
 					"settings":
 					{
@@ -1149,19 +1185,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 5,
 					"file": "php/data.php",
 					"settings":
 					{
-						"buffer_size": 4868,
+						"buffer_size": 5451,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4291,
-								4291
+								2937,
+								2947
 							]
 						],
 						"settings":
@@ -1171,13 +1207,13 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2491.0,
+						"translation.y": 51.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 6,
 					"file": "php/interactions.php",
 					"settings":
 					{
@@ -1203,7 +1239,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 7,
 					"file": "config/styles.json",
 					"settings":
 					{
@@ -1230,7 +1266,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 8,
 					"file": "config/param.php",
 					"settings":
 					{
@@ -1256,24 +1292,24 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "js/modules/app.js",
+					"buffer": 9,
+					"file": "config/conditions.json",
 					"settings":
 					{
-						"buffer_size": 3725,
+						"buffer_size": 164,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								142,
-								142
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
