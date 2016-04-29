@@ -575,13 +575,13 @@ var LegendLayerView = Backbone.View.extend({
 var Interaction = Backbone.Model.extend({
 	defaults: {
 		interaction: "",
-		timestamp: "",
 		pid: pid
 	},
 	url: "php/interactions.php",
 	record: function(){
-		var date = new Date();
-		this.attributes.timestamp = date.toUTCString();
+		this.attributes.tmsp = Date.now();
+		this.attributes.page = _page+1;
+		this.attributes.set = _set+1;
 		this.save();
 	},
 	create: function(events){
@@ -733,9 +733,6 @@ var UnderlayControlModel = Backbone.Model.extend({
 //view for underlay control
 var UnderlayControlView = OverlayControlView.extend({
 	el: '.underlay-control-container',
-	events: {
-		'click input': 'overlay'
-	},
 	template: _.template( $('#underlay-control-template').html() )
 });
 
@@ -791,7 +788,7 @@ var SearchView = Backbone.View.extend({
 		_.each(this.model.get('result'), function(result, i){
 			var resultId = result.properties.name.replace(/[\.\s#]/g, '') + result.id;
 			//limit to top 10 results
-			if (i < 10 + resultIds.length && $.inArray(resultId, resultIds) == -1){
+			if ($('.result').length < 10 && $.inArray(resultId, resultIds) == -1){
 				featureId = i + resultId;
 				//append a new line for each result
 				this.$el.children('#search-results-box').append(this.template({featureName: result.properties.name, featureId: featureId}));
@@ -1309,7 +1306,7 @@ var RecolorView = ReclassifyView.extend({
 			model = this.model;
 		if (techniqueType == 'choropleth'){
 			this.$el.find('.recolor input').hide();
-			this.setColorSwatches();
+			this.setColorSwatches(true);
 		} else if (techniqueType == 'proportional symbol'){
 			var colorInput = this.$el.find('.recolor input');
 			//hacky way to set default color of input if color is not a hex value
@@ -1340,7 +1337,9 @@ var RecolorView = ReclassifyView.extend({
 			});
 		};
 	},
-	setColorSwatches: function(){
+	setColorSwatches: function(init){
+		//track whether first call for setting change event
+		init = init || false;
 		//get variables
 		var view = this,
 			scale = this.model.get('scale'),
@@ -1368,16 +1367,18 @@ var RecolorView = ReclassifyView.extend({
 				});
 			};
 		};
-		//set reclassify event listener
-		select.change(function(){
-			//set colorbrewer array
-			view.model.attributes.colorbrewer = $(this).val();
-			//set range to new color scale array
-			var range = colorbrewer[$(this).val()][nClasses];
-			view.model.attributes.range = range;
-			//reset scale and reclassify
-			view.setScale();
-		});
+		if (init){
+			//set reclassify event listener
+			select.change(function(){
+				//set colorbrewer array
+				view.model.attributes.colorbrewer = $(this).val();
+				//set range to new color scale array
+				var range = colorbrewer[$(this).val()][nClasses];
+				view.model.attributes.range = range;
+				//reset scale and reclassify
+				view.setScale();
+			});
+		};
 	},
 	setLabelAttribute: function(){
 		var techniqueType = this.model.get('techniqueType'),
@@ -1516,33 +1517,6 @@ var LeafletMap = Backbone.View.extend({
 		};
 		//add to array of base layers
 		this.model.attributes.leafletBaseLayers.push(leafletBaseLayer);
-		//add to underlay control
-		var view = this,
-			map = this.map;
-		var underlayControlModel = new UnderlayControlModel({
-			layerName: baseLayer.name,
-			layerId: layerId,
-		});
-		var underlayControlView = new UnderlayControlView({model: underlayControlModel});
-		//toggleLayer function must be defined for leaflet view
-		underlayControlView.toggleLayer = function(layerId, addLayer){
-			//turn clicked layer on
-			if (!map._layers[layerId] && view.offLayers[layerId]){
-				view.addLayer(layerId);
-			};
-			//turn other layers off
-			$('.underlay-control-layer').each(function(){
-				var thisId = $(this).attr('id').split('-')[2];
-				if (layerId != thisId && map._layers[thisId]){
-					view.removeLayer(thisId);
-				};
-			});
-		};
-		underlayControlView.render();
-		//check the layer that is on the map
-		if (this.map._layers[layerId]){
-			$('#underlay-layer-'+layerId+' input').prop('checked', true);
-		};
 		//trigger done event
 		if (i == this.model.get('baseLayers').length-1){ this.trigger('baseLayersDone') };
 	},
@@ -1856,7 +1830,19 @@ var LeafletMap = Backbone.View.extend({
 	setMapInteractions: {
 		zoom: function(controlView, leafletView){
 			var map = leafletView.map,
-				zoomOptions = leafletView.model.get('interactions').zoom;
+				zoomOptions = leafletView.model.get('interactions').zoom,
+				autozoom = false;
+			//event listener to log pan interaction
+			function triggerZoom(e){
+				if (!autozoom){
+					leafletView.trigger('zoom');
+				};
+			};
+			//set timer to avoid autopan triggering	
+			leafletView.on('search', function(){
+				autozoom = true;
+				setTimeout(function(){ autozoom = false }, 500);
+			});
 			//object to reference zoom interface options to Leaflet methods
 			var interfaceMethods = {
 				touch: map.touchZoom,
@@ -1879,6 +1865,7 @@ var LeafletMap = Backbone.View.extend({
 						interfaceMethods[method].enable();
 					}
 				};
+				map.on('zoomstart', triggerZoom);
 			};
 			controlView.removeInteraction = function(){
 				map.touchZoom.disable();
@@ -1886,6 +1873,7 @@ var LeafletMap = Backbone.View.extend({
 				map.doubleClickZoom.disable();
 				map.boxZoom.disable();
 				map.keyboard._setZoomOffset(0);
+				map.off('zoomstart', triggerZoom);
 			};
 			//if widget is not set to false, add it
 			if (!zoomOptions.interface || !zoomOptions.interface.hasOwnProperty('widget') || zoomOptions.interface.widget){
@@ -1914,7 +1902,7 @@ var LeafletMap = Backbone.View.extend({
 				panOptions = leafletView.model.get('interactions').pan,
 				autopan = false;
 			//event listener to log pan interaction
-			function triggerPan(){
+			function triggerPan(e){
 				if (!autopan){
 					leafletView.trigger('pan');
 				};
@@ -1937,7 +1925,7 @@ var LeafletMap = Backbone.View.extend({
 				if (!leafletView.interactions.retrieve || leafletView.interactions.retrieve == 'inactive'){
 					$('.leaflet-interactive').css('cursor', 'grab');
 				};
-				map.on('moveend', triggerPan);
+				map.on('dragend', triggerPan);
 			};
 			controlView.removeInteraction = function(){
 				map.dragging.disable();
@@ -1946,7 +1934,7 @@ var LeafletMap = Backbone.View.extend({
 				if (!leafletView.interactions.retrieve || leafletView.interactions.retrieve == 'inactive'){
 					$('.leaflet-interactive').css('cursor', 'default');
 				};
-				map.off('moveend', triggerPan);
+				map.off('dragend', triggerPan);
 			};
 			//if widget is not set to false, add it
 			if (!panOptions.interface || !panOptions.interface.hasOwnProperty('widget') || panOptions.interface.widget){
@@ -1967,6 +1955,7 @@ var LeafletMap = Backbone.View.extend({
 						case 'pan-down':
 							map.panBy([0, 80]); break;
 					};
+					triggerPan();
 				};
 			};
 			$('.pan-control-container').hide();
@@ -2063,10 +2052,44 @@ var LeafletMap = Backbone.View.extend({
 		},
 		underlay: function(controlView, leafletView){
 			var map = leafletView.map;
-			//add overlay control
+			//add underlay control
 			var UnderlayControl = leafletView.CustomControl('underlay', 'bottomleft');
 			var underlayControl = new UnderlayControl();
 			map.addControl(underlayControl);
+
+			//add to underlay control
+			leafletView.on('baseLayersDone', function(){
+				_.each(leafletView.model.get('leafletBaseLayers'), function(baseLayer){
+					var layerId = baseLayer._leaflet_id;
+					var underlayControlModel = new UnderlayControlModel({
+						layerName: baseLayer.layerName,
+						layerId: layerId,
+					});
+					var underlayControlView = new UnderlayControlView({model: underlayControlModel});
+					//toggleLayer function must be defined for leaflet view
+					underlayControlView.toggleLayer = function(layerId, addLayer){
+						//turn clicked layer on
+						if (!map._layers[layerId] && leafletView.offLayers[layerId]){
+							leafletView.addLayer(layerId);
+						};
+						//turn other layers off
+						$('.underlay-control-layer').each(function(){
+							var thisId = $(this).attr('id').split('-')[2];
+							if (layerId != thisId && map._layers[thisId]){
+								leafletView.removeLayer(thisId);
+							};
+						});
+						//trigger underlay interaction
+						leafletView.trigger('underlay');
+					};
+					underlayControlView.render();
+					//check the layer that is on the map
+					if (map._layers[layerId]){
+						$('#underlay-layer-'+layerId+' input').prop('checked', true);
+					};
+				}, this);
+			}, this);
+
 			return controlView;
 		},
 		search: function(controlView, leafletView){
@@ -2109,6 +2132,8 @@ var LeafletMap = Backbone.View.extend({
 						};
 					}
 				}, this);
+				//record search interaction
+				leafletView.trigger('search');
 			};
 			//replace search model when mapped layers change
 			function setSearchInput(){
@@ -2639,11 +2664,11 @@ var LeafletMap = Backbone.View.extend({
 	logInteractions: function(){
 		//designate events to listen to with contexts for each interaction
 		var interactionCreation = {
-			zoom: {zoomstart: this.map},
+			zoom: {zoom: this},
 			pan: {pan: this},
 			retrieve: {retrieve: this},
 			overlay: {overlay: this},
-			underlay: {baselayerchange: this.map},
+			underlay: {underlay: this},
 			search: {search: this},
 			filter: {filter: this},
 			reexpress: {reexpress: this},
@@ -2693,6 +2718,10 @@ var LeafletMap = Backbone.View.extend({
 /************** set map view ****************/
 
 function setMapView(options){
+	if (typeof options != 'undefined'){
+		var initTables = new Interaction(options.attributes);
+		initTables.record();
+	};
 	_options = options || _options;
 	if (!_options.attributes.hasOwnProperty('maps')){
 		_options.attributes.maps = {};
