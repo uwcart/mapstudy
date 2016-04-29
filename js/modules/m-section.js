@@ -575,13 +575,13 @@ var LegendLayerView = Backbone.View.extend({
 var Interaction = Backbone.Model.extend({
 	defaults: {
 		interaction: "",
-		timestamp: "",
 		pid: pid
 	},
 	url: "php/interactions.php",
 	record: function(){
-		var date = new Date();
-		this.attributes.timestamp = date.toUTCString();
+		this.attributes.tmsp = Date.now();
+		this.attributes.page = _page+1;
+		this.attributes.set = _set+1;
 		this.save();
 	},
 	create: function(events){
@@ -2693,6 +2693,10 @@ var LeafletMap = Backbone.View.extend({
 /************** set map view ****************/
 
 function setMapView(options){
+	if (typeof options != 'undefined'){
+		var initTables = new Interaction(options.attributes);
+		initTables.record();
+	};
 	_options = options || _options;
 	if (!_options.attributes.hasOwnProperty('maps')){
 		_options.attributes.maps = {};

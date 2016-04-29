@@ -5,7 +5,6 @@ require('../config/param.php');
 
 $post_data = file_get_contents("php://input");
 $post_data = json_decode($post_data, TRUE);
-// echo var_dump($post_data);
 
 //insert data into database if used
 if (isset($dbtype, $dbhost, $dbport, $dbname, $dbuser, $dbpassword)){
@@ -20,7 +19,7 @@ if (isset($dbtype, $dbhost, $dbport, $dbname, $dbuser, $dbpassword)){
 
 		function makeParticipantTable($dbh, $pid){
 			//create participant data table if it doesn't exist
-			$sql = "CREATE TABLE IF NOT EXISTS p".$pid."_data (label text primary key, question text, answer text, timestp timestamp);";
+			$sql = "CREATE TABLE IF NOT EXISTS p".$pid."_data (label text primary key, question text, answer text, timestp text);";
 			try {
 				$stmt = $dbh->prepare($sql);
 				$stmt->execute();
@@ -32,7 +31,6 @@ if (isset($dbtype, $dbhost, $dbport, $dbname, $dbuser, $dbpassword)){
 
 		function makeBigTable($dbh, $tname, $cols){
 			$cols = implode(' text, ', $cols);
-			// echo $cols;
 			//create data table if it doesn't exist
 			$sql = "CREATE TABLE IF NOT EXISTS $tname (pid integer primary key, lastupdate timestamp, $cols text);";
 			try {
@@ -65,7 +63,6 @@ if (isset($dbtype, $dbhost, $dbport, $dbname, $dbuser, $dbpassword)){
 			try {
 				$stmt = $dbh->prepare($sql);
 				$stmt->execute($vs);
-				echo "success!";
 			} catch (PDOException $e) {
 				echo 'SQL Query: ', $sql;
 				echo 'Error: ' . $e->getMessage();
@@ -183,12 +180,13 @@ if (isset($dbtype, $dbhost, $dbport, $dbname, $dbuser, $dbpassword)){
 					}
 
 					//insert data into participant data table
-					$sql = "UPDATE p".$pid."_data SET (question, answer) = (:question, :answer) WHERE label = :label;";
+					$sql = "UPDATE p".$pid."_data SET (question, answer, timestp) = (:question, :answer, :tmsp) WHERE label = :label;";
 					try {
 						$stmt = $dbh->prepare($sql);
 						$stmt->bindParam(':label', $column);
 						$stmt->bindParam(':question', $text);
 						$stmt->bindParam(':answer', $value);
+						$stmt->bindParam(':tmsp', $tmsp);
 						$stmt->execute();
 					} catch (PDOException $e) {
 						echo 'SQL Query: ', $sql;
