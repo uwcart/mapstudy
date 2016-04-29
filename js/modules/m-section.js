@@ -733,9 +733,6 @@ var UnderlayControlModel = Backbone.Model.extend({
 //view for underlay control
 var UnderlayControlView = OverlayControlView.extend({
 	el: '.underlay-control-container',
-	events: {
-		'click input': 'overlay'
-	},
 	template: _.template( $('#underlay-control-template').html() )
 });
 
@@ -1516,33 +1513,6 @@ var LeafletMap = Backbone.View.extend({
 		};
 		//add to array of base layers
 		this.model.attributes.leafletBaseLayers.push(leafletBaseLayer);
-		//add to underlay control
-		var view = this,
-			map = this.map;
-		var underlayControlModel = new UnderlayControlModel({
-			layerName: baseLayer.name,
-			layerId: layerId,
-		});
-		var underlayControlView = new UnderlayControlView({model: underlayControlModel});
-		//toggleLayer function must be defined for leaflet view
-		underlayControlView.toggleLayer = function(layerId, addLayer){
-			//turn clicked layer on
-			if (!map._layers[layerId] && view.offLayers[layerId]){
-				view.addLayer(layerId);
-			};
-			//turn other layers off
-			$('.underlay-control-layer').each(function(){
-				var thisId = $(this).attr('id').split('-')[2];
-				if (layerId != thisId && map._layers[thisId]){
-					view.removeLayer(thisId);
-				};
-			});
-		};
-		underlayControlView.render();
-		//check the layer that is on the map
-		if (this.map._layers[layerId]){
-			$('#underlay-layer-'+layerId+' input').prop('checked', true);
-		};
 		//trigger done event
 		if (i == this.model.get('baseLayers').length-1){ this.trigger('baseLayersDone') };
 	},
@@ -1914,7 +1884,7 @@ var LeafletMap = Backbone.View.extend({
 				panOptions = leafletView.model.get('interactions').pan,
 				autopan = false;
 			//event listener to log pan interaction
-			function triggerPan(){
+			function triggerPan(e){
 				if (!autopan){
 					leafletView.trigger('pan');
 				};
@@ -1937,7 +1907,7 @@ var LeafletMap = Backbone.View.extend({
 				if (!leafletView.interactions.retrieve || leafletView.interactions.retrieve == 'inactive'){
 					$('.leaflet-interactive').css('cursor', 'grab');
 				};
-				map.on('moveend', triggerPan);
+				map.on('dragend', triggerPan);
 			};
 			controlView.removeInteraction = function(){
 				map.dragging.disable();
@@ -1946,7 +1916,7 @@ var LeafletMap = Backbone.View.extend({
 				if (!leafletView.interactions.retrieve || leafletView.interactions.retrieve == 'inactive'){
 					$('.leaflet-interactive').css('cursor', 'default');
 				};
-				map.off('moveend', triggerPan);
+				map.off('dragend', triggerPan);
 			};
 			//if widget is not set to false, add it
 			if (!panOptions.interface || !panOptions.interface.hasOwnProperty('widget') || panOptions.interface.widget){
@@ -1967,6 +1937,7 @@ var LeafletMap = Backbone.View.extend({
 						case 'pan-down':
 							map.panBy([0, 80]); break;
 					};
+					triggerPan();
 				};
 			};
 			$('.pan-control-container').hide();
@@ -2063,10 +2034,44 @@ var LeafletMap = Backbone.View.extend({
 		},
 		underlay: function(controlView, leafletView){
 			var map = leafletView.map;
-			//add overlay control
+			//add underlay control
 			var UnderlayControl = leafletView.CustomControl('underlay', 'bottomleft');
 			var underlayControl = new UnderlayControl();
 			map.addControl(underlayControl);
+
+			//add to underlay control
+			leafletView.on('baseLayersDone', function(){
+				_.each(leafletView.model.get('leafletBaseLayers'), function(baseLayer){
+					var layerId = baseLayer._leaflet_id;
+					var underlayControlModel = new UnderlayControlModel({
+						layerName: baseLayer.layerName,
+						layerId: layerId,
+					});
+					var underlayControlView = new UnderlayControlView({model: underlayControlModel});
+					//toggleLayer function must be defined for leaflet view
+					underlayControlView.toggleLayer = function(layerId, addLayer){
+						//turn clicked layer on
+						if (!map._layers[layerId] && leafletView.offLayers[layerId]){
+							leafletView.addLayer(layerId);
+						};
+						//turn other layers off
+						$('.underlay-control-layer').each(function(){
+							var thisId = $(this).attr('id').split('-')[2];
+							if (layerId != thisId && map._layers[thisId]){
+								leafletView.removeLayer(thisId);
+							};
+						});
+						//trigger underlay interaction
+						leafletView.trigger('underlay');
+					};
+					underlayControlView.render();
+					//check the layer that is on the map
+					if (map._layers[layerId]){
+						$('#underlay-layer-'+layerId+' input').prop('checked', true);
+					};
+				}, this);
+			}, this);
+
 			return controlView;
 		},
 		search: function(controlView, leafletView){
@@ -2643,7 +2648,7 @@ var LeafletMap = Backbone.View.extend({
 			pan: {pan: this},
 			retrieve: {retrieve: this},
 			overlay: {overlay: this},
-			underlay: {baselayerchange: this.map},
+			underlay: {underlay: this},
 			search: {search: this},
 			filter: {filter: this},
 			reexpress: {reexpress: this},
