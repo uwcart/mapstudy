@@ -44,7 +44,6 @@ _.extend(document, Backbone.Events);
 				});
 			});
 			$(window).trigger("resize");
-			$('#cover').fadeOut(250);
 		},
 		initialize: function(){
 			this.on('sync', this.setSections);
