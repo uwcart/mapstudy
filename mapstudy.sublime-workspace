@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"stop",
+				"stopzoom"
+			],
+			[
+				"under",
+				"underlayControlView"
+			],
+			[
+				"Inter",
+				"Interaction"
+			],
+			[
+				"var",
+				"var_dump"
+			],
+			[
 				"choice",
 				"choiceMax"
 			],
@@ -396,10 +412,6 @@
 				"pan-control-container"
 			],
 			[
-				"Inter",
-				"InteractionControlView"
-			],
-			[
 				"first",
 				"firstClick"
 			],
@@ -502,18 +514,6 @@
 			[
 				"ree",
 				"ReexpressModel"
-			],
-			[
-				"rg",
-				"rgba()"
-			],
-			[
-				"layerName",
-				"layerNameHtml"
-			],
-			[
-				"ex",
-				"expressedAttribute"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 15425,
+				"buffer_size": 15440,
 				"line_ending": "Windows"
 			}
 		},
@@ -539,7 +539,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 95408,
+				"buffer_size": 96407,
 				"line_ending": "Windows"
 			}
 		},
@@ -547,7 +547,7 @@
 			"file": "js/modules/q-section.js",
 			"settings":
 			{
-				"buffer_size": 13952,
+				"buffer_size": 14000,
 				"line_ending": "Windows"
 			}
 		},
@@ -555,7 +555,7 @@
 			"file": "doc/API.md",
 			"settings":
 			{
-				"buffer_size": 45750,
+				"buffer_size": 45735,
 				"line_ending": "Windows"
 			}
 		},
@@ -563,7 +563,7 @@
 			"file": "php/data.php",
 			"settings":
 			{
-				"buffer_size": 5451,
+				"buffer_size": 6556,
 				"line_ending": "Windows"
 			}
 		},
@@ -571,8 +571,17 @@
 			"file": "php/interactions.php",
 			"settings":
 			{
-				"buffer_size": 129,
+				"buffer_size": 5015,
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Carl/Desktop/temp/temp.html",
+			"settings":
+			{
+				"buffer_size": 65318,
+				"line_ending": "Windows",
+				"name": "<div id=\"win0divPAGECONTAINER\"><table class=\"PSPAG"
 			}
 		},
 		{
@@ -596,6 +605,14 @@
 			"settings":
 			{
 				"buffer_size": 164,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "config/questions.json",
+			"settings":
+			{
+				"buffer_size": 4636,
 				"line_ending": "Windows"
 			}
 		}
@@ -769,6 +786,52 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"console",
+			"setColorSwatches",
+			"setScale",
+			"setNClasses",
+			"setClassification",
+			"setScale",
+			"resymbolize",
+			"ReclassifyView",
+			"setTools",
+			"trigger('resymbolize",
+			"resymbolize",
+			"'reset'",
+			"reset",
+			"zoom",
+			"selectFeature",
+			"search",
+			"'search'",
+			"e",
+			"SearchView",
+			"result",
+			"result-",
+			"SearchInputView",
+			"SearchControl",
+			"UnderlayControlView",
+			"OverlayControlView",
+			"UnderlayControlView",
+			"underlay",
+			"PanControl",
+			"triggerPan",
+			"Interaction",
+			"makeParticipantTable",
+			"data",
+			"$pages",
+			"Interaction",
+			"interactions.php",
+			"echo",
+			"timestp",
+			"$tmsp",
+			"echo",
+			"console",
+			"echo",
+			"pArr",
+			"updatetime",
+			"post_data",
+			"Data",
+			"data.php",
 			"updatetime",
 			"_options.attributes.data",
 			"Data",
@@ -850,53 +913,7 @@
 			"next",
 			"button",
 			"console",
-			"#m",
-			"height",
-			"2em",
-			"#q",
-			"overflow",
-			"for example",
-			"classification",
-			"this.i",
-			"template",
-			"clear",
-			"console",
-			"setMapView",
-			"[i]",
-			"_page",
-			"function setMap",
-			"setMap()",
-			"Leaflet",
-			"setMapView",
-			"console",
-			"RecolorView",
-			"ReclassifyView",
-			"reclassifyView",
-			"resymbolize:",
-			"css",
-			"RescaleView",
-			"onEachFeature",
-			"iew.onEachFeature",
-			"onEachFeature",
-			"console",
-			"input[name=scale-value-max",
-			"techniquesObj",
-			"setDots",
-			"setIsarithms",
-			"RescaleView",
-			"density\": 0",
-			"population\": 0",
-			"population",
-			"FilterSliderView",
-			"filter",
-			"-1000",
-			"-10",
-			"-10000",
-			"tool",
-			"interactions.filter.tool",
-			"FilterModel",
-			"slider",
-			"filter:"
+			"#m"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -904,6 +921,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"page",
+			"data",
 			"data_master",
 			"pid",
 			"participant ID",
@@ -1029,20 +1048,18 @@
 			"Figure 3.3",
 			"Figure 3.4",
 			"Figure 3.5",
-			"Figure 3.6",
-			"Figure 3.7",
-			"Figure 3.8"
+			"Figure 3.6"
 		],
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": false,
+		"whole_word": true,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -1050,15 +1067,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 15425,
+						"buffer_size": 15440,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								12748,
-								12748
+								4105,
+								4111
 							]
 						],
 						"settings":
@@ -1068,7 +1085,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 5411.0,
+						"translation.y": 1591.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1096,7 +1113,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1260.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1106,15 +1123,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 95408,
+						"buffer_size": 96407,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								95401,
-								95373
+								42712,
+								42712
 							]
 						],
 						"settings":
@@ -1124,7 +1141,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 56487.0,
+						"translation.y": 26971.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1134,15 +1151,15 @@
 					"file": "js/modules/q-section.js",
 					"settings":
 					{
-						"buffer_size": 13952,
+						"buffer_size": 14000,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10756,
-								10756
+								1686,
+								1676
 							]
 						],
 						"settings":
@@ -1152,7 +1169,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 7231.0,
+						"translation.y": 911.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1162,15 +1179,15 @@
 					"file": "doc/API.md",
 					"settings":
 					{
-						"buffer_size": 45750,
+						"buffer_size": 45735,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								41913,
-								41913
+								38008,
+								38008
 							]
 						],
 						"settings":
@@ -1179,7 +1196,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 20051.0,
+						"translation.y": 18211.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1189,15 +1206,15 @@
 					"file": "php/data.php",
 					"settings":
 					{
-						"buffer_size": 5451,
+						"buffer_size": 6556,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2937,
-								2947
+								5974,
+								5974
 							]
 						],
 						"settings":
@@ -1207,7 +1224,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 51.0,
+						"translation.y": 3180.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1217,20 +1234,48 @@
 					"file": "php/interactions.php",
 					"settings":
 					{
-						"buffer_size": 129,
+						"buffer_size": 5015,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								126,
-								126
+								2867,
+								2867
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1440.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/C/Users/Carl/Desktop/temp/temp.html",
+					"settings":
+					{
+						"buffer_size": 65318,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								531,
+								531
+							]
+						],
+						"settings":
+						{
+							"auto_name": "<div id=\"win0divPAGECONTAINER\"><table class=\"PSPAG",
+							"syntax": "Packages/HTML/HTML.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1239,7 +1284,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 8,
 					"file": "config/styles.json",
 					"settings":
 					{
@@ -1266,7 +1311,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 9,
 					"file": "config/param.php",
 					"settings":
 					{
@@ -1292,7 +1337,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 10,
 					"file": "config/conditions.json",
 					"settings":
 					{
@@ -1314,6 +1359,33 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "config/questions.json",
+					"settings":
+					{
+						"buffer_size": 4636,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3601,
+								3601
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4680.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
