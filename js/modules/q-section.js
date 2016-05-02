@@ -470,6 +470,8 @@ function setQuestions(options){
 	questions.model = page;
 	questions.resize(questions);
 	questions.render();
+
+	document.trigger('ready');
 };
 
 /************** questions config **************/
@@ -497,4 +499,14 @@ document.on({
 });
 
 document.on('init', config);
+
+//when both map and questions have loaded, lift the cover
+var readycount = 0;
+document.on('ready', function(){
+	if (readycount == 1){
+		$('#cover').fadeOut(500);
+	} else {
+		readycount++;
+	}
+});
 })();

@@ -2740,7 +2740,9 @@ function setMapView(options){
 			_options.attributes.maps[_page] = mapView;
 			mapView.render().setMap(true);
 		};
-	}
+	};
+
+	document.trigger('ready');
 };
 
 /************** map config ****************/

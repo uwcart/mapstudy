@@ -110,10 +110,21 @@ svg {
 }
 
 #cover {
-    position: absolute;
     height: 100%;
     width: 100%;
     background-color: white;
+    position: absolute;
+    z-index: 10000;
+    text-align: center;
+}
+
+#cover div {
+    margin-left: -10%;
+    margin-top: 10%;
+}
+
+#cover img {
+    width: 20%;
 }
 
 #container {
