@@ -22,8 +22,7 @@
 				"overlay": {
 					"logging": true,
 					"dataLayers": [
-						"US States",
-						"Cities Layer"
+						"US States"
 					]
 				},
 				"underlay": {
@@ -35,8 +34,7 @@
 				},
 				"filter": {
 					"dataLayers": [
-						"US States", 
-						"Cities Layer"
+						"US States"
 					],
 					"tool": "slider",
 					"logging": true
