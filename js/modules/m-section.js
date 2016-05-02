@@ -2126,7 +2126,7 @@ var LeafletMap = Backbone.View.extend({
 						//disable further popups if retrieve is off
 						if (leafletView.interactions.retrieve == 'inactive'){
 							layer.on('popupclose', function(){
-								$('.retrieve-control-container').hide();
+								$('.retrieve-control-container, .leaflet-popup-pane').hide();
 								layer.off('popupclose');
 							});
 						};
