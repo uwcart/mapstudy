@@ -261,16 +261,14 @@ var ButtonView = Backbone.View.extend({
 
 var Data = Backbone.Model.extend({
 	url: 'php/data.php',
-	record: function(){
+	record: function(action){
+		this.set('action', action);
 		var date = new Date();
 		this.set('updatetime', {
 			name: 'updatetime',
 		 	value: date.toUTCString()
 		});
 		this.save();
-	},
-	initialize: function(){
-		this.record();
 	}
 });
 
@@ -363,7 +361,9 @@ var Questions = Backbone.View.extend({
 			});
 		});
 		//render buttons
-		this.renderButtons(qset.buttons);
+		if (qset.hasOwnProperty('buttons')){
+			this.renderButtons(qset.buttons);
+		};
 	},
 	addData: function(input){
 		var askText = $('[name='+input.name+']').parents('.block').find('.ask').html(),
@@ -397,7 +397,7 @@ var Questions = Backbone.View.extend({
 		});
 		return go;
 	},
-	record: function(){
+	record: function(action){
 		//get all input values in set
 		var inputs = this.$el.find('form').serializeArray();
 		//check for required answers
@@ -409,6 +409,7 @@ var Questions = Backbone.View.extend({
 		};
 		//record data
 		var dataModel = new Data(_options.get('data'));
+		dataModel.record(action);
 		return true;
 	},
 	next: function(e){
@@ -454,6 +455,7 @@ function setQuestions(options){
 	_set = 0;
 	if (typeof options != 'undefined'){
 		var dataModel = new Data(options.attributes);
+		dataModel.record('init');
 		//set global _options variable to config model
 		_options = options;
 		//add data object to hold all recorded data

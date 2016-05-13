@@ -166,8 +166,7 @@
 					],
 					"buttons": [
 						"back",
-						"next",
-						"save"
+						"submit"
 					]
 				}
 			]

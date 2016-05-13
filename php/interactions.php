@@ -166,4 +166,33 @@ if (isset($dbtype, $dbhost, $dbport, $dbname, $dbuser, $dbpassword)){
 	}
 }
 
+//e-mail data if e-mail is set up
+if (isset($smtphost, $smtpport, $euser, $epass, $toaddr, $subject, $message)){
+	//variables of great social and political import
+	$pid = $post_data["pid"];
+	//check for directory and create if not exists
+	if (!file_exists("../participants")){
+		mkdir("../participants", 0777, true);
+	}
+	//check for file and create with column headers if not exists
+	$filepath = "../participants/p".$pid."_interactions.csv";
+	if (!file_exists($filepath)){
+		$cols = "timestp, interaction, page, set\n";
+		$file = fopen($filepath, "w") or die("Can't open file!");
+		fwrite($file, $cols);
+		fclose($file);
+	}
+	if (!empty($post_data["interaction"])){
+		//add row
+		$row = $post_data["tmsp"] . ", " .
+			$post_data["interaction"] . ", " .
+			$post_data["page"] . ", " .
+			$post_data["set"] . "\n";
+		//write row to file
+		$file = fopen($filepath, "a") or die("Can't open file!");
+		fwrite($file, $row);
+		fclose($file);
+	}
+}
+
 ?>

@@ -816,19 +816,29 @@ The database user name. The user provided should have create, read, and update p
 
 The password for the database user provided for $dbuser.
 
-Alternately, or in addition to the database, the application may be configured to send the collected data and interactions to an e-mail address when they are submitted. Only the two participant tables will be e-mailed. To configure e-mail, include the following variables in param.php:
+Alternately, or in addition to the database, the application may be configured to send the collected data and interactions to an e-mail address when they are submitted. Only the two participant tables will be e-mailed. The tables will be sent as e-mail attachments in CSV format, and will also be stored as CSV files in an auto-generated *participants* folder on the server. The server hosting the application must have SMTP enabled. To configure e-mail, include the *all* of the following variables in param.php:
 
-#### $email
+#### $smtphost = 'smtp.domain.com';
 
-	$email = 'mail@email.com';
+The SMTP host address.
+
+#### $smtphost = 587;
+
+The SMTP port. Usually either 25 or 587.
+
+#### $euser = 'mail@email.com';
+
+The outgoing e-mail address for the SMTP account.
+
+#### $epass = 'password';
+
+The password for the SMTP account.
+
+#### $toaddr
+
+	$toaddr = 'mail@email.com';
 
 The e-mail address to which the data should be sent.
-
-#### $from
-
-	$from = 'Name <mail@email.com>';
-
-The e-mail From field.
 
 #### $subject
 

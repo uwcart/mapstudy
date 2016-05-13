@@ -8,8 +8,11 @@ $dbuser = 'postgres';
 $dbpassword = 'mappower';
 $dbtable = 'data';
 
-$email = 'northlandiguana@gmail.com';
-$from = 'MapStudy <northlandiguana@gmail.com>';
+$smtphost = 'smtp.gmail.com';
+$smtpport = 587;
+$euser = 'northlandiguana@gmail.com';
+$epass = 'WisconsinRocks5';
+$toaddr = 'cmsack@wisc.edu';
 $subject = 'New data from MapStudy application';
 $message = 'New data attached.';
 
