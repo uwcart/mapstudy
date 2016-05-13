@@ -822,11 +822,11 @@ Alternately, or in addition to the database, the application may be configured t
 
 The SMTP host address.
 
-#### $smtphost = 587;
+#### $smtpport = 587;
 
 The SMTP port. Usually either 25 or 587.
 
-#### $euser = 'mail@email.com';
+#### $euser = 'user@domain.com';
 
 The outgoing e-mail address for the SMTP account.
 
@@ -836,7 +836,7 @@ The password for the SMTP account.
 
 #### $toaddr
 
-	$toaddr = 'mail@email.com';
+	$toaddr = 'mail@domain.com';
 
 The e-mail address to which the data should be sent.
 
