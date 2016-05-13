@@ -13,7 +13,7 @@ $smtpport = 587;
 $euser = 'northlandiguana@gmail.com';
 $epass = 'WisconsinRocks5';
 $toaddr = 'cmsack@wisc.edu';
-$subject = 'New data';
+$subject = 'New data submission';
 $message = 'New data attached.';
 
 ?>
