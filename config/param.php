@@ -13,7 +13,7 @@ $smtpport = 587;
 $euser = 'northlandiguana@gmail.com';
 $epass = 'WisconsinRocks5';
 $toaddr = 'cmsack@wisc.edu';
-$subject = 'New data from MapStudy application';
+$subject = 'New data';
 $message = 'New data attached.';
 
 ?>
