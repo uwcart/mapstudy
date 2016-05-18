@@ -69,7 +69,6 @@
 			"dataLayers": [{
 				"name": "US States",
 				"source": "data/us-states.geojson",
-				"postgisTable": "",
 				"renderOnLoad": true,
 				"expressedAttribute": "Density (ppl/sq. mile)",
 				"displayAttributes": [

@@ -523,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 15440,
+				"buffer_size": 15629,
 				"line_ending": "Windows"
 			}
 		},
@@ -531,7 +531,7 @@
 			"file": "js/modules/app.js",
 			"settings":
 			{
-				"buffer_size": 3792,
+				"buffer_size": 3763,
 				"line_ending": "Windows"
 			}
 		},
@@ -539,7 +539,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 96407,
+				"buffer_size": 96458,
 				"line_ending": "Windows"
 			}
 		},
@@ -547,7 +547,7 @@
 			"file": "js/modules/q-section.js",
 			"settings":
 			{
-				"buffer_size": 14000,
+				"buffer_size": 14322,
 				"line_ending": "Windows"
 			}
 		},
@@ -555,7 +555,15 @@
 			"file": "doc/API.md",
 			"settings":
 			{
-				"buffer_size": 45735,
+				"buffer_size": 46169,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "config/param.php",
+			"settings":
+			{
+				"buffer_size": 391,
 				"line_ending": "Windows"
 			}
 		},
@@ -563,7 +571,7 @@
 			"file": "php/data.php",
 			"settings":
 			{
-				"buffer_size": 6556,
+				"buffer_size": 8290,
 				"line_ending": "Windows"
 			}
 		},
@@ -571,7 +579,7 @@
 			"file": "php/interactions.php",
 			"settings":
 			{
-				"buffer_size": 5015,
+				"buffer_size": 5955,
 				"line_ending": "Windows"
 			}
 		},
@@ -579,7 +587,7 @@
 			"file": "/C/Users/Carl/Desktop/temp/temp.html",
 			"settings":
 			{
-				"buffer_size": 65318,
+				"buffer_size": 0,
 				"line_ending": "Windows",
 				"name": "<div id=\"win0divPAGECONTAINER\"><table class=\"PSPAG"
 			}
@@ -589,14 +597,6 @@
 			"settings":
 			{
 				"buffer_size": 338,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "config/param.php",
-			"settings":
-			{
-				"buffer_size": 328,
 				"line_ending": "Windows"
 			}
 		},
@@ -612,7 +612,15 @@
 			"file": "config/questions.json",
 			"settings":
 			{
-				"buffer_size": 4636,
+				"buffer_size": 4624,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": ".gitignore",
+			"settings":
+			{
+				"buffer_size": 161,
 				"line_ending": "Windows"
 			}
 		}
@@ -641,6 +649,12 @@
 	},
 	"file_history":
 	[
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/param.php",
+		"/C/sendmail/sendmail.ini",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/php/php.ini",
+		"/C/Users/Carl/Downloads/PHPMailer-master/PHPMailer-master/composer.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/participants/p350393183_interactions.csv",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/participants/p982952260_data.csv",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/conditions.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/css/style.css",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
@@ -762,13 +776,7 @@
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module9/Module9.md",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module8/Module8.md",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/Module7.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/Module6.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module5/Module5.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module4/Module4.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module3/Module3.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module2/Module2.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module1/Module1.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2014_Fall/Labs/Lab2-D3/coordinated_viz_example_code/css/style.css"
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/Module6.md"
 	],
 	"find":
 	{
@@ -786,6 +794,11 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"renderButtons",
+			"$data",
+			");\n",
+			"Data",
+			"submit",
 			"console",
 			"setColorSwatches",
 			"setScale",
@@ -908,12 +921,7 @@
 			"}\n",
 			"_options",
 			"console",
-			"user",
-			"userid",
-			"next",
-			"button",
-			"console",
-			"#m"
+			"user"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1059,7 +1067,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 5,
 			"sheets":
 			[
 				{
@@ -1067,15 +1075,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 15440,
+						"buffer_size": 15629,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4105,
-								4111
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1095,15 +1103,15 @@
 					"file": "js/modules/app.js",
 					"settings":
 					{
-						"buffer_size": 3792,
+						"buffer_size": 3763,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2479,
-								2479
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1123,15 +1131,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 96407,
+						"buffer_size": 96458,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								42712,
-								42712
+								26618,
+								26618
 							]
 						],
 						"settings":
@@ -1141,7 +1149,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 26971.0,
+						"translation.y": 17571.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1151,15 +1159,15 @@
 					"file": "js/modules/q-section.js",
 					"settings":
 					{
-						"buffer_size": 14000,
+						"buffer_size": 14322,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1686,
-								1676
+								10467,
+								10467
 							]
 						],
 						"settings":
@@ -1169,7 +1177,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 911.0,
+						"translation.y": 6726.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1179,15 +1187,15 @@
 					"file": "doc/API.md",
 					"settings":
 					{
-						"buffer_size": 45735,
+						"buffer_size": 46169,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								38008,
-								38008
+								45952,
+								45952
 							]
 						],
 						"settings":
@@ -1196,25 +1204,51 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 18211.0,
+						"translation.y": 20426.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "php/data.php",
+					"file": "config/param.php",
 					"settings":
 					{
-						"buffer_size": 6556,
+						"buffer_size": 391,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5974,
-								5974
+								388,
+								388
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "php/data.php",
+					"settings":
+					{
+						"buffer_size": 8290,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8030,
+								8030
 							]
 						],
 						"settings":
@@ -1224,52 +1258,53 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3180.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "php/interactions.php",
-					"settings":
-					{
-						"buffer_size": 5015,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2867,
-								2867
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1440.0,
+						"translation.y": 4326.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 7,
-					"file": "/C/Users/Carl/Desktop/temp/temp.html",
+					"file": "php/interactions.php",
 					"settings":
 					{
-						"buffer_size": 65318,
+						"buffer_size": 5955,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								531,
-								531
+								5951,
+								5951
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3213.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/C/Users/Carl/Desktop/temp/temp.html",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1284,7 +1319,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 9,
 					"file": "config/styles.json",
 					"settings":
 					{
@@ -1295,40 +1330,14 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								338,
+								338
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JSON.tmLanguage",
 							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "config/param.php",
-					"settings":
-					{
-						"buffer_size": 328,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1368,15 +1377,15 @@
 					"file": "config/questions.json",
 					"settings":
 					{
-						"buffer_size": 4636,
+						"buffer_size": 4624,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3601,
-								3601
+								3083,
+								3083
 							]
 						],
 						"settings":
@@ -1385,7 +1394,33 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 4680.0,
+						"translation.y": 2820.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": ".gitignore",
+					"settings":
+					{
+						"buffer_size": 161,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								161,
+								161
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

@@ -241,15 +241,15 @@ Which interface tool to use for filtering. Default is `slider`.
 
 #### map.interactions.sequence
 
-		-"sequence"-: { -"logging"- -"attributes"- -"tool"- }
+		-"sequence"-: { -"logging"- "dataLayers" -"tool"- }
 
-Sequence interaction. Allows the user to change the expressed attribute separately for each of the currently-viewed `dataLayers` that include two or more of the listed attributes plus the layer's `expressedAttribute`.
+Sequence interaction. Allows the user to change the expressed attribute separately for each of the listed `dataLayers`. Interface tool allows the user to cycle through each layer's `displayAttribute`s in the order in which they are listed for the layer and the layer's specified `expressedAttribute`.
 
-#### map.interactions.sequence.attributes
+#### map.interactions.sequence.dataLayers
 
-			-"attributes"-: []
+			"dataLayers": []
 
-An array of attributes through which the user can sequence. The attributes will sequence in the order listed in the array. Must have at least two values to enable sequencing.
+An array of the `dataLayers` to include in the sequence tool. Must have at least one value to enable sequencing. Each data layer will have its own line in the sequence tool.
 
 #### map.interactions.sequence.tool
 
@@ -609,7 +609,7 @@ Title for the question. Optional. If included, the question title will appear in
 
 The question ask. Required. The question ask will appear in normal font below the title (if included) and above the other elements of the block (if included). It need not be a literal question; any text or html (such as image elements) may be included.
 
-#### questions.sets[i].blocks[ii].ask
+#### questions.sets[i].blocks[ii].description
 
 	-"description"-: HTML string
 

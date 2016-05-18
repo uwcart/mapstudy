@@ -399,15 +399,15 @@ svg {
     margin-bottom: 15px;
 }
 
-input[type=text], textarea {
+#q input[type=text], textarea {
     width: 100%;
 }
 
-input[type=checkbox] {
+#q input[type=checkbox] {
     margin-right: 10px;
 }
 
-td, th {
+#q td, th {
     padding: 0 10px;
 }
 
