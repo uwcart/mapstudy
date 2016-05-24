@@ -459,8 +459,9 @@
 				}]
 			}]
 		},
+		{},
 		{
-			"page": 6,
+			"page": 7,
 			"library": "Leaflet",
 			"interactions": {
 				"retrieve": {
@@ -554,7 +555,6 @@
 					"classes": "Oranges.5"
 				}]
 			}]
-		},
-		{}
+		}
 	]
 }

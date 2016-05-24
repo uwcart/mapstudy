@@ -7,12 +7,12 @@
 				{
 					"blocks": [
 						{
-							"title": "Page 1!!!",
-							"ask": "Look, I get to take up the whole page! I could be some kind of consent form or something."
+							"title": "Page 1",
+							"ask": "This is what a page without a map looks like. It consists of a single set with two blocks. This text is the \"ask\" for a block without an input. You can use this formatting to create an information page or consent form."
 						},
 						{
-							"ask": "Give me some info.",
-							"description": "Go on, everybody's doin' it...",
+							"ask": "This is the second block in the single set on this page. Notice that you can create a new block for each new paragraph of text. In addition to text, this block contains a text input. You could use this kind of formatting to request information or consent from a participant.",
+							"description": "Unlike the first block, this block has no title, but does have a description. This is the description; it is shown in italics. In addition to the two blocks, this set has a single \"next\" button.",
 							"input": {
 								"type": "text"
 							}
@@ -31,8 +31,10 @@
 					"set": 1,
 					"blocks": [
 						{
-							"reset-numbering": true,
-							"title": "Name",
+							"title": "This is the first set of Page 2.",
+							"ask": "All of the questions you can see and the buttons belong to the same set. These blocks are designed give you an idea of what kinds of inputs you can create."
+						},
+						{
 							"ask": "What is thy name?",
 							"description": "Gimme a name!",
 							"input": {
@@ -126,6 +128,7 @@
 					"set": 2,
 					"blocks": [
 						{
+							"title": "This is the second set of Page 2.",
 							"ask": "How far were you catapulted?",
 							"description": "aaaaaaaaaaaaaaaah!",
 							"input": {
@@ -166,7 +169,7 @@
 					],
 					"buttons": [
 						"back",
-						"submit"
+						"next"
 					]
 				}
 			]
@@ -177,8 +180,8 @@
 				{
 					"blocks": [
 						{
-							"ask": "A paragraph question for Page 3, Set 1",
-							"description": "Maybe you think I'm out of order, but check conditions.json",
+							"title": "A paragraph question for Page 3, Set 1",
+							"ask": "This is Page 3. The order of pages 3 and 4 has been randomized.",
 							"input": {
 								"type": "paragraph"
 							}
@@ -213,8 +216,8 @@
 				{
 					"blocks": [
 						{
-							"ask": "A text question for Page 4",
-							"description": "Maybe you think I'm out of order, but check conditions.json",
+							"title": "A text question for Page 4",
+							"ask": "This is Page 4. The order of pages 3 and 4 has been randomized.",
 							"input": {
 								"type": "text"
 							}
@@ -234,7 +237,9 @@
 				{
 					"blocks": [
 						{
-							"ask": "A text question for Page 5",
+							"title": "A text question for Page 5",
+							"ask": "This is Page 5.",
+							"description": "You should only include a submit button on the second-to-last page. That way, the user will see a final ending page. If the app is configured to e-mail data, an e-mail will be sent each time the submit button is clicked.",
 							"input": {
 								"type": "text"
 							}
@@ -249,24 +254,14 @@
 		},
 		{
 			"page": 6,
-			"sets": [
-				{
-					"blocks": [
-						{
-							"ask": "Thank you for taking this survey. You really rock."
-						}
-					]
-				}
-			]
-		},
-		{
-			"page": 7,
 			"fullpage": true,
 			"sets": [
 				{
 					"blocks": [
 						{
-							"ask": "Thank you for taking this survey. You really rock."
+							"title": "Page 6",
+							"ask": "Thank you for taking this survey. You really rock.",
+							"description": "Because this set has no buttons, the participant will not be able to navigate to a different part of the survey."
 						}
 					]
 				}

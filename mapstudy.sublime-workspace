@@ -4,6 +4,30 @@
 		"selected_items":
 		[
 			[
+				"prev",
+				"prevStep"
+			],
+			[
+				"slide",
+				"slideDown"
+			],
+			[
+				"header",
+				"header-button"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"dropdown",
+				"dropdownTemplate"
+			],
+			[
+				"border",
+				"border-radius"
+			],
+			[
 				"stop",
 				"stopzoom"
 			],
@@ -50,10 +74,6 @@
 			[
 				"appendOpti",
 				"appendOptionText"
-			],
-			[
-				"font",
-				"font-style"
 			],
 			[
 				"classification",
@@ -494,26 +514,6 @@
 			[
 				"techniqu",
 				"techniqueType"
-			],
-			[
-				"setT",
-				"setTechnique"
-			],
-			[
-				"reex",
-				"reexpress"
-			],
-			[
-				"add",
-				"addReexpress"
-			],
-			[
-				"render",
-				"renderReexpressButtons"
-			],
-			[
-				"ree",
-				"ReexpressModel"
 			]
 		]
 	},
@@ -528,75 +528,18 @@
 			}
 		},
 		{
-			"file": "js/modules/app.js",
+			"file": "setup/index.html",
 			"settings":
 			{
-				"buffer_size": 3763,
+				"buffer_size": 11625,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "js/modules/m-section.js",
+			"file": "setup/setup.js",
 			"settings":
 			{
-				"buffer_size": 96458,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "js/modules/q-section.js",
-			"settings":
-			{
-				"buffer_size": 14322,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "doc/API.md",
-			"settings":
-			{
-				"buffer_size": 46169,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "config/param.php",
-			"settings":
-			{
-				"buffer_size": 391,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "php/data.php",
-			"settings":
-			{
-				"buffer_size": 8290,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "php/interactions.php",
-			"settings":
-			{
-				"buffer_size": 5955,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/Carl/Desktop/temp/temp.html",
-			"settings":
-			{
-				"buffer_size": 0,
-				"line_ending": "Windows",
-				"name": "<div id=\"win0divPAGECONTAINER\"><table class=\"PSPAG"
-			}
-		},
-		{
-			"file": "config/styles.json",
-			"settings":
-			{
-				"buffer_size": 338,
+				"buffer_size": 2443,
 				"line_ending": "Windows"
 			}
 		},
@@ -609,18 +552,74 @@
 			}
 		},
 		{
-			"file": "config/questions.json",
+			"file": "README.md",
 			"settings":
 			{
-				"buffer_size": 4624,
+				"buffer_size": 47027,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": ".gitignore",
+			"file": "config/param.php",
 			"settings":
 			{
-				"buffer_size": 161,
+				"buffer_size": 411,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/modules/m-section.js",
+			"settings":
+			{
+				"buffer_size": 96479,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/modules/q-section.js",
+			"settings":
+			{
+				"buffer_size": 14322,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "config/questions.json",
+			"settings":
+			{
+				"buffer_size": 5691,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "config/map.json",
+			"settings":
+			{
+				"buffer_size": 11807,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "css/style.css",
+			"settings":
+			{
+				"buffer_size": 10368,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "config/styles.json",
+			"settings":
+			{
+				"buffer_size": 338,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/modules/app.js",
+			"settings":
+			{
+				"buffer_size": 3763,
 				"line_ending": "Windows"
 			}
 		}
@@ -649,24 +648,33 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Carl/Downloads/download/sticky_header.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/index.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/css/style.css",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/styles.json",
+		"/C/Users/Carl/Desktop/temp/temp.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/php/data.php",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/php/interactions.php",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/param.php",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/API.md",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/index.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/q-section.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/app.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/.gitignore",
 		"/C/sendmail/sendmail.ini",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/php/php.ini",
 		"/C/Users/Carl/Downloads/PHPMailer-master/PHPMailer-master/composer.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/participants/p350393183_interactions.csv",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/participants/p982952260_data.csv",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/conditions.json",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/css/style.css",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/architecture.md",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/app.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/questions.json",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/php/param.php",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/senegal.sublime-project",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/styles.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map1.json",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/php/interactions.php",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/us-states-pop.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/us-states.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/colorbrewer.js",
@@ -692,9 +700,7 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/lower48.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/lib/LICENSE.txt",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map.bak.json",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/.gitignore",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module2/debug.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/2016_Spring/modules/Module5/complete/leaflet-lab/js/main.js",
 		"/C/Users/Carl/Downloads/jscolor-2.0.4/jscolor-example.html",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/colorbrewer.json",
@@ -730,7 +736,6 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/usage.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/VERSIONS.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/CONFIG.json",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/q-section.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/main.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet/leaflet.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/jquery.js",
@@ -770,13 +775,7 @@
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module8/Module8.html",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module9/Module9.html",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module10/Module10.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module10/Module10.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Resources/links.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Resources/links.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module9/Module9.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module8/Module8.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/Module7.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module6/Module6.md"
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module10/Module10.md"
 	],
 	"find":
 	{
@@ -791,9 +790,22 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": true,
+		"case_sensitive": false,
 		"find_history":
 		[
+			"font",
+			"font-family",
+			"file",
+			"option",
+			"&larr;",
+			"&rarr;",
+			"ready",
+			"cover",
+			"jquery",
+			"jquery-ui",
+			"dbtable",
+			"ask",
+			"sequence",
 			"renderButtons",
 			"$data",
 			");\n",
@@ -908,20 +920,7 @@
 			"user ID",
 			"it",
 			"p1",
-			"i0",
-			"b0",
-			"p1",
-			"p0",
-			"question",
-			"date",
-			"userId",
-			"question",
-			"userId",
-			"userid",
-			"}\n",
-			"_options",
-			"console",
-			"user"
+			"i0"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -929,6 +928,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"<img src=\"../img/back.png\">",
+			"<img src=\"../img/next.png\">",
 			"page",
 			"data",
 			"data_master",
@@ -1054,20 +1055,18 @@
 			"strokeDasharray",
 			"Figure 3.2",
 			"Figure 3.3",
-			"Figure 3.4",
-			"Figure 3.5",
-			"Figure 3.6"
+			"Figure 3.4"
 		],
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -1082,8 +1081,8 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								1792,
+								1792
 							]
 						],
 						"settings":
@@ -1093,13 +1092,312 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1591.0,
+						"translation.y": 491.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
+					"file": "setup/index.html",
+					"settings":
+					{
+						"buffer_size": 11625,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3045,
+								3045
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1611.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "setup/setup.js",
+					"settings":
+					{
+						"buffer_size": 2443,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1184,
+								1184
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 780.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "config/conditions.json",
+					"settings":
+					{
+						"buffer_size": 164,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								112,
+								112
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "README.md",
+					"settings":
+					{
+						"buffer_size": 47027,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								35317,
+								35317
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 16551.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "config/param.php",
+					"settings":
+					{
+						"buffer_size": 411,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								408,
+								9
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "js/modules/m-section.js",
+					"settings":
+					{
+						"buffer_size": 96479,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								96479,
+								96474
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 55200.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "js/modules/q-section.js",
+					"settings":
+					{
+						"buffer_size": 14322,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								515,
+								469
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 199.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "config/questions.json",
+					"settings":
+					{
+						"buffer_size": 5691,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								344,
+								345
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "config/map.json",
+					"settings":
+					{
+						"buffer_size": 11807,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9755,
+								9755
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 9000.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "css/style.css",
+					"settings":
+					{
+						"buffer_size": 10368,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5834,
+								5834
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7231.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "config/styles.json",
+					"settings":
+					{
+						"buffer_size": 338,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								336,
+								2
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
 					"file": "js/modules/app.js",
 					"settings":
 					{
@@ -1117,307 +1415,7 @@
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "js/modules/m-section.js",
-					"settings":
-					{
-						"buffer_size": 96458,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								26618,
-								26618
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 17571.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "js/modules/q-section.js",
-					"settings":
-					{
-						"buffer_size": 14322,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								10467,
-								10467
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 6726.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "doc/API.md",
-					"settings":
-					{
-						"buffer_size": 46169,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								45952,
-								45952
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage",
 							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 20426.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "config/param.php",
-					"settings":
-					{
-						"buffer_size": 391,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								388,
-								388
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "php/data.php",
-					"settings":
-					{
-						"buffer_size": 8290,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								8030,
-								8030
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 4326.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "php/interactions.php",
-					"settings":
-					{
-						"buffer_size": 5955,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5951,
-								5951
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 3213.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "/C/Users/Carl/Desktop/temp/temp.html",
-					"settings":
-					{
-						"buffer_size": 0,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"auto_name": "<div id=\"win0divPAGECONTAINER\"><table class=\"PSPAG",
-							"syntax": "Packages/HTML/HTML.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "config/styles.json",
-					"settings":
-					{
-						"buffer_size": 338,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								338,
-								338
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "config/conditions.json",
-					"settings":
-					{
-						"buffer_size": 164,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "config/questions.json",
-					"settings":
-					{
-						"buffer_size": 4624,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3083,
-								3083
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2820.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": ".gitignore",
-					"settings":
-					{
-						"buffer_size": 161,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								161,
-								161
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,

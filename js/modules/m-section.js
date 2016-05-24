@@ -2758,6 +2758,7 @@ function config(){
 };
 
 function resetMap(){
+	$('#cover').show();
 	_page = _pages[_pagesi]-1;
 	//reset map and questions
 	$('#q').removeAttr('style');

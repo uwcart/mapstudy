@@ -1,0 +1,245 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="icon" href="favicon.ico">
+
+        <link rel="stylesheet" href="../css/normalize.css">
+        <link rel="stylesheet" href="../js/lib/jquery-ui/jquery-ui.css">
+        <link rel="stylesheet" href="../css/style.css">
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <style>
+            body{
+                overflow: auto;
+                font-family: Verdana, Geneva, sans-serif;
+            }
+
+            header {
+                width: 100%;
+                padding: 0 5em;
+                height: 0;
+                background-color: #FFF;
+                transition: all 0.4s ease;
+            }
+
+            .sticky {
+                position: fixed;
+                box-shadow: 0 0 5px black;
+                height: 4em;
+            }
+
+            .header-button {
+                display: none;
+                line-height: 2em;
+                margin-top: 0.8em;
+                margin-right: 20px;
+                color: black;
+            }
+
+            form {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+                border-radius: 5px;
+                background-color: #DDD;
+            }
+
+            .q {
+                margin: 20px 0;
+            }
+
+            p, .desc {
+                font-size: 1.2em;
+                margin: 0 0 20px 0;
+            }
+
+            h2 {
+                margin-top: 0;
+            }
+
+            .preview {
+                max-height: 4em;
+            }
+
+            .buttons {
+                margin-top: 20px;
+            }
+
+            .remove-button {
+                margin-left: 10px;
+                cursor: pointer;
+            }
+
+        </style>
+
+        <header>
+            <button id="preview" class="header-button" type="button">Live preview app</button>
+            <button id="viewcode" class="header-button" type="button">View generated code</button>
+            <a href="https://github.com/uwcart/mapstudy" target="_blank">
+                <button id="github" class="header-button" type="button">Go to GitHub repo</button>
+            </a>
+        </header>
+
+        <div id="container">
+            <form class="step" id="interface">
+                <h1>Step 1. Interface</h1>
+                <div class="desc">
+                    The first step is to customize the interface that survey participants will see. Use this form to upload a custom logo and change the look of the header, footer, map, and questions sections if you want. All options currently shown are the defaults.
+                </div>
+
+                <div class="q header section">
+                    <h2>Header</h2>
+                    <p>Do you want to include a header? <select name="header-yn" class="bdd yes"></select></p>
+                    <div class="hideonno">
+                        <div id="header-style">
+                            <p><label for="header-bg">Header background color: </label>
+                            <input name="header-bg" type="color" value="#F79A42"></p>
+                            <div class="q custom-css">
+                                <p>Add custom CSS? <select name="header-custom-css-yn" class="bdd no"></select></p>
+                                <div id="header-custom-css" class="displayonyes">
+                                    Write your custom CSS attributes in the format of a single-level <a href="http://json.org/example.html" target="_blank">JSON object</a> below.
+                                    <textarea name="header-custom-css"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="q header-logo">
+                            <p>Do you want a custom logo on the right side of the header? <select name="header-logo-yn" class="bdd no"></select></p>
+                            <div id="header-logo" class="displayonyes">
+                                <label for="header-logo">Upload logo image:</label>
+                                <input name="header-logo" type="file" class="image-upload">
+                                <img class="preview" src="../img/blankimage.png">
+                            </div>
+                        </div>
+
+                        <div class="q header-content">
+                            <p>Do you want to include a title in your header? <select name="header-content-yn" class="bdd yes"></select></p>
+                            <div id="header-content" class="hideonno">
+                                <label for="header-content">Title text or HTML: </label>
+                                <textarea name="header-content" rows="1"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="q footer section">
+                    <h2>Footer</h2>
+                    <p>Do you want to include a footer? <select name="footer-yn" class="bdd yes"></select></p>
+                    <div class="hideonno">
+                        <div id="footer-style">
+                            <p><label for="footer-bg">Footer background color: </label>
+                            <input name="footer-bg" type="color" value="#F79A42"></p>
+                            <div class="q custom-css">
+                                <p>Add custom CSS? <select name="footer-custom-css-yn" class="bdd no"></select></p>
+                                <div id="footer-custom-css" class="displayonyes">
+                                    Write your custom CSS attributes in the format of a single-level <a href="http://json.org/example.html" target="_blank">JSON object</a> below.
+                                    <textarea name="footer-custom-css"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="q footer-content">
+                            <p>Do you want to include text or HTML content in your footer? <select name="footer-content-yn" class="bdd yes"></select></p>
+                            <div id="footer-content" class="hideonno">
+                                <label for="footer-content">Footer text or HTML: </label>
+                                <textarea name="footer-content" rows="1"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="q map section">
+                    <h2>Map Section</h2>
+                    <div class="q custom-css">
+                        <p>Do you want to add custom CSS to the map section? <select name="map-custom-css-yn" class="bdd no"></select></p>
+                        <div id="map-custom-css" class="displayonyes">
+                            Write your custom CSS attributes in the format of a single-level <a href="http://json.org/example.html" target="_blank">JSON object</a> below.
+                            <textarea name="map-custom-css"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="q questions section">
+                    <h2>Questions Section</h2>
+                    <div class="q custom-css">
+                        <p>Do you want to add custom CSS to the questions section? <select name="questions-custom-css-yn" class="bdd no"></select></p>
+                        <div id="questions-custom-css" class="displayonyes">
+                            Write your custom CSS attributes in the format of a single-level <a href="http://json.org/example.html" target="_blank">JSON object</a> below.
+                            <textarea name="questions-custom-css"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button name="next" type="button">Next Step <img src="../img/next.png"></button>
+                </div>
+            </form>
+            
+            <form class="step" id="pages">
+                <h1>Step 2. Pages</h1>
+                <div class="desc">
+                    Pages are the most important components of your survey application. Each page will include its own map (or no map) and text or questions that accompany that map (or stand alone). For each page you create, if you choose to include a map, the first section of this form will help you build the map you want to test on that page. The second part of the form will guide you through creating questions. A <em>set</em> consists of all of the questions and text that will be shown at one time. The buttons you create with each set will allow the participant to move back and forth between sets and pages. A <em>block</em> consists of the question or descriptive text and an input field to allow the participant to respond if a response is required.
+                </div>
+
+
+                <div class="buttons">
+                    <button name="back" type="button"><img src="../img/back.png"> Back a Step</button>
+                    <button name="next" type="button">Next Step <img src="../img/next.png"></button>
+                </div>
+            </form>
+            
+            <form class="step" id="conditions">
+                <h1>Step 3. Conditions</h1>
+
+
+                <div class="buttons">
+                    <button name="back" type="button"><img src="../img/back.png"> Back a Step</button>
+                    <button name="next" type="button">Next Step <img src="../img/next.png"></button>
+                </div>
+            </form>
+            
+            <form class="step" id="server">
+                <h1>Step 4. Server Configuration</h1>
+
+
+                <div class="buttons">
+                    <button name="back" type="button"><img src="../img/back.png"> Back a Step</button>
+                    <button name="next" type="button">Finish <img src="../img/finish.png"></button>
+                </div>
+            </form>
+
+            <form class="step" id="finished">
+                <h1>All Done!</h1>
+                <p>Next, unzip the file that just downloaded, and replace the files in the MapStudy "config" directory with its contents. Then your app should be ready to rock!</p>
+            </form>
+        </div>
+
+        <script type="text/template" id="dropdown-template">
+            <select class="<%= classname %>"></select>
+        </script>
+
+        <script type="text/template" id="option-template">
+            <option value="<%= value %>"><%= option %></option>
+        </script>
+
+        <script type="text/javascript" src="../js/lib/jquery.js"></script>
+        <script type="text/javascript" src="../js/lib/jquery-ui/jquery-ui.js"></script>
+        <script type="text/javascript" src="../js/lib/underscore.js"></script>
+        <script type="text/javascript" src="../js/lib/backbone.js"></script>
+        <script type="text/javascript" src="../js/lib/modernizr.js"></script>
+        <script type="text/javascript" src="setup.js"></script>
+    </body>
+</html>
