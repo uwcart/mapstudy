@@ -47,6 +47,12 @@
                 color: black;
             }
 
+            .octicon {
+                display: inline;
+                height: 24px;
+                margin: -4px 4px auto auto;
+            }
+
             form {
                 padding: 20px;
             }
@@ -57,8 +63,18 @@
                 background-color: #DDD;
             }
 
-            .q {
+            .subsection {
+                padding: 0 20px;
+            }
+
+            .q, .page {
                 margin: 20px 0;
+            }
+
+            .page {
+                border: 1px solid black;
+                border-radius: 5px;
+                padding: 20px;
             }
 
             p, .desc {
@@ -83,13 +99,88 @@
                 cursor: pointer;
             }
 
+            .ar {
+                font-size: 2em;
+                font-weight: bold;
+                vertical-align: -4px;
+                font-size: 2em;
+                font-weight: bold;
+                line-height: 1em;
+            }
+
+            .addpage, .removepage {
+                padding-bottom: 6px;
+                margin-top: 20px;
+            }
+
+            .addlayer, .removelayer {
+                padding-bottom: 6px;
+                margin-bottom: 20px;
+            }
+
+            a.ext:link, a.ext:visited {
+                color: black;
+                background-image: linear-gradient(transparent, transparent), url("../img/external-black.png");
+            }
+
+            a.ext:hover, a.ext:active {
+                color: blue;
+                background-image: linear-gradient(transparent, transparent), url("../img/external-blue.png");
+            }
+
+            a.ext {
+                background-position: center right;
+                background-repeat: no-repeat;
+                padding-right: 13px;
+                background-size: 0.6em;
+            }
+
+            table {
+                margin-top: 5px;
+            }
+
+            td, th {
+                padding-right: 5px;
+                padding-bottom: 5px;
+                text-align: right;
+            }
+
+            td input, th input {
+                margin-right: 15px;
+            }
+
+            td.l-align {
+                text-align: left;
+            }
+
+            .nomargin {
+                margin: 0;
+            }
+
+            .fullwidth {
+                width: 100%;
+            }
+
+            table.fullwidth {
+                table-layout: fixed;
+            }
+
+            .bigtext {
+                font-size: 1.2em;
+            }
+
         </style>
 
         <header>
             <button id="preview" class="header-button" type="button">Live preview app</button>
             <button id="viewcode" class="header-button" type="button">View generated code</button>
             <a href="https://github.com/uwcart/mapstudy" target="_blank">
-                <button id="github" class="header-button" type="button">Go to GitHub repo</button>
+                <button id="github" class="header-button" type="button">
+                    <svg aria-hidden="true" class="octicon" version="1.1" viewBox="0 0 16 16">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59 0.4 0.07 0.55-0.17 0.55-0.38 0-0.19-0.01-0.82-0.01-1.49-2.01 0.37-2.53-0.49-2.69-0.94-0.09-0.23-0.48-0.94-0.82-1.13-0.28-0.15-0.68-0.52-0.01-0.53 0.63-0.01 1.08 0.58 1.23 0.82 0.72 1.21 1.87 0.87 2.33 0.66 0.07-0.52 0.28-0.87 0.51-1.07-1.78-0.2-3.64-0.89-3.64-3.95 0-0.87 0.31-1.59 0.82-2.15-0.08-0.2-0.36-1.02 0.08-2.12 0 0 0.67-0.21 2.2 0.82 0.64-0.18 1.32-0.27 2-0.27 0.68 0 1.36 0.09 2 0.27 1.53-1.04 2.2-0.82 2.2-0.82 0.44 1.1 0.16 1.92 0.08 2.12 0.51 0.56 0.82 1.27 0.82 2.15 0 3.07-1.87 3.75-3.65 3.95 0.29 0.25 0.54 0.73 0.54 1.48 0 1.07-0.01 1.93-0.01 2.2 0 0.21 0.15 0.46 0.55 0.38C13.71 14.53 16 11.53 16 8 16 3.58 12.42 0 8 0z"></path>
+                    </svg>
+                    Go to GitHub repo
+                </button>
             </a>
         </header>
 
@@ -110,7 +201,7 @@
                             <div class="q custom-css">
                                 <p>Add custom CSS? <select name="header-custom-css-yn" class="bdd no"></select></p>
                                 <div id="header-custom-css" class="displayonyes">
-                                    Write your custom CSS attributes in the format of a single-level <a href="http://json.org/example.html" target="_blank">JSON object</a> below.
+                                    Write your custom CSS attributes in the format of a single-level <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
                                     <textarea name="header-custom-css"></textarea>
                                 </div>
                             </div>
@@ -145,7 +236,7 @@
                             <div class="q custom-css">
                                 <p>Add custom CSS? <select name="footer-custom-css-yn" class="bdd no"></select></p>
                                 <div id="footer-custom-css" class="displayonyes">
-                                    Write your custom CSS attributes in the format of a single-level <a href="http://json.org/example.html" target="_blank">JSON object</a> below.
+                                    Write your custom CSS attributes in the format of a single-level <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
                                     <textarea name="footer-custom-css"></textarea>
                                 </div>
                             </div>
@@ -166,7 +257,7 @@
                     <div class="q custom-css">
                         <p>Do you want to add custom CSS to the map section? <select name="map-custom-css-yn" class="bdd no"></select></p>
                         <div id="map-custom-css" class="displayonyes">
-                            Write your custom CSS attributes in the format of a single-level <a href="http://json.org/example.html" target="_blank">JSON object</a> below.
+                            Write your custom CSS attributes in the format of a single-level <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
                             <textarea name="map-custom-css"></textarea>
                         </div>
                     </div>
@@ -177,7 +268,7 @@
                     <div class="q custom-css">
                         <p>Do you want to add custom CSS to the questions section? <select name="questions-custom-css-yn" class="bdd no"></select></p>
                         <div id="questions-custom-css" class="displayonyes">
-                            Write your custom CSS attributes in the format of a single-level <a href="http://json.org/example.html" target="_blank">JSON object</a> below.
+                            Write your custom CSS attributes in the format of a single-level <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
                             <textarea name="questions-custom-css"></textarea>
                         </div>
                     </div>
@@ -191,9 +282,64 @@
             <form class="step" id="pages">
                 <h1>Step 2. Pages</h1>
                 <div class="desc">
-                    Pages are the most important components of your survey application. Each page will include its own map (or no map) and text or questions that accompany that map (or stand alone). For each page you create, if you choose to include a map, the first section of this form will help you build the map you want to test on that page. The second part of the form will guide you through creating questions. A <em>set</em> consists of all of the questions and text that will be shown at one time. The buttons you create with each set will allow the participant to move back and forth between sets and pages. A <em>block</em> consists of the question or descriptive text and an input field to allow the participant to respond if a response is required.
+                    Pages are the most important components of your survey application. Each page will include its own map (or no map) and text or questions that accompany that map (or stand alone). For each page you create, if you choose to include a map, the first section of each page form will help you build the map you want to test on that page. The second part of the form will guide you through creating questions.
                 </div>
 
+                <div id="page-container"></div>
+
+                <script type="text/template" id="page-template">
+                    <h2>Page <span class="pagenum"><%= pagenum %></span></h2>
+                    <div class="m-section section q">
+                        <h2>Page <span class="pagenum"><%= pagenum %></span> Map</h2>
+                        <p>Include a map on this page? <select class="bdd yes"></select></p>
+                        <input type="hidden" name="page" value="<%= pagenum %>">
+                        <div id="m-section-<%= pagenum %>-map" class="hideonno">
+                            <p>
+                                Map library: <select name="library">
+                                    <option value="Leaflet">Leaflet</option>
+                                    <option disabled>More coming soon...</option>
+                                </select>
+                            </p>
+                            <p>
+                                Include a map legend? <select name="mapOptions.legend">
+                                    <option value="true">yes</option>
+                                    <option value="false">no</option>
+                                </select>
+                            </p>
+                            <div class="map-options q">
+                                <p class="nomargin"><a class="ext" href="http://leafletjs.com/reference.html#map-options" target="_blank">Map Options</a>:
+                                </p>
+                                <div class="map-options-inputs"></div>
+                            </div>
+                            <h3 class="nomargin">Base Layers</h3>
+                            <div class="baseLayers subsection q"></div>
+                            <h3 class="nomargin">Data Layers</h3>
+                            <div class="dataLayers subsection q">
+                                <button type="button" class="addlayer addDataLayer">
+                                    <span class="ar">+</span>
+                                    Add a data layer
+                                </button>
+                            </div>
+                            <h3 class="nomargin">Interactions</h3>
+                            <div class="interactions subsection q">
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="q-section section">
+                        <h2>Page <span class="pagenum"><%= pagenum %></span> Questions</h2>
+                        A <em>set</em> consists of all of the questions and text that will be shown at one time. The buttons you create with each set will allow the participant to move back and forth between sets and pages. A <em>block</em> consists of the question or descriptive text and an input field to allow the participant to respond if a response is required.
+                    </div>
+                    <button type="button" class="removepage">
+                        <span class="ar">-</span>
+                        Remove this page
+                    </button>
+                    <button type="button" class="addpage">
+                        <span class="ar">+</span>
+                        Add another page
+                    </button>
+                </script>
 
                 <div class="buttons">
                     <button name="back" type="button"><img src="../img/back.png"> Back a Step</button>
@@ -233,6 +379,150 @@
 
         <script type="text/template" id="option-template">
             <option value="<%= value %>"><%= option %></option>
+        </script>
+
+
+        <!--map options for each map library-->
+
+        <script type="text/template" id="Leaflet-map-options-template">
+            Refer to the documentation at the above link for explanations of the options below.
+            <table>
+            <tr class="Leaflet-mapOptions-center">
+                <td class="l-align">Center (decimal degrees):</td>
+                <td>Latitude:</td>
+                <td><input type="text" name="mapOptions.center-[{lat}," size="2"></td>
+                <td>Longitude:</td>
+                <td><input type="text" name="mapOptions.center-{lng}]" size="2"></td>
+            </tr>
+            <tr class="leaflet-mapOptions-zoom">
+                <td class="l-align">Zoom (integer 0-22):</td>
+                <td>Initial:</td>
+                <td><input type="text" name="mapOptions.zoom" size="2"></td>
+                <td>Minimum:</td>
+                <td><input type="text" name="mapOptions.minZoom" size="2"></td>
+                <td>Maximum:</td>
+                <td><input type="text" name="mapOptions.maxZoom" size="2"></td>
+            </tr>
+            <tr class="leaflet-mapOptions-maxBounds">
+                <td class="l-align">Bounds (decimal degrees):</td>
+                <td>South lat:</td>
+                <td><input type="text" name="mapOptions.maxBounds-[[{S}," size="2"></td>
+                <td>West lon:</td>
+                <td><input type="text" name="mapOptions.maxBounds-{W}]," size="2"></td>
+                <td>North lat:</td>
+                <td><input type="text" name="mapOptions.maxBounds-[{N}," size="2"></td>
+                <td>East lon:</td>
+                <td><input type="text" name="mapOptions.maxBounds-{E}]]" size="2"></td>
+            </tr>
+            <table>
+        </script>
+
+
+        <!--universal baseLayer properties-->
+
+        <script type="text/template" id="baseLayer-template">
+            <p>Layer name: <input type="text" name="baseLayers[<%= i %>].name"></p>
+            <table class='fullwidth bigtext'>
+            <tr>
+                <td class="l-align" style="width: 72px">Source:</td>
+                <td class="l-align" style="width: 150px"><select class="layer-source-select">
+                    <option value="url">URL</option>
+                    <option value="postgis">PostGIS table</option>
+                </select></td>
+                <td class="l-align"><input type="text" class="layer-source-input fullwidth" name="source-{url}" placeholder="example: http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png"></input></td>
+            </tr>
+            </table>
+            <div class="layer-options">
+                <div class="layer-options-inputs"></div>
+                <div class="layer-custom-options q">
+                    <p>Add custom layer options? <select class="bdd no"></select></p>
+                    <div class="layer-custom-options-textarea displayonyes">
+                        Refer to the documentation at the above link for a list of available custom options. Write your custom options in the format of a <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
+                        <textarea name="baseLayers[<%= i %>].layerOptions"></textarea>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="removelayer">
+                <span class="ar">-</span>
+                Remove this base layer
+            </button>
+            <button type="button" class="addlayer">
+                <span class="ar">+</span>
+                Add another base layer
+            </button>
+        </script>
+
+        
+        <!--baseLayer options for each map library-->
+
+        <script type="text/template" id="Leaflet-baseLayer-options-template">
+            <p class="nomargin"><a class="ext" href="http://leafletjs.com/reference.html#tilelayer-options" target="_blank">Layer Options</a>:
+            </p>
+            <table class="fullwidth">
+                <tr class="Leaflet-baseLayer-options-attribution">
+                    <td class="l-align" style="width: 85px">Attribution:</td>
+                    <td class="l-align"><input class="fullwidth" type="text" name="baseLayers[<%= i %>].layerOptions.attribution" placeholder="example: Map by Stamen, Data by <a href='http://osm.org'>OpenStreetMap</a> contributors"></td>
+                </tr>
+            </table>
+        </script>
+
+
+        <!--universal dataLayer properties-->
+
+        <script type="text/template" id="dataLayer-template">
+            <p>Layer name: <input type="text" name="dataLayers[<%= i %>].name"></p>
+            
+            <table class='fullwidth bigtext layer-source'>
+                <tr>
+                    <td class="l-align" style="width: 72px">Source:</td>
+                    <td class="l-align" style="width: 150px"><select class="layer-source-select">
+                        <option value="url">URL</option>
+                        <option value="postgis">PostGIS table</option>
+                    </select></td>
+                    <td class="l-align"><input type="text" class="layer-source-input fullwidth" name="source-{url}" placeholder="example: data/geography.geojson"></input></td>
+                </tr>
+            </table>
+            
+            <div class="layer-options">
+                <div class="layer-options-inputs"></div>
+                <div class="layer-custom-options q">
+                    <p>Add custom layer options? <select class="bdd no"></select></p>
+                    <div class="layer-custom-options-textarea displayonyes">
+                        Refer to the documentation at the above link for a list of available custom options. Write your custom options in the format of a <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
+                        <textarea name="dataLayers[<%= i %>].layerOptions"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <p class="layer-expressedAttribute">Expressed attribute name: <input type="text" name="dataLayers[<%= i %>].expressedAttribute"></p>
+
+            <p class="nomargin layer-displayAttributes">Display attributes (list attributes separated by commas):</p>
+            <textarea name="dataLayers[<%= i %>].displayAttributes-[{attrs}]"></textarea>
+
+            <p class="layer-renderOnLoad q">Render layer when map loads? 
+                <select class="bdd yes" name="dataLayers[<%= i %>].renderOnLoad"></select>
+            </p>
+
+            <p class="nomargin layer-techniques-title">Layer visualization techniques:</p>
+            <div class="layer-techniques section">Put stuff here using a view...</div>
+
+            <button type="button" class="removelayer">
+                <span class="ar">-</span>
+                Remove this data layer
+            </button>
+            <button type="button" class="addlayer">
+                <span class="ar">+</span>
+                Add another data layer
+            </button>
+        </script>
+
+
+        <!--dataLayer options for each map library-->
+
+        <script type="text/template" id="Leaflet-dataLayer-options-template">
+            <p class="nomargin"><a class="ext" href="http://leafletjs.com/reference.html#path" target="_blank">Layer Options</a>:
+            </p>
+            Refer to the documentation at the above link for a list of available custom options.
         </script>
 
         <script type="text/javascript" src="../js/lib/jquery.js"></script>
