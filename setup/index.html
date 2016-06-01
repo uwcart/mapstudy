@@ -57,14 +57,19 @@
                 padding: 20px;
             }
 
-            .section {
+            .section, .i-section, .subsection {
                 padding: 20px;
                 border-radius: 5px;
                 background-color: #DDD;
             }
 
             .subsection {
-                padding: 0 20px;
+                border: 1px solid black;
+                margin-bottom: 20px;
+            }
+
+            .i-section, .mb20 {
+                margin-bottom: 20px;
             }
 
             .q, .page {
@@ -108,14 +113,9 @@
                 line-height: 1em;
             }
 
-            .addpage, .removepage {
+            .addpage, .removepage, .addlayer, .removelayer, .addtechnique, .removetechnique {
                 padding-bottom: 6px;
                 margin-top: 20px;
-            }
-
-            .addlayer, .removelayer {
-                padding-bottom: 6px;
-                margin-bottom: 20px;
             }
 
             a.ext:link, a.ext:visited {
@@ -300,30 +300,180 @@
                                     <option disabled>More coming soon...</option>
                                 </select>
                             </p>
+                            
                             <p>
                                 Include a map legend? <select name="mapOptions.legend">
                                     <option value="true">yes</option>
                                     <option value="false">no</option>
                                 </select>
                             </p>
+                            
                             <div class="map-options q">
                                 <p class="nomargin"><a class="ext" href="http://leafletjs.com/reference.html#map-options" target="_blank">Map Options</a>:
                                 </p>
                                 <div class="map-options-inputs"></div>
                             </div>
+                            
                             <h3 class="nomargin">Base Layers</h3>
-                            <div class="baseLayers subsection q"></div>
+                            <div class="baseLayers q"></div>
+                            
                             <h3 class="nomargin">Data Layers</h3>
-                            <div class="dataLayers subsection q">
+                            <div class="dataLayers q">
                                 <button type="button" class="addlayer addDataLayer">
                                     <span class="ar">+</span>
                                     Add a data layer
                                 </button>
                             </div>
+                            
                             <h3 class="nomargin">Interactions</h3>
-                            <div class="interactions subsection q">
-                                
+                            <div class="interactions q">
+                                <div>
+                                    <p class="zoom-p nomargin">
+                                        <input class="i-checkbox" type="checkbox" name="interactions.zoom"> Zoom
+                                    </p>
+                                    <div class="zoom i-section">
+                                        <div>Interface options:</div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.zoom.interface.touch" checked> Touch
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.zoom.interface.scrollWheel" checked> Scroll wheel
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.zoom.interface.doubleClick" checked> Double click
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.zoom.interface.box" checked> Box
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.zoom.interface.keyboard" checked> Keyboard
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.zoom.interface.widget" checked> Widget
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <div>
+                                    <p class="pan-p nomargin">
+                                        <input class="i-checkbox" type="checkbox" name="interactions.pan"> Pan
+                                    </p>
+                                    <div class="pan i-section">
+                                        <div>Interface options:</div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.pan.interface.drag" checked> Drag
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.pan.interface.keyboard" checked> Keyboard
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.pan.interface.widget" checked> Widget
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <p class="rotate-p nomargin">
+                                        <input class="i-checkbox" type="checkbox" name="interactions.rotate"> Rotate
+                                    </p>
+                                    <div class="rotate i-section"></div>
+                                </div>
+                                
+                                <div>
+                                    <p class="retrieve-p nomargin">
+                                        <input class="i-checkbox" type="checkbox" name="interactions.retrieve"> Retrieve
+                                    </p>
+                                    <div class="retrieve i-section">
+                                        <div>Interface options:</div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.retrieve.interface.popup" checked> Popups
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.retrieve.interface.window" checked> Window
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <p class="overlay-p nomargin">
+                                        <input class="i-checkbox" type="checkbox" name="interactions.overlay"> Overlay
+                                    </p>
+                                    <div class="overlay i-section">
+                                        <input type="hidden" name="interactions.overlay.dataLayers-{arrO}" value="[">
+                                        <div class="interaction-dataLayers">Data layers to include:</div>
+                                        <input type="hidden" name="interactions.overlay.dataLayers-{arrC}" value="]">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <p class="underlay-p nomargin">
+                                        <input class="i-checkbox" type="checkbox" name="interactions.underlay"> Underlay
+                                    </p>
+                                    <div class="underlay i-section"></div>
+                                </div>
+
+                                <div>
+                                    <p class="search-p nomargin">
+                                        <input class="i-checkbox" type="checkbox" name="interactions.search"> Search
+                                    </p>
+                                    <div class="search i-section">
+                                        <div class="interaction-dataLayers">Data layers to include:</div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p class="filter-p nomargin">
+                                        <input class="i-checkbox" type="checkbox" name="interactions.filter"> Filter
+                                    </p>
+                                    <div class="filter i-section">
+                                        <div class="interaction-dataLayers mb20">Data layers to include:</div>
+                                        <div class="filter-tool">Filter tool: 
+                                            <select name="interactions.filter.tool">
+                                                <option value="slider">Slider</option>
+                                                <option value="logic">Logic</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p class="sequence-p nomargin">
+                                        <input class="i-checkbox" type="checkbox" name="interactions.sequence"> Sequence
+                                    </p>
+                                    <div class="sequence i-section">
+                                        <div class="interaction-dataLayers mb20">Data layers to include:</div>
+                                        <div class="sequence-tool">Sequence tool: 
+                                            <select name="interactions.sequence.tool">
+                                                <option value="buttons">Buttons</option>
+                                                <option value="slider">Slider</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p class="reexpress-p nomargin">
+                                        <input class="i-checkbox" type="checkbox" name="interactions.reexpress"> Reexpress
+                                    </p>
+                                    <div class="reexpress i-section"></div>
+                                </div>
+
+                                <div>
+                                    <p class="resymbolize-p nomargin">
+                                        <input class="i-checkbox" type="checkbox" name="interactions.resymbolize"> Resymbolize
+                                    </p>
+                                    <div class="resymbolize i-section">
+                                        <div>
+                                            <input type="checkbox" name="interactions.resymbolize.reclassify" checked> Reclassify
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.resymbolize.rescale" checked> Rescale
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="interactions.resymbolize.recolor" checked> Recolor
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -470,7 +620,7 @@
         <!--universal dataLayer properties-->
 
         <script type="text/template" id="dataLayer-template">
-            <p>Layer name: <input type="text" name="dataLayers[<%= i %>].name"></p>
+            <p>Layer name: <input type="text" class="layerName" name="dataLayers[<%= i %>].name"></p>
             
             <table class='fullwidth bigtext layer-source'>
                 <tr>
@@ -503,8 +653,8 @@
                 <select class="bdd yes" name="dataLayers[<%= i %>].renderOnLoad"></select>
             </p>
 
-            <p class="nomargin layer-techniques-title">Layer visualization techniques:</p>
-            <div class="layer-techniques section">Put stuff here using a view...</div>
+            <h3 class="layer-techniques-title">Layer visualization techniques</h3>
+            <div class="layer-techniques"></div>
 
             <button type="button" class="removelayer">
                 <span class="ar">-</span>
@@ -517,6 +667,108 @@
         </script>
 
 
+        <!--technique properties-->
+
+        <script type="text/template" id="technique-template">
+            <p class="technique-type-p nomargin">Technique type: 
+                <select class="technique-type" name="dataLayers[<%= i %>].techniques[<%= ii %>].type">
+                    <option value="choropleth">Choropleth</option>
+                    <option value="proportional symbol">Proportional Symbol</option>
+                    <option value="dot">Dot</option>
+                    <option value="isarithmic">Isarithmic</option>
+                    <option value="heat">Heat</option>
+                </select>
+            </p>
+
+            <div class="technique-type-desc" style="margin-bottom: 20px;"></div>
+
+            <p class="technique-classification-p nomargin">Classification scheme: 
+                <select class="technique-classification" name="dataLayers[<%= i %>].techniques[<%= ii %>].classification">
+                    <option value="quantile">Quantile</option>
+                    <option value="equal interval">Equal Interval</option>
+                    <option value="natural breaks">Natural Breaks</option>
+                    <option value="unclassed">Unclassed</option>
+                </select>
+            </p>
+
+            <div class="classification-type-desc" style="margin-bottom: 20px;"></div>
+
+            <p class="technique-n-classes-p">Number of classes: 
+                <select class="technique-n-classes">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5" selected>5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+            </p>
+
+            <div class="technique-classes"></div>
+
+            <p class="technique-symbol-p">
+                Symbol: 
+                <select class="technique-symbol">
+                    <option value="circle">circle</option>
+                    <option value="url">URL</option>
+                </select> 
+                <input class="technique-symbol-url" type="text" name="dataLayers[<%= i %>].techniques[<%= ii %>].symbol">
+            </p>
+
+            <p class="technique-interval-p">
+                <span class="interval-ratio">Line interval: </span>
+                <input type="text" size="3" name="dataLayers[<%= i %>].techniques[<%= ii %>].interval">
+            </p>
+
+            <p class="technique-size-p">
+                <span class="dot-line-size">Isarithm width: </span>
+                <input type="text" size="2" name="dataLayers[<%= i %>].techniques[<%= ii %>].size"> 
+                pixels
+            </p>
+
+            <button type="button" class="removetechnique">
+                <span class="ar">-</span>
+                Remove this technique
+            </button>
+            <button type="button" class="addtechnique">
+                <span class="ar">+</span>
+                Add another technique
+            </button>
+        </script>
+
+        <script type="text/template" id="color-scale-classes-template">
+            <p>Color scale: <select class="color-classes" name="dataLayers[<%= i %>].techniques[<%= ii %>].classes"></select></p>
+        </script>
+
+        <script type="text/template" id="radii-classes-template">
+            <input type="hidden" name="dataLayers[<%= i %>].techniques[<%= ii %>].classes-{arrO}" value="[">
+            <table style="margin-bottom: 20px;">
+                <tr class="bigtext radii-classes">
+                    <td class="l-align">Symbol radii:</td>
+                </tr>
+                <tr class="radii-minmax"><td></td></tr>
+            </table>
+            <input type="hidden" name="dataLayers[<%= i %>].techniques[<%= ii %>].classes-{arrC}" value="]">
+        </script>
+
+        <script type="text/template" id="color-scale-option-template">
+            <option value="<%= colorcode %>"></option>
+        </script>
+
+        <script type="text/template" id="color-swatch-template">
+            <span class="color-swatch" style="background-color: <%= fillColor %>"></span>
+        </script>
+
+        <script type="text/template" id="symbol-radius-template">
+            <td><input type="text" size="2" name="dataLayers[<%= i %>].techniques[<%= ii %>].classes-{c}"></td>
+        </script>
+
+
         <!--dataLayer options for each map library-->
 
         <script type="text/template" id="Leaflet-dataLayer-options-template">
@@ -525,6 +777,26 @@
             Refer to the documentation at the above link for a list of available custom options.
         </script>
 
+
+        <!--interaction properties-->
+
+        <script type="text/template" id="interaction-logging-template">
+            <div class="interaction-logging mb20">
+                Log this interaction? 
+                <select class="bdd yes" name="interactions.<%= interaction %>.logging"></select>
+            </div>
+        </script>
+
+        <script type="text/template" id="interaction-dataLayer-template">
+            <input type="checkbox" checked> 
+            <span class="dataLayer-layerName"><%= layerName %></span>
+            <input type="hidden" name="interactions.<%= interaction %>.dataLayers-{layer}" value="<%= layerName %>">
+        </script>
+
+
+        <!--external scripts-->
+
+        <script type="text/javascript" src="../js/lib/colorbrewer.js"></script>
         <script type="text/javascript" src="../js/lib/jquery.js"></script>
         <script type="text/javascript" src="../js/lib/jquery-ui/jquery-ui.js"></script>
         <script type="text/javascript" src="../js/lib/underscore.js"></script>
