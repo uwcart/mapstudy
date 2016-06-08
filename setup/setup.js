@@ -1,5 +1,14 @@
 (function(){
 
+//object to hold all data
+var allData = {
+	"interface": [],
+	"mpages": [],
+	"qpages": [],
+	"conditions": [],
+	"server": {}
+};
+
 //templates
 var optionTemplate = _.template( $('#option-template').html() ),
 	dropdownTemplate = _.template( $('#dropdown-template').html() );
@@ -22,7 +31,9 @@ var PageView = Backbone.View.extend({
 		"click .addpage": "addpage",
 		"click .addDataLayer": "addDataLayer",
 		"change select[name=library]": "setLibrary",
-		"change .i-checkbox": "toggleInteraction"
+		"change .i-checkbox": "toggleInteraction",
+		"change .fullpage": "toggleMaponpage",
+		"change .maponpage": "toggleFullpage"
 	},
 	removepage: function(){
 		//reset page numbering
@@ -44,10 +55,11 @@ var PageView = Backbone.View.extend({
 		createPage(this.model.get('pagenum')+1);
 	},
 	setInteractionOptions: function(){
-		var loggingTemplate = _.template( $('#interaction-logging-template').html() );
+		var loggingTemplate = _.template( $('#interaction-logging-template').html() ),
+			pagenum = this.model.get('pagenum');
 		this.$el.find('.i-section').each(function(){
 			var interaction = $(this).attr('class').split(' ')[0];
-			$(this).prepend(loggingTemplate({interaction: interaction}));
+			$(this).prepend(loggingTemplate({pagenum: pagenum, interaction: interaction}));
 			$(this).find('input, select').attr('disabled', true);
 			$(this).hide();
 		});
@@ -59,8 +71,22 @@ var PageView = Backbone.View.extend({
 			isection.slideDown(250);
 		} else {
 			isection.slideUp(250);
-			isection.find('input, select').attr('disabled', true);
+			isection.find('input, select')
 		};
+	},
+	toggleMaponpage: function(e){
+		if (e.target.value == "true"){
+			this.$el.find('.maponpage').val("false").trigger("change");
+		} else {
+			this.$el.find('.maponpage').val("true").trigger("change");
+		}
+	},
+	toggleFullpage: function(e){
+		if (e.target.value == "true"){
+			this.$el.find('.fullpage').val("false").trigger("change");
+		} else {
+			this.$el.find('.fullpage').val("true").trigger("change");
+		}
 	},
 	setLibrary: function(library){
 		//extract name of library from select change event
@@ -71,7 +97,7 @@ var PageView = Backbone.View.extend({
 
 		//set map options
 		var mapOptionsTemplate = _.template( $('#'+library+"-map-options-template").html() );
-		this.$el.find('.map-options-inputs').html(mapOptionsTemplate());
+		this.$el.find('.map-options-inputs').html(mapOptionsTemplate({pagenum: this.model.get('pagenum')}));
 
 		this.setInteractionOptions();
 	},
@@ -123,7 +149,13 @@ var BaseLayerView = Backbone.View.extend({
 		"keyup .layerName": "addInteractionLayers"
 	},
 	i: 0,
-	sourceUrlExample: "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
+	sourceLinks: {
+		Leaflet: {
+			link: "http://leaflet-extras.github.io/leaflet-providers/preview/",
+			example: "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png or Stamen.TonerLite"
+		}
+		//add other libraries...
+	},
 	removeLayer: function(){
 		//reset layer numbering
 		this.i--
@@ -162,16 +194,18 @@ var BaseLayerView = Backbone.View.extend({
 	changeSourceType: function(e){
 		//dynamically change source type
 		var view = this,
-			sourceInput = this.$el.find('.layer-source-input');
+			sourceInput = this.$el.find('.layer-source-input'),
+			layerstring = sourceInput.attr('name').split('.');
+			layerstring = layerstring[0] + '.' + layerstring[1] + '.';
 		if ($(e.target).val() == 'url'){
 			sourceInput.attr({
-				name: 'source-{url}',
+				name: layerstring + 'source',
 				placeholder: 'example: '+view.sourceUrlExample,
 				class: 'layer-source-input fullwidth'
 			});
 		} else if ($(e.target).val() == 'postgis') {
 			sourceInput.attr({
-				name: 'source-postgis:{tablename}',
+				name: layerstring + 'source-{postgis}',
 				placeholder: 'table name',
 				class: 'layer-source-input'
 			});
@@ -225,7 +259,8 @@ var BaseLayerView = Backbone.View.extend({
 				var interactionDataLayersModel = new InteractionDataLayersModel({
 					i: i,
 					layerName: e.target.value,
-					interaction: interaction
+					interaction: interaction,
+					pagenum: pagenum
 				});
 				if ($(this).find('.i-dataLayer-'+i).length == 0){
 					var interactionDataLayersView = new InteractionDataLayersView({
@@ -238,6 +273,24 @@ var BaseLayerView = Backbone.View.extend({
 			});
 		};
 	},
+	setSourceLink: function(){
+		//get library
+		var library = this.model.get('library');
+		//set placeholder
+		this.sourceUrlExample = this.sourceLinks[library].example;
+		//set source link
+		this.$el.find('.sourcelink').attr('href', this.sourceLinks[library].link);
+	},
+	setLayerOptions: function(){
+		//set layer options
+		var library = this.model.get('library'),
+			layerOptionsTemplate = _.template( $('#'+library+"-"+this.className+"-options-template").html() );
+		this.$el.find('.layer-options-inputs').html(layerOptionsTemplate({pagenum: this.model.get('pagenum'), i: this.i}));
+
+		this.setSourceLink();
+
+		this.$el.find('.layer-source-input').attr('placeholder', 'ex: '+this.sourceUrlExample);
+	},
 	render: function(){
 		//create layer div
 		var pagenum = this.model.get('pagenum'),
@@ -246,12 +299,9 @@ var BaseLayerView = Backbone.View.extend({
 			id: 'page-'+pagenum+'-'+this.className+'-'+this.i,
 			class: className + ' subsection'
 		});
-		this.$el.html(this.template({i: this.i}));
+		this.$el.html(this.template({pagenum: this.model.get('pagenum'), i: this.i}));
 		
-		//set layer options
-		var library = this.model.get('library'),
-			layerOptionsTemplate = _.template( $('#'+library+"-"+this.className+"-options-template").html() );
-		this.$el.find('.layer-options-inputs').html(layerOptionsTemplate({i: this.i}));
+		this.setLayerOptions();
 
 		//add options to boolean dropdown menus
 		this.$el.find('.bdd').each(function(){
@@ -274,7 +324,13 @@ var BaseLayerView = Backbone.View.extend({
 var DataLayerView = BaseLayerView.extend({
 	className: 'dataLayer',
 	template: _.template( $('#dataLayer-template').html() ),
-	sourceUrlExample: "data/geography.geojson",
+	sourceLinks: {
+		Leaflet: {
+			link: "http://geojson.org/geojson-spec.html",
+			example: "data/geography.geojson"
+		}
+		//add other libraries...
+	},
 	removeButton: function(){}
 });
 
@@ -299,6 +355,7 @@ var TechniqueView = Backbone.View.extend({
 		};
 
 		var l = this.$el,
+			pagenum = this.model.get('pagenum'),
 			i = this.i,
 			ii = this.ii,
 			changeClassification = this.changeClassification,
@@ -317,7 +374,7 @@ var TechniqueView = Backbone.View.extend({
 					l.find('.technique-symbol-p, .technique-interval-p, .technique-size-p').hide().find('input, select').attr('disabled', true);
 					//add color scale to classes div
 					var colorScaleTemplate = _.template( $('#color-scale-classes-template').html() );
-					l.find('.technique-classes').html(colorScaleTemplate({i: i, ii: ii}));
+					l.find('.technique-classes').html(colorScaleTemplate({pagenum: pagenum, i: i, ii: ii}));
 					//call next method
 					changeClassification('natural breaks', l, changeNClasses);
 				}
@@ -332,7 +389,7 @@ var TechniqueView = Backbone.View.extend({
 					l.find('.technique-interval-p, .technique-size-p').hide().find('input, select').attr('disabled', true);
 					//add symbol radii to classes div
 					var symbolRadiiTemplate = _.template( $('#radii-classes-template').html() );
-					l.find('.technique-classes').html(symbolRadiiTemplate({i: i, ii: ii}));
+					l.find('.technique-classes').html(symbolRadiiTemplate({pagenum: pagenum, i: i, ii: ii}));
 					//call next methods
 					changeClassification('unclassed', l, changeNClasses);
 					changeSymbol('circle', l);
@@ -462,7 +519,7 @@ var TechniqueView = Backbone.View.extend({
 				ii = id[5];
 			//add input for each radius class
 			for (var a=0; a<parseInt(nClasses); a++){
-				l.find('.radii-classes').append(radiusTemplate({i: i, ii: ii}));
+				l.find('.radii-classes').append(radiusTemplate({pagenum: this.model.get('pagenum'), i: i, ii: ii}));
 				var cell;
 				if (a == 0){
 					cell = '<td class="l-align">min</td>';
@@ -534,7 +591,7 @@ var TechniqueView = Backbone.View.extend({
 			id: 'page-'+pagenum+'-dataLayer-'+this.i+'-technique-'+this.ii,
 			class: 'technique subsection'
 		});
-		this.$el.html(this.template({i: this.i, ii: this.ii}));
+		this.$el.html(this.template({pagenum: this.model.get('pagenum'), i: this.i, ii: this.ii}));
 
 		this.removeButton();
 		this.changeTechniqueType('choropleth');
@@ -585,17 +642,117 @@ function createBooleanDropdown(select){
 			select.val("false");
 		};
 		select.on('change', function(){
+			var togglediv = $(this).closest('.q').children('.displayonyes, .hideonno');
 			if ($(this).val() == "true"){
-				$(this).closest('.q').children('.displayonyes, .hideonno').slideDown(100);
+				togglediv.slideDown(100).find('input, textarea, select').removeAttr('disabled');
 			} else {
-				$(this).closest('.q').children('.displayonyes, .hideonno').slideUp(100);
+				togglediv.slideUp(100).find('input, textarea, select').attr('disabled', true);
 			}
 		});
 	};
 	return select;
 };
 
+function processArrays(level){
+	var levelArr = [], levelObj = {};
+	//level is the object to be examined
+	Object.keys(level).forEach(function(key){
+		//if key is a number, level is an array
+		if (!isNaN(parseInt(key))){
+			//recursively sift through all levels of object
+			if (typeof level[key] == 'object'){
+				levelArr.push(processArrays(level[key]));
+			} else {
+				//just a simple array value
+				levelArr.push(level[key]);
+			};
+		} else {
+			var complexKey = key.split('-{');
+			if (complexKey.length > 1){
+				var subkey = complexKey[0],
+					variable = complexKey[1].substring(0,complexKey[1].length-1);
+				//deal with custom properties array
+				if (variable == '[]'){
+					//make array if not exists
+					if (!levelObj.hasOwnProperty(subkey)){
+						levelObj[subkey] = []
+					};
+					//add all values to array
+					level[key] = level[key].split(',');
+					level[key].forEach(function(arrVal){
+						levelObj[subkey].push(arrVal.trim());
+					});
+				} else if (variable == '{}'){
+					//make object if not exists, then merge
+					if (!levelObj.hasOwnProperty(subkey)){
+						levelObj[subkey] = {}
+					};
+					$.extend(levelObj[subkey], level[key]);
+				};
+			} else if (typeof level[key] == 'object'){
+				//recursively sift through all levels of object
+				levelObj[key] = processArrays(level[key]);
+			} else {
+				//just a simple key-value pair
+				levelObj[key] = level[key];
+			};
+		};
+	});
+	//return correct data structure
+	if (levelArr.length > 0){
+		return levelArr;
+	} else {
+		return levelObj;
+	};
+};
+
+function processForm(data){
+	var inners = {};
+	_.each(data, function(inData){
+		var propArray = inData.name.split('.');
+		//create pseudo-nested object strings
+		var len = propArray.length,
+			open = '',
+			close = '',
+			value = inData.value;
+		for (var i = 0; i < len; i++){
+			open += '{"' + propArray[i] + '":';
+			close += '}';
+			if (i == len-1){
+				//determine how to treat value
+				if (value[0] == '{' || value[0] == '[' || (value != '' && !isNaN(Number(value)))){
+					open += value;
+				} else {
+					open += '"' + value + '"';
+				}
+			};
+		};
+		var tempObj = open + close;
+		//zip up the objects
+		$.extend(true, inners, JSON.parse(tempObj));
+	});
+
+	inners = processArrays(inners);
+	return inners;
+};
+
+function readForm(step){
+	var data = $('#'+step).serializeArray();
+
+	if (step == 'pages'){
+		var outer = processForm(data);
+		allData['mpages'] = outer.map;
+		allData['qpages'] = outer.questions;
+	} else {
+		allData[step] = processForm(data);
+		console.log(step, allData);
+	}
+};
+
 function changeStep(prevStep, currentStep){
+	//process form data
+	readForm(prevStep);
+
 	$('#'+prevStep).fadeOut(500, function(){
 		$(window).scrollTop(0);
 		$('#'+currentStep).fadeIn(500);
@@ -647,27 +804,6 @@ function initialize(){
 
 	$('.bdd').each(function(){
 		createBooleanDropdown($(this));
-	});
-
-	//preview uploaded images
-	$('.image-upload').change(function(){
-		var input = this,
-			preview = $(input).parent().find('.preview');
-		if (input.files && input.files[0]){
-			var reader = new FileReader();
-			reader.onload = function(e){
-				preview.attr('src', e.target.result);
-			};
-			reader.readAsDataURL(input.files[0]);
-		};
-		//add remove button
-		var remove = $('<img src="../img/remove.png" class="remove-button" title="remove">');
-		$(input).parent().append(remove);
-		remove.click(function(){
-			$(input).val("");
-			remove.remove();
-			preview.attr('src', '../img/blankimage.png');
-		});
 	});
 
 	//add sticky header

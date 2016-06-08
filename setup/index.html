@@ -113,7 +113,7 @@
                 line-height: 1em;
             }
 
-            .addpage, .removepage, .addlayer, .removelayer, .addtechnique, .removetechnique {
+            .addbutton, .removebutton {
                 padding-bottom: 6px;
                 margin-top: 20px;
             }
@@ -185,80 +185,82 @@
         </header>
 
         <div id="container">
-            <form class="step" id="interface">
+            <form class="step" id="interface" autocomplete="off">
                 <h1>Step 1. Interface</h1>
                 <div class="desc">
                     The first step is to customize the interface that survey participants will see. Use this form to upload a custom logo and change the look of the header, footer, map, and questions sections if you want. All options currently shown are the defaults.
                 </div>
 
-                <div class="q header section">
+                <div class="header q section">
                     <h2>Header</h2>
-                    <p>Do you want to include a header? <select name="header-yn" class="bdd yes"></select></p>
+                    <p>Do you want to include a header? <select class="section-yn bdd yes"></select></p>
                     <div class="hideonno">
+                        <input type="hidden" name="0.sectionId" value="header">
                         <div id="header-style">
-                            <p><label for="header-bg">Header background color: </label>
-                            <input name="header-bg" type="color" value="#F79A42"></p>
+                            <p><label for='0.cssAttributes.background-color'>Header background color: </label>
+                            <input name='0.cssAttributes.background-color' type="color" value="#F79A42"></p>
                             <div class="q custom-css">
-                                <p>Add custom CSS? <select name="header-custom-css-yn" class="bdd no"></select></p>
+                                <p>Add custom CSS? <select class="custom-css-yn bdd no"></select></p>
                                 <div id="header-custom-css" class="displayonyes">
                                     Write your custom CSS attributes in the format of a single-level <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
-                                    <textarea name="header-custom-css"></textarea>
+                                    <textarea name="0.cssAttributes-{{}}" disabled></textarea>
                                 </div>
                             </div>
                         </div>
 
                         <div class="q header-logo">
-                            <p>Do you want a custom logo on the right side of the header? <select name="header-logo-yn" class="bdd no"></select></p>
+                            <p>Do you want a custom logo on the right side of the header? <select class="bdd no"></select></p>
                             <div id="header-logo" class="displayonyes">
-                                <label for="header-logo">Upload logo image:</label>
-                                <input name="header-logo" type="file" class="image-upload">
-                                <img class="preview" src="../img/blankimage.png">
+                                <label for="header-logo">Logo image URL:</label>
+                                <input name="0.logo-url" type="text" placeholder="ex.: img/logo.png" disabled>
                             </div>
                         </div>
 
                         <div class="q header-content">
-                            <p>Do you want to include a title in your header? <select name="header-content-yn" class="bdd yes"></select></p>
+                            <p>Do you want to include a title in your header? <select class="bdd yes"></select></p>
                             <div id="header-content" class="hideonno">
-                                <label for="header-content">Title text or HTML: </label>
-                                <textarea name="header-content" rows="1"></textarea>
+                                <label for="0.content">Title text or HTML: </label>
+                                <textarea name="0.content" rows="1"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="q footer section">
+                <div class="footer q section">
                     <h2>Footer</h2>
-                    <p>Do you want to include a footer? <select name="footer-yn" class="bdd yes"></select></p>
+                    <p>Do you want to include a footer? <select class="section-yn bdd yes"></select></p>
                     <div class="hideonno">
+                        <input type="hidden" name="1.sectionId" value="footer">
                         <div id="footer-style">
-                            <p><label for="footer-bg">Footer background color: </label>
-                            <input name="footer-bg" type="color" value="#F79A42"></p>
+                            <p><label for='1.cssAttributes.background-color'>Footer background color: </label>
+                            <input name='1.cssAttributes.background-color' type="color" value="#F79A42"></p>
                             <div class="q custom-css">
-                                <p>Add custom CSS? <select name="footer-custom-css-yn" class="bdd no"></select></p>
+                                <p>Add custom CSS? <select class="custom-css-yn bdd no"></select></p>
                                 <div id="footer-custom-css" class="displayonyes">
                                     Write your custom CSS attributes in the format of a single-level <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
-                                    <textarea name="footer-custom-css"></textarea>
+                                    <textarea name="1.cssAttributes-{{}}" disabled></textarea>
                                 </div>
                             </div>
                         </div>
 
                         <div class="q footer-content">
-                            <p>Do you want to include text or HTML content in your footer? <select name="footer-content-yn" class="bdd yes"></select></p>
+                            <p>Do you want to include text or HTML content in your footer? <select class="bdd yes"></select></p>
                             <div id="footer-content" class="hideonno">
-                                <label for="footer-content">Footer text or HTML: </label>
-                                <textarea name="footer-content" rows="1"></textarea>
+                                <label for="1.content">Footer text or HTML: </label>
+                                <textarea name="1.content" rows="1"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="q map section">
+                <div class="map q section">
                     <h2>Map Section</h2>
                     <div class="q custom-css">
-                        <p>Do you want to add custom CSS to the map section? <select name="map-custom-css-yn" class="bdd no"></select></p>
+                        <p>Do you want to add custom CSS to the map section? <select class="section-yn bdd no"></select></p>
                         <div id="map-custom-css" class="displayonyes">
+                            <input type="hidden" name="2.sectionId" value="m" disabled>
                             Write your custom CSS attributes in the format of a single-level <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
-                            <textarea name="map-custom-css"></textarea>
+                            <textarea name="2.cssAttributes-{{}}" disabled></textarea>
                         </div>
                     </div>
                 </div>
@@ -266,10 +268,11 @@
                 <div class="q questions section">
                     <h2>Questions Section</h2>
                     <div class="q custom-css">
-                        <p>Do you want to add custom CSS to the questions section? <select name="questions-custom-css-yn" class="bdd no"></select></p>
+                        <p>Do you want to add custom CSS to the questions section? <select class="section-yn bdd no"></select></p>
                         <div id="questions-custom-css" class="displayonyes">
+                            <input type="hidden" name="3.sectionId" name="q" disabled>
                             Write your custom CSS attributes in the format of a single-level <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
-                            <textarea name="questions-custom-css"></textarea>
+                            <textarea name="3.cssAttributes-{{}}" disabled></textarea>
                         </div>
                     </div>
                 </div>
@@ -279,7 +282,7 @@
                 </div>
             </form>
             
-            <form class="step" id="pages">
+            <form class="step" id="pages" autocomplete="off">
                 <h1>Step 2. Pages</h1>
                 <div class="desc">
                     Pages are the most important components of your survey application. Each page will include its own map (or no map) and text or questions that accompany that map (or stand alone). For each page you create, if you choose to include a map, the first section of each page form will help you build the map you want to test on that page. The second part of the form will guide you through creating questions.
@@ -291,18 +294,18 @@
                     <h2>Page <span class="pagenum"><%= pagenum %></span></h2>
                     <div class="m-section section q">
                         <h2>Page <span class="pagenum"><%= pagenum %></span> Map</h2>
-                        <p>Include a map on this page? <select class="bdd yes"></select></p>
-                        <input type="hidden" name="page" value="<%= pagenum %>">
+                        <p>Include a map on this page? <select class="bdd yes maponpage"></select></p>
+                        <input type="hidden" name="map.pages.<%= pagenum %>.page" value="<%= pagenum %>">
                         <div id="m-section-<%= pagenum %>-map" class="hideonno">
                             <p>
-                                Map library: <select name="library">
+                                Map library: <select name="map.pages.<%= pagenum %>.library">
                                     <option value="Leaflet">Leaflet</option>
                                     <option disabled>More coming soon...</option>
                                 </select>
                             </p>
                             
                             <p>
-                                Include a map legend? <select name="mapOptions.legend">
+                                Include a map legend? <select name="map.pages.<%= pagenum %>.mapOptions.legend">
                                     <option value="true">yes</option>
                                     <option value="false">no</option>
                                 </select>
@@ -319,7 +322,7 @@
                             
                             <h3 class="nomargin">Data Layers</h3>
                             <div class="dataLayers q">
-                                <button type="button" class="addlayer addDataLayer">
+                                <button type="button" class="addlayer addDataLayer addbutton">
                                     <span class="ar">+</span>
                                     Add a data layer
                                 </button>
@@ -329,92 +332,90 @@
                             <div class="interactions q">
                                 <div>
                                     <p class="zoom-p nomargin">
-                                        <input class="i-checkbox" type="checkbox" name="interactions.zoom"> Zoom
+                                        <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom"> Zoom
                                     </p>
                                     <div class="zoom i-section">
                                         <div>Interface options:</div>
                                         <div>
-                                            <input type="checkbox" name="interactions.zoom.interface.touch" checked> Touch
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom.interface.touch" checked> Touch
                                         </div>
                                         <div>
-                                            <input type="checkbox" name="interactions.zoom.interface.scrollWheel" checked> Scroll wheel
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom.interface.scrollWheel" checked> Scroll wheel
                                         </div>
                                         <div>
-                                            <input type="checkbox" name="interactions.zoom.interface.doubleClick" checked> Double click
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom.interface.doubleClick" checked> Double click
                                         </div>
                                         <div>
-                                            <input type="checkbox" name="interactions.zoom.interface.box" checked> Box
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom.interface.box" checked> Box
                                         </div>
                                         <div>
-                                            <input type="checkbox" name="interactions.zoom.interface.keyboard" checked> Keyboard
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom.interface.keyboard" checked> Keyboard
                                         </div>
                                         <div>
-                                            <input type="checkbox" name="interactions.zoom.interface.widget" checked> Widget
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom.interface.widget" checked> Widget
                                         </div>
                                     </div>
                                 </div>
 
                                 <div>
                                     <p class="pan-p nomargin">
-                                        <input class="i-checkbox" type="checkbox" name="interactions.pan"> Pan
+                                        <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.pan"> Pan
                                     </p>
                                     <div class="pan i-section">
                                         <div>Interface options:</div>
                                         <div>
-                                            <input type="checkbox" name="interactions.pan.interface.drag" checked> Drag
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.pan.interface.drag" checked> Drag
                                         </div>
                                         <div>
-                                            <input type="checkbox" name="interactions.pan.interface.keyboard" checked> Keyboard
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.pan.interface.keyboard" checked> Keyboard
                                         </div>
                                         <div>
-                                            <input type="checkbox" name="interactions.pan.interface.widget" checked> Widget
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.pan.interface.widget" checked> Widget
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div>
                                     <p class="rotate-p nomargin">
-                                        <input class="i-checkbox" type="checkbox" name="interactions.rotate"> Rotate
+                                        <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.rotate"> Rotate
                                     </p>
                                     <div class="rotate i-section"></div>
                                 </div>
                                 
                                 <div>
                                     <p class="retrieve-p nomargin">
-                                        <input class="i-checkbox" type="checkbox" name="interactions.retrieve"> Retrieve
+                                        <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.retrieve"> Retrieve
                                     </p>
                                     <div class="retrieve i-section">
                                         <div>Interface options:</div>
                                         <div>
-                                            <input type="checkbox" name="interactions.retrieve.interface.popup" checked> Popups
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.retrieve.interface.popup" checked> Popups
                                         </div>
                                         <div>
-                                            <input type="checkbox" name="interactions.retrieve.interface.window" checked> Window
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.retrieve.interface.window" checked> Window
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div>
                                     <p class="overlay-p nomargin">
-                                        <input class="i-checkbox" type="checkbox" name="interactions.overlay"> Overlay
+                                        <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.overlay"> Overlay
                                     </p>
                                     <div class="overlay i-section">
-                                        <input type="hidden" name="interactions.overlay.dataLayers-{arrO}" value="[">
                                         <div class="interaction-dataLayers">Data layers to include:</div>
-                                        <input type="hidden" name="interactions.overlay.dataLayers-{arrC}" value="]">
                                     </div>
                                 </div>
                                 
                                 <div>
                                     <p class="underlay-p nomargin">
-                                        <input class="i-checkbox" type="checkbox" name="interactions.underlay"> Underlay
+                                        <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.underlay"> Underlay
                                     </p>
                                     <div class="underlay i-section"></div>
                                 </div>
 
                                 <div>
                                     <p class="search-p nomargin">
-                                        <input class="i-checkbox" type="checkbox" name="interactions.search"> Search
+                                        <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.search"> Search
                                     </p>
                                     <div class="search i-section">
                                         <div class="interaction-dataLayers">Data layers to include:</div>
@@ -423,12 +424,12 @@
 
                                 <div>
                                     <p class="filter-p nomargin">
-                                        <input class="i-checkbox" type="checkbox" name="interactions.filter"> Filter
+                                        <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.filter"> Filter
                                     </p>
                                     <div class="filter i-section">
                                         <div class="interaction-dataLayers mb20">Data layers to include:</div>
                                         <div class="filter-tool">Filter tool: 
-                                            <select name="interactions.filter.tool">
+                                            <select name="map.pages.<%= pagenum %>.interactions.filter.tool">
                                                 <option value="slider">Slider</option>
                                                 <option value="logic">Logic</option>
                                             </select>
@@ -438,12 +439,12 @@
 
                                 <div>
                                     <p class="sequence-p nomargin">
-                                        <input class="i-checkbox" type="checkbox" name="interactions.sequence"> Sequence
+                                        <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.sequence"> Sequence
                                     </p>
                                     <div class="sequence i-section">
                                         <div class="interaction-dataLayers mb20">Data layers to include:</div>
                                         <div class="sequence-tool">Sequence tool: 
-                                            <select name="interactions.sequence.tool">
+                                            <select name="map.pages.<%= pagenum %>.interactions.sequence.tool">
                                                 <option value="buttons">Buttons</option>
                                                 <option value="slider">Slider</option>
                                             </select>
@@ -453,24 +454,24 @@
 
                                 <div>
                                     <p class="reexpress-p nomargin">
-                                        <input class="i-checkbox" type="checkbox" name="interactions.reexpress"> Reexpress
+                                        <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.reexpress"> Reexpress
                                     </p>
                                     <div class="reexpress i-section"></div>
                                 </div>
 
                                 <div>
                                     <p class="resymbolize-p nomargin">
-                                        <input class="i-checkbox" type="checkbox" name="interactions.resymbolize"> Resymbolize
+                                        <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.resymbolize"> Resymbolize
                                     </p>
                                     <div class="resymbolize i-section">
                                         <div>
-                                            <input type="checkbox" name="interactions.resymbolize.reclassify" checked> Reclassify
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.resymbolize.reclassify" checked> Reclassify
                                         </div>
                                         <div>
-                                            <input type="checkbox" name="interactions.resymbolize.rescale" checked> Rescale
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.resymbolize.rescale" checked> Rescale
                                         </div>
                                         <div>
-                                            <input type="checkbox" name="interactions.resymbolize.recolor" checked> Recolor
+                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.resymbolize.recolor" checked> Recolor
                                         </div>
                                     </div>
                                 </div>
@@ -479,13 +480,34 @@
                     </div>
                     <div class="q-section section">
                         <h2>Page <span class="pagenum"><%= pagenum %></span> Questions</h2>
-                        A <em>set</em> consists of all of the questions and text that will be shown at one time. The buttons you create with each set will allow the participant to move back and forth between sets and pages. A <em>block</em> consists of the question or descriptive text and an input field to allow the participant to respond if a response is required.
+                        <div> 
+                        A <em>block</em> consists of the question or descriptive text and an input field to allow the participant to respond if a response is required.
+                        </div>
+
+                        <input type="hidden" name="questions.pages.<%= pagenum %>.page" value="<%= pagenum %>">
+
+                        <p>Expand questions section to full page width? <select class="bdd no fullpage" name="questions.pages.<%= pagenum %>.fullpage"></select></p>
+                    
+                        <h3 class="nomargin">Sets</h3>
+                        <div class="mb20">
+                            A <em>set</em> consists of all of the questions and text that will be shown at one time. The buttons you create with each set will allow the participant to move back and forth between sets and pages.
+                        </div>
+                        <div class="sets q">
+                            <button type="button" class="addbutton">
+                                <span class="ar">+</span>
+                                Add a set
+                            </button>
+                        </div>
+
+
+
+
                     </div>
-                    <button type="button" class="removepage">
+                    <button type="button" class="removepage removebutton">
                         <span class="ar">-</span>
                         Remove this page
                     </button>
-                    <button type="button" class="addpage">
+                    <button type="button" class="addpage addbutton">
                         <span class="ar">+</span>
                         Add another page
                     </button>
@@ -497,7 +519,7 @@
                 </div>
             </form>
             
-            <form class="step" id="conditions">
+            <form class="step" id="conditions" autocomplete="off">
                 <h1>Step 3. Conditions</h1>
 
 
@@ -507,7 +529,7 @@
                 </div>
             </form>
             
-            <form class="step" id="server">
+            <form class="step" id="server" autocomplete="off">
                 <h1>Step 4. Server Configuration</h1>
 
 
@@ -517,7 +539,7 @@
                 </div>
             </form>
 
-            <form class="step" id="finished">
+            <form class="step" id="finished" autocomplete="off">
                 <h1>All Done!</h1>
                 <p>Next, unzip the file that just downloaded, and replace the files in the MapStudy "config" directory with its contents. Then your app should be ready to rock!</p>
             </form>
@@ -540,29 +562,29 @@
             <tr class="Leaflet-mapOptions-center">
                 <td class="l-align">Center (decimal degrees):</td>
                 <td>Latitude:</td>
-                <td><input type="text" name="mapOptions.center-[{lat}," size="2"></td>
+                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.center.0" size="2" value="0"></td>
                 <td>Longitude:</td>
-                <td><input type="text" name="mapOptions.center-{lng}]" size="2"></td>
+                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.center.1" size="2" value="0"></td>
             </tr>
             <tr class="leaflet-mapOptions-zoom">
                 <td class="l-align">Zoom (integer 0-22):</td>
                 <td>Initial:</td>
-                <td><input type="text" name="mapOptions.zoom" size="2"></td>
+                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.zoom" size="2" value="0"></td>
                 <td>Minimum:</td>
-                <td><input type="text" name="mapOptions.minZoom" size="2"></td>
+                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.minZoom" size="2" value="0"></td>
                 <td>Maximum:</td>
-                <td><input type="text" name="mapOptions.maxZoom" size="2"></td>
+                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxZoom" size="2" value="22"></td>
             </tr>
             <tr class="leaflet-mapOptions-maxBounds">
                 <td class="l-align">Bounds (decimal degrees):</td>
                 <td>South lat:</td>
-                <td><input type="text" name="mapOptions.maxBounds-[[{S}," size="2"></td>
+                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxBounds.0.0" size="2" value="-90"></td>
                 <td>West lon:</td>
-                <td><input type="text" name="mapOptions.maxBounds-{W}]," size="2"></td>
+                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxBounds.0.1" size="2" value="-180"></td>
                 <td>North lat:</td>
-                <td><input type="text" name="mapOptions.maxBounds-[{N}," size="2"></td>
+                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxBounds.1.0" size="2" value="90"></td>
                 <td>East lon:</td>
-                <td><input type="text" name="mapOptions.maxBounds-{E}]]" size="2"></td>
+                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxBounds.1.1" size="2" value="180"></td>
             </tr>
             <table>
         </script>
@@ -571,15 +593,15 @@
         <!--universal baseLayer properties-->
 
         <script type="text/template" id="baseLayer-template">
-            <p>Layer name: <input type="text" name="baseLayers[<%= i %>].name"></p>
+            <p>Layer name: <input type="text" name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.name"></p>
             <table class='fullwidth bigtext'>
             <tr>
-                <td class="l-align" style="width: 72px">Source:</td>
+                <td class="l-align" style="width: 84px"><a class="ext sourcelink" target="_blank">Source</a>:</td>
                 <td class="l-align" style="width: 150px"><select class="layer-source-select">
                     <option value="url">URL</option>
                     <option value="postgis">PostGIS table</option>
                 </select></td>
-                <td class="l-align"><input type="text" class="layer-source-input fullwidth" name="source-{url}" placeholder="example: http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png"></input></td>
+                <td class="l-align"><input type="text" class="layer-source-input fullwidth" name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.source"></input></td>
             </tr>
             </table>
             <div class="layer-options">
@@ -588,15 +610,15 @@
                     <p>Add custom layer options? <select class="bdd no"></select></p>
                     <div class="layer-custom-options-textarea displayonyes">
                         Refer to the documentation at the above link for a list of available custom options. Write your custom options in the format of a <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
-                        <textarea name="baseLayers[<%= i %>].layerOptions"></textarea>
+                        <textarea name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.layerOptions"></textarea>
                     </div>
                 </div>
             </div>
-            <button type="button" class="removelayer">
+            <button type="button" class="removelayer removebutton">
                 <span class="ar">-</span>
                 Remove this base layer
             </button>
-            <button type="button" class="addlayer">
+            <button type="button" class="addlayer addbutton">
                 <span class="ar">+</span>
                 Add another base layer
             </button>
@@ -611,7 +633,7 @@
             <table class="fullwidth">
                 <tr class="Leaflet-baseLayer-options-attribution">
                     <td class="l-align" style="width: 85px">Attribution:</td>
-                    <td class="l-align"><input class="fullwidth" type="text" name="baseLayers[<%= i %>].layerOptions.attribution" placeholder="example: Map by Stamen, Data by <a href='http://osm.org'>OpenStreetMap</a> contributors"></td>
+                    <td class="l-align"><input class="fullwidth" type="text" name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.layerOptions.attribution" placeholder="example: Map by Stamen, Data by <a href='http://osm.org'>OpenStreetMap</a> contributors"></td>
                 </tr>
             </table>
         </script>
@@ -620,16 +642,16 @@
         <!--universal dataLayer properties-->
 
         <script type="text/template" id="dataLayer-template">
-            <p>Layer name: <input type="text" class="layerName" name="dataLayers[<%= i %>].name"></p>
+            <p>Layer name: <input type="text" class="layerName" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.name"></p>
             
             <table class='fullwidth bigtext layer-source'>
                 <tr>
-                    <td class="l-align" style="width: 72px">Source:</td>
+                    <td class="l-align" style="width: 84px"><a class="ext sourcelink" target="_blank">Source</a>:</td>
                     <td class="l-align" style="width: 150px"><select class="layer-source-select">
                         <option value="url">URL</option>
                         <option value="postgis">PostGIS table</option>
                     </select></td>
-                    <td class="l-align"><input type="text" class="layer-source-input fullwidth" name="source-{url}" placeholder="example: data/geography.geojson"></input></td>
+                    <td class="l-align"><input type="text" class="layer-source-input fullwidth" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.source" placeholder="example: data/geography.geojson"></input></td>
                 </tr>
             </table>
             
@@ -639,28 +661,28 @@
                     <p>Add custom layer options? <select class="bdd no"></select></p>
                     <div class="layer-custom-options-textarea displayonyes">
                         Refer to the documentation at the above link for a list of available custom options. Write your custom options in the format of a <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
-                        <textarea name="dataLayers[<%= i %>].layerOptions"></textarea>
+                        <textarea name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.layerOptions"></textarea>
                     </div>
                 </div>
             </div>
 
-            <p class="layer-expressedAttribute">Expressed attribute name: <input type="text" name="dataLayers[<%= i %>].expressedAttribute"></p>
+            <p class="layer-expressedAttribute">Expressed attribute name: <input type="text" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.expressedAttribute"></p>
 
             <p class="nomargin layer-displayAttributes">Display attributes (list attributes separated by commas):</p>
-            <textarea name="dataLayers[<%= i %>].displayAttributes-[{attrs}]"></textarea>
+            <textarea name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.displayAttributes-{[]}"></textarea>
 
             <p class="layer-renderOnLoad q">Render layer when map loads? 
-                <select class="bdd yes" name="dataLayers[<%= i %>].renderOnLoad"></select>
+                <select class="bdd yes" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.renderOnLoad"></select>
             </p>
 
             <h3 class="layer-techniques-title">Layer visualization techniques</h3>
             <div class="layer-techniques"></div>
 
-            <button type="button" class="removelayer">
+            <button type="button" class="removelayer removebutton">
                 <span class="ar">-</span>
                 Remove this data layer
             </button>
-            <button type="button" class="addlayer">
+            <button type="button" class="addlayer addbutton">
                 <span class="ar">+</span>
                 Add another data layer
             </button>
@@ -671,7 +693,7 @@
 
         <script type="text/template" id="technique-template">
             <p class="technique-type-p nomargin">Technique type: 
-                <select class="technique-type" name="dataLayers[<%= i %>].techniques[<%= ii %>].type">
+                <select class="technique-type" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.type">
                     <option value="choropleth">Choropleth</option>
                     <option value="proportional symbol">Proportional Symbol</option>
                     <option value="dot">Dot</option>
@@ -683,7 +705,7 @@
             <div class="technique-type-desc" style="margin-bottom: 20px;"></div>
 
             <p class="technique-classification-p nomargin">Classification scheme: 
-                <select class="technique-classification" name="dataLayers[<%= i %>].techniques[<%= ii %>].classification">
+                <select class="technique-classification" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.classification">
                     <option value="quantile">Quantile</option>
                     <option value="equal interval">Equal Interval</option>
                     <option value="natural breaks">Natural Breaks</option>
@@ -717,43 +739,41 @@
                     <option value="circle">circle</option>
                     <option value="url">URL</option>
                 </select> 
-                <input class="technique-symbol-url" type="text" name="dataLayers[<%= i %>].techniques[<%= ii %>].symbol">
+                <input class="technique-symbol-url" type="text" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.symbol">
             </p>
 
             <p class="technique-interval-p">
                 <span class="interval-ratio">Line interval: </span>
-                <input type="text" size="3" name="dataLayers[<%= i %>].techniques[<%= ii %>].interval">
+                <input type="text" size="3" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.interval">
             </p>
 
             <p class="technique-size-p">
                 <span class="dot-line-size">Isarithm width: </span>
-                <input type="text" size="2" name="dataLayers[<%= i %>].techniques[<%= ii %>].size"> 
+                <input type="text" size="2" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.size"> 
                 pixels
             </p>
 
-            <button type="button" class="removetechnique">
+            <button type="button" class="removetechnique removebutton">
                 <span class="ar">-</span>
                 Remove this technique
             </button>
-            <button type="button" class="addtechnique">
+            <button type="button" class="addtechnique addbutton">
                 <span class="ar">+</span>
                 Add another technique
             </button>
         </script>
 
         <script type="text/template" id="color-scale-classes-template">
-            <p>Color scale: <select class="color-classes" name="dataLayers[<%= i %>].techniques[<%= ii %>].classes"></select></p>
+            <p>Color scale: <select class="color-classes" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.classes"></select></p>
         </script>
 
         <script type="text/template" id="radii-classes-template">
-            <input type="hidden" name="dataLayers[<%= i %>].techniques[<%= ii %>].classes-{arrO}" value="[">
             <table style="margin-bottom: 20px;">
                 <tr class="bigtext radii-classes">
                     <td class="l-align">Symbol radii:</td>
                 </tr>
                 <tr class="radii-minmax"><td></td></tr>
             </table>
-            <input type="hidden" name="dataLayers[<%= i %>].techniques[<%= ii %>].classes-{arrC}" value="]">
         </script>
 
         <script type="text/template" id="color-scale-option-template">
@@ -765,7 +785,7 @@
         </script>
 
         <script type="text/template" id="symbol-radius-template">
-            <td><input type="text" size="2" name="dataLayers[<%= i %>].techniques[<%= ii %>].classes-{c}"></td>
+            <td><input type="text" size="2" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.classes-{c}"></td>
         </script>
 
 
@@ -783,14 +803,14 @@
         <script type="text/template" id="interaction-logging-template">
             <div class="interaction-logging mb20">
                 Log this interaction? 
-                <select class="bdd yes" name="interactions.<%= interaction %>.logging"></select>
+                <select class="bdd yes" name="map.pages.<%= pagenum %>.interactions.<%= interaction %>.logging"></select>
             </div>
         </script>
 
         <script type="text/template" id="interaction-dataLayer-template">
             <input type="checkbox" checked> 
             <span class="dataLayer-layerName"><%= layerName %></span>
-            <input type="hidden" name="interactions.<%= interaction %>.dataLayers-{layer}" value="<%= layerName %>">
+            <input type="hidden" name="map.pages.<%= pagenum %>.interactions.<%= interaction %>.dataLayers-{[]}" value="<%= layerName %>">
         </script>
 
 

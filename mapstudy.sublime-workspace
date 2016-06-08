@@ -4,6 +4,58 @@
 		"selected_items":
 		[
 			[
+				"Inter",
+				"InteractionDataLayersView"
+			],
+			[
+				"interactionData",
+				"InteractionDataLayersView"
+			],
+			[
+				"InteractionD",
+				"InteractionDataLayersModel"
+			],
+			[
+				"change",
+				"changeNClasses"
+			],
+			[
+				"mod",
+				"modifyForm"
+			],
+			[
+				"isari",
+				"isarithmic"
+			],
+			[
+				"technique-n-",
+				"technique-n-classes-p"
+			],
+			[
+				"DataL",
+				"DataLayerView"
+			],
+			[
+				"BaseLayer",
+				"BaseLayerView"
+			],
+			[
+				"create",
+				"createBaseLayer"
+			],
+			[
+				"li",
+				"library"
+			],
+			[
+				"lib",
+				"libtemplate"
+			],
+			[
+				"backgr",
+				"background-size"
+			],
+			[
 				"prev",
 				"prevStep"
 			],
@@ -34,10 +86,6 @@
 			[
 				"under",
 				"underlayControlView"
-			],
-			[
-				"Inter",
-				"Interaction"
 			],
 			[
 				"var",
@@ -466,54 +514,6 @@
 			[
 				"max",
 				"maxRadius"
-			],
-			[
-				"layer",
-				"layerOptions"
-			],
-			[
-				"expre",
-				"expressedAttribute"
-			],
-			[
-				"numeric",
-				"numericAttributes"
-			],
-			[
-				"reexpre",
-				"reexpressed"
-			],
-			[
-				"reexp",
-				"reexpressed"
-			],
-			[
-				"overl",
-				"overlayremove"
-			],
-			[
-				"reexpres",
-				"reexpressSpan"
-			],
-			[
-				"inde",
-				"indexOf"
-			],
-			[
-				"new",
-				"newClass"
-			],
-			[
-				"geoJ",
-				"geoJson"
-			],
-			[
-				"tec",
-				"techique"
-			],
-			[
-				"techniqu",
-				"techniqueType"
 			]
 		]
 	},
@@ -528,11 +528,27 @@
 			}
 		},
 		{
+			"file": "setup/index.html",
+			"settings":
+			{
+				"buffer_size": 40035,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "setup/setup.js",
 			"settings":
 			{
-				"buffer_size": 2443,
+				"buffer_size": 23263,
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/lib/colorbrewer.js",
+			"settings":
+			{
+				"buffer_size": 18990,
+				"line_ending": "Unix"
 			}
 		},
 		{
@@ -576,18 +592,18 @@
 			}
 		},
 		{
-			"file": "config/questions.json",
-			"settings":
-			{
-				"buffer_size": 5691,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "config/map.json",
 			"settings":
 			{
 				"buffer_size": 11807,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "config/questions.json",
+			"settings":
+			{
+				"buffer_size": 5691,
 				"line_ending": "Windows"
 			}
 		},
@@ -612,6 +628,14 @@
 			"settings":
 			{
 				"buffer_size": 3763,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "doc/versions.md",
+			"settings":
+			{
+				"buffer_size": 612,
 				"line_ending": "Windows"
 			}
 		}
@@ -640,6 +664,7 @@
 	},
 	"file_history":
 	[
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/setup.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/index.html",
 		"/C/Users/Carl/Downloads/download/sticky_header.html",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/css/style.css",
@@ -766,8 +791,7 @@
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module7/Module7.html",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module8/Module8.html",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module9/Module9.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module10/Module10.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module10/Module10.md"
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module10/Module10.html"
 	],
 	"find":
 	{
@@ -782,9 +806,75 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": true,
+		"case_sensitive": false,
 		"find_history":
 		[
+			"placeholder",
+			"setLibrary",
+			"Leaflet",
+			"interaction",
+			"name=\"interactions",
+			".append(this.$el",
+			"layerName",
+			"this.$el.className",
+			"Layer name:",
+			"Layer name",
+			"subsection",
+			"\"layerName",
+			"layerName",
+			"addInteractionLayers",
+			"interaction-dataLayers",
+			"{arrO}",
+			"[",
+			".split(' ')[0]",
+			".attr",
+			".attr(\"class",
+			".attr('class",
+			"createTechnique",
+			"search",
+			"layers to include",
+			"-p",
+			"p",
+			"section",
+			" bigtext",
+			"bigtext",
+			"radii-classes-template",
+			"changeTechniqueType",
+			"changeNClasses",
+			"this.$el",
+			"heat",
+			"subsection",
+			"bdd",
+			"createLayer",
+			"createLayer(\"dataLayer\"",
+			"addDataLayer",
+			".addDataLayer",
+			"removeLayer",
+			"createLayer",
+			"createBaseLayer",
+			"baseLayer-custom-options",
+			"baseLayer-options",
+			"baseLayer-source-input",
+			"dataLayer-source-select",
+			"baseLayer-source-select",
+			"table",
+			"defaultValue",
+			"below",
+			"addlayer",
+			"removelayer",
+			"removepage",
+			"addpage",
+			"displayonyes",
+			"pagebutton",
+			"baseLayers[<%= i %>]",
+			"name",
+			"textarea",
+			"<a",
+			"a",
+			"pagenum",
+			"ar",
+			"createBooleanDropdown",
+			"button",
 			".get",
 			".set",
 			"addInteraction",
@@ -846,73 +936,7 @@
 			"$pages",
 			"Interaction",
 			"interactions.php",
-			"echo",
-			"timestp",
-			"$tmsp",
-			"echo",
-			"console",
-			"echo",
-			"pArr",
-			"updatetime",
-			"post_data",
-			"Data",
-			"data.php",
-			"updatetime",
-			"_options.attributes.data",
-			"Data",
-			"_options.attributes.",
-			"Data",
-			"console",
-			"_page",
-			"renderButtons",
-			"_page",
-			"setCondition",
-			"data_page_",
-			"UPDATE",
-			"data",
-			"}\n",
-			"data",
-			"addBigTableData",
-			"makeBigTable(",
-			"makeBigTable",
-			"makeParticipantTable",
-			"$dbtable",
-			"dbtable",
-			"_page",
-			"assign any",
-			"data",
-			"_options.attributes.data",
-			"Data",
-			"userId",
-			"LeafletMap",
-			"InteractionToggleView",
-			".set",
-			"console",
-			"({\n",
-			".set",
-			"setInteractionControls",
-			"render",
-			"_set",
-			"questions",
-			"next",
-			".next",
-			"next",
-			"_set",
-			"trigger",
-			"_page",
-			"fullscreen",
-			"function setQ",
-			".trigger",
-			"_page",
-			"_page++",
-			"console",
-			"_options.attributes.data",
-			"_options.attributes.data[label] = \"\";",
-			"data",
-			"console",
-			"next",
-			"label",
-			"_block"
+			"echo"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -920,6 +944,15 @@
 		"regex": false,
 		"replace_history":
 		[
+			"div",
+			"i-section",
+			"",
+			"l",
+			"layer-custom-options",
+			"layer-options",
+			"layer-source-input",
+			"layer-source-select",
+			"placeholder",
 			"<img src=\"../img/back.png\">",
 			"<img src=\"../img/next.png\">",
 			"page",
@@ -1038,16 +1071,7 @@
 			"figure2.6",
 			"Figure 2.6",
 			"spatial",
-			"spatial data",
-			"spatial",
-			"spatial data",
-			"spatial",
-			"spatial data",
-			"spatial",
-			"strokeDasharray",
-			"Figure 3.2",
-			"Figure 3.3",
-			"Figure 3.4"
+			"spatial data"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1058,7 +1082,7 @@
 	"groups":
 	[
 		{
-			"selected": 11,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -1073,8 +1097,8 @@
 						"selection":
 						[
 							[
-								7762,
-								7762
+								3243,
+								3249
 							]
 						],
 						"settings":
@@ -1084,40 +1108,95 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 5940.0,
+						"translation.y": 1236.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "setup/setup.js",
+					"file": "setup/index.html",
 					"settings":
 					{
-						"buffer_size": 2443,
+						"buffer_size": 40035,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1184,
-								1184
+								29864,
+								29864
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 780.0,
+						"translation.y": 13076.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
+					"file": "setup/setup.js",
+					"settings":
+					{
+						"buffer_size": 23263,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7873,
+								7873
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4776.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "js/lib/colorbrewer.js",
+					"settings":
+					{
+						"buffer_size": 18990,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 4500.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
 					"file": "config/conditions.json",
 					"settings":
 					{
@@ -1144,7 +1223,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 5,
 					"file": "README.md",
 					"settings":
 					{
@@ -1171,7 +1250,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 6,
 					"file": "config/param.php",
 					"settings":
 					{
@@ -1197,7 +1276,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 7,
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
@@ -1208,8 +1287,8 @@
 						"selection":
 						[
 							[
-								23326,
-								23330
+								22413,
+								22419
 							]
 						],
 						"settings":
@@ -1219,13 +1298,13 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 15531.0,
+						"translation.y": 14756.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 8,
 					"file": "js/modules/q-section.js",
 					"settings":
 					{
@@ -1252,7 +1331,35 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 9,
+					"file": "config/map.json",
+					"settings":
+					{
+						"buffer_size": 11807,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1032,
+								1166
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1380.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
 					"file": "config/questions.json",
 					"settings":
 					{
@@ -1280,34 +1387,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "config/map.json",
-					"settings":
-					{
-						"buffer_size": 11807,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								9755,
-								9755
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 180.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 9,
+					"buffer": 11,
 					"file": "css/style.css",
 					"settings":
 					{
@@ -1335,7 +1415,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 12,
 					"file": "config/styles.json",
 					"settings":
 					{
@@ -1362,7 +1442,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 13,
 					"file": "js/modules/app.js",
 					"settings":
 					{
@@ -1373,8 +1453,8 @@
 						"selection":
 						[
 							[
-								276,
-								276
+								735,
+								735
 							]
 						],
 						"settings":
@@ -1384,6 +1464,32 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "doc/versions.md",
+					"settings":
+					{
+						"buffer_size": 612,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								297,
+								297
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 120.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
