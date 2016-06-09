@@ -70,6 +70,7 @@
 
             .i-section, .mb20 {
                 margin-bottom: 20px;
+                margin-top: 0;
             }
 
             .q, .page {
@@ -167,6 +168,10 @@
 
             .bigtext {
                 font-size: 1.2em;
+            }
+
+            .option {
+                text-align: left;
             }
 
         </style>
@@ -478,11 +483,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="q-section section">
+                    <div class="q-section section" id="q-section-<%= pagenum %>">
                         <h2>Page <span class="pagenum"><%= pagenum %></span> Questions</h2>
-                        <div> 
-                        A <em>block</em> consists of the question or descriptive text and an input field to allow the participant to respond if a response is required.
-                        </div>
 
                         <input type="hidden" name="questions.pages.<%= pagenum %>.page" value="<%= pagenum %>">
 
@@ -492,12 +494,7 @@
                         <div class="mb20">
                             A <em>set</em> consists of all of the questions and text that will be shown at one time. The buttons you create with each set will allow the participant to move back and forth between sets and pages.
                         </div>
-                        <div class="sets q">
-                            <button type="button" class="addbutton">
-                                <span class="ar">+</span>
-                                Add a set
-                            </button>
-                        </div>
+                        <div class="sets q"></div>
 
 
 
@@ -593,6 +590,7 @@
         <!--universal baseLayer properties-->
 
         <script type="text/template" id="baseLayer-template">
+            <div class="mb20"><h3 class="nomargin">Base Layer <span class="layernumber"><%= i+1 %></span></h3></div>
             <p>Layer name: <input type="text" name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.name"></p>
             <table class='fullwidth bigtext'>
             <tr>
@@ -642,6 +640,8 @@
         <!--universal dataLayer properties-->
 
         <script type="text/template" id="dataLayer-template">
+            <div class="mb20"><h3 class="nomargin">Data Layer <span class="layernumber"><%= i+1 %></span></h3></div>
+
             <p>Layer name: <input type="text" class="layerName" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.name"></p>
             
             <table class='fullwidth bigtext layer-source'>
@@ -692,6 +692,8 @@
         <!--technique properties-->
 
         <script type="text/template" id="technique-template">
+            <div class="mb20"><h3 class="nomargin">Data Layer <span class="layernumber"><%= i+1 %></span> Technique <span class="techniquenumber"><%= ii+1 %></span></h3></div>
+
             <p class="technique-type-p nomargin">Technique type: 
                 <select class="technique-type" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.type">
                     <option value="choropleth">Choropleth</option>
@@ -811,6 +813,167 @@
             <input type="checkbox" checked> 
             <span class="dataLayer-layerName"><%= layerName %></span>
             <input type="hidden" name="map.pages.<%= pagenum %>.interactions.<%= interaction %>.dataLayers-{[]}" value="<%= layerName %>">
+        </script>
+
+
+        <!--question sets-->
+
+        <script type="text/template" id="set-template">
+            <div class="mb20"><h3 class="nomargin">Set <span class="setnumber"><%= i+1 %></span></h3></div>
+
+            <h3 class="nomargin">Blocks</h3>
+            <div class="mb20"> 
+                A <em>block</em> consists of the question or descriptive text and an input field to allow the participant to respond if a response is required.
+            </div>
+            <div class="blocks"></div>
+            <p class="nomargin">Buttons:</p>
+            <div class="set-buttons">
+                <input type="hidden" name="questions.pages.<%= pagenum %>.sets.<%= i %>.buttons-{[]}" value="">
+                <div><input type="checkbox" class="set-button next"> Next</div>
+                <div><input type="checkbox" class="set-button back"> Back</div>
+                <div><input type="checkbox" class="set-button save"> Save</div>
+                <div><input type="checkbox" class="set-button submit"> Submit</div>
+            </div>
+
+            <button type="button" class="removeset removebutton">
+                <span class="ar">-</span>
+                Remove this set
+            </button>
+            <button type="button" class="addset addbutton">
+                <span class="ar">+</span>
+                Add another set
+            </button>
+        </script>
+
+
+        <!--question blocks-->
+
+        <script type="text/template" id="block-template">
+            <div class="mb20"><h3 class="nomargin">Set <span class="setnumber"><%= i+1 %> Block <span class="blocknumber"><%= ii+1 %></span></h3></div>
+            
+            <div class="q">
+                <p>Customize block label? <select class="block-label-yn bdd no"></select></p>
+                <div class="block-label displayonyes">
+                    Label: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.label" value="p<%= pagenum+1 %>s<%= i+1 %>b<%= ii+1 %>" size="20" maxlength="20" disabled>
+                </div>
+            </div>
+
+            <div class="q">
+                <p>Include title? <select class="title-yn bdd no"></select></p>
+                <div class="title displayonyes">
+                    Title: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.title" disabled>
+                </div>
+            </div>
+
+            <p class="nomargin">Ask (may include any text or HTML):</p>
+            <div class="ask mb20">
+                <textarea name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.ask"></textarea>
+            </div>
+
+            <div class="q">
+                <p>Include description? <select class="description-yn bdd no"></select></p>
+                <div class="desc displayonyes">
+                    Description:
+                    <textarea name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.description" disabled></textarea>
+                </div>
+            </div>
+
+            <div class="q">
+                <p>Include input? <select class="input-yn bdd yes"></select></p>
+                <div class="input hideonno">
+                    <h3>Input</h3>
+
+                    <p class="reqd">
+                        <input type="checkbox" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.required"> Required question
+                    </p>
+
+                    <div class="input-type bigtext mb20">
+                        Input type: 
+                        <select class="input-type-select" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.type">
+                            <option value="text">text</option>
+                            <option value="paragraph">paragraph</option>
+                            <option value="checkboxes">checkboxes</option>
+                            <option value="radios">radios</option>
+                            <option value="dropdown">dropdown</option>
+                            <option value="matrix">matrix</option>
+                            <option value="rank">rank</option>
+                        </select>
+                    </div>
+
+                    <div class="options-div mb20">
+                        <p>Options:</p>
+                        <div class="options"></div>
+                    </div>
+
+                    <div class="items-div">
+                        <p>Items:</p>
+                        <div class="items"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="removeblock removebutton">
+                <span class="ar">-</span>
+                Remove this block
+            </button>
+            <button type="button" class="addblock addbutton">
+                <span class="ar">+</span>
+                Add another block
+            </button>
+        </script>
+
+
+        <!--input options-->
+
+        <script type="text/template" id="input-option-template">
+            <div class="mb20"><h3 class="nomargin">Option <span class="optionnumber"><%= iii+1 %></span></h3></div>
+            
+            <p class="option-text">
+                Option text: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.options.<%= iii %>.text">
+            </p>
+
+            <div class="q">
+                <p class="option-value-yn">Make value different than text? <select class="bdd no"></select>
+                <p class="option-value displayonyes">
+                    Option value: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.options.<%= iii %>.value" disabled>
+                </p>
+            </div>
+
+            <button type="button" class="removeoption removebutton">
+                <span class="ar">-</span>
+                Remove this option
+            </button>
+            <button type="button" class="addoption addbutton">
+                <span class="ar">+</span>
+                Add another option
+            </button>
+        </script>
+
+
+        <!--input items-->
+
+        <script type="text/template" id="input-item-template">
+            <div class="mb20"><h3 class="nomargin">Item <span class="itemnumber"><%= iii+1 %></span></h3></div>
+            
+            <p class="item-text">
+                Item text: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.items.<%= iii %>.text">
+            </p>
+
+            <div class="q">
+                <p class="item-label-yn">Customize item label? <select class="bdd no"></select>
+                <p class="item-label displayonyes">
+                    Item label: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.items.<%= iii %>.label" value="p<%= pagenum+1 %>s<%= i+1 %>b<%= ii+1 %>i<%= iii+1 %>" size="20" maxlength="20" disabled>
+                </p>
+            </div>
+
+            <button type="button" class="removeitem removebutton">
+                <span class="ar">-</span>
+                Remove this item
+            </button>
+            <button type="button" class="additem addbutton">
+                <span class="ar">+</span>
+                Add another item
+            </button>
         </script>
 
 

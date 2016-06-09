@@ -30,6 +30,7 @@ var PageView = Backbone.View.extend({
 		"click .removepage": "removepage",
 		"click .addpage": "addpage",
 		"click .addDataLayer": "addDataLayer",
+		"click .addSet": "addSet",
 		"change select[name=library]": "setLibrary",
 		"change .i-checkbox": "toggleInteraction",
 		"change .fullpage": "toggleMaponpage",
@@ -115,8 +116,11 @@ var PageView = Backbone.View.extend({
 		//add page div to page container
 		$('#page-container').append(this.$el[0]);
 
-		//add base layer options
+		//add initial base layer options
 		createLayer("baseLayer", 0);
+
+		//add initial question set options
+		createSet(0);
 
 		//set initial map options
 		this.setLibrary('Leaflet');
@@ -165,7 +169,6 @@ var BaseLayerView = Backbone.View.extend({
 			mapsection = $('#m-section-'+pagenum+'-map');
 		this.$el.fadeOut(500, function(){
 			view.remove();
-			console.log(view.i+1);
 			mapsection.find('.i-dataLayer-'+(view.i+1)).remove();
 			//reveal data layer add button if last data layer removed
 			if (mapsection.find('.'+view.className).length == 0){
@@ -174,9 +177,10 @@ var BaseLayerView = Backbone.View.extend({
 				mapsection.find('.interaction-dataLayers').hide();
 			};
 			//reset numbering of layers once element has been removed
-			var i = 0;
-			mapsection.find('.'+view.className).each(function(){
+			var l = mapsection.find('.'+view.className).length;
+			mapsection.find('.'+view.className).each(function(i){
 				$(this).attr('id', 'page-'+pagenum+'-'+view.className+'-'+i);
+				$(this).find('.layernumber').html(i+1);
 				//replace any i character in input/textarea names
 				$(this).find('input, textarea').each(function(){
 					if (typeof $(this).attr('name') !== 'undefined'){
@@ -184,11 +188,21 @@ var BaseLayerView = Backbone.View.extend({
 						$(this).attr('name', name);
 					}
 				});
-				i++;
+				//reveal add button if the last layer
+				if (i == l-1){
+					$(this).find('.addlayer').show();
+				};
+				//hide remove button if the only base layer
+				if (view.className == 'baseLayer' && l == 1){
+					$(this).find('.removelayer').hide();
+				};
 			});
 		});
 	},
 	addLayer: function(){
+		this.i = parseInt(this.$el.find('.layernumber').html())-1;
+		this.$el.find('.addlayer').hide();
+		this.$el.find('.removelayer').show();
 		createLayer(this.className, this.i+1);
 	},
 	changeSourceType: function(e){
@@ -558,13 +572,15 @@ var TechniqueView = Backbone.View.extend({
 		//fade out and remove view
 		var view = this,
 			pagenum = this.model.get('pagenum'),
-			mapsection = $('#m-section-'+pagenum+'-map');
+			layer = $('#page-'+pagenum+'-dataLayer-'+this.i);
 		this.$el.fadeOut(500, function(){
 			view.remove();
 			//reset numbering of layers once element has been removed
-			var ii = 0;
-			mapsection.find('.technique').each(function(){
+			var l = layer.find('.technique').length;
+			layer.find('.technique').each(function(ii){
 				$(this).attr('id', 'page-'+pagenum+'-dataLayer-'+view.i+'-technique-'+ii);
+				console.log(l, ii+1, $(this).find('.techniquenumber'));
+				$(this).find('.techniquenumber').html(ii+1);
 				//replace any ii character in input/textarea names
 				$(this).find('input, textarea').each(function(){
 					if (typeof $(this).attr('name') !== 'undefined'){
@@ -572,11 +588,21 @@ var TechniqueView = Backbone.View.extend({
 						$(this).attr('name', name);
 					}
 				});
-				ii++;
+				//reveal add button if the last technique
+				if (ii == l-1){
+					$(this).find('.addtechnique').show();
+				};
+				//hide remove button if the only technique
+				if (l == 1){
+					$(this).find('.removetechnique').hide();
+				};
 			});
 		});
 	},
 	addTechnique: function(){
+		this.ii = parseInt(this.$el.find('.techniquenumber').html())-1;
+		this.$el.find('.addtechnique').hide();
+		this.$el.find('.removetechnique').show();
 		createTechnique(this.i, this.ii+1);
 	},
 	removeButton: function(){
@@ -591,7 +617,7 @@ var TechniqueView = Backbone.View.extend({
 			id: 'page-'+pagenum+'-dataLayer-'+this.i+'-technique-'+this.ii,
 			class: 'technique subsection'
 		});
-		this.$el.html(this.template({pagenum: this.model.get('pagenum'), i: this.i, ii: this.ii}));
+		this.$el.html(this.template({pagenum: pagenum, i: this.i, ii: this.ii}));
 
 		this.removeButton();
 		this.changeTechniqueType('choropleth');
@@ -606,6 +632,297 @@ var TechniqueView = Backbone.View.extend({
 var LayerViews = {
 	baseLayer: BaseLayerView,
 	dataLayer: DataLayerView
+};
+
+var SetView = Backbone.View.extend({
+	tagName: 'div',
+	template: _.template( $('#set-template').html() ),
+	events: {
+		"change .set-button": "setButtons",
+		"click .addset": "addSet",
+		"click .removeset": "removeSet"
+	},
+	i: 0,
+	setButtons: function(e){
+		var input = e.target,
+			buttonName = $(input).attr('class').split(' ')[1],
+			hidden = $(input).parent().parent().find('input[type=hidden]'),
+			includedButtons = hidden.val().split(',');
+		//remove blank values
+		includedButtons = _.without(includedButtons, '');
+		//add or subtract button from array
+		if (input.checked){
+			if (_.indexOf(includedButtons, buttonName) == -1){
+				includedButtons.push(buttonName);
+			};
+		} else {
+			includedButtons = _.without(includedButtons, buttonName);
+		};
+		hidden.val(includedButtons.join(','));
+	},
+	removeButton: function(){
+		//make remove button invisible if the first set
+		var display = this.i > 0 ? "inline-block" : "none";
+		this.$el.children('.removeset').css('display', display);
+	},
+	removeSet: function(){
+		//reset layer numbering
+		this.i--
+		//fade out and remove view
+		var view = this,
+			pagenum = this.model.get('pagenum'),
+			qsection = $('#q-section-'+pagenum);
+		this.$el.fadeOut(500, function(){
+			view.remove();
+			//reset numbering of sets once element has been removed
+			var l = qsection.find('.set').length;
+			qsection.find('.set').each(function(i){
+				console.log(l, $(this));
+				$(this).attr('id', 'page-'+pagenum+'-set-'+i);
+				$(this).find('.setnumber').html(i+1);
+				//replace any i character in input/textarea names
+				$(this).find('input, textarea').each(function(){
+					if (typeof $(this).attr('name') !== 'undefined'){
+						var name = $(this).attr('name').replace(/\[[0-9]\]/g, '['+i+']');
+						$(this).attr('name', name);
+					}
+				});
+				//reveal add button if the last set
+				if (i == l-1){
+					$(this).find('.addbutton').show();
+				};
+				//hide remove button if the only set
+				if (l == 1){
+					$(this).find('.removebutton').hide();
+				};
+			});
+		});
+	},
+	addSet: function(){
+		this.i = parseInt(this.$el.find('.setnumber').html())-1;
+		this.$el.find('.addbutton').hide();
+		this.$el.find('.removebutton').show();
+		createSet(this.i+1);
+	},
+	render: function(){
+		//create technique div
+		var pagenum = this.model.get('pagenum');
+		this.$el.attr({
+			id: 'page-'+pagenum+'-set-'+this.i,
+			class: 'set subsection'
+		});
+		this.$el.html(this.template({pagenum: pagenum, i: this.i}));
+
+		this.removeButton();
+
+		//add layer div to layer's sets container
+		$('#page-'+pagenum+' .sets').append(this.el);
+
+		//add initial block options
+		createBlock(this.i, 0);
+
+		return this;
+	}
+});
+
+var BlockView = Backbone.View.extend({
+	tagName: 'div',
+	template: _.template( $('#block-template').html() ),
+	events: {
+		"click .addblock": "addBlock",
+		"click .removeblock": "removeBlock",
+		"change .input-type-select": "toggleInputType"
+	},
+	i: 0,
+	ii: 0,
+	toggleInputType: function(e){
+		var inputType = e.target.value,
+			parent = $(e.target).parent().parent(),
+			optionsDiv = parent.find('.options-div'),
+			itemsDiv = parent.find('.items-div');
+
+		//determine display of input options based on input type
+		if (inputType == 'radios' || inputType == 'dropdown' || inputType == 'matrix'){
+			optionsDiv.show();
+			optionsDiv.find('input').removeAttr('disabled');
+		} else {
+			optionsDiv.hide();
+			optionsDiv.find('input').attr('disabled', true);
+		};
+
+		//determine display of input items based on input type
+		if (inputType == 'checkboxes' || inputType == 'matrix' || inputType == 'rank'){
+			itemsDiv.show();
+			itemsDiv.find('input').removeAttr('disabled');
+		} else {
+			itemsDiv.hide();
+			itemsDiv.find('input').attr('disabled', true);
+		};
+	},
+	removeButton: function(){
+		//make remove button invisible if the first set
+		var display = this.ii > 0 ? "inline-block" : "none";
+		this.$el.children('.removeset').css('display', display);
+	},
+	removeBlock: function(){
+		//reset block numbering
+		this.ii--
+		//fade out and remove view
+		var view = this,
+			pagenum = this.model.get('pagenum'),
+			set = $('#page-'+pagenum+'-set-'+this.i);
+		this.$el.fadeOut(500, function(){
+			view.remove();
+			//reset numbering of sets once element has been removed
+			var l = set.find('.block').length;
+			set.find('.block').each(function(ii){
+				$(this).attr('id', 'page-'+pagenum+'-set-'+view.i+'-block-'+ii);
+				$(this).find('.blocknumber').html(ii+1);
+				//replace any i character in input/textarea names
+				$(this).find('input, textarea').each(function(){
+					if (typeof $(this).attr('name') !== 'undefined'){
+						var name = $(this).attr('name').replace(/\[[0-9]\]/g, '['+ii+']');
+						$(this).attr('name', name);
+					}
+				});
+				//reveal add button if the last set
+				if (ii == l-1){
+					$(this).find('.addbutton').show();
+				};
+				//hide remove button if the only set
+				if (l == 1){
+					$(this).find('.removebutton').hide();
+				};
+			});
+		});
+	},
+	addBlock: function(){
+		this.ii = parseInt(this.$el.find('.blocknumber').html())-1;
+		this.$el.find('.addbutton').hide();
+		this.$el.find('.removebutton').show();
+		createBlock(this.i, this.ii+1);
+	},
+	render: function(){
+		//create technique div
+		var pagenum = this.model.get('pagenum');
+		this.$el.attr({
+			id: 'page-'+pagenum+'-set-'+this.i+'-block-'+this.ii,
+			class: 'block subsection'
+		});
+		this.$el.html(this.template({pagenum: pagenum, i: this.i, ii: this.ii}));
+
+		this.removeButton();
+
+		//add layer div to layer's sets container
+		$('#page-'+pagenum+'-set-'+this.i+' .blocks').append(this.el);
+
+		//add options to boolean dropdown menus
+		this.$el.find('.bdd').each(function(){
+			createBooleanDropdown($(this));
+		});
+		this.$el.find('.displayonyes').hide();
+
+		//hide options and items initially
+		this.toggleInputType({target: this.el});
+
+		//add option and item properties
+		createOptionItem(this.i, this.ii, 0, 'option');
+		createOptionItem(this.i, this.ii, 0, 'item');
+
+		return this;
+	}
+});
+
+var OptionView = Backbone.View.extend({
+	tagName: 'div',
+	className: 'option',
+	template: _.template( $('#input-option-template').html() ),
+	events: {
+		"click .addoption": "addView",
+		"click .removeoption": "removeView"
+	},
+	i: 0,
+	ii: 0,
+	iii: 0,
+	removeButton: function(){
+		//make remove button invisible if the first set
+		var display = this.ii > 0 ? "inline-block" : "none";
+		this.$el.children('.removeset').css('display', display);
+	},
+	removeView: function(){
+		//reset option numbering
+		this.iii--
+		//fade out and remove view
+		var view = this,
+			pagenum = this.model.get('pagenum'),
+			section = $('#'+pagenum+'-set-'+this.i+'-block-'+this.ii);
+		this.$el.fadeOut(500, function(){
+			view.remove();
+			//reset numbering of options/items once element has been removed
+			var l = section.find('.'+view.className).length;
+			section.find('.'+view.className).each(function(iii){
+				$(this).attr('id', 'page-'+pagenum+'-set-'+view.i+'-block-'+view.ii+'-'+view.className+'-'+iii);
+				$(this).find('.'+view.className+'number').html(iii+1);
+				//replace any i character in input/textarea names
+				$(this).find('input, textarea').each(function(){
+					if (typeof $(this).attr('name') !== 'undefined'){
+						var name = $(this).attr('name').replace(/\[[0-9]\]/g, '['+iii+']');
+						$(this).attr('name', name);
+					}
+				});
+				//reveal add button if the last set
+				if (iii == l-1){
+					$(this).find('.addbutton').show();
+				};
+				//hide remove button if the only set
+				if (l == 1){
+					$(this).find('.removebutton').hide();
+				};
+			});
+		});
+	},
+	addView: function(){
+		this.iii = parseInt(this.$el.find('.'+this.className+'number').html())-1;
+		this.$el.find('.addbutton').hide();
+		this.$el.find('.removebutton').show();
+		createOptionItem(this.i, this.ii, this.iii+1, this.className);
+	},
+	render: function(){
+		//create div
+		var pagenum = this.model.get('pagenum');
+		this.$el.attr({
+			id: 'page-'+pagenum+'-set-'+this.i+'-block-'+this.ii+'-'+this.className+'-'+this.iii,
+			class: this.className+' subsection'
+		});
+		this.$el.html(this.template({pagenum: pagenum, i: this.i, ii: this.ii, iii: this.iii}));
+
+		this.removeButton();
+
+		//add div to container
+		$('#page-'+pagenum+'-set-'+this.i+'-block-'+this.ii+' .'+this.className+'s').append(this.el);
+
+		//add options to boolean dropdown menus
+		this.$el.find('.bdd').each(function(){
+			createBooleanDropdown($(this));
+		});
+		this.$el.find('.displayonyes').hide();
+
+		return this;
+	}
+});
+
+var ItemView = OptionView.extend({
+	className: 'item',
+	template: _.template( $('#input-item-template').html() ),
+	events: {
+		"click .additem": "addView",
+		"click .removeitem": "removeView"
+	}
+});
+
+var OptionItemViews = {
+	option: OptionView,
+	item: ItemView
 };
 
 function createPage(pagenum){
@@ -625,6 +942,27 @@ function createTechnique(layerIndex, techniqueIndex){
 	techniqueView.i = layerIndex;
 	techniqueView.ii = techniqueIndex;
 	var technique = techniqueView.render();
+};
+
+function createSet(setIndex){
+	var setView = new SetView({model: pageModel});
+	setView.i = setIndex;
+	var set = setView.render();
+};
+
+function createBlock(setIndex, blockIndex){
+	var blockView = new BlockView({model: pageModel});
+	blockView.i = setIndex;
+	blockView.ii = blockIndex;
+	var block = blockView.render();
+};
+
+function createOptionItem(setIndex, blockIndex, optionItemIndex, type){
+	var optionItemView = new OptionItemViews[type]({model: pageModel});
+	optionItemView.i = setIndex;
+	optionItemView.ii = blockIndex;
+	optionItemView.iii = optionItemIndex;
+	var optionItem = optionItemView.render();
 };
 
 function createBooleanDropdown(select){
@@ -745,8 +1083,8 @@ function readForm(step){
 		allData['qpages'] = outer.questions;
 	} else {
 		allData[step] = processForm(data);
-		console.log(step, allData);
-	}
+	};
+	console.log(allData);
 };
 
 function changeStep(prevStep, currentStep){
