@@ -20,7 +20,7 @@
         <![endif]-->
 
         <style>
-            body{
+            html, body {
                 overflow: auto;
                 font-family: Verdana, Geneva, sans-serif;
             }
@@ -28,19 +28,14 @@
             header {
                 width: 100%;
                 padding: 0 5em;
-                height: 0;
-                background-color: #FFF;
-                transition: all 0.4s ease;
-            }
-
-            .sticky {
-                position: fixed;
-                box-shadow: 0 0 5px black;
                 height: 4em;
+                background-color: #FFF;
+                position: fixed;
+                z-index: 10;
+                box-shadow: 0 0 5px black;
             }
 
             .header-button {
-                display: none;
                 line-height: 2em;
                 margin-top: 0.8em;
                 margin-right: 20px;
@@ -51,6 +46,10 @@
                 display: inline;
                 height: 24px;
                 margin: -4px 4px auto auto;
+            }
+
+            #container {
+                margin: 4em 5em 0;
             }
 
             form {
@@ -73,11 +72,11 @@
                 margin-top: 0;
             }
 
-            .q, .page {
+            .q, .page, .condition {
                 margin: 20px 0;
             }
 
-            .page {
+            .page, .condition {
                 border: 1px solid black;
                 border-radius: 5px;
                 padding: 20px;
@@ -140,13 +139,13 @@
                 margin-top: 5px;
             }
 
-            td, th {
+            td {
                 padding-right: 5px;
                 padding-bottom: 5px;
                 text-align: right;
             }
 
-            td input, th input {
+            td input {
                 margin-right: 15px;
             }
 
@@ -174,6 +173,48 @@
                 text-align: left;
             }
 
+            span.rank {
+                margin-right: 10px;
+            }
+
+            .rank-item {
+                margin: 0;
+                padding: 5px 10px;
+                text-align: left;
+                width: 110px;
+            }
+
+            .condition-page {
+                padding: 5px;
+            }
+
+            .randomize-inputs {
+                text-align: center;
+                vertical-align: top;
+            }
+
+            .condition-randomize {
+                margin-top: 1.3em;
+            }
+
+            .randomized {
+                background-color: #999;
+                border-radius: 5px;
+                margin: 5px 0;
+            }
+
+            .before-randomized {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+                margin-top: 0;
+            }
+
+            .after-randomized {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+                margin-bottom: 0;
+            }
+
         </style>
 
         <header>
@@ -191,7 +232,7 @@
 
         <div id="container">
             <form class="step" id="interface" autocomplete="off">
-                <h1>Step 1. Interface</h1>
+                <h1 class="mb20">Step 1. Interface</h1>
                 <div class="desc">
                     The first step is to customize the interface that survey participants will see. Use this form to upload a custom logo and change the look of the header, footer, map, and questions sections if you want. All options currently shown are the defaults.
                 </div>
@@ -288,7 +329,7 @@
             </form>
             
             <form class="step" id="pages" autocomplete="off">
-                <h1>Step 2. Pages</h1>
+                <h1 class="mb20">Step 2. Pages</h1>
                 <div class="desc">
                     Pages are the most important components of your survey application. Each page will include its own map (or no map) and text or questions that accompany that map (or stand alone). For each page you create, if you choose to include a map, the first section of each page form will help you build the map you want to test on that page. The second part of the form will guide you through creating questions.
                 </div>
@@ -495,11 +536,8 @@
                             A <em>set</em> consists of all of the questions and text that will be shown at one time. The buttons you create with each set will allow the participant to move back and forth between sets and pages.
                         </div>
                         <div class="sets q"></div>
-
-
-
-
                     </div>
+
                     <button type="button" class="removepage removebutton">
                         <span class="ar">-</span>
                         Remove this page
@@ -510,6 +548,432 @@
                     </button>
                 </script>
 
+
+                <!--map options for each map library-->
+
+                <script type="text/template" id="Leaflet-map-options-template">
+                    Refer to the documentation at the above link for explanations of the options below.
+                    <table>
+                    <tr class="Leaflet-mapOptions-center">
+                        <td class="l-align">Center (decimal degrees):</td>
+                        <td>Latitude:</td>
+                        <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.center.0" size="2" value="0"></td>
+                        <td>Longitude:</td>
+                        <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.center.1" size="2" value="0"></td>
+                    </tr>
+                    <tr class="leaflet-mapOptions-zoom">
+                        <td class="l-align">Zoom (integer 0-22):</td>
+                        <td>Initial:</td>
+                        <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.zoom" size="2" value="0"></td>
+                        <td>Minimum:</td>
+                        <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.minZoom" size="2" value="0"></td>
+                        <td>Maximum:</td>
+                        <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxZoom" size="2" value="22"></td>
+                    </tr>
+                    <tr class="leaflet-mapOptions-maxBounds">
+                        <td class="l-align">Bounds (decimal degrees):</td>
+                        <td>South lat:</td>
+                        <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxBounds.0.0" size="2" value="-90"></td>
+                        <td>West lon:</td>
+                        <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxBounds.0.1" size="2" value="-180"></td>
+                        <td>North lat:</td>
+                        <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxBounds.1.0" size="2" value="90"></td>
+                        <td>East lon:</td>
+                        <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxBounds.1.1" size="2" value="180"></td>
+                    </tr>
+                    <table>
+                </script>
+
+
+                <!--universal baseLayer properties-->
+
+                <script type="text/template" id="baseLayer-template">
+                    <div class="mb20"><h3 class="nomargin">Base Layer <span class="layernumber"><%= i+1 %></span></h3></div>
+                    <p>Layer name: <input type="text" name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.name"></p>
+                    <table class='fullwidth bigtext'>
+                    <tr>
+                        <td class="l-align" style="width: 84px"><a class="ext sourcelink" target="_blank">Source</a>:</td>
+                        <td class="l-align" style="width: 150px"><select class="layer-source-select">
+                            <option value="url">URL</option>
+                            <option value="postgis">PostGIS table</option>
+                        </select></td>
+                        <td class="l-align"><input type="text" class="layer-source-input fullwidth" name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.source"></input></td>
+                    </tr>
+                    </table>
+                    <div class="layer-options">
+                        <div class="layer-options-inputs"></div>
+                        <div class="layer-custom-options q">
+                            <p>Add custom layer options? <select class="bdd no"></select></p>
+                            <div class="layer-custom-options-textarea displayonyes">
+                                Refer to the documentation at the above link for a list of available custom options. Write your custom options in the format of a <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
+                                <textarea name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.layerOptions"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="removelayer removebutton">
+                        <span class="ar">-</span>
+                        Remove this base layer
+                    </button>
+                    <button type="button" class="addlayer addbutton">
+                        <span class="ar">+</span>
+                        Add another base layer
+                    </button>
+                </script>
+
+                
+                <!--baseLayer options for each map library-->
+
+                <script type="text/template" id="Leaflet-baseLayer-options-template">
+                    <p class="nomargin"><a class="ext" href="http://leafletjs.com/reference.html#tilelayer-options" target="_blank">Layer Options</a>:
+                    </p>
+                    <table class="fullwidth">
+                        <tr class="Leaflet-baseLayer-options-attribution">
+                            <td class="l-align" style="width: 85px">Attribution:</td>
+                            <td class="l-align"><input class="fullwidth" type="text" name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.layerOptions.attribution" placeholder="example: Map by Stamen, Data by <a href='http://osm.org'>OpenStreetMap</a> contributors"></td>
+                        </tr>
+                    </table>
+                </script>
+
+
+                <!--universal dataLayer properties-->
+
+                <script type="text/template" id="dataLayer-template">
+                    <div class="mb20"><h3 class="nomargin">Data Layer <span class="layernumber"><%= i+1 %></span></h3></div>
+
+                    <p>Layer name: <input type="text" class="layerName" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.name"></p>
+                    
+                    <table class='fullwidth bigtext layer-source'>
+                        <tr>
+                            <td class="l-align" style="width: 84px"><a class="ext sourcelink" target="_blank">Source</a>:</td>
+                            <td class="l-align" style="width: 150px"><select class="layer-source-select">
+                                <option value="url">URL</option>
+                                <option value="postgis">PostGIS table</option>
+                            </select></td>
+                            <td class="l-align"><input type="text" class="layer-source-input fullwidth" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.source" placeholder="example: data/geography.geojson"></input></td>
+                        </tr>
+                    </table>
+                    
+                    <div class="layer-options">
+                        <div class="layer-options-inputs"></div>
+                        <div class="layer-custom-options q">
+                            <p>Add custom layer options? <select class="bdd no"></select></p>
+                            <div class="layer-custom-options-textarea displayonyes">
+                                Refer to the documentation at the above link for a list of available custom options. Write your custom options in the format of a <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
+                                <textarea name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.layerOptions"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="layer-expressedAttribute">Expressed attribute name: <input type="text" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.expressedAttribute"></p>
+
+                    <p class="nomargin layer-displayAttributes">Display attributes (list attributes separated by commas):</p>
+                    <textarea name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.displayAttributes-{[]}"></textarea>
+
+                    <p class="layer-renderOnLoad q">Render layer when map loads? 
+                        <select class="bdd yes" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.renderOnLoad"></select>
+                    </p>
+
+                    <h3 class="layer-techniques-title">Layer visualization techniques</h3>
+                    <div class="layer-techniques"></div>
+
+                    <button type="button" class="removelayer removebutton">
+                        <span class="ar">-</span>
+                        Remove this data layer
+                    </button>
+                    <button type="button" class="addlayer addbutton">
+                        <span class="ar">+</span>
+                        Add another data layer
+                    </button>
+                </script>
+
+
+                <!--technique properties-->
+
+                <script type="text/template" id="technique-template">
+                    <div class="mb20"><h3 class="nomargin">Data Layer <span class="layernumber"><%= i+1 %></span> Technique <span class="techniquenumber"><%= ii+1 %></span></h3></div>
+
+                    <p class="technique-type-p nomargin">Technique type: 
+                        <select class="technique-type" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.type">
+                            <option value="choropleth">Choropleth</option>
+                            <option value="proportional symbol">Proportional Symbol</option>
+                            <option value="dot">Dot</option>
+                            <option value="isarithmic">Isarithmic</option>
+                            <option value="heat">Heat</option>
+                        </select>
+                    </p>
+
+                    <div class="technique-type-desc" style="margin-bottom: 20px;"></div>
+
+                    <p class="technique-classification-p nomargin">Classification scheme: 
+                        <select class="technique-classification" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.classification">
+                            <option value="quantile">Quantile</option>
+                            <option value="equal interval">Equal Interval</option>
+                            <option value="natural breaks">Natural Breaks</option>
+                            <option value="unclassed">Unclassed</option>
+                        </select>
+                    </p>
+
+                    <div class="classification-type-desc" style="margin-bottom: 20px;"></div>
+
+                    <p class="technique-n-classes-p">Number of classes: 
+                        <select class="technique-n-classes">
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5" selected>5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </p>
+
+                    <div class="technique-classes"></div>
+
+                    <p class="technique-symbol-p">
+                        Symbol: 
+                        <select class="technique-symbol">
+                            <option value="circle">circle</option>
+                            <option value="url">URL</option>
+                        </select> 
+                        <input class="technique-symbol-url" type="text" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.symbol">
+                    </p>
+
+                    <p class="technique-interval-p">
+                        <span class="interval-ratio">Line interval: </span>
+                        <input type="text" size="3" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.interval">
+                    </p>
+
+                    <p class="technique-size-p">
+                        <span class="dot-line-size">Isarithm width: </span>
+                        <input type="text" size="2" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.size"> 
+                        pixels
+                    </p>
+
+                    <button type="button" class="removetechnique removebutton">
+                        <span class="ar">-</span>
+                        Remove this technique
+                    </button>
+                    <button type="button" class="addtechnique addbutton">
+                        <span class="ar">+</span>
+                        Add another technique
+                    </button>
+                </script>
+
+                <script type="text/template" id="color-scale-classes-template">
+                    <p>Color scale: <select class="color-classes" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.classes"></select></p>
+                </script>
+
+                <script type="text/template" id="radii-classes-template">
+                    <table style="margin-bottom: 20px;">
+                        <tr class="bigtext radii-classes">
+                            <td class="l-align">Symbol radii:</td>
+                        </tr>
+                        <tr class="radii-minmax"><td></td></tr>
+                    </table>
+                </script>
+
+                <script type="text/template" id="color-scale-option-template">
+                    <option value="<%= colorcode %>"></option>
+                </script>
+
+                <script type="text/template" id="color-swatch-template">
+                    <span class="color-swatch" style="background-color: <%= fillColor %>"></span>
+                </script>
+
+                <script type="text/template" id="symbol-radius-template">
+                    <td><input type="text" size="2" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.classes-{c}"></td>
+                </script>
+
+
+                <!--dataLayer options for each map library-->
+
+                <script type="text/template" id="Leaflet-dataLayer-options-template">
+                    <p class="nomargin"><a class="ext" href="http://leafletjs.com/reference.html#path" target="_blank">Layer Options</a>:
+                    </p>
+                    Refer to the documentation at the above link for a list of available custom options.
+                </script>
+
+
+                <!--interaction properties-->
+
+                <script type="text/template" id="interaction-logging-template">
+                    <div class="interaction-logging mb20">
+                        Log this interaction? 
+                        <select class="bdd yes" name="map.pages.<%= pagenum %>.interactions.<%= interaction %>.logging"></select>
+                    </div>
+                </script>
+
+                <script type="text/template" id="interaction-dataLayer-template">
+                    <input type="checkbox" checked> 
+                    <span class="dataLayer-layerName"><%= layerName %></span>
+                    <input type="hidden" name="map.pages.<%= pagenum %>.interactions.<%= interaction %>.dataLayers-{[]}" value="<%= layerName %>">
+                </script>
+
+
+                <!--question sets-->
+
+                <script type="text/template" id="set-template">
+                    <div class="mb20"><h3 class="nomargin">Set <span class="setnumber"><%= i+1 %></span></h3></div>
+
+                    <h3 class="nomargin">Blocks</h3>
+                    <div class="mb20"> 
+                        A <em>block</em> consists of the question or descriptive text and an input field to allow the participant to respond if a response is required.
+                    </div>
+                    <div class="blocks"></div>
+                    <p class="nomargin">Buttons:</p>
+                    <div class="set-buttons">
+                        <input type="hidden" name="questions.pages.<%= pagenum %>.sets.<%= i %>.buttons-{[]}" value="">
+                        <div><input type="checkbox" class="set-button next"> Next</div>
+                        <div><input type="checkbox" class="set-button back"> Back</div>
+                        <div><input type="checkbox" class="set-button save"> Save</div>
+                        <div><input type="checkbox" class="set-button submit"> Submit</div>
+                    </div>
+
+                    <button type="button" class="removeset removebutton">
+                        <span class="ar">-</span>
+                        Remove this set
+                    </button>
+                    <button type="button" class="addset addbutton">
+                        <span class="ar">+</span>
+                        Add another set
+                    </button>
+                </script>
+
+
+                <!--question blocks-->
+
+                <script type="text/template" id="block-template">
+                    <div class="mb20"><h3 class="nomargin">Set <span class="setnumber"><%= i+1 %> Block <span class="blocknumber"><%= ii+1 %></span></h3></div>
+                    
+                    <div class="q">
+                        <p>Customize block label? <select class="block-label-yn bdd no"></select></p>
+                        <div class="block-label displayonyes">
+                            Label: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.label" value="p<%= pagenum+1 %>s<%= i+1 %>b<%= ii+1 %>" size="20" maxlength="20" disabled>
+                        </div>
+                    </div>
+
+                    <div class="q">
+                        <p>Include title? <select class="title-yn bdd no"></select></p>
+                        <div class="title displayonyes">
+                            Title: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.title" disabled>
+                        </div>
+                    </div>
+
+                    <p class="nomargin">Ask (may include any text or HTML):</p>
+                    <div class="ask mb20">
+                        <textarea name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.ask"></textarea>
+                    </div>
+
+                    <div class="q">
+                        <p>Include description? <select class="description-yn bdd no"></select></p>
+                        <div class="desc displayonyes">
+                            Description:
+                            <textarea name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.description" disabled></textarea>
+                        </div>
+                    </div>
+
+                    <div class="q">
+                        <p>Include input? <select class="input-yn bdd yes"></select></p>
+                        <div class="input hideonno">
+                            <h3>Input</h3>
+
+                            <p class="reqd">
+                                <input type="checkbox" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.required"> Required question
+                            </p>
+
+                            <div class="input-type bigtext mb20">
+                                Input type: 
+                                <select class="input-type-select" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.type">
+                                    <option value="text">text</option>
+                                    <option value="paragraph">paragraph</option>
+                                    <option value="checkboxes">checkboxes</option>
+                                    <option value="radios">radios</option>
+                                    <option value="dropdown">dropdown</option>
+                                    <option value="matrix">matrix</option>
+                                    <option value="rank">rank</option>
+                                </select>
+                            </div>
+
+                            <div class="options-div mb20">
+                                <p>Options:</p>
+                                <div class="options"></div>
+                            </div>
+
+                            <div class="items-div">
+                                <p>Items:</p>
+                                <div class="items"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="removeblock removebutton">
+                        <span class="ar">-</span>
+                        Remove this block
+                    </button>
+                    <button type="button" class="addblock addbutton">
+                        <span class="ar">+</span>
+                        Add another block
+                    </button>
+                </script>
+
+
+                <!--input options-->
+
+                <script type="text/template" id="input-option-template">
+                    <div class="mb20"><h3 class="nomargin">Option <span class="optionnumber"><%= iii+1 %></span></h3></div>
+                    
+                    <p class="option-text">
+                        Option text: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.options.<%= iii %>.text">
+                    </p>
+
+                    <div class="q">
+                        <p class="option-value-yn">Make value different than text? <select class="bdd no"></select>
+                        <p class="option-value displayonyes">
+                            Option value: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.options.<%= iii %>.value" disabled>
+                        </p>
+                    </div>
+
+                    <button type="button" class="removeoption removebutton">
+                        <span class="ar">-</span>
+                        Remove this option
+                    </button>
+                    <button type="button" class="addoption addbutton">
+                        <span class="ar">+</span>
+                        Add another option
+                    </button>
+                </script>
+
+
+                <!--input items-->
+
+                <script type="text/template" id="input-item-template">
+                    <div class="mb20"><h3 class="nomargin">Item <span class="itemnumber"><%= iii+1 %></span></h3></div>
+                    
+                    <p class="item-text">
+                        Item text: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.items.<%= iii %>.text">
+                    </p>
+
+                    <div class="q">
+                        <p class="item-label-yn">Customize item label? <select class="bdd no"></select>
+                        <p class="item-label displayonyes">
+                            Item label: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.items.<%= iii %>.label" value="p<%= pagenum+1 %>s<%= i+1 %>b<%= ii+1 %>i<%= iii+1 %>" size="20" maxlength="20" disabled>
+                        </p>
+                    </div>
+
+                    <button type="button" class="removeitem removebutton">
+                        <span class="ar">-</span>
+                        Remove this item
+                    </button>
+                    <button type="button" class="additem addbutton">
+                        <span class="ar">+</span>
+                        Add another item
+                    </button>
+                </script>
+
                 <div class="buttons">
                     <button name="back" type="button"><img src="../img/back.png"> Back a Step</button>
                     <button name="next" type="button">Next Step <img src="../img/next.png"></button>
@@ -517,8 +981,65 @@
             </form>
             
             <form class="step" id="conditions" autocomplete="off">
-                <h1>Step 3. Conditions</h1>
+                <h1 class="mb20">Step 3. Conditions</h1>
 
+                <div class="desc">
+                    Conditions determine the order in which pages appear to different groups of study participants. The condition configuration options give you the flexibility to create randomized and factorial study designs. If you do not create any conditions, all participants will see every page in the order in which they are listed in map.json and questions.json.
+                </div>
+
+                <div id="condition-container">
+                    <div class="condition-add">
+                        <button type="button" class="addcondition addbutton nomargin">
+                            <span class="ar">+</span>
+                            Add a condition
+                        </button>
+                    </div>
+                </div>
+
+                <script type="text/template" id="condition-template">
+                    <h2>Condition <span class="conditionnum"><%= conditionnum %></span></h2>
+                    <div class="section condition-pages">
+                        <h3 class="mb20">Pages</h3>
+                        <div class="desc">
+                            Drag the pages below to rearrange their order. Check the boxes between pages you would like to be shown to participants in random order. All pages connected to checkboxes that are consecutively checked will be grouped together for randomization.
+                        </div>
+                        <table class="pages bigtext">
+                            <tr>
+                                <th>Order</th>
+                                <th>Randomize?</th>
+                            </tr>
+                            <tr>
+                                <td class="sortable-pages"></td>
+                                <td class="randomize-inputs"></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <button type="button" class="removecondition removebutton">
+                        <span class="ar">-</span>
+                        Remove this condition
+                    </button>
+                    <button type="button" class="addcondition addbutton">
+                        <span class="ar">+</span>
+                        Add another condition
+                    </button>
+                </script>
+
+                <script type="text/template" id="condition-page-template">
+                    <div class="condition-page">
+                        <div class="rank-item">
+                            <span class="rank"><%= rank+1 %></span>
+                            Page <%= pagenum %>
+                            <input type="hidden" name="<%= conditionnum-1 %>.pages.<%= rank %>" value="<%= pagenum %>"> 
+                        </div>
+                    </div>
+                </script>
+
+                <script type="text/template" id="condition-randomize-template">
+                    <div class="condition-randomize">
+                        <input type="checkbox" class="randomize <%= pagenum-1 %> <%= pagenum %>">
+                    </div>
+                </script>
 
                 <div class="buttons">
                     <button name="back" type="button"><img src="../img/back.png"> Back a Step</button>
@@ -527,7 +1048,7 @@
             </form>
             
             <form class="step" id="server" autocomplete="off">
-                <h1>Step 4. Server Configuration</h1>
+                <h1 class="mb20">Step 4. Server Configuration</h1>
 
 
                 <div class="buttons">
@@ -537,7 +1058,7 @@
             </form>
 
             <form class="step" id="finished" autocomplete="off">
-                <h1>All Done!</h1>
+                <h1 class="mb20">All Done!</h1>
                 <p>Next, unzip the file that just downloaded, and replace the files in the MapStudy "config" directory with its contents. Then your app should be ready to rock!</p>
             </form>
         </div>
@@ -551,430 +1072,10 @@
         </script>
 
 
-        <!--map options for each map library-->
+        
 
-        <script type="text/template" id="Leaflet-map-options-template">
-            Refer to the documentation at the above link for explanations of the options below.
-            <table>
-            <tr class="Leaflet-mapOptions-center">
-                <td class="l-align">Center (decimal degrees):</td>
-                <td>Latitude:</td>
-                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.center.0" size="2" value="0"></td>
-                <td>Longitude:</td>
-                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.center.1" size="2" value="0"></td>
-            </tr>
-            <tr class="leaflet-mapOptions-zoom">
-                <td class="l-align">Zoom (integer 0-22):</td>
-                <td>Initial:</td>
-                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.zoom" size="2" value="0"></td>
-                <td>Minimum:</td>
-                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.minZoom" size="2" value="0"></td>
-                <td>Maximum:</td>
-                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxZoom" size="2" value="22"></td>
-            </tr>
-            <tr class="leaflet-mapOptions-maxBounds">
-                <td class="l-align">Bounds (decimal degrees):</td>
-                <td>South lat:</td>
-                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxBounds.0.0" size="2" value="-90"></td>
-                <td>West lon:</td>
-                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxBounds.0.1" size="2" value="-180"></td>
-                <td>North lat:</td>
-                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxBounds.1.0" size="2" value="90"></td>
-                <td>East lon:</td>
-                <td><input type="text" name="map.pages.<%= pagenum %>.mapOptions.maxBounds.1.1" size="2" value="180"></td>
-            </tr>
-            <table>
-        </script>
-
-
-        <!--universal baseLayer properties-->
-
-        <script type="text/template" id="baseLayer-template">
-            <div class="mb20"><h3 class="nomargin">Base Layer <span class="layernumber"><%= i+1 %></span></h3></div>
-            <p>Layer name: <input type="text" name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.name"></p>
-            <table class='fullwidth bigtext'>
-            <tr>
-                <td class="l-align" style="width: 84px"><a class="ext sourcelink" target="_blank">Source</a>:</td>
-                <td class="l-align" style="width: 150px"><select class="layer-source-select">
-                    <option value="url">URL</option>
-                    <option value="postgis">PostGIS table</option>
-                </select></td>
-                <td class="l-align"><input type="text" class="layer-source-input fullwidth" name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.source"></input></td>
-            </tr>
-            </table>
-            <div class="layer-options">
-                <div class="layer-options-inputs"></div>
-                <div class="layer-custom-options q">
-                    <p>Add custom layer options? <select class="bdd no"></select></p>
-                    <div class="layer-custom-options-textarea displayonyes">
-                        Refer to the documentation at the above link for a list of available custom options. Write your custom options in the format of a <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
-                        <textarea name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.layerOptions"></textarea>
-                    </div>
-                </div>
-            </div>
-            <button type="button" class="removelayer removebutton">
-                <span class="ar">-</span>
-                Remove this base layer
-            </button>
-            <button type="button" class="addlayer addbutton">
-                <span class="ar">+</span>
-                Add another base layer
-            </button>
-        </script>
 
         
-        <!--baseLayer options for each map library-->
-
-        <script type="text/template" id="Leaflet-baseLayer-options-template">
-            <p class="nomargin"><a class="ext" href="http://leafletjs.com/reference.html#tilelayer-options" target="_blank">Layer Options</a>:
-            </p>
-            <table class="fullwidth">
-                <tr class="Leaflet-baseLayer-options-attribution">
-                    <td class="l-align" style="width: 85px">Attribution:</td>
-                    <td class="l-align"><input class="fullwidth" type="text" name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.layerOptions.attribution" placeholder="example: Map by Stamen, Data by <a href='http://osm.org'>OpenStreetMap</a> contributors"></td>
-                </tr>
-            </table>
-        </script>
-
-
-        <!--universal dataLayer properties-->
-
-        <script type="text/template" id="dataLayer-template">
-            <div class="mb20"><h3 class="nomargin">Data Layer <span class="layernumber"><%= i+1 %></span></h3></div>
-
-            <p>Layer name: <input type="text" class="layerName" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.name"></p>
-            
-            <table class='fullwidth bigtext layer-source'>
-                <tr>
-                    <td class="l-align" style="width: 84px"><a class="ext sourcelink" target="_blank">Source</a>:</td>
-                    <td class="l-align" style="width: 150px"><select class="layer-source-select">
-                        <option value="url">URL</option>
-                        <option value="postgis">PostGIS table</option>
-                    </select></td>
-                    <td class="l-align"><input type="text" class="layer-source-input fullwidth" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.source" placeholder="example: data/geography.geojson"></input></td>
-                </tr>
-            </table>
-            
-            <div class="layer-options">
-                <div class="layer-options-inputs"></div>
-                <div class="layer-custom-options q">
-                    <p>Add custom layer options? <select class="bdd no"></select></p>
-                    <div class="layer-custom-options-textarea displayonyes">
-                        Refer to the documentation at the above link for a list of available custom options. Write your custom options in the format of a <a class="ext" href="http://json.org/example.html" target="_blank">JSON object</a> below.
-                        <textarea name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.layerOptions"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <p class="layer-expressedAttribute">Expressed attribute name: <input type="text" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.expressedAttribute"></p>
-
-            <p class="nomargin layer-displayAttributes">Display attributes (list attributes separated by commas):</p>
-            <textarea name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.displayAttributes-{[]}"></textarea>
-
-            <p class="layer-renderOnLoad q">Render layer when map loads? 
-                <select class="bdd yes" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.renderOnLoad"></select>
-            </p>
-
-            <h3 class="layer-techniques-title">Layer visualization techniques</h3>
-            <div class="layer-techniques"></div>
-
-            <button type="button" class="removelayer removebutton">
-                <span class="ar">-</span>
-                Remove this data layer
-            </button>
-            <button type="button" class="addlayer addbutton">
-                <span class="ar">+</span>
-                Add another data layer
-            </button>
-        </script>
-
-
-        <!--technique properties-->
-
-        <script type="text/template" id="technique-template">
-            <div class="mb20"><h3 class="nomargin">Data Layer <span class="layernumber"><%= i+1 %></span> Technique <span class="techniquenumber"><%= ii+1 %></span></h3></div>
-
-            <p class="technique-type-p nomargin">Technique type: 
-                <select class="technique-type" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.type">
-                    <option value="choropleth">Choropleth</option>
-                    <option value="proportional symbol">Proportional Symbol</option>
-                    <option value="dot">Dot</option>
-                    <option value="isarithmic">Isarithmic</option>
-                    <option value="heat">Heat</option>
-                </select>
-            </p>
-
-            <div class="technique-type-desc" style="margin-bottom: 20px;"></div>
-
-            <p class="technique-classification-p nomargin">Classification scheme: 
-                <select class="technique-classification" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.classification">
-                    <option value="quantile">Quantile</option>
-                    <option value="equal interval">Equal Interval</option>
-                    <option value="natural breaks">Natural Breaks</option>
-                    <option value="unclassed">Unclassed</option>
-                </select>
-            </p>
-
-            <div class="classification-type-desc" style="margin-bottom: 20px;"></div>
-
-            <p class="technique-n-classes-p">Number of classes: 
-                <select class="technique-n-classes">
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5" selected>5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                </select>
-            </p>
-
-            <div class="technique-classes"></div>
-
-            <p class="technique-symbol-p">
-                Symbol: 
-                <select class="technique-symbol">
-                    <option value="circle">circle</option>
-                    <option value="url">URL</option>
-                </select> 
-                <input class="technique-symbol-url" type="text" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.symbol">
-            </p>
-
-            <p class="technique-interval-p">
-                <span class="interval-ratio">Line interval: </span>
-                <input type="text" size="3" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.interval">
-            </p>
-
-            <p class="technique-size-p">
-                <span class="dot-line-size">Isarithm width: </span>
-                <input type="text" size="2" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.size"> 
-                pixels
-            </p>
-
-            <button type="button" class="removetechnique removebutton">
-                <span class="ar">-</span>
-                Remove this technique
-            </button>
-            <button type="button" class="addtechnique addbutton">
-                <span class="ar">+</span>
-                Add another technique
-            </button>
-        </script>
-
-        <script type="text/template" id="color-scale-classes-template">
-            <p>Color scale: <select class="color-classes" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.classes"></select></p>
-        </script>
-
-        <script type="text/template" id="radii-classes-template">
-            <table style="margin-bottom: 20px;">
-                <tr class="bigtext radii-classes">
-                    <td class="l-align">Symbol radii:</td>
-                </tr>
-                <tr class="radii-minmax"><td></td></tr>
-            </table>
-        </script>
-
-        <script type="text/template" id="color-scale-option-template">
-            <option value="<%= colorcode %>"></option>
-        </script>
-
-        <script type="text/template" id="color-swatch-template">
-            <span class="color-swatch" style="background-color: <%= fillColor %>"></span>
-        </script>
-
-        <script type="text/template" id="symbol-radius-template">
-            <td><input type="text" size="2" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.techniques.<%= ii %>.classes-{c}"></td>
-        </script>
-
-
-        <!--dataLayer options for each map library-->
-
-        <script type="text/template" id="Leaflet-dataLayer-options-template">
-            <p class="nomargin"><a class="ext" href="http://leafletjs.com/reference.html#path" target="_blank">Layer Options</a>:
-            </p>
-            Refer to the documentation at the above link for a list of available custom options.
-        </script>
-
-
-        <!--interaction properties-->
-
-        <script type="text/template" id="interaction-logging-template">
-            <div class="interaction-logging mb20">
-                Log this interaction? 
-                <select class="bdd yes" name="map.pages.<%= pagenum %>.interactions.<%= interaction %>.logging"></select>
-            </div>
-        </script>
-
-        <script type="text/template" id="interaction-dataLayer-template">
-            <input type="checkbox" checked> 
-            <span class="dataLayer-layerName"><%= layerName %></span>
-            <input type="hidden" name="map.pages.<%= pagenum %>.interactions.<%= interaction %>.dataLayers-{[]}" value="<%= layerName %>">
-        </script>
-
-
-        <!--question sets-->
-
-        <script type="text/template" id="set-template">
-            <div class="mb20"><h3 class="nomargin">Set <span class="setnumber"><%= i+1 %></span></h3></div>
-
-            <h3 class="nomargin">Blocks</h3>
-            <div class="mb20"> 
-                A <em>block</em> consists of the question or descriptive text and an input field to allow the participant to respond if a response is required.
-            </div>
-            <div class="blocks"></div>
-            <p class="nomargin">Buttons:</p>
-            <div class="set-buttons">
-                <input type="hidden" name="questions.pages.<%= pagenum %>.sets.<%= i %>.buttons-{[]}" value="">
-                <div><input type="checkbox" class="set-button next"> Next</div>
-                <div><input type="checkbox" class="set-button back"> Back</div>
-                <div><input type="checkbox" class="set-button save"> Save</div>
-                <div><input type="checkbox" class="set-button submit"> Submit</div>
-            </div>
-
-            <button type="button" class="removeset removebutton">
-                <span class="ar">-</span>
-                Remove this set
-            </button>
-            <button type="button" class="addset addbutton">
-                <span class="ar">+</span>
-                Add another set
-            </button>
-        </script>
-
-
-        <!--question blocks-->
-
-        <script type="text/template" id="block-template">
-            <div class="mb20"><h3 class="nomargin">Set <span class="setnumber"><%= i+1 %> Block <span class="blocknumber"><%= ii+1 %></span></h3></div>
-            
-            <div class="q">
-                <p>Customize block label? <select class="block-label-yn bdd no"></select></p>
-                <div class="block-label displayonyes">
-                    Label: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.label" value="p<%= pagenum+1 %>s<%= i+1 %>b<%= ii+1 %>" size="20" maxlength="20" disabled>
-                </div>
-            </div>
-
-            <div class="q">
-                <p>Include title? <select class="title-yn bdd no"></select></p>
-                <div class="title displayonyes">
-                    Title: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.title" disabled>
-                </div>
-            </div>
-
-            <p class="nomargin">Ask (may include any text or HTML):</p>
-            <div class="ask mb20">
-                <textarea name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.ask"></textarea>
-            </div>
-
-            <div class="q">
-                <p>Include description? <select class="description-yn bdd no"></select></p>
-                <div class="desc displayonyes">
-                    Description:
-                    <textarea name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.description" disabled></textarea>
-                </div>
-            </div>
-
-            <div class="q">
-                <p>Include input? <select class="input-yn bdd yes"></select></p>
-                <div class="input hideonno">
-                    <h3>Input</h3>
-
-                    <p class="reqd">
-                        <input type="checkbox" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.required"> Required question
-                    </p>
-
-                    <div class="input-type bigtext mb20">
-                        Input type: 
-                        <select class="input-type-select" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.type">
-                            <option value="text">text</option>
-                            <option value="paragraph">paragraph</option>
-                            <option value="checkboxes">checkboxes</option>
-                            <option value="radios">radios</option>
-                            <option value="dropdown">dropdown</option>
-                            <option value="matrix">matrix</option>
-                            <option value="rank">rank</option>
-                        </select>
-                    </div>
-
-                    <div class="options-div mb20">
-                        <p>Options:</p>
-                        <div class="options"></div>
-                    </div>
-
-                    <div class="items-div">
-                        <p>Items:</p>
-                        <div class="items"></div>
-                    </div>
-                </div>
-            </div>
-
-            <button type="button" class="removeblock removebutton">
-                <span class="ar">-</span>
-                Remove this block
-            </button>
-            <button type="button" class="addblock addbutton">
-                <span class="ar">+</span>
-                Add another block
-            </button>
-        </script>
-
-
-        <!--input options-->
-
-        <script type="text/template" id="input-option-template">
-            <div class="mb20"><h3 class="nomargin">Option <span class="optionnumber"><%= iii+1 %></span></h3></div>
-            
-            <p class="option-text">
-                Option text: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.options.<%= iii %>.text">
-            </p>
-
-            <div class="q">
-                <p class="option-value-yn">Make value different than text? <select class="bdd no"></select>
-                <p class="option-value displayonyes">
-                    Option value: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.options.<%= iii %>.value" disabled>
-                </p>
-            </div>
-
-            <button type="button" class="removeoption removebutton">
-                <span class="ar">-</span>
-                Remove this option
-            </button>
-            <button type="button" class="addoption addbutton">
-                <span class="ar">+</span>
-                Add another option
-            </button>
-        </script>
-
-
-        <!--input items-->
-
-        <script type="text/template" id="input-item-template">
-            <div class="mb20"><h3 class="nomargin">Item <span class="itemnumber"><%= iii+1 %></span></h3></div>
-            
-            <p class="item-text">
-                Item text: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.items.<%= iii %>.text">
-            </p>
-
-            <div class="q">
-                <p class="item-label-yn">Customize item label? <select class="bdd no"></select>
-                <p class="item-label displayonyes">
-                    Item label: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.items.<%= iii %>.label" value="p<%= pagenum+1 %>s<%= i+1 %>b<%= ii+1 %>i<%= iii+1 %>" size="20" maxlength="20" disabled>
-                </p>
-            </div>
-
-            <button type="button" class="removeitem removebutton">
-                <span class="ar">-</span>
-                Remove this item
-            </button>
-            <button type="button" class="additem addbutton">
-                <span class="ar">+</span>
-                Add another item
-            </button>
-        </script>
 
 
         <!--external scripts-->

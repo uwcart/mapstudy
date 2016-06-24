@@ -94,7 +94,7 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-html, body {
+body {
     height: 100%;
     background-color: #ccc;
     overflow: hidden;
@@ -151,7 +151,7 @@ svg {
 
 #header img {
     max-height: 4em;
-    margin: 5px 5px 0 0;
+    margin: 5px 20px 0 0;
 }
 
 #wrapper {
@@ -423,7 +423,7 @@ svg {
     margin: 4px 0;
 }
 
-span.value {
+span.value, span.rank {
     font-style: italic;
     width: 15px;
     display: inline-block;

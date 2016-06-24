@@ -13,6 +13,8 @@ var allData = {
 var optionTemplate = _.template( $('#option-template').html() ),
 	dropdownTemplate = _.template( $('#dropdown-template').html() );
 
+/****************** PAGES ******************/
+
 var PageModel = Backbone.Model.extend({
 	defaults: {
 		pagenum: 1,
@@ -965,6 +967,202 @@ function createOptionItem(setIndex, blockIndex, optionItemIndex, type){
 	var optionItem = optionItemView.render();
 };
 
+/****************** CONDITIONS ******************/
+
+var ConditionModel = Backbone.Model.extend({
+	defaults: {
+		conditionnum: 1
+	}
+});
+
+var ConditionPageModel = Backbone.Model.extend({
+	conditionnum: 1,
+	pagenum: 1,
+	rank: 0
+});
+
+var conditionModel = new ConditionModel();
+
+var ConditionView = Backbone.View.extend({
+	tagName: 'div',
+	className: 'condition',
+	template: _.template( $('#condition-template').html() ),
+	events: {
+		"click .removecondition": "removecondition",
+		"click .addcondition": "addcondition",
+		"sortstop .sortable-pages": "resortPages",
+		"sortstart .sortable-pages": "sort",
+		"change .randomize": "randomizePages"
+	},
+	removecondition: function(){
+		//reset condition numbering
+		this.model.set('conditionnum', this.model.get('conditionnum')-1);
+		//fade out and remove view
+		var view = this;
+		this.$el.fadeOut(500, function(){
+			view.remove();
+			//reset numbering of condition boxes once element has been removed
+			var conditionnum = 0;
+			$('.condition').each(function(){
+				conditionnum++;
+				$(this).attr('id', "condition-"+conditionnum);
+				$(this).find('.conditionnum').html(conditionnum);
+			});
+			//if no conditions are shown, show first add condition button
+			if (conditionnum == 0){
+				$('.condition-add').show();
+			}
+		});
+	},
+	addcondition: function(){
+		createCondition(this.model.get('conditionnum')+1);
+	},
+	addPages: function(){
+		var nPages = allData.qpages.pages.length,
+			randomizeTemplate = _.template( $('#condition-randomize-template').html() );
+		for (var i=0; i<nPages; i++){
+			//add sortable list item
+			var conditionPageModel = new ConditionPageModel({
+				conditionnum: this.model.get('conditionnum'),
+				pagenum: i+1,
+				rank: i
+			});
+			var conditionPageView = new ConditionPageView({
+				el: this.$el.find('.sortable-pages'),
+				model: conditionPageModel
+			});
+			conditionPageView.render();
+
+			//if not the first page, add a randomize checkbox
+			if (i > 0){
+				this.$el.find('.randomize-inputs').append(randomizeTemplate({
+					pagenum: i+1
+				}));
+			};
+		};
+		//make pages list sortable
+		this.$el.find('.sortable-pages').sortable({
+			axis: "y",
+			containment: "parent"
+		});
+	},
+	sort: function(e, ui){
+		$(ui.item).attr('class','condition-page ui-sortable-handle');
+		$(ui.item).find('.rank-item').css('box-shadow', '0 0 2px black');
+		$(ui.item).find('.rank').empty();
+	},
+	resortPages: function(e, ui){
+		if (typeof ui != 'undefined'){
+			$(ui.item).find('.rank-item').removeAttr('style');
+		};
+
+		var condition = this.model.get('conditionnum')-1,
+			el = this.$el,
+			p = -1,
+			ii = 0;
+		this.$el.find('.condition-page').each(function(i){
+			//reset rank
+			$(this).find('.rank').html(i+1);
+			//determine whether page is randomized and how
+			var randomized = el.find('.condition-randomize .'+(i+1)+':checked').length,
+				beforeRandomized = el.find('.condition-randomize .'+i+'.'+(i+1)+':checked').length,
+				afterRandomized = el.find('.condition-randomize .'+(i+1)+'.'+(i+2)+':checked').length;
+			var className = 'condition-page ui-sortable-handle';
+			if (randomized){
+				className += ' randomized';
+				if (beforeRandomized){
+					className += ' before-randomized';
+					ii++;
+				} else {
+					ii = 0;
+					p++;
+				};
+				if (afterRandomized){
+					className += ' after-randomized';
+				};
+				//create nested pages array
+				$(this).find('input').attr('name', condition+'.pages.'+p+'.'+ii);
+			} else {
+				p++;
+				$(this).find('input').attr('name', condition+'.pages.'+p);
+			};
+			$(this).attr('class', className);
+		});
+
+		//reset positioning of checkboxes
+		var conditionPages = this.$el.find('.condition-page');
+		console.log(conditionPages);
+		this.$el.find('.condition-randomize').each(function(i){
+			//get page div outer height including margins
+			var height = $(conditionPages[i]).outerHeight(true);
+			console.log(height);
+			$(this).css('margin-top', (height-5)+"px");
+		});
+	},
+	randomizePages: function(e){
+		var randomizedPages = {};
+		this.$el.find('.randomize:checked').each(function(){
+			var items = $(this).attr('class').split(' ');
+			randomizedPages[items[1]+'-'+items[2]] = 0;
+		});
+
+		this.$el.find('.condition-page').each(function(i){
+			var className = 'condition-page ui-sortable-handle',
+				randomized = false;
+
+			if (randomizedPages.hasOwnProperty(i+'-'+(i+1))){
+				className += ' before-randomized';
+				randomized = true;
+			};
+			if (randomizedPages.hasOwnProperty((i+1)+'-'+(i+2))){
+				className += ' after-randomized';
+				randomized = true;
+			};
+
+			if (randomized){
+				className += ' randomized';
+			}
+			$(this).attr('class', className);
+		});
+
+		this.resortPages();
+	},
+	render: function(){
+		//create condition div
+		var conditionnum = this.model.get('conditionnum');
+		this.$el.attr('id', 'condition-'+conditionnum);
+		this.$el.html(this.template({conditionnum: conditionnum}));
+
+		//add condition pages
+		this.addPages();
+
+		//hide first add condition button
+		$('.condition-add').hide();
+
+		//add condition div to page container
+		$('#condition-container').append(this.el);
+
+		return this;
+	}
+});
+
+var ConditionPageView = Backbone.View.extend({
+	template: _.template( $('#condition-page-template').html() ),
+	render: function(){
+		this.$el.append(this.template(this.model.attributes));
+
+		return this;
+	}
+})
+
+function createCondition(conditionnum){
+	conditionModel.set('conditionnum', conditionnum);
+	var conditionView = new ConditionView({model: conditionModel});
+	var condition = conditionView.render();
+};
+
+/****************** ALL FORMS ******************/
+
 function createBooleanDropdown(select){
 	//creates a yes-no dropdown menu
 	var options = {
@@ -1144,16 +1342,10 @@ function initialize(){
 		createBooleanDropdown($(this));
 	});
 
-	//add sticky header
-	$('body').scroll(function(){
-		if ($(this).scrollTop() > 10){
-			$('header').addClass("sticky");
-			$('.header-button').slideDown(400);
-		} else {
-			$('header').removeClass("sticky");
-			$('.header-button').slideUp(0);
-		}
-	})
+	//activate add condition button for Step 3 (conditions)
+	$('.addcondition').click(function(){
+		createCondition(1);
+	});
 };
 
 $(document).ready(initialize);
