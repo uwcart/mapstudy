@@ -72,6 +72,10 @@
                 margin-top: 0;
             }
 
+            .mt20 {
+                margin-top: 20px;
+            }
+
             .q, .page, .condition {
                 margin: 20px 0;
             }
@@ -195,6 +199,7 @@
 
             .condition-randomize {
                 margin-top: 1.3em;
+                height: 24px;
             }
 
             .randomized {
@@ -213,6 +218,14 @@
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
                 margin-bottom: 0;
+            }
+
+            .weight-min {
+                margin-left: 50px;
+            }
+
+            .weightval {
+                font-size: 0.85em;
             }
 
         </style>
@@ -931,7 +944,7 @@
                     </p>
 
                     <div class="q">
-                        <p class="option-value-yn">Make value different than text? <select class="bdd no"></select>
+                        <p class="option-value-yn">Make value different than text? <select class="bdd no"></select></p>
                         <p class="option-value displayonyes">
                             Option value: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.options.<%= iii %>.value" disabled>
                         </p>
@@ -958,7 +971,7 @@
                     </p>
 
                     <div class="q">
-                        <p class="item-label-yn">Customize item label? <select class="bdd no"></select>
+                        <p class="item-label-yn">Customize item label? <select class="bdd no"></select></p>
                         <p class="item-label displayonyes">
                             Item label: <input type="text" name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.items.<%= iii %>.label" value="p<%= pagenum+1 %>s<%= i+1 %>b<%= ii+1 %>i<%= iii+1 %>" size="20" maxlength="20" disabled>
                         </p>
@@ -980,11 +993,18 @@
                 </div>
             </form>
             
-            <form class="step" id="conditions" autocomplete="off">
+            <form class="step q" id="conditions" autocomplete="off">
                 <h1 class="mb20">Step 3. Conditions</h1>
 
                 <div class="desc">
                     Conditions determine the order in which pages appear to different groups of study participants. The condition configuration options give you the flexibility to create randomized and factorial study designs. If you do not create any conditions, all participants will see every page in the order in which they are listed in map.json and questions.json.
+                </div>
+
+                <div class="section">
+                    <h3 id="weight-yn" class="mb20">Weight conditions? <span style="font-weight: normal;"><select class="bdd no"></select></span></h3>
+                    <div class="desc nomargin">
+                        Condition weights allow you to choose the relative frequency with which each condition is assigned. All condition weights must sum to 1. If not weighted, each condition will be assigned at random with equal frequency.
+                    </div>
                 </div>
 
                 <div id="condition-container">
@@ -1003,6 +1023,7 @@
                         <div class="desc">
                             Drag the pages below to rearrange their order. Check the boxes between pages you would like to be shown to participants in random order. All pages connected to checkboxes that are consecutively checked will be grouped together for randomization.
                         </div>
+
                         <table class="pages bigtext">
                             <tr>
                                 <th>Order</th>
@@ -1013,6 +1034,15 @@
                                 <td class="randomize-inputs"></td>
                             </tr>
                         </table>
+                    </div>
+
+                    <div class="condition-weight displayonyes section bigtext mt20">
+                        Condition weight: 
+                        <span class="weight-val">1.00</span>
+                        <span class="weightval weight-min">0</span>
+                        <input type="range" class="condition-weight-slider" name="<%= conditionnum-1 %>.weight" min="0" max="1" step="0.01" value="1.00" style="vertical-align: middle;">
+                        <span class="weightval weight-max">1.00</span>
+                        <span class="weightval weight-warning">Condition weights must sum to 1.00. Reduce one or more of your weights.</span>
                     </div>
 
                     <button type="button" class="removecondition removebutton">

@@ -4,6 +4,38 @@
 		"selected_items":
 		[
 			[
+				"modify",
+				"modifyWeights"
+			],
+			[
+				"condition",
+				"conditionnum"
+			],
+			[
+				"reset",
+				"resetSelect"
+			],
+			[
+				"display",
+				"displayonyes"
+			],
+			[
+				"randomized",
+				"randomizedPages"
+			],
+			[
+				"before",
+				"before-randomized"
+			],
+			[
+				"randomi",
+				"randomizedPages"
+			],
+			[
+				"border-bo",
+				"border-bottom-right-radius"
+			],
+			[
 				"disp",
 				"displayonyes"
 			],
@@ -118,10 +150,6 @@
 			[
 				"colu",
 				"columns"
-			],
-			[
-				"reset",
-				"resetQuestions"
 			],
 			[
 				"random",
@@ -312,10 +340,6 @@
 				"retrieveControlView"
 			],
 			[
-				"display",
-				"displayAttributes"
-			],
-			[
 				"Retr",
 				"RetrieveControlView"
 			],
@@ -490,30 +514,6 @@
 			[
 				"interactionCont",
 				"interactionControlView"
-			],
-			[
-				"prevent",
-				"preventDefault"
-			],
-			[
-				"pan-con",
-				"pan-control-container"
-			],
-			[
-				"first",
-				"firstClick"
-			],
-			[
-				"inter",
-				"interactionControlView"
-			],
-			[
-				"map",
-				"mapset"
-			],
-			[
-				"interac",
-				"interactionControlModel"
 			]
 		]
 	},
@@ -531,7 +531,7 @@
 			"file": "setup/index.html",
 			"settings":
 			{
-				"buffer_size": 49714,
+				"buffer_size": 58103,
 				"line_ending": "Windows"
 			}
 		},
@@ -539,16 +539,8 @@
 			"file": "setup/setup.js",
 			"settings":
 			{
-				"buffer_size": 36801,
+				"buffer_size": 43904,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "js/lib/colorbrewer.js",
-			"settings":
-			{
-				"buffer_size": 18990,
-				"line_ending": "Unix"
 			}
 		},
 		{
@@ -556,14 +548,6 @@
 			"settings":
 			{
 				"buffer_size": 164,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "README.md",
-			"settings":
-			{
-				"buffer_size": 47027,
 				"line_ending": "Windows"
 			}
 		},
@@ -576,10 +560,10 @@
 			}
 		},
 		{
-			"file": "js/modules/m-section.js",
+			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 96479,
+				"buffer_size": 10374,
 				"line_ending": "Windows"
 			}
 		},
@@ -588,54 +572,6 @@
 			"settings":
 			{
 				"buffer_size": 14322,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "config/map.json",
-			"settings":
-			{
-				"buffer_size": 11807,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "config/questions.json",
-			"settings":
-			{
-				"buffer_size": 5691,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "css/style.css",
-			"settings":
-			{
-				"buffer_size": 10368,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "config/styles.json",
-			"settings":
-			{
-				"buffer_size": 338,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "js/modules/app.js",
-			"settings":
-			{
-				"buffer_size": 3763,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "doc/versions.md",
-			"settings":
-			{
-				"buffer_size": 612,
 				"line_ending": "Windows"
 			}
 		}
@@ -664,21 +600,25 @@
 	},
 	"file_history":
 	[
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/questions.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/colorbrewer.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/index.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/README.md",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/q-section.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/styles.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/app.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/versions.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/index.html",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/setup.js",
 		"/C/Users/Carl/Downloads/download/sticky_header.html",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/css/style.css",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/styles.json",
 		"/C/Users/Carl/Desktop/temp/temp.html",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/php/data.php",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/php/interactions.php",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/param.php",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/API.md",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/index.html",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/q-section.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/app.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/.gitignore",
 		"/C/sendmail/sendmail.ini",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/php/php.ini",
@@ -688,13 +628,11 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/conditions.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs/js/views.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/architecture.md",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/questions.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/php/param.php",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/senegal.sublime-project",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map1.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/us-states-pop.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/us-states.geojson",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/colorbrewer.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/wi-tracts-poly.topojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/city-data.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map3.json",
@@ -711,8 +649,6 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/ma4.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/svg-area-heatmap.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/heatmap.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/versions.md",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/README.md",
 		"/C/temp/lower48contour.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/lower48.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz/lib/LICENSE.txt",
@@ -809,6 +745,33 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"$(this).val()",
+			"condition-weight input",
+			"mb20",
+			"displayonyes",
+			"createBooleanDropdown",
+			"createBooleanDropdown(select, toggleAll)",
+			"condition",
+			"bdd",
+			"form",
+			"createBooleanDropdown",
+			"resortPages",
+			"change",
+			"condition-page",
+			"th",
+			"align: left",
+			"td class=",
+			"td",
+			"conditions",
+			"condition-add",
+			".page",
+			"createCondition",
+			"addDataLayer",
+			"dataLayer",
+			"Step",
+			"header",
+			".header",
+			"header",
 			"questions.page",
 			"name=",
 			"page-",
@@ -909,34 +872,7 @@
 			"arr",
 			"[<%=",
 			"<%= i %>",
-			"techniques[<%= ii %>]",
-			"dataLayers[<%= i %>]",
-			"baseLayers[<%= i %>]",
-			"[{]",
-			"[1]",
-			"[0]",
-			"cssAttributes[\"background-color\"]",
-			"q.",
-			"m.",
-			"header.",
-			"footer.",
-			"allData",
-			"hidden",
-			"sectionId",
-			"type=\"hidden",
-			"changeStep",
-			"header-logo",
-			"createBooleanDropdown",
-			"placeholder",
-			"setLibrary",
-			"Leaflet",
-			"interaction",
-			"name=\"interactions",
-			".append(this.$el",
-			"layerName",
-			"this.$el.className",
-			"Layer name:",
-			"Layer name"
+			"techniques[<%= ii %>]"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -944,6 +880,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"thisval",
+			"condition-weight-slider",
 			"questions.pages",
 			"option",
 			"item",
@@ -1069,20 +1007,18 @@
 			"classes",
 			"scale",
 			"classes",
-			"scale",
-			"this.model",
-			"ms"
+			"scale"
 		],
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -1097,8 +1033,8 @@
 						"selection":
 						[
 							[
-								3243,
-								3249
+								6212,
+								6212
 							]
 						],
 						"settings":
@@ -1108,7 +1044,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 36.0,
+						"translation.y": 2494.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1118,15 +1054,15 @@
 					"file": "setup/index.html",
 					"settings":
 					{
-						"buffer_size": 49714,
+						"buffer_size": 58103,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								48225,
-								48225
+								54762,
+								54762
 							]
 						],
 						"settings":
@@ -1136,7 +1072,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 21741.0,
+						"translation.y": 23794.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1146,15 +1082,15 @@
 					"file": "setup/setup.js",
 					"settings":
 					{
-						"buffer_size": 36801,
+						"buffer_size": 43904,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								35203,
-								35203
+								37255,
+								37255
 							]
 						],
 						"settings":
@@ -1164,39 +1100,13 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 21870.0,
+						"translation.y": 22805.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "js/lib/colorbrewer.js",
-					"settings":
-					{
-						"buffer_size": 18990,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 4500.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
 					"file": "config/conditions.json",
 					"settings":
 					{
@@ -1207,8 +1117,8 @@
 						"selection":
 						[
 							[
-								36,
-								36
+								159,
+								159
 							]
 						],
 						"settings":
@@ -1223,34 +1133,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "README.md",
-					"settings":
-					{
-						"buffer_size": 47027,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1876,
-								1876
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 900.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
+					"buffer": 4,
 					"file": "config/param.php",
 					"settings":
 					{
@@ -1276,35 +1159,35 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "js/modules/m-section.js",
+					"buffer": 5,
+					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 96479,
+						"buffer_size": 10374,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								22413,
-								22419
+								6249,
+								6251
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 896.0,
+						"translation.y": 7874.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 6,
 					"file": "js/modules/q-section.js",
 					"settings":
 					{
@@ -1315,8 +1198,8 @@
 						"selection":
 						[
 							[
-								209,
-								209
+								5186,
+								5289
 							]
 						],
 						"settings":
@@ -1325,171 +1208,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "config/map.json",
-					"settings":
-					{
-						"buffer_size": 11807,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1032,
-								1166
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "config/questions.json",
-					"settings":
-					{
-						"buffer_size": 5691,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								344,
-								345
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "css/style.css",
-					"settings":
-					{
-						"buffer_size": 10368,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5877,
-								5886
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 7231.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "config/styles.json",
-					"settings":
-					{
-						"buffer_size": 338,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								159,
-								159
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"file": "js/modules/app.js",
-					"settings":
-					{
-						"buffer_size": 3763,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								735,
-								735
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 540.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 14,
-					"file": "doc/versions.md",
-					"settings":
-					{
-						"buffer_size": 612,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								297,
-								297
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 120.0,
+						"translation.y": 3102.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

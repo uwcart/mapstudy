@@ -581,7 +581,6 @@ var TechniqueView = Backbone.View.extend({
 			var l = layer.find('.technique').length;
 			layer.find('.technique').each(function(ii){
 				$(this).attr('id', 'page-'+pagenum+'-dataLayer-'+view.i+'-technique-'+ii);
-				console.log(l, ii+1, $(this).find('.techniquenumber'));
 				$(this).find('.techniquenumber').html(ii+1);
 				//replace any ii character in input/textarea names
 				$(this).find('input, textarea').each(function(){
@@ -679,7 +678,6 @@ var SetView = Backbone.View.extend({
 			//reset numbering of sets once element has been removed
 			var l = qsection.find('.set').length;
 			qsection.find('.set').each(function(i){
-				console.log(l, $(this));
 				$(this).attr('id', 'page-'+pagenum+'-set-'+i);
 				$(this).find('.setnumber').html(i+1);
 				//replace any i character in input/textarea names
@@ -981,8 +979,6 @@ var ConditionPageModel = Backbone.Model.extend({
 	rank: 0
 });
 
-var conditionModel = new ConditionModel();
-
 var ConditionView = Backbone.View.extend({
 	tagName: 'div',
 	className: 'condition',
@@ -992,7 +988,9 @@ var ConditionView = Backbone.View.extend({
 		"click .addcondition": "addcondition",
 		"sortstop .sortable-pages": "resortPages",
 		"sortstart .sortable-pages": "sort",
-		"change .randomize": "randomizePages"
+		"change .randomize": "resortPages",
+		"change .condition-weight-slider": "modifyWeights",
+		"input .condition-weight-slider": "modifyWeights"
 	},
 	removecondition: function(){
 		//reset condition numbering
@@ -1011,7 +1009,9 @@ var ConditionView = Backbone.View.extend({
 			//if no conditions are shown, show first add condition button
 			if (conditionnum == 0){
 				$('.condition-add').show();
-			}
+			};
+			//reset weights
+			this.modifyWeights(true);
 		});
 	},
 	addcondition: function(){
@@ -1091,41 +1091,60 @@ var ConditionView = Backbone.View.extend({
 
 		//reset positioning of checkboxes
 		var conditionPages = this.$el.find('.condition-page');
-		console.log(conditionPages);
 		this.$el.find('.condition-randomize').each(function(i){
 			//get page div outer height including margins
 			var height = $(conditionPages[i]).outerHeight(true);
-			console.log(height);
-			$(this).css('margin-top', (height-5)+"px");
+			//subtract half of checkbox div height if first, and full checkbox div height for others
+			if (i == 0){
+				height -= 12;
+			} else {
+				height -= 24;
+			}
+			$(this).css('margin-top', height+"px");
 		});
 	},
-	randomizePages: function(e){
-		var randomizedPages = {};
-		this.$el.find('.randomize:checked').each(function(){
-			var items = $(this).attr('class').split(' ');
-			randomizedPages[items[1]+'-'+items[2]] = 0;
-		});
-
-		this.$el.find('.condition-page').each(function(i){
-			var className = 'condition-page ui-sortable-handle',
-				randomized = false;
-
-			if (randomizedPages.hasOwnProperty(i+'-'+(i+1))){
-				className += ' before-randomized';
-				randomized = true;
-			};
-			if (randomizedPages.hasOwnProperty((i+1)+'-'+(i+2))){
-				className += ' after-randomized';
-				randomized = true;
-			};
-
-			if (randomized){
-				className += ' randomized';
-			}
-			$(this).attr('class', className);
-		});
-
-		this.resortPages();
+	stopSlider: function(e){
+		e.stopPropagation();
+	},
+	modifyWeights: function(e){
+		var stopSlider = this.stopSlider;
+		this.$el.find('.weight-warning').hide();
+		if (typeof e == 'undefined' && this.model.get('conditionnum') == 1){
+			// this.$el.find('.condition-weight-slider').attr('disabled', true);
+			this.$el.find('.condition-weight-slider').on('mousemove', stopSlider);
+			this.$el.find('.weightval').css('color', '#999');
+			this.$el.find('.weight-val').html('1.00');
+			this.$el.find('.weight-max').html('1.00');
+		} else {
+			//reset slider max and value of last input only
+			var weightInputs = $('#condition-container').find('.condition-weight-slider'),
+				totalWeight = 0,
+				thisval = 0;
+			weightInputs.each(function(i){
+				$(this).off('mousemove', stopSlider);
+				thisval = parseFloat($(this).val());
+				//apply remainder to the last one
+				if (i < weightInputs.length-1){
+					// $(this).removeAttr('disabled');
+					totalWeight += thisval;
+					if (totalWeight > 1.00){
+						$('.weightval, .weight-val').css('color', '#f00');
+						$('.weight-warning').show();
+					} else {
+						$(this).parent().find('.weightval, .weight-val').css('color', '#000');
+						$('.weight-warning').hide();
+					};
+				} else {
+					$(this).on('mousemove', stopSlider);
+					var weightVal = 1.00-totalWeight < 0 ? 0 : 1.00-totalWeight;
+					$(this).val(weightVal);
+					$(this).parent().find('.weightval').css('color', '#999');
+					$(this).parent().find('.weight-val').css('color', '#000');
+					thisval = weightVal;
+				};
+				$(this).parent().find('.weight-val').html(thisval.toFixed(2));
+			})
+		}
 	},
 	render: function(){
 		//create condition div
@@ -1142,6 +1161,18 @@ var ConditionView = Backbone.View.extend({
 		//add condition div to page container
 		$('#condition-container').append(this.el);
 
+		//call resortPages() to even out checkboxes
+		this.resortPages();
+
+		//reset dropdown listeners for weights dropdown
+		createBooleanDropdown($('#weight-yn select'), true);
+		if ($('#weight-yn select').val() == 'false'){
+			this.$el.find('.displayonyes').hide();
+		};
+			
+		//modify available weights
+		this.modifyWeights();
+
 		return this;
 	}
 });
@@ -1156,19 +1187,34 @@ var ConditionPageView = Backbone.View.extend({
 })
 
 function createCondition(conditionnum){
-	conditionModel.set('conditionnum', conditionnum);
+	var conditionModel = new ConditionModel({
+		conditionnum: conditionnum
+	});
 	var conditionView = new ConditionView({model: conditionModel});
 	var condition = conditionView.render();
 };
 
 /****************** ALL FORMS ******************/
 
-function createBooleanDropdown(select){
+function createBooleanDropdown(select, toggleAll){
+	toggleAll = toggleAll || false;
 	//creates a yes-no dropdown menu
 	var options = {
 		yes: "true",
 		no: "false"
 	};
+
+	function resetChangeEvent(){
+		select.on('change', function(){
+			var togglediv = toggleAll ? $(this).closest('.q').find('.displayonyes, .hideonno') : $(this).closest('.q').children('.displayonyes, .hideonno');
+			if ($(this).val() == "true"){
+				togglediv.slideDown(100).find('input, textarea, select').removeAttr('disabled');
+			} else {
+				togglediv.slideUp(100).find('input, textarea, select').attr('disabled', true);
+			}
+		});
+	};
+
 	if (select.html().length == 0){
 		for (var option in options){
 			select.append(optionTemplate({value: options[option], option: option}));
@@ -1177,14 +1223,10 @@ function createBooleanDropdown(select){
 		if (select.attr('class').indexOf('no') > -1){
 			select.val("false");
 		};
-		select.on('change', function(){
-			var togglediv = $(this).closest('.q').children('.displayonyes, .hideonno');
-			if ($(this).val() == "true"){
-				togglediv.slideDown(100).find('input, textarea, select').removeAttr('disabled');
-			} else {
-				togglediv.slideUp(100).find('input, textarea, select').attr('disabled', true);
-			}
-		});
+		resetChangeEvent();
+	} else if (toggleAll){
+		select.off();
+		resetChangeEvent();
 	};
 	return select;
 };
