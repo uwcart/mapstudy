@@ -2,11 +2,11 @@
 
 //object to hold all data
 var allData = {
-	"interface": [],
-	"mpages": [],
-	"qpages": [],
+	"styles": [],
+	"map": [],
+	"questions": [],
 	"conditions": [],
-	"server": {}
+	"param": {}
 };
 
 //templates
@@ -1014,14 +1014,14 @@ var ConditionView = Backbone.View.extend({
 				$('.condition-add').show();
 			};
 			//reset weights
-			this.modifyWeights(true);
+			view.modifyWeights(true);
 		});
 	},
 	addcondition: function(){
 		createCondition(this.model.get('conditionnum')+1);
 	},
 	addPages: function(){
-		var nPages = allData.qpages.pages.length,
+		var nPages = allData.questions.pages.length,
 			randomizeTemplate = _.template( $('#condition-randomize-template').html() );
 		for (var i=0; i<nPages; i++){
 			//add sortable list item
@@ -1328,12 +1328,57 @@ function readForm(step){
 
 	if (step == 'pages'){
 		var outer = processForm(data);
-		allData['mpages'] = outer.map;
-		allData['qpages'] = outer.questions;
+		allData['map'] = outer.map;
+		allData['questions'] = outer.questions;
 	} else {
 		allData[step] = processForm(data);
 	};
 	console.log(allData);
+};
+
+function makeJSON(data){
+	var json = JSON.stringify(data, function(k, v){
+			if (v.length == 0){
+				return undefined;
+			};
+			return v;
+		}, "\t");
+	
+	return json;
+};
+
+function makePHP(data){
+	var phpString = "<?PHP\n\n";
+	for (var param in data){
+		if (data[param].length > 0){
+			phpString += "$"+param+" = '"+data[param]+"';\n";
+		};
+	};
+	phpString += "\n?>";
+		
+	return phpString;
+};
+
+function makeFiles(){
+	var postData = {};
+	for (var filename in allData){
+		//stringify the data depending on file type
+		if (filename == 'param'){
+			postData[filename] = makePHP(allData[filename])
+		} else {
+			postData[filename] = makeJSON(allData[filename]);
+		};
+	};
+
+	$.ajax({
+		type: "POST",
+		url: "makeFiles.php",
+		data: postData,
+		success: function(dirname){
+			//download the zip file
+			window.location = "makeFiles.php?dirname=" + dirname;
+		}
+	})	
 };
 
 function changeStep(prevStep, currentStep){
@@ -1355,10 +1400,10 @@ function navigation(){
 	//activate navigation buttons
 	var step = 0,
 		steps = [
-			"interface",
+			"styles",
 			"pages",
 			"conditions",
-			"server",
+			"param",
 			"finished"
 		];
 
@@ -1374,6 +1419,9 @@ function navigation(){
 		prevStep = steps[step];
 		step++;
 		changeStep(prevStep, steps[step]);
+		if (steps[step] == 'finished'){
+			makeFiles();
+		}
 	});
 
 	//go to previous step on back

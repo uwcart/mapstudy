@@ -157,6 +157,11 @@
                 text-align: left;
             }
 
+            #db td, #email td {
+                text-align: left;
+                padding-bottom: 20px;
+            }
+
             .nomargin {
                 margin: 0;
             }
@@ -244,7 +249,7 @@
         </header>
 
         <div id="container">
-            <form class="step" id="interface" autocomplete="off">
+            <form class="step" id="styles" autocomplete="off">
                 <h1 class="mb20">Step 1. Interface</h1>
                 <div class="desc">
                     The first step is to customize the interface that survey participants will see. Use this form to upload a custom logo and change the look of the header, footer, map, and questions sections if you want. All options currently shown are the defaults.
@@ -1077,9 +1082,126 @@
                 </div>
             </form>
             
-            <form class="step" id="server" autocomplete="off">
+            <form class="step" id="param" autocomplete="off">
                 <h1 class="mb20">Step 4. Server Configuration</h1>
 
+                <div class="desc">
+                    Unlike the prior configuration parameters, these will be placed in a php file (param.php) so they are only readable by the host server and remain secure. You may include the e-mail parameters, database parameters, or both; you must completely fill in the fields for at least one of them to receive any data from the application!
+                </div>
+
+                <div class="section q">
+                    <h3 id="db-yn" class="mb20">
+                        Create <a class="ext" href="https://github.com/uwcart/mapstudy#configuring-the-database" target="_blank">database tables</a>? 
+                        <span style="font-weight: normal;">
+                            <select class="bdd yes"></select>
+                        </span>
+                    </h3>
+                    <div id="db" class="hideonno">
+                        <div class="desc bigtext">
+                            Make sure you know these values in advance and your database server and firewall are configured to allow incoming traffic from your web server. Otherwise, the connection won't work! Your user must have create, read, and update privileges for the database.
+                        </div>
+
+                        <table class="bigtext">
+                            <tr id="dbtype">
+                                <td>Database type: </td>
+                                <td>
+                                    <select name="dbtype">
+                                        <option value="pgsql" selected>PostgreSQL</option>
+                                        <option disabled>More to be added...</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr id="dbhost">
+                                <td>Hostname: </td>
+                                <td><input type="text" name="dbhost"></td>
+                            </tr>
+
+                            <tr id="dbport">
+                                <td>Port: </td>
+                                <td><input type="text" name="dbport"></td>
+                            </tr>
+
+                            <tr id="dbname">
+                                <td>Database name: </td>
+                                <td><input type="text" name="dbname"></td>
+                            </tr>
+
+                            <tr id="dbuser">
+                                <td>Username: </td>
+                                <td><input type="text" name="dbuser"></td>
+                            </tr>
+
+                            <tr id="dbpassword">
+                                <td>Password: </td>
+                                <td>
+                                    <input type="password" name="dbpassword"> 
+                                    (double-check this one after you download the config files)
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="section q">
+                    <h3 id="email-yn" class="mb20">
+                        E-mail participant tables? 
+                        <span style="font-weight: normal;">
+                            <select class="bdd yes"></select>
+                        </span>
+                    </h3>
+                    <div id="email" class="hideonno">
+                        <div class="desc bigtext">
+                            If these parameters are included, a data table and an interactions table for each participant will be e-mailed to the provided address in CSV format when submitted by the participant. The tables will also be stored in the <em>participants</em> folder in the application directory.
+                        </div>
+
+                        <table class="bigtext">
+                            <tr id="smtphost">
+                                <td>SMTP host address: </td>
+                                <td><input type="text" name="smtphost"></td>
+                            </tr>
+
+                            <tr id="smtpport">
+                                <td>SMTP port: </td>
+                                <td>
+                                    <input type="text" name="smtpport"> 
+                                    (usually this is either 25 or 587)
+                                </td>
+                            </tr>
+
+                            <tr id="euser">
+                                <td>Outgoing e-mail address for the account: </td>
+                                <td><input type="email" name="euser"></td>
+                            </tr>
+
+                            <tr id="epass">
+                                <td>Account password: </td>
+                                <td>
+                                    <input type="password" name="epass">
+                                    (double-check this one after you download the config files)
+                                </td>
+                            </tr>
+
+                            <tr id="toaddr">
+                                <td>E-mail address to send files to: </td>
+                                <td><input type="email" name="toaddr"></td>
+                            </tr>
+
+                            <tr id="subject">
+                                <td>E-mail subject line: </td>
+                                <td><input type="text" name="subject"></td>
+                            </tr>
+
+                            <tr id="message">
+                                <td>E-mail message: </td>
+                                <td>
+                                    <textarea name="message"></textarea>
+                                    (the CSV files will be attached automatically)
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
 
                 <div class="buttons">
                     <button name="back" type="button"><img src="../img/back.png"> Back a Step</button>
@@ -1090,6 +1212,10 @@
             <form class="step" id="finished" autocomplete="off">
                 <h1 class="mb20">All Done!</h1>
                 <p>Next, unzip the file that just downloaded, and replace the files in the MapStudy "config" directory with its contents. Then your app should be ready to rock!</p>
+
+                <div class="buttons">
+                    <button name="back" type="button"><img src="../img/back.png"> Back a Step</button>
+                </div>
             </form>
         </div>
 
@@ -1100,13 +1226,6 @@
         <script type="text/template" id="option-template">
             <option value="<%= value %>"><%= option %></option>
         </script>
-
-
-        
-
-
-        
-
 
         <!--external scripts-->
 
