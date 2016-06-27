@@ -973,6 +973,8 @@ var ConditionModel = Backbone.Model.extend({
 	}
 });
 
+var conditionModel = new ConditionModel();
+
 var ConditionPageModel = Backbone.Model.extend({
 	conditionnum: 1,
 	pagenum: 1,
@@ -990,7 +992,8 @@ var ConditionView = Backbone.View.extend({
 		"sortstart .sortable-pages": "sort",
 		"change .randomize": "resortPages",
 		"change .condition-weight-slider": "modifyWeights",
-		"input .condition-weight-slider": "modifyWeights"
+		"input .condition-weight-slider": "modifyWeights",
+		"keyup .weight-val": "manualWeight"
 	},
 	removecondition: function(){
 		//reset condition numbering
@@ -1056,7 +1059,7 @@ var ConditionView = Backbone.View.extend({
 			$(ui.item).find('.rank-item').removeAttr('style');
 		};
 
-		var condition = this.model.get('conditionnum')-1,
+		var condition = parseInt(this.$el.find('.conditionnum').html())-1,
 			el = this.$el,
 			p = -1,
 			ii = 0;
@@ -1110,11 +1113,10 @@ var ConditionView = Backbone.View.extend({
 		var stopSlider = this.stopSlider;
 		this.$el.find('.weight-warning').hide();
 		if (typeof e == 'undefined' && this.model.get('conditionnum') == 1){
-			// this.$el.find('.condition-weight-slider').attr('disabled', true);
 			this.$el.find('.condition-weight-slider').on('mousemove', stopSlider);
 			this.$el.find('.weightval').css('color', '#999');
-			this.$el.find('.weight-val').html('1.00');
-			this.$el.find('.weight-max').html('1.00');
+			this.$el.find('.weight-val').val('1.000').attr('disabled', true);
+			this.$el.find('.weight-max').html('1.000');
 		} else {
 			//reset slider max and value of last input only
 			var weightInputs = $('#condition-container').find('.condition-weight-slider'),
@@ -1125,9 +1127,9 @@ var ConditionView = Backbone.View.extend({
 				thisval = parseFloat($(this).val());
 				//apply remainder to the last one
 				if (i < weightInputs.length-1){
-					// $(this).removeAttr('disabled');
+					$(this).parent().find('.weight-val').removeAttr('disabled');
 					totalWeight += thisval;
-					if (totalWeight > 1.00){
+					if (totalWeight > 1.000){
 						$('.weightval, .weight-val').css('color', '#f00');
 						$('.weight-warning').show();
 					} else {
@@ -1136,15 +1138,24 @@ var ConditionView = Backbone.View.extend({
 					};
 				} else {
 					$(this).on('mousemove', stopSlider);
-					var weightVal = 1.00-totalWeight < 0 ? 0 : 1.00-totalWeight;
+					var weightVal = 1.000-totalWeight < 0 ? 0 : 1.000-totalWeight;
 					$(this).val(weightVal);
 					$(this).parent().find('.weightval').css('color', '#999');
 					$(this).parent().find('.weight-val').css('color', '#000');
 					thisval = weightVal;
 				};
-				$(this).parent().find('.weight-val').html(thisval.toFixed(2));
+				if (typeof e != 'undefined' && e.hasOwnProperty('manualTarget') && e.manualTarget == $(this).parent().find('.weight-val')[0]){} else {
+					$(this).parent().find('.weight-val').val(thisval.toFixed(3));
+				};
 			})
 		}
+	},
+	manualWeight: function(e){
+		var targetVal = parseFloat(e.target.value);
+		if (!isNaN(targetVal) && targetVal >= 0 && targetVal <= 1.000){
+			$(e.target).parent().find('.condition-weight-slider').val(targetVal);
+			this.modifyWeights({manualTarget: e.target});
+		};
 	},
 	render: function(){
 		//create condition div
@@ -1187,9 +1198,7 @@ var ConditionPageView = Backbone.View.extend({
 })
 
 function createCondition(conditionnum){
-	var conditionModel = new ConditionModel({
-		conditionnum: conditionnum
-	});
+	conditionModel.set('conditionnum', conditionnum);
 	var conditionView = new ConditionView({model: conditionModel});
 	var condition = conditionView.render();
 };

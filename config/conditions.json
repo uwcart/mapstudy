@@ -9,7 +9,6 @@
 	},
 	{
 		"pages": [1, 2, [3, 4], 5, 6],
-		"randomOrder": true,
 		"weight": 1.0
 	}
 ]
