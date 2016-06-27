@@ -85,18 +85,16 @@ _.extend(document, Backbone.Events);
 					}
 				});
 			};
-			if (model.get('randomOrder')){
-				//if nested, shuffle only inner arrays; otherwise shuffle all pages
-				var pages = [], nested = false;
-				_pages.forEach(function(page){
-					if (typeof page == 'object'){
-						page = _.shuffle(page);
-						nested = true;
-					};
-					pages.push(page);
-				});
-				_pages = nested ? _.flatten(pages) : _.shuffle(pages);
-			};
+
+			var pages = [];
+			_pages.forEach(function(page){
+				if (typeof page == 'object'){
+					//randomly shuffle inner arrays
+					page = _.shuffle(page);
+				};
+				pages.push(page);
+			});
+			_pages = _.flatten(pages);
 			//set new page
 			_page = _pages[0]-1;
 			//trigger map and question loading

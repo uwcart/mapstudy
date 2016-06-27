@@ -735,26 +735,19 @@ Every participant will be assigned one and only one condition for the duration o
 
 	"pages": -[]- -[[]]-
 
-An array or nested array of the page numbers to be included in the condition, in the order in which they will be shown to participants assigned this condition. Required. The first page of the application is designated `1`, the second `2`, etc. If given an empty array (`[]`), all pages of the application will be presented to participants assigned the condition. If given a nested array with `randomOrder` set to `true`, only pages within inner array(s) will be randomized (see [below](#conditionsirandomorder)).
+An array or nested array of the page numbers to be included in the condition, in the order in which they will be shown to participants assigned this condition. Required. The first page of the application is designated `1`, the second `2`, etc. If given an empty array (`[]`), all pages of the application will be presented to participants assigned the condition. If given a nested array, only pages within inner array(s) will be randomized. For example, given:
+
+	"pages": [1, 2, [3, 4, 5], [6, 7], 8]
+
+...all participants will be shown pages 1 and 2 in sequential order, then pages 3-5 in a random order, then pages 6-7 in a random order, then page 8. To randomize the order of all pages, place all pages within a double array; for example:
+
+	"pages": [[1, 2, 3, 4, 5, 6, 7, 8]]
 
 #### conditions[i].weight
 
 	-"weight"-: number between 0 and 1
 
 A weight that determines the frequency with which the condition is assigned. Optional. If weights are not included, the conditions will be randomly assigned with equal frequency for each. If included, all condition weights must sum to 1.
-
-#### conditions[i].randomOrder
-
-	-"randomOrder"-: -true- -false-
-
-Whether to randomize the order in which pages of the condition are displayed. Optional; default is `false`. If set to `true` and `pages` is a single-level array, all pages included in the condition will be shown in random order. If set to `true` and `pages` is a nested array, only those pages listed in the inner array(s) will be shown in random order. For example:
-
-	{
-		"pages": [1, [2, 3, 4], 5, [6, 7]],
-		"randomOrder": true
-	}
-
-In the example above, the participant will first be shown page 1, then pages 2, 3, and 4 in random order, then page 5, then pages 6 and 7 in random order.
 
 
 
