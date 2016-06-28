@@ -534,7 +534,7 @@ var TechniqueView = Backbone.View.extend({
 				if (colors[parseInt(nClasses)] || nClasses == "2"){
 					//assign colorBrewer array, code
 					var val = colorcode+'.'+nClasses,
-						max = parseInt(nClasses) > 8 ? parseInt(nClasses) : 8;
+						max = parseInt(nClasses) > 8 ? parseInt(nClasses) : 8,
 						colorArray = nClasses == '2' ? [colors[max][0], colors[max][max-1]] : colors[parseInt(nClasses)];
 					//add option for the colorbrewer class
 					l.find('.color-classes').append(colorOptionTemplate({colorcode: val}));

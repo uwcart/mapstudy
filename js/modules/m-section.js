@@ -1112,10 +1112,6 @@ var ReclassifyView = ReexpressInputView.extend({
 			//add min and max values
 			classifyDiv.find('.class-min').html(min);
 			classifyDiv.find('.class-max').html(max);
-			//only add 2-class option if proportional symbol
-			if (view.model.get('techniqueType') == 'proportional symbol' && nClassesSelect.children('option[value=2]').length == 0){
-				nClassesSelect.prepend('<option value="2">2</option>');
-			};
 			//add a special option if the number of classes is out of range
 			if (nClasses < 2 || nClasses > 9){
 				nClassesSelect.prepend('<option value="-1"></option>');
@@ -1351,34 +1347,40 @@ var RecolorView = ReclassifyView.extend({
 		var select = this.$el.find('.color-scale');
 		//clear select in case previously filled
 		select.empty();
-		//set options and swatches
-		for (var scheme in colorbrewer){
-			//only include schemes that have full number of classes
-			if (colorbrewer[scheme][nClasses]){
-				//set option
-				select.append(optionTemplate({colorcode: scheme}));
-				var option = this.$el.find('.color-scale option[value='+scheme+']');
-				//add swatches to option
-				_.each(colorbrewer[scheme][nClasses], function(color){
+
+		//add options and swatches for each colorbrewer class
+		_.each(colorbrewer, function(colors, colorcode){
+			if (colors[parseInt(nClasses)] || nClasses == "2"){
+				//assign colorBrewer array
+				var max = parseInt(nClasses) > 8 ? parseInt(nClasses) : 8;
+				if (!colors.hasOwnProperty(2)){
+					colors[2] = [colors[max][0], colors[max][max-1]];
+				};
+				var colorArray = colors[parseInt(nClasses)];
+				//add option for the colorbrewer class
+				select.append(optionTemplate({colorcode: colorcode}));
+				var option = this.$el.find('.color-scale option[value='+colorcode+']');
+				//add swatches for each color in the class to the option
+				_.each(colorArray, function(fillColor){
 					option.append(swatchTemplate({
 						stroke: '#000',
-						fillColor: color
+						fillColor: fillColor
 					}));
 				});
 			};
-		};
-		if (init){
-			//set reclassify event listener
-			select.change(function(){
-				//set colorbrewer array
-				view.model.attributes.colorbrewer = $(this).val();
-				//set range to new color scale array
-				var range = colorbrewer[$(this).val()][nClasses];
-				view.model.attributes.range = range;
-				//reset scale and reclassify
-				view.setScale();
-			});
-		};
+		}, this);
+
+		//set new reclassify event listener
+		select.off('change');
+		select.change(function(){
+			//set colorbrewer array
+			view.model.attributes.colorbrewer = $(this).val();
+			//set range to new color scale array
+			var range = colorbrewer[$(this).val()][nClasses];
+			view.model.attributes.range = range;
+			//reset scale and reclassify
+			view.setScale();
+		});
 	},
 	setLabelAttribute: function(){
 		var techniqueType = this.model.get('techniqueType'),
