@@ -8,6 +8,12 @@ MapStudy is an integrated, modularized framework for the creation of survey appl
 
 The MapStudy framework is currently in beta release, version 0.1. Note that not all functionality is complete. At this time, Leaflet is the only active map library.
 
+## Can I have a preview please?
+
+To see a demo app created with the MapStudy framework, [click here](http://uwcart.github.io/mapstudy/).
+
+To access the setup application (which has a live preview feature), [click here](http://grad.geography.wisc.edu/cmsack/mapstudy/setup/)
+
 # Documentation - Version 0.1
 
 ## Contents
@@ -53,6 +59,8 @@ This documentation assumes a basic working knowledge of JSON formatting and geog
 7. Edit and extend each *.json* file in the *config* directory using the options below. Your edits should be reflected immediately in the browser upon loading or reloading *index.html*.
 
 ## Config files
+
+The remainder of the documentation describes each of the configuration files stored in the *config* folder and the options available with each. It is recommended to use the [form-based setup application](http://grad.geography.wisc.edu/cmsack/mapstudy/setup/) to create these, as it makes it easy to configure a custom MapStudy application without having to open up the config files and write a bunch of JSON code. But be forewarned that the setup app is still *very* beta; use at your own risk and compare the resulting files with this documentation if you run into trouble!
 
 ### styles.json
 
@@ -384,7 +392,7 @@ The name of the base layer; a string. Required. If `overlay` is included in the 
 
 #### map.baseLayers[i].source
 
-		"source": -base layer URL- -"postgis:"+tablename-
+		"source": -base layer URL- -provider name- -"postgis:"+tablename-
 
 The URL of a [raster tile layer](http://leafletjs.com/reference.html#tilelayer) for a Leaflet map, a TopoJSON or GeoJSON file or Postgis table containing the basemap geometry for a Mapbox-GL or D3 map, a RESTful web map service, an iframe embed link, or a static image in *.png*, *.jpg*, or *.tif* format. A string. Required to add the layer to the map for all libraries except Mapbox-GL. 
 
