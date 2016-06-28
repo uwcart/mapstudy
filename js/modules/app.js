@@ -5,7 +5,9 @@ var pid = Math.round(Math.random() * 1000000000),
 	_pagesi = 0,
 	_page = 0,
 	_set = 0, 
-	_block = 0;
+	_block = 0,
+	//_config variable enables live preview from setup app
+	_config = window.location.search ? "setup/"+window.location.search.split('=')[1] : "config";
 
 _.extend(document, Backbone.Events);
 
@@ -35,7 +37,7 @@ _.extend(document, Backbone.Events);
 	//collection of styles retrieved from styles.json
 	var Styles = Backbone.Collection.extend({
 		model: SectionStyle,
-		url: 'config/styles.json',
+		url: _config+'/styles.json',
 		setSections: function(){
 			_.each(this.models, function(model){
 				var section = new Section({
@@ -68,7 +70,7 @@ _.extend(document, Backbone.Events);
 	//collection of conditions retrieved from conditions.json
 	var Conditions = Backbone.Collection.extend({
 		model: Condition,
-		url: 'config/conditions.json',
+		url: _config+'/conditions.json',
 		setCondition: function(model){
 			if (model.get('pages').length > 0){
 				_pages = model.get('pages');
@@ -76,7 +78,7 @@ _.extend(document, Backbone.Events);
 				//if pages is an empty array, fetch all pages
 				$.ajax({
 					dataType: "json",
-					url: 'config/questions.json',
+					url: _config+'/questions.json',
 					async: false,
 					success: function(questions){
 						for (var i=0; i<questions.pages.length; i++){
@@ -117,8 +119,14 @@ _.extend(document, Backbone.Events);
 				};
 			}, this);
 		},
+		noConditions: function(){
+			var PageModel = Backbone.Model.extend();
+			this.models.push(new PageModel({pages: []}));
+			this.chooseCondition();
+		},
 		initialize: function(){
 			this.on('sync', this.chooseCondition);
+			this.on('error', this.noConditions);
 		}
 	});
 

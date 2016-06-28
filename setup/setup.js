@@ -158,7 +158,7 @@ var BaseLayerView = Backbone.View.extend({
 	sourceLinks: {
 		Leaflet: {
 			link: "http://leaflet-extras.github.io/leaflet-providers/preview/",
-			example: "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png or Stamen.TonerLite"
+			example: "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png"
 		}
 		//add other libraries...
 	},
@@ -210,20 +210,35 @@ var BaseLayerView = Backbone.View.extend({
 	changeSourceType: function(e){
 		//dynamically change source type
 		var view = this,
-			sourceInput = this.$el.find('.layer-source-input'),
-			layerstring = sourceInput.attr('name').split('.');
-			layerstring = layerstring[0] + '.' + layerstring[1] + '.';
+			sourceInput = this.$el.find('.layer-source-input');
+		//clear any pre-existing value and event listener
+		sourceInput.val('').off('keyup');
+		//build timeout for prepending postgis: to table name
+		function timeoutFunc(){
+			var inputVal = sourceInput.val();
+			if (inputVal.indexOf('postgis:') == -1){
+				sourceInput.val('postgis:'+inputVal);
+			}
+		};
+		var timeout = window.setTimeout(timeoutFunc, 1000);
+		window.clearTimeout(timeout);
+		//select which one
 		if ($(e.target).val() == 'url'){
 			sourceInput.attr({
-				name: layerstring + 'source',
-				placeholder: 'example: '+view.sourceUrlExample,
-				class: 'layer-source-input fullwidth'
+				placeholder: 'example: '+view.sourceUrlExample
+			});
+		} else if ($(e.target).val() == 'provider-name') {
+			sourceInput.attr({
+				placeholder: 'example: Stamen.TonerLite'
 			});
 		} else if ($(e.target).val() == 'postgis') {
 			sourceInput.attr({
-				name: layerstring + 'source-{postgis}',
-				placeholder: 'table name',
-				class: 'layer-source-input'
+				placeholder: 'table name'
+			});
+			//prepend postgis: to table name after typing
+			sourceInput.on('keyup', function(){
+				window.clearTimeout(timeout);
+				timeout = window.setTimeout(timeoutFunc, 1000);
 			});
 		}
 	},
@@ -292,6 +307,12 @@ var BaseLayerView = Backbone.View.extend({
 	setSourceLink: function(){
 		//get library
 		var library = this.model.get('library');
+		//set visibility of provider-name option
+		if (this.className == 'baseLayer' && library == 'Leaflet'){
+			this.$el.find('option[value=provider-name]').show();
+		} else {
+			this.$el.find('option[value=provider-name]').hide();
+		};
 		//set placeholder
 		this.sourceUrlExample = this.sourceLinks[library].example;
 		//set source link
@@ -1333,7 +1354,6 @@ function readForm(step){
 	} else {
 		allData[step] = processForm(data);
 	};
-	console.log(allData);
 };
 
 function makeJSON(data){
@@ -1341,9 +1361,17 @@ function makeJSON(data){
 			if (v.length == 0){
 				return undefined;
 			};
+			if (v == "false"){
+				return false;
+			};
+			if (v == "true"){
+				return true;
+			};
 			return v;
 		}, "\t");
-	
+	if (typeof json != 'undefined'){
+		json = json.replace(/\{\}|null/g, '');
+	};
 	return json;
 };
 
@@ -1395,7 +1423,36 @@ function makeFiles(){
 	sendToServer(postData, callback);
 };
 
+function deleteFiles(dirname){
+	//delete files once loaded in browser
+	window.setTimeout(function(){
+		$.get("setup.php", "rmdir="+dirname);
+	}, 2000);
+};
+
 function viewCode(step){
+	//process the form
+	readForm(step);
+	//stringify the data
+	var postData = stringify();
+	postData.operation = 'viewcode';
+	//callback to trigger links to view files
+	function callback(dirname){
+		$('#file-links a').each(function(){
+			var filename = $(this).attr('id').split('-')[0];
+			if (postData[filename]){
+				var ext = filename == 'param' ? '.txt' : '.json';
+				$(this).attr('href', dirname+'/'+filename+ext);
+				this.click();
+			}
+		});
+		deleteFiles(dirname);
+	};
+	//create files in PHP
+	sendToServer(postData, callback);
+};
+
+function livePreview(step){
 	//process the form
 	readForm(step);
 	//stringify the data
@@ -1403,17 +1460,9 @@ function viewCode(step){
 	postData.operation = 'preview';
 	//callback to trigger links to view files
 	function callback(dirname){
-		$('#file-links a').each(function(){
-			var filename = $(this).attr('id');
-			if (postData[filename]){
-				var ext = filename == 'param' ? '.txt' : '.json';
-				$(this).attr('href', dirname+'/'+filename+ext);
-				this.click();
-			}
-		});
-		window.setTimeout(function(){
-			$.get("setup.php", "rmdir="+dirname);
-		}, 2000);
+		$('#preview-link').attr('href', '../?config='+dirname);
+		$('#preview-link')[0].click();
+		deleteFiles(dirname);
 	};
 	//create files in PHP
 	sendToServer(postData, callback);
@@ -1472,6 +1521,11 @@ function navigation(){
 	//view generated code on button click
 	$('#viewcode').click(function(){
 		viewCode(steps[step]);
+	});
+
+	//preview app on button click
+	$('#preview').click(function(){
+		livePreview(steps[step]);
 	});
 };
 

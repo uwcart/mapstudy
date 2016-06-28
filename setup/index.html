@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
+        <title>MapStudy Setup</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -613,12 +613,17 @@
                         <td class="l-align" style="width: 84px"><a class="ext sourcelink" target="_blank">Source</a>:</td>
                         <td class="l-align" style="width: 150px"><select class="layer-source-select">
                             <option value="url">URL</option>
+                            <option value="provider-name">Provider name</option>
                             <option value="postgis">PostGIS table</option>
                         </select></td>
                         <td class="l-align"><input type="text" class="layer-source-input fullwidth" name="map.pages.<%= pagenum %>.baseLayers.<%= i %>.source"></input></td>
                     </tr>
                     </table>
-                    <div class="layer-options">
+                    <div>
+                        Note: You must provide an external URL or provider name (if a Leaflet tileset) to live preview the layer.
+                    </div>
+
+                    <div class="layer-options mt20">
                         <div class="layer-options-inputs"></div>
                         <div class="layer-custom-options q">
                             <p>Add custom layer options? <select class="bdd no"></select></p>
@@ -670,8 +675,11 @@
                             <td class="l-align"><input type="text" class="layer-source-input fullwidth" name="map.pages.<%= pagenum %>.dataLayers.<%= i %>.source" placeholder="example: data/geography.geojson"></input></td>
                         </tr>
                     </table>
+                    <div>
+                        Note: You must provide an external URL to live preview the layer.
+                    </div>
                     
-                    <div class="layer-options">
+                    <div class="layer-options mt20">
                         <div class="layer-options-inputs"></div>
                         <div class="layer-custom-options q">
                             <p>Add custom layer options? <select class="bdd no"></select></p>
@@ -1214,11 +1222,12 @@
                 <p>Next, unzip the file that just downloaded, and replace the files in the MapStudy "config" directory with its contents. Then your app should be ready to rock!</p>
 
                 <div style="display: none;" id="file-links">
-                    <a id="styles" target="_blank"></a>
-                    <a id="map" target="_blank"></a>
-                    <a id="questions" target="_blank"></a>
-                    <a id="conditions" target="_blank"></a>
-                    <a id="param" target="_blank"></a>
+                    <a id="styles-link" target="_blank"></a>
+                    <a id="map-link" target="_blank"></a>
+                    <a id="questions-link" target="_blank"></a>
+                    <a id="conditions-link" target="_blank"></a>
+                    <a id="param-link" target="_blank"></a>
+                    <a id="preview-link" target="_blank"></a>
                 </div>
 
                 <div class="buttons">

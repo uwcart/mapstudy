@@ -1503,6 +1503,7 @@ var LeafletMap = Backbone.View.extend({
 		this.map.removeLayer(this.map._layers[layerId]);
 	},
 	setBaseLayer: function(baseLayer, i){
+		if (!baseLayer.name || !baseLayer.source){ return false; };
 		//create leaflet tile layer
 		var leafletBaseLayer = L.tileLayer(baseLayer.source, baseLayer.layerOptions);
 		leafletBaseLayer.layerName = baseLayer.name;
@@ -1706,6 +1707,7 @@ var LeafletMap = Backbone.View.extend({
 		}, this);
 	},
 	setDataLayer: function(dataLayer, i){
+		if (!dataLayer.name || !dataLayer.source){ return false; };
 		//global object to hold non-mapped layers
 		if (!window.offLayers){ window.offLayers = {}; };
 		//replace any periods in name and set class name
@@ -2677,7 +2679,7 @@ var LeafletMap = Backbone.View.extend({
 		//create a new interaction object for each interaction with logging
 		var interactions = this.model.get('interactions');
 		for (var interaction in interactionCreation){
-			if (interactions[interaction] && interactions[interaction].logging){
+			if (interactions && interactions[interaction] && interactions[interaction].logging){
 				var i = new Interaction({interaction: interaction});
 				i.create(interactionCreation[interaction]);
 			};
@@ -2728,7 +2730,7 @@ function setMapView(options){
 	};
 	var Page = Backbone.DeepModel.extend(),
 		page = new Page();
-	page.attributes = _options.get('pages')[_page];
+	page.attributes = _options.get('pages') ? _options.get('pages')[_page] : {};
 	var mapView;
 	if (_options.attributes.maps.hasOwnProperty(_page)){
 		mapView = _options.get('maps')[_page];
@@ -2749,11 +2751,11 @@ function setMapView(options){
 
 function config(){
 	var MapConfig = Backbone.DeepModel.extend({
-		url: "config/map.json"
+		url: _config+"/map.json"
 	});
 	//get map configuration options
 	var mapConfig = new MapConfig();
-	mapConfig.on('sync', setMapView);
+	mapConfig.on('sync error', setMapView);
 	mapConfig.fetch();
 };
 

@@ -69,7 +69,7 @@ function downloadZipFile($dirname){
 if ($_POST){
 	if ($_POST["operation"] == 'zip'){
 		makeZipFile($_POST);
-	} elseif ($_POST["operation"] == 'preview'){
+	} elseif ($_POST["operation"] == 'viewcode' || $_POST["operation"] == 'preview'){
 		previewFiles($_POST);
 	}
 } elseif (isset($_GET["dirname"])){

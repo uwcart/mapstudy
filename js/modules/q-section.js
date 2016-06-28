@@ -1,11 +1,6 @@
 //Questions panel
 (function(){
 
-// $('#q').html('<button type="button" id="nextpage">Next page!</button>');
-// $('#nextpage').click(function(){
-// 	document.trigger('>>');
-// })
-
 var _options = {},
 	questions;
 
@@ -361,7 +356,7 @@ var Questions = Backbone.View.extend({
 			});
 		});
 		//render buttons
-		if (qset.hasOwnProperty('buttons')){
+		if (qset.hasOwnProperty('buttons') && qset.buttons.length > 0){
 			this.renderButtons(qset.buttons);
 		};
 	},
@@ -468,10 +463,12 @@ function setQuestions(options){
 		questions = new Questions();
 	};
 	var Page = Backbone.DeepModel.extend(),
-		page = new Page(_options.get('pages')[_page]);
-	questions.model = page;
-	questions.resize(questions);
-	questions.render();
+		page = _options.get('pages') ? new Page(_options.get('pages')[_page]) : null;
+	if (page){
+		questions.model = page;
+		questions.resize(questions);
+		questions.render();
+	};
 
 	document.trigger('ready');
 };
@@ -480,11 +477,11 @@ function setQuestions(options){
 
 function config(){
 	var QuestionsConfig = Backbone.DeepModel.extend({
-		url: "config/questions.json"
+		url: _config+"/questions.json"
 	});
 	//get questions configuration options
 	var qConfig = new QuestionsConfig();
-	qConfig.on('sync', setQuestions);
+	qConfig.on('sync error', setQuestions);
 	qConfig.fetch();
 };
 
