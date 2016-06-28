@@ -9,6 +9,25 @@ function makeFile($filename, $contents){
 	fclose($file);
 }
 
+function previewFiles($data){
+	$dirname = uniqid();
+	if (!mkdir($dirname)){
+		echo "Could not make directory.";
+		exit;
+	}
+	foreach ($data as $filename => $contents){
+		if ($filename == 'param'){
+			$ext = '.txt';
+		} else if ($filename == 'finished' || $filename == 'operation') {
+			continue;
+		} else {
+			$ext = '.json';
+		}
+		makeFile($dirname.'/'.$filename.$ext, $contents);
+	}
+	echo $dirname;
+}
+
 function makeZipFile($data){
 	$dirname = uniqid();
 	if (!mkdir($dirname)){
@@ -21,7 +40,7 @@ function makeZipFile($data){
 	foreach ($data as $filename => $contents){
 		if ($filename == 'param'){
 			$ext = '.php';
-		} else if ($filename == 'finished') {
+		} else if ($filename == 'finished' || $filename == 'operation') {
 			continue;
 		} else {
 			$ext = '.json';
@@ -48,9 +67,18 @@ function downloadZipFile($dirname){
 }
 
 if ($_POST){
-	makeZipFile($_POST);
-} elseif ($dirname = $_GET["dirname"]){
+	if ($_POST["operation"] == 'zip'){
+		makeZipFile($_POST);
+	} elseif ($_POST["operation"] == 'preview'){
+		previewFiles($_POST);
+	}
+} elseif (isset($_GET["dirname"])){
+	$dirname = $_GET["dirname"];
 	downloadZipFile($dirname);
+} elseif (isset($_GET["rmdir"])){
+	$dirname = $_GET["rmdir"];
+	array_map('unlink', glob("$dirname/*.*"));
+	rmdir($dirname);
 }
 
 ?>

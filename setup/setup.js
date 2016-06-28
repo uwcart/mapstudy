@@ -1355,30 +1355,68 @@ function makePHP(data){
 		};
 	};
 	phpString += "\n?>";
-		
-	return phpString;
+	
+	if (phpString.indexOf('$') > -1){
+		return phpString;
+	};
 };
 
-function makeFiles(){
+function stringify(){
 	var postData = {};
 	for (var filename in allData){
-		//stringify the data depending on file type
+		//format the data depending on file type
 		if (filename == 'param'){
 			postData[filename] = makePHP(allData[filename])
 		} else {
 			postData[filename] = makeJSON(allData[filename]);
 		};
 	};
+	return postData;
+};
 
+function sendToServer(postData, callback){
 	$.ajax({
 		type: "POST",
-		url: "makeFiles.php",
+		url: "setup.php",
 		data: postData,
-		success: function(dirname){
-			//download the zip file
-			window.location = "makeFiles.php?dirname=" + dirname;
-		}
-	})	
+		success: callback
+	});
+};
+
+function makeFiles(){
+	//stringify the data
+	var postData = stringify();
+	postData.operation = 'zip';
+	//callback to download the zip file
+	function callback(dirname){
+		window.location = "setup.php?dirname=" + dirname;
+	};
+	//create the zip file in php
+	sendToServer(postData, callback);
+};
+
+function viewCode(step){
+	//process the form
+	readForm(step);
+	//stringify the data
+	var postData = stringify();
+	postData.operation = 'preview';
+	//callback to trigger links to view files
+	function callback(dirname){
+		$('#file-links a').each(function(){
+			var filename = $(this).attr('id');
+			if (postData[filename]){
+				var ext = filename == 'param' ? '.txt' : '.json';
+				$(this).attr('href', dirname+'/'+filename+ext);
+				this.click();
+			}
+		});
+		window.setTimeout(function(){
+			$.get("setup.php", "rmdir="+dirname);
+		}, 2000);
+	};
+	//create files in PHP
+	sendToServer(postData, callback);
 };
 
 function changeStep(prevStep, currentStep){
@@ -1429,6 +1467,11 @@ function navigation(){
 		prevStep = steps[step];
 		step--;
 		changeStep(prevStep, steps[step]);
+	});
+
+	//view generated code on button click
+	$('#viewcode').click(function(){
+		viewCode(steps[step]);
 	});
 };
 
