@@ -6,7 +6,7 @@ MapStudy is an integrated, modularized framework for the creation of survey appl
 
 ## What is the status of MapStudy?
 
-The MapStudy framework is currently in beta release, version 0.1. Note that not all functionality is complete. At this time, Leaflet is the only active map library.
+The MapStudy framework is currently in beta release, version 0.1. Note that not all functionality is complete. At this time, Leaflet is the only active map library. Please feel free to submit issues if you notice something buggy.
 
 ## Can I have a preview please?
 
@@ -60,7 +60,7 @@ This documentation assumes a basic working knowledge of JSON formatting and geog
 
 ## Config files
 
-The remainder of the documentation describes each of the configuration files stored in the *config* folder and the options available with each. It is recommended to use the [form-based setup application](http://grad.geography.wisc.edu/cmsack/mapstudy/setup/) to create these, as it makes it easy to configure a custom MapStudy application without having to open up the config files and write a bunch of JSON code. But be forewarned that the setup app is still *very* beta; use at your own risk and compare the resulting files with this documentation if you run into trouble!
+The remainder of the documentation describes each of the configuration files stored in the *config* folder and the options available with each. It is recommended to use the [form-based setup application](http://grad.geography.wisc.edu/cmsack/mapstudy/setup/) to create these, as it makes it easy to configure a custom MapStudy application without having to open up the config files and write a bunch of JSON code. But be forewarned that the setup app is still *very* beta; use at your own risk and compare the resulting files with this documentation if you run into trouble! (And feel free to submit an issue).
 
 ### styles.json
 

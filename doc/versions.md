@@ -24,15 +24,15 @@
 
 - ColorBrewer
 
-- jscolor 2.0.4
-
 - Simple Statistics 1.0.0
 
 - Turf 2.0.0
 
 - Fuse 1.3.0
 
-- Heatmapjs 2.0.2
+- Heatmapjs (including Leaflet-heatmap) 2.0.2
+
+- Leaflet-providers 1.1.11
 
 # Example files:
 
