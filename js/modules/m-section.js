@@ -1504,8 +1504,21 @@ var LeafletMap = Backbone.View.extend({
 	},
 	setBaseLayer: function(baseLayer, i){
 		if (!baseLayer.name || !baseLayer.source){ return false; };
+		baseLayer.layerOptions = baseLayer.layerOptions || {};
 		//create leaflet tile layer
-		var leafletBaseLayer = L.tileLayer(baseLayer.source, baseLayer.layerOptions);
+		var leafletBaseLayer;
+		if (baseLayer.source.indexOf('://') > -1){
+			leafletBaseLayer = L.tileLayer(baseLayer.source, baseLayer.layerOptions);
+		} else if (baseLayer.source.indexOf('postgis:') > -1){
+			//figure out what to do for postgis table
+		} else {
+			try {
+				//for Leaflet-providers name
+				leafletBaseLayer = L.tileLayer.provider(baseLayer.source, baseLayer.layerOptions);
+			} catch(e){
+				return false;
+			};
+		};
 		leafletBaseLayer.layerName = baseLayer.name;
 		//need to pre-assign layerId for tile layers...for unknown reason
 		leafletBaseLayer._leaflet_id = Math.round(Math.random()*10000);

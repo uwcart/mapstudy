@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"delete",
+				"deleteFiles"
+			],
+			[
 				"file",
 				"filename"
 			],
@@ -510,10 +514,6 @@
 			[
 				"OverlayContro",
 				"OverlayControlModel"
-			],
-			[
-				"Overla",
-				"OverlayControlView"
 			]
 		]
 	},
@@ -523,31 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 15629,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "setup/index.html",
-			"settings":
-			{
-				"buffer_size": 64521,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "setup/setup.js",
-			"settings":
-			{
-				"buffer_size": 45210,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "setup/makeFiles.php",
-			"settings":
-			{
-				"buffer_size": 1294,
+				"buffer_size": 15639,
 				"line_ending": "Windows"
 			}
 		},
@@ -576,18 +552,18 @@
 			}
 		},
 		{
-			"file": "js/modules/q-section.js",
+			"file": "README.md",
 			"settings":
 			{
-				"buffer_size": 14322,
+				"buffer_size": 51614,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "README.md",
+			"file": "js/modules/app.js",
 			"settings":
 			{
-				"buffer_size": 46636,
+				"buffer_size": 3965,
 				"line_ending": "Windows"
 			}
 		},
@@ -595,7 +571,47 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 96479,
+				"buffer_size": 96656,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/modules/q-section.js",
+			"settings":
+			{
+				"buffer_size": 14260,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "doc/versions.md",
+			"settings":
+			{
+				"buffer_size": 651,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "LICENSE.txt",
+			"settings":
+			{
+				"buffer_size": 13585,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "doc/README.md",
+			"settings":
+			{
+				"buffer_size": 62139,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/data/tables.json",
+			"settings":
+			{
+				"buffer_size": 52963,
 				"line_ending": "Windows"
 			}
 		}
@@ -624,24 +640,31 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Carl/Downloads/README.md",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/index.html",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/setup.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/setup.php",
+		"/C/Users/Carl/Downloads/jquery-1.11.3/jquery-1.11.3/MIT-LICENSE.txt",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet-heatmap.js",
+		"/C/Users/Carl/Downloads/config(2)/conditions.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/q-section.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.js",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/app.js",
+		"/C/Users/Carl/Downloads/styles.json",
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/setup.ptxt",
 		"/C/Users/Carl/Downloads/config/map.json",
 		"/C/Users/Carl/Downloads/config/styles.json",
 		"/C/Users/Carl/Downloads/config/questions.json",
 		"/C/Users/Carl/Downloads/config/param.php",
 		"/C/Users/Carl/Downloads/config/finished.json",
 		"/C/Users/Carl/Downloads/config/conditions.json",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/app.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/questions.json",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/m-section.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/colorbrewer.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/index.html",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/README.md",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/modules/q-section.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/styles.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/versions.md",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/index.html",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/setup.js",
 		"/C/Users/Carl/Downloads/download/sticky_header.html",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/css/style.css",
 		"/C/Users/Carl/Desktop/temp/temp.html",
@@ -670,7 +693,6 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/config/map5.json",
 		"/C/Users/Carl/Downloads/Book2.csv",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/data/wi-tracts-point.topojson",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/js/lib/leaflet-heatmap.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/test.html",
 		"/C/temp/lower48.geojson",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/LICENSE.txt",
@@ -745,13 +767,7 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap1.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap.bak.js",
 		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v7.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Resources/formatspec.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Resources/formatspec.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module1/Module1.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module2/Module2.html",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module3/Module3.html"
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline.html"
 	],
 	"find":
 	{
@@ -769,6 +785,33 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Fuse",
+			"jscolor",
+			"heatmapLayer",
+			"HeatmapOverlay",
+			"heatmap",
+			"baselayer",
+			"setDataLayer",
+			"setBaseLayer",
+			"setDataLayer",
+			"sourceLinks",
+			"sourceUrlExample",
+			"setDataLayer",
+			"setBaseLayer",
+			"setMap",
+			"Leaflet",
+			"ButtonModel",
+			"#q",
+			"setMapView",
+			"conditions",
+			"styles",
+			"init",
+			"config",
+			"\"config",
+			"config",
+			"console",
+			"readForm",
+			"makeFiles.php",
 			"object",
 			".ajax",
 			"server",
@@ -869,34 +912,7 @@
 			".checked",
 			"submit",
 			"save",
-			"back",
-			"next",
-			"addtechnique",
-			"removetechnique",
-			"removelayer",
-			"addlayer",
-			"addpage",
-			"select[name=fullpage]",
-			"addset",
-			"removetechnique",
-			"removelayer",
-			"removepage",
-			"addtechnique",
-			"addlayer",
-			"addpage",
-			"Questions",
-			"addInteractionLayers",
-			"interaction-datalayers",
-			"sourcelink",
-			"setSourceLink",
-			"layer-source-input",
-			"-{url}",
-			",\"",
-			"template(",
-			"interaction-logging",
-			"template(",
-			"template",
-			"TechniqueView"
+			"back"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -904,6 +920,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"setup.php",
 			"filename",
 			"param",
 			"styles",
@@ -1030,8 +1047,7 @@
 			"\"2008\", \"2009\"",
 			"#333333",
 			"filterIcon",
-			"setMapInteractions",
-			"techniques"
+			"setMapInteractions"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1042,7 +1058,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 11,
 			"sheets":
 			[
 				{
@@ -1050,15 +1066,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 15629,
+						"buffer_size": 15639,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								744,
-								744
+								14749,
+								14749
 							]
 						],
 						"settings":
@@ -1068,95 +1084,13 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 114.0,
+						"translation.y": 6021.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "setup/index.html",
-					"settings":
-					{
-						"buffer_size": 64521,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								63449,
-								63449
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 27485.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "setup/setup.js",
-					"settings":
-					{
-						"buffer_size": 45210,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								43553,
-								43553
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 27960.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "setup/makeFiles.php",
-					"settings":
-					{
-						"buffer_size": 1294,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								300,
-								300
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
 					"file": "config/conditions.json",
 					"settings":
 					{
@@ -1183,7 +1117,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 2,
 					"file": "config/param.php",
 					"settings":
 					{
@@ -1209,7 +1143,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 3,
 					"file": "css/style.css",
 					"settings":
 					{
@@ -1237,46 +1171,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "js/modules/q-section.js",
-					"settings":
-					{
-						"buffer_size": 14322,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5186,
-								5289
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3102.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 8,
+					"buffer": 4,
 					"file": "README.md",
 					"settings":
 					{
-						"buffer_size": 46636,
+						"buffer_size": 51614,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								40596,
-								40596
+								5812,
+								5812
 							]
 						],
 						"settings":
@@ -1285,25 +1192,53 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 19854.0,
+						"translation.y": 2100.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 9,
-					"file": "js/modules/m-section.js",
+					"buffer": 5,
+					"file": "js/modules/app.js",
 					"settings":
 					{
-						"buffer_size": 96479,
+						"buffer_size": 3965,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								40561,
-								40568
+								3205,
+								3205
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2042.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "js/modules/m-section.js",
+					"settings":
+					{
+						"buffer_size": 96656,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								52610,
+								52610
 							]
 						],
 						"settings":
@@ -1312,7 +1247,141 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 25402.0,
+						"translation.y": 32202.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "js/modules/q-section.js",
+					"settings":
+					{
+						"buffer_size": 14260,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10308,
+								10308
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 6662.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "doc/versions.md",
+					"settings":
+					{
+						"buffer_size": 651,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								490,
+								490
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 360.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "LICENSE.txt",
+					"settings":
+					{
+						"buffer_size": 13585,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1125,
+								1125
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "doc/README.md",
+					"settings":
+					{
+						"buffer_size": 62139,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5051,
+								5051
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1740.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/data/tables.json",
+					"settings":
+					{
+						"buffer_size": 52963,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								50281,
+								50281
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 29992.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

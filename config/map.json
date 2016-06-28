@@ -54,7 +54,7 @@
 			},
 			"baseLayers": [{
 				"name": "Stamen Toner Lite",
-				"source": "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
+				"source": "Stamen.TonerLite",
 				"layerOptions": {
 					"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
 					}
