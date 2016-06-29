@@ -20,25 +20,25 @@ To access the setup application (which has a live preview feature), [click here]
 
 #### [About the API Documentation](#about-the-api-documentation)
 
-#### [Setup](#Setup:)
+#### [Setup](#setup)
 
-#### [Config files](#Config-files:)
+#### [Config files](#config-files)
 
-#### &emsp;[Styles](#Styles)
+#### &emsp;[Styles](#styles)
 
-#### &emsp;[Map](#Map)
+#### &emsp;[Map](#map)
 
-#### &emsp;[Questions](#Questions)
+#### &emsp;[Questions](#questions)
 
-#### &emsp;[Conditions](#Conditions)
+#### &emsp;[Conditions](#conditions)
 
-#### &emsp;[Param](#Param)
+#### &emsp;[Param](#param)
 
 ## About the API documentation:
 
 MapStudy is a flexible framework for creating map-based survey applications. It includes a range of components that are selected by setting and extending the options in the *.json* files within the *config* directory. For now, those files must be edited manually in a basic text editor such as Sublime or Notepad++. Hopefully there will eventually be a helper GUI for setting up the config files.
 
-The API documentation lists the options available in the config files. Each option is shown as code, with the option key to the left of a colon and each explicit possible value `italicized`. **Everything `italicized` is optional; everything else is required.** Special cases are noted at their respective documentation sections.
+The API documentation lists the options available in the config files. Each option is shown as code, with the option key to the left of a colon and each explicit possible value `italicized`. **Everything `between asterisks (*)` is optional; everything else is required.** Special cases are noted at their respective documentation sections.
 
 This documentation assumes a basic working knowledge of JSON formatting, geographic data structure, and geographic databases.
 
@@ -78,7 +78,7 @@ The `id` attribute of each HTML `<section>` element on the page.
 | `*"header"*` | The page header; the banner on top of the page. If there is no section object with a `sectionId` of `header`, a strip of white space will appear at the top of the page. | Orange background with a "MapStudy Template" heading and MapStudy icon. |
 | `*"footer"*` | The page footer; the strip at the bottom of the page. If there is no section object with a `sectionId` of `footer`, a strip of white space will appear at the bottom of the page.| Orange background with placeholder text content. |
 | `*"m"*` | The section holding the map, on the left half of the main part of the web page. You can add a third section object for this or change one of the existing objects, but it's not recommended. Any `cssAttributes` will override the styles in *style.css*, but any HTML content will not be overridden. | Example map |
-|`*"q"*` | The section holding the questions, on the right half of the main part of the web page. See `["m"]` above | Example questions |
+|`*"q"*` | The section holding the questions, on the right half of the main part of the web page. See `*"m"*` above | Example questions |
 
 #### styles.cssAttributes
 
