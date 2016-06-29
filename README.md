@@ -38,7 +38,7 @@ To access the setup application (which has a live preview feature), [click here]
 
 MapStudy is a flexible framework for creating map-based survey applications. It includes a range of components that are selected by setting and extending the options in the *.json* files within the *config* directory. For now, those files must be edited manually in a basic text editor such as Sublime or Notepad++. Hopefully there will eventually be a helper GUI for setting up the config files.
 
-The API documentation lists the options available in the config files. Each option is shown as code, with the option key to the left of a colon and each explicit possible value `italicized`. **Everything `between asterisks (*)` is optional; everything else is required.** Special cases are noted at their respective documentation sections.
+The API documentation lists the options available in the config files. Each option is shown as code, with the option key to the left of a colon and each explicit possible value `between asterisks (*)`. **Everything `between asterisks (*)` is optional; everything else is required.** Special cases are noted at their respective documentation sections.
 
 This documentation assumes a basic working knowledge of JSON formatting, geographic data structure, and geographic databases.
 
