@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"index",
+				"indexOf"
+			],
+			[
 				"delete",
 				"deleteFiles"
 			],
@@ -510,10 +514,6 @@
 			[
 				"overlayContro",
 				"overlayControlView"
-			],
-			[
-				"OverlayContro",
-				"OverlayControlModel"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 15639,
+				"buffer_size": 15692,
 				"line_ending": "Windows"
 			}
 		},
@@ -571,7 +571,15 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 96656,
+				"buffer_size": 97126,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "config/map.json",
+			"settings":
+			{
+				"buffer_size": 11770,
 				"line_ending": "Windows"
 			}
 		},
@@ -606,14 +614,6 @@
 				"buffer_size": 62139,
 				"line_ending": "Windows"
 			}
-		},
-		{
-			"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/data/tables.json",
-			"settings":
-			{
-				"buffer_size": 52963,
-				"line_ending": "Windows"
-			}
 		}
 	],
 	"build_system": "",
@@ -640,6 +640,7 @@
 	},
 	"file_history":
 	[
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/data/tables.json",
 		"/C/Users/Carl/Downloads/README.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/index.html",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/setup.js",
@@ -759,7 +760,6 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/php/query.php",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/css/style.css",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/index.html",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/data/tables.json",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/messages.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/TODO.txt",
@@ -785,6 +785,22 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"colorbrewer",
+			"colorInput",
+			"colorInput.change",
+			"recolor(",
+			"this.recolor",
+			"recolor",
+			"RecolorView",
+			"recolor = function",
+			"recolor: function",
+			"recolor",
+			"colorbrewer",
+			"colorcode",
+			"colorbrewer",
+			"n-classes",
+			"setBaseLayer",
+			"baseLayer",
 			"Fuse",
 			"jscolor",
 			"heatmapLayer",
@@ -896,23 +912,7 @@
 			"addSet",
 			"addLayer",
 			"addTechnique",
-			"removeTechnique",
-			"removeLayer",
-			"removeSet",
-			"removeLayer",
-			"<%= i+1 %>",
-			"q-section",
-			"m-section",
-			"mapsection",
-			"<%= i",
-			"i",
-			"<%= i =>",
-			"createSet",
-			"createLayer(",
-			".checked",
-			"submit",
-			"save",
-			"back"
+			"removeTechnique"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1058,7 +1058,7 @@
 	"groups":
 	[
 		{
-			"selected": 11,
+			"selected": 6,
 			"sheets":
 			[
 				{
@@ -1066,15 +1066,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 15639,
+						"buffer_size": 15692,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								14749,
-								14749
+								9970,
+								9979
 							]
 						],
 						"settings":
@@ -1084,7 +1084,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 6021.0,
+						"translation.y": 3894.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1230,30 +1230,58 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 96656,
+						"buffer_size": 97126,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								52610,
-								52610
+								44098,
+								44098
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 32202.0,
+						"translation.y": 27654.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 7,
+					"file": "config/map.json",
+					"settings":
+					{
+						"buffer_size": 11770,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								949,
+								940
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 840.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
 					"file": "js/modules/q-section.js",
 					"settings":
 					{
@@ -1280,7 +1308,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 9,
 					"file": "doc/versions.md",
 					"settings":
 					{
@@ -1306,7 +1334,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 10,
 					"file": "LICENSE.txt",
 					"settings":
 					{
@@ -1332,7 +1360,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 11,
 					"file": "doc/README.md",
 					"settings":
 					{
@@ -1343,8 +1371,8 @@
 						"selection":
 						[
 							[
-								5051,
-								5051
+								1901,
+								1901
 							]
 						],
 						"settings":
@@ -1353,35 +1381,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1740.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/data/tables.json",
-					"settings":
-					{
-						"buffer_size": 52963,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								50281,
-								50281
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 29992.0,
+						"translation.y": 700.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

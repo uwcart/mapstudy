@@ -1215,6 +1215,8 @@ var ReclassifyView = ReexpressInputView.extend({
 			};
 			//don't reset inputs for user defined
 		};
+		console.log('reclassified');
+		this.model.trigger('reclassified');
 	},
 	setForm: function(){
 		//set model variables
@@ -1370,8 +1372,24 @@ var RecolorView = ReclassifyView.extend({
 			};
 		}, this);
 
+		//show initial color scale palette
+		this.model.once('reclassified', function(){
+			var palette = this.$el.find('.color-scale-palette').empty();
+			_.each(this.model.get('range'), function(rangeVal){
+				//make sure it's a color
+				if (rangeVal.indexOf('#') > -1){
+					palette.append(swatchTemplate({
+						stroke: '#000',
+						fillColor: rangeVal
+					}));
+				};
+			}, this);
+		}, this);
+
+		if (init){ this.model.trigger('reclassified') };
+
 		//set new reclassify event listener
-		select.off('change');
+		select.off('change focus blur');
 		select.change(function(){
 			//set colorbrewer array
 			view.model.attributes.colorbrewer = $(this).val();
@@ -1380,6 +1398,8 @@ var RecolorView = ReclassifyView.extend({
 			view.model.attributes.range = range;
 			//reset scale and reclassify
 			view.setScale();
+			var html = $(this).find('option[value='+$(this).val()+']').html();
+			$(this).parent().find('.color-scale-palette').html(html);
 		});
 	},
 	setLabelAttribute: function(){
