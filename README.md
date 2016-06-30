@@ -34,6 +34,8 @@ To access the setup application (which has a live preview feature), [click here]
 
 #### &emsp;[Param](#param-1)
 
+#### [Framework Architecture](#framework-architecture-1)
+
 ## About the API documentation:
 
 MapStudy is a flexible framework for creating map-based survey applications. It includes a range of components that are selected by setting and extending the options in the *.json* files within the *config* directory. For now, those files must be edited manually in a basic text editor such as Sublime or Notepad++. Hopefully there will eventually be a helper GUI for setting up the config files.
@@ -924,3 +926,11 @@ The subject line of the e-mail.
 	$message = 'Message';
 
 The content of the e-mail message. CSV files holding the participant data will be attached automatically.
+
+
+
+# Framework Architecture
+
+MapStudy is constructed with a modular architecture designed to allow for tremendous customization. The figure below shows an *approximate* graphical representation of the framework modules provided to explain the gist of how the framework is organized. The module stacking order based on the nested structure of module options in the config files (i.e., those modules on "top" are contained within the module immediately below them, which is contained within the module below that, etc.). With the exception of the Server module Note that this representation is approximate, and the structure it represents is subject to change; therefore it does not represent the full framework with complete precision or accuracy.
+
+<img src="img/architecture.png">

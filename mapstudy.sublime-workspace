@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"blur",
+				"blurCSList"
+			],
+			[
+				"togg",
+				"toggleCSList"
+			],
+			[
 				"stop",
 				"stopPropagation"
 			],
@@ -506,14 +514,6 @@
 			[
 				"search-",
 				"search-control-container"
-			],
-			[
-				"underlay-cont",
-				"underlay-control-container"
-			],
-			[
-				"this",
-				"this"
 			]
 		]
 	},
@@ -571,7 +571,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 100617,
+				"buffer_size": 100142,
 				"line_ending": "Windows"
 			}
 		},
@@ -785,6 +785,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"optionTemplate",
+			"listTemplate",
 			"view.model.attributes.colorbrewer",
 			"select",
 			"pseudoSelect",
@@ -910,9 +912,7 @@
 			"q-section",
 			"q-section-",
 			"removeBlock",
-			"block",
-			"option",
-			"label"
+			"block"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -920,6 +920,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"listItemTemplate",
 			"button",
 			"colorScaleList",
 			"setup.php",
@@ -1046,8 +1047,7 @@
 			"spanParent",
 			"FilterLogicView",
 			"FilterSliderView",
-			"\"2008\", \"2009\"",
-			"#333333"
+			"\"2008\", \"2009\""
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1073,8 +1073,8 @@
 						"selection":
 						[
 							[
-								9903,
-								9903
+								10280,
+								10293
 							]
 						],
 						"settings":
@@ -1084,7 +1084,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3954.0,
+						"translation.y": 4154.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1230,15 +1230,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 100617,
+						"buffer_size": 100142,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								45170,
-								45170
+								42769,
+								42769
 							]
 						],
 						"settings":
@@ -1248,7 +1248,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 28354.0,
+						"translation.y": 26954.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
