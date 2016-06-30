@@ -24,6 +24,7 @@ To access the setup application (which has a live preview feature), [click here]
 
 #### [Config files](#config-files-1)
 
+<<<<<<< HEAD
 #### &emsp;[Styles](#styles-1)
 
 #### &emsp;[Map](#map-1)
@@ -35,6 +36,17 @@ To access the setup application (which has a live preview feature), [click here]
 #### &emsp;[Param](#param-1)
 
 #### [Framework Architecture](#framework-architecture-1)
+=======
+#### &emsp;[Styles](#styles)
+
+#### &emsp;[Map](#map)
+
+#### &emsp;[Questions](#questions)
+
+#### &emsp;[Conditions](#conditions)
+
+#### &emsp;[Param](#param)
+>>>>>>> 61fc00ec2c401953342eabbac81592a640529d6e
 
 ## About the API documentation:
 
@@ -926,6 +938,7 @@ The subject line of the e-mail.
 	$message = 'Message';
 
 The content of the e-mail message. CSV files holding the participant data will be attached automatically.
+<<<<<<< HEAD
 
 
 
@@ -934,3 +947,5 @@ The content of the e-mail message. CSV files holding the participant data will b
 MapStudy is constructed with a modular architecture designed to allow for tremendous customization. The figure below shows an *approximate* graphical representation of the framework modules provided to explain the gist of how the framework is organized. The module stacking order based on the nested structure of module options in the config files (i.e., those modules on "top" are contained within the module immediately below them, which is contained within the module below that, etc.). With the exception of the Server module Note that this representation is approximate, and the structure it represents is subject to change; therefore it does not represent the full framework with complete precision or accuracy.
 
 <img src="img/architecture.png">
+=======
+>>>>>>> 61fc00ec2c401953342eabbac81592a640529d6e
