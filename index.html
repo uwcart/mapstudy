@@ -202,14 +202,20 @@
             <div id="<%= layerNameClass %>-<%= techniqueTypeClass %>-recolor" class="recolor">
                 <label><%= recolorLabel %>: </label>
                 <span class="color-scale-palette"></span>
-                <select class="color-scale">
-                </select>
+                <button class="color-scale-button" type="button">
+                    <img src="img/downarrow.png">
+                </button>
+                <div class="color-scale-list"></div>
                 <input type="color" name="fill-color">
             </div>
         </script>
 
         <script type="text/template" id="color-scale-option-template">
-            <option value="<%= colorcode %>"></option>
+            <option value="<%= colorcode %>"><%= colorcode %>.<%= nClasses %></option>
+        </script>
+
+        <script type="text/template" id="color-scale-list-template">
+            <li class="<%= colorcode %>"></li>
         </script>
 
         <script type="text/template" id="color-swatch-template">

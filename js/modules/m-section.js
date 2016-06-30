@@ -1215,7 +1215,6 @@ var ReclassifyView = ReexpressInputView.extend({
 			};
 			//don't reset inputs for user defined
 		};
-		console.log('reclassified');
 		this.model.trigger('reclassified');
 	},
 	setForm: function(){
@@ -1325,7 +1324,7 @@ var RecolorView = ReclassifyView.extend({
 			//set default color of input 
 			colorInput.attr('value', hex);
 			//hide color scale select
-			this.$el.find('.recolor select').hide();
+			this.$el.find('.recolor select, .color-scale-palette, .color-scale-button').hide();
 			//add color change event
 			var recolor = this.recolor,
 				setLegendColor = this.setLegendColor;
@@ -1335,44 +1334,131 @@ var RecolorView = ReclassifyView.extend({
 			});
 		};
 	},
+	csButtonOn: false,
+	toggleCSList: function(e){
+		var s = $(e.target);
+		//catch any clicks on the arrow image
+		if (s.is('img')){ s = s.parent(); };
+		var	colorScaleList = s.parent().find('.color-scale-list'),
+			palette = s.parent().find('.color-scale-palette');
+		//switch menu display
+		this.csButtonOn = this.csButtonOn ? false : true;
+		if (this.csButtonOn){
+			var paletteOffset = palette.offset(),
+				docHeight = $(document).height();
+			var	belowHeight = docHeight - (paletteOffset.top + palette.height() + 60),
+				aboveHeight = paletteOffset.top - 75,
+				height, top;
+			if (belowHeight < 100){
+				height = aboveHeight;
+				top = 5000;
+			} else {
+				height = belowHeight;
+				top = paletteOffset.top + palette.height() + 6;
+			};
+			//set position and height of pseudo-menu and show
+			colorScaleList.css({
+				top: top,
+				left: paletteOffset.left,
+				'max-height': height,
+				width: palette.width() + 25
+			}).show();
+			if (top == 5000){
+				colorScaleList.css({
+					top: paletteOffset.top - colorScaleList.height() - 6
+				});
+			};
+		} else {
+			colorScaleList.hide();
+		}
+	},
+	blurCSList: function(e){
+		this.csButtonOn = false;
+		var view = this,
+			colorScaleList = $(e.target).parent().find('.color-scale-list');
+		window.setTimeout(function(){
+			if (!view.stopBlur){
+				colorScaleList.hide();
+			};
+			view.stopBlur = false;
+		}, 100);
+	},
+	setColorSelectListeners: function(list){
+		var view = this;
+		list.find('li').on({
+			mouseover: function(){
+				$(this).css('background-color', '#07F');
+				$(this).find('span').css('border-color', 'white');
+			},
+			mouseout: function(){
+				$(this).removeAttr('style');
+				$(this).find('span').css('border-color', '');
+			},
+			click: function(e){
+				view.stopBlur = true;
+				//set colorbrewer array
+				var colorcode = $(this).attr('class'),
+					nClasses = view.model.get('nClasses');
+				view.model.attributes.colorbrewer = colorcode;
+				//set range to new color scale array
+				var range = colorbrewer[colorcode][nClasses];
+				view.model.attributes.range = range;
+				//reset scale and reclassify
+				view.setScale();
+				var html = $(this).html(),
+					recolor = $(this).closest('.recolor'),
+					palette = recolor.find('.color-scale-palette'),
+					list = recolor.find('.color-scale-list');
+				palette.html(html);
+				palette.find('span').css('border-color', '');
+				list.hide();
+			}
+		});
+	},
 	setColorSwatches: function(init){
 		//track whether first call for setting change event
 		init = init || false;
 		//get variables
 		var view = this,
 			scale = this.model.get('scale'),
-			nClasses = this.model.get('nClasses') || scale.range().length;
+			nClasses = this.model.get('nClasses') || scale.range().length,
 		//retrieve templates
-		var optionTemplate = _.template( $('#color-scale-option-template').html() ),
-			swatchTemplate = _.template( $('#color-swatch-template').html() );
-		//get select element
-		var select = this.$el.find('.color-scale');
-		//clear select in case previously filled
-		select.empty();
+			listItemTemplate = _.template( $('#color-scale-list-template').html() ),
+			swatchTemplate = _.template( $('#color-swatch-template').html() ),
+		//get colorscale list div and activation button
+			list = this.$el.find('.color-scale-list'),
+			colorScaleButton = this.$el.find('.color-scale-button');
+		//set number of classes in case empty
+		this.model.attributes.nClasses = nClasses;
+		//clear list div of previous items
+		list.empty();
 
-		//add options and swatches for each colorbrewer class
+		//add list items and swatches for each colorbrewer class
 		_.each(colorbrewer, function(colors, colorcode){
 			if (colors[parseInt(nClasses)] || nClasses == "2"){
-				//assign colorBrewer array
-				var max = parseInt(nClasses) > 8 ? parseInt(nClasses) : 8;
+				//assign two-color class to colorbrewer
 				if (!colors.hasOwnProperty(2)){
+					var max = parseInt(nClasses) > 8 ? parseInt(nClasses) : 8;
 					colors[2] = [colors[max][0], colors[max][max-1]];
 				};
+				//append the list item, then grab it
+				list.append(listItemTemplate({colorcode: colorcode}));
+				var	listItem = this.$el.find('.color-scale-list .'+colorcode);
+				//add swatches for each color in the class to the list item
 				var colorArray = colors[parseInt(nClasses)];
-				//add option for the colorbrewer class
-				select.append(optionTemplate({colorcode: colorcode}));
-				var option = this.$el.find('.color-scale option[value='+colorcode+']');
-				//add swatches for each color in the class to the option
 				_.each(colorArray, function(fillColor){
-					option.append(swatchTemplate({
+					listItem.append(swatchTemplate({
 						stroke: '#000',
 						fillColor: fillColor
 					}));
 				});
 			};
 		}, this);
+		
+		//set listeners on each list element in color scale list
+		this.setColorSelectListeners(list);
 
-		//show initial color scale palette
+		//make sure the scale range has changed before building the color palette
 		this.model.once('reclassified', function(){
 			var palette = this.$el.find('.color-scale-palette').empty();
 			_.each(this.model.get('range'), function(rangeVal){
@@ -1385,22 +1471,10 @@ var RecolorView = ReclassifyView.extend({
 				};
 			}, this);
 		}, this);
-
-		if (init){ this.model.trigger('reclassified') };
-
-		//set new reclassify event listener
-		select.off('change focus blur');
-		select.change(function(){
-			//set colorbrewer array
-			view.model.attributes.colorbrewer = $(this).val();
-			//set range to new color scale array
-			var range = colorbrewer[$(this).val()][nClasses];
-			view.model.attributes.range = range;
-			//reset scale and reclassify
-			view.setScale();
-			var html = $(this).find('option[value='+$(this).val()+']').html();
-			$(this).parent().find('.color-scale-palette').html(html);
-		});
+		//go ahead with palette if first run
+		if (init){ 
+			this.model.trigger('reclassified')
+		};
 	},
 	setLabelAttribute: function(){
 		var techniqueType = this.model.get('techniqueType'),
@@ -1422,6 +1496,11 @@ var RecolorView = ReclassifyView.extend({
 		//call setup methods
 		this.setTechnique();
 		this.model.on('setNClasses', this.setColorSwatches, this);
+
+		this.$el.find('.color-scale-button').on({
+			click: this.toggleCSList,
+			blur: this.blurCSList
+		}, this);
 	}
 });
 

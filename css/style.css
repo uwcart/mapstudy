@@ -336,6 +336,47 @@ svg {
     width: 10px;
     height: 10px;
     border: 1px solid black;
+    vertical-align: middle;
+}
+
+.color-scale {
+    max-width: 20px;
+}
+
+.color-scale option {
+    max-width: 0px;
+}
+
+.color-scale span {
+    margin-left: 20px;
+}
+
+.color-scale-palette {
+    border-color: #fff #ccc #ccc;
+    border-style: inset solid solid;
+    border-width: 1px;
+    padding: 2px;
+
+}
+
+.color-scale-list {
+    position: fixed;
+    display: none;
+    z-index: 1001;
+    padding: 2px;
+    background-color: #fff;
+    overflow-y: auto;
+    border-color: #fff #ccc #ccc;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.color-scale-list li {
+    display: block;
+}
+
+.color-scale-button {
+    height: 23px;
 }
 
 .resymbolize-line {

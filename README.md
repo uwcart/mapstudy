@@ -18,21 +18,21 @@ To access the setup application (which has a live preview feature), [click here]
 
 ## Contents
 
-#### [About the API Documentation](#about-the-api-documentation)
+#### [About the API Documentation](#about-the-api-documentation-1)
 
-#### [Setup](#setup)
+#### [Setup](#setup-1)
 
-#### [Config files](#config-files)
+#### [Config files](#config-files-1)
 
-#### &emsp;[Styles](#stylesjson)
+#### &emsp;[Styles](#styles-1)
 
-#### &emsp;[Map](#mapjson)
+#### &emsp;[Map](#map-1)
 
-#### &emsp;[Questions](#questionsjson)
+#### &emsp;[Questions](#questions-1)
 
-#### &emsp;[Conditions](#conditionsjson)
+#### &emsp;[Conditions](#conditions-1)
 
-#### &emsp;[Param](#paramphp)
+#### &emsp;[Param](#param-1)
 
 ## About the API documentation:
 

@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"stop",
+				"stopPropagation"
+			],
+			[
+				"palett",
+				"paletteOffset"
+			],
+			[
+				"setColor",
+				"setColorSelectListeners"
+			],
+			[
+				"recl",
+				"reclassified"
+			],
+			[
+				"recla",
+				"reclassified"
+			],
+			[
 				"index",
 				"indexOf"
 			],
@@ -148,10 +168,6 @@
 				"border-radius"
 			],
 			[
-				"stop",
-				"stopzoom"
-			],
-			[
 				"under",
 				"underlayControlView"
 			],
@@ -192,15 +208,7 @@
 				"classificationType"
 			],
 			[
-				"recla",
-				"reclassify"
-			],
-			[
 				"reclass",
-				"reclassify"
-			],
-			[
-				"recl",
 				"reclassify"
 			],
 			[
@@ -506,14 +514,6 @@
 			[
 				"this",
 				"this"
-			],
-			[
-				"overlayControl",
-				"overlayControlModel"
-			],
-			[
-				"overlayContro",
-				"overlayControlView"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 15692,
+				"buffer_size": 16041,
 				"line_ending": "Windows"
 			}
 		},
@@ -547,7 +547,7 @@
 			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 10374,
+				"buffer_size": 10992,
 				"line_ending": "Windows"
 			}
 		},
@@ -555,7 +555,7 @@
 			"file": "README.md",
 			"settings":
 			{
-				"buffer_size": 51614,
+				"buffer_size": 51611,
 				"line_ending": "Windows"
 			}
 		},
@@ -571,7 +571,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 97126,
+				"buffer_size": 100617,
 				"line_ending": "Windows"
 			}
 		},
@@ -785,6 +785,20 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"view.model.attributes.colorbrewer",
+			"select",
+			"pseudoSelect",
+			".recolor select",
+			"setColorSwatches",
+			"color-scale",
+			"color-swatch",
+			"setHeatmap",
+			"heat",
+			"heatmapInstance",
+			"heat",
+			"Map-1",
+			"color-scale",
+			"setClassBreaks",
 			"colorbrewer",
 			"colorInput",
 			"colorInput.change",
@@ -898,21 +912,7 @@
 			"removeBlock",
 			"block",
 			"option",
-			"label",
-			"description",
-			"createBooleanDropdown(",
-			".required",
-			"createBlock(",
-			"createSet(",
-			"qsection",
-			"header-custom-css",
-			"mapsection",
-			"removeTechnique",
-			"console",
-			"addSet",
-			"addLayer",
-			"addTechnique",
-			"removeTechnique"
+			"label"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -920,6 +920,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"button",
+			"colorScaleList",
 			"setup.php",
 			"filename",
 			"param",
@@ -1045,9 +1047,7 @@
 			"FilterLogicView",
 			"FilterSliderView",
 			"\"2008\", \"2009\"",
-			"#333333",
-			"filterIcon",
-			"setMapInteractions"
+			"#333333"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1066,15 +1066,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 15692,
+						"buffer_size": 16041,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9970,
-								9979
+								9903,
+								9903
 							]
 						],
 						"settings":
@@ -1084,7 +1084,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3894.0,
+						"translation.y": 3954.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1147,15 +1147,15 @@
 					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 10374,
+						"buffer_size": 10992,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2293,
-								2298
+								5869,
+								5869
 							]
 						],
 						"settings":
@@ -1165,7 +1165,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2034.0,
+						"translation.y": 7088.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1175,15 +1175,15 @@
 					"file": "README.md",
 					"settings":
 					{
-						"buffer_size": 51614,
+						"buffer_size": 51611,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5812,
-								5812
+								1374,
+								1374
 							]
 						],
 						"settings":
@@ -1192,7 +1192,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2100.0,
+						"translation.y": 374.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1220,7 +1220,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2042.0,
+						"translation.y": 162.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1230,15 +1230,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 97126,
+						"buffer_size": 100617,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								44098,
-								44098
+								45170,
+								45170
 							]
 						],
 						"settings":
@@ -1248,7 +1248,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 27654.0,
+						"translation.y": 28354.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1265,8 +1265,8 @@
 						"selection":
 						[
 							[
-								949,
-								940
+								4409,
+								4409
 							]
 						],
 						"settings":
@@ -1275,7 +1275,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 840.0,
+						"translation.y": 3862.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
