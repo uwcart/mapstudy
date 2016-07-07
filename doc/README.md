@@ -18,27 +18,29 @@ To access the setup application (which has a live preview feature), [click here]
 
 ## Contents
 
-#### [About the API Documentation](#about-the-api-documentation)
+#### [About the API Documentation](#about-the-api-documentation-1)
 
-#### [Setup](#setup)
+#### [Setup](#setup-1)
 
-#### [Config files](#config-files)
+#### [Config files](#config-files-1)
 
-#### &emsp;[Styles](#stylesjson)
+#### &emsp;[Styles](#styles-1)
 
-#### &emsp;[Map](#mapjson)
+#### &emsp;[Map](#map-1)
 
-#### &emsp;[Questions](#questionsjson)
+#### &emsp;[Questions](#questions-1)
 
-#### &emsp;[Conditions](#conditionsjson)
+#### &emsp;[Conditions](#conditions-1)
 
-#### &emsp;[Param](#paramphp)
+#### &emsp;[Param](#param-1)
+
+#### [Framework Architecture](#framework-architecture-1)
 
 ## About the API documentation:
 
 MapStudy is a flexible framework for creating map-based survey applications. It includes a range of components that are selected by setting and extending the options in the *.json* files within the *config* directory. For now, those files must be edited manually in a basic text editor such as Sublime or Notepad++. Hopefully there will eventually be a helper GUI for setting up the config files.
 
-The API documentation lists the options available in the config files. Each option is shown as code, with the option key to the left of a colon and each explicit possible value `-between dashes-`. **Everything `-between dashes-` is optional; everything `without dashes` is required.** Special cases are noted at their respective documentation sections.
+The API documentation lists the options available in the config files. Each option is shown as code, with the option key to the left of a colon and each explicit possible value `between asterisks (*)`. **Everything `between asterisks (*)` is optional; everything else is required.** Special cases are noted at their respective documentation sections.
 
 This documentation assumes a basic working knowledge of JSON formatting, geographic data structure, and geographic databases.
 
@@ -69,55 +71,41 @@ This config file is set up by default to style two page sections: the header and
 
 #### styles.sectionId
 
-	"sectionId": -"header"- -"footer"- -"m"- -"q"-
+	"sectionId": *"header"* *"footer"* *"m"* *"q"*
 
 The `id` attribute of each HTML `<section>` element on the page.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"header"-` | The page header; the banner on top of the page. If there is no section object with a `sectionId` of `header`, a strip of white space will appear at the top of the page. | Orange background with a "MapStudy Template" heading and MapStudy icon. |
-| `-"footer"-` | The page footer; the strip at the bottom of the page. If there is no section object with a `sectionId` of `footer`, a strip of white space will appear at the bottom of the page.| Orange background with placeholder text content. |
-| `-"m"-` | The section holding the map, on the left half of the main part of the web page. You can add a third section object for this or change one of the existing objects, but it's not recommended. Any `cssAttributes` will override the styles in *style.css*, but any HTML content will not be overridden. | Example map |
-|`-"q"-` | The section holding the questions, on the right half of the main part of the web page. See `["m"]` above | Example questions |
-
-<!-- `-"header"-`: The page header; the banner on top of the page. Orange background with a "MapStudy Template" heading and MapStudy icon by default. If there is no section object with a `sectionId` of `header`, a strip of white space will appear at the top of the page.
-
-`-"footer"-`: The page footer; the strip at the bottom of the page. Orange background with placeholder text content by default. Put whatever you want in it, or nothing. If there is no section object with a `sectionId` of `footer`, a strip of white space will appear at the bottom of the page.
-
-`-"m"-`: The section holding the map, on the left half of the main part of the web page. You can add a third section object for this or change one of the existing objects, but it's not recommended. Any `cssAttributes` will override the styles in *style.css*, but any HTML content will not be overridden.
-
-`-"q"-`: The section holding the questions, on the right half of the main part of the web page. See `-"m"-` above. -->
+| `*"header"*` | The page header; the banner on top of the page. If there is no section object with a `sectionId` of `header`, a strip of white space will appear at the top of the page. | Orange background with a "MapStudy Template" heading and MapStudy icon. |
+| `*"footer"*` | The page footer; the strip at the bottom of the page. If there is no section object with a `sectionId` of `footer`, a strip of white space will appear at the bottom of the page.| Orange background with placeholder text content. |
+| `*"m"*` | The section holding the map, on the left half of the main part of the web page. You can add a third section object for this or change one of the existing objects, but it's not recommended. Any `cssAttributes` will override the styles in *style.css*, but any HTML content will not be overridden. | Example map |
+|`*"q"*` | The section holding the questions, on the right half of the main part of the web page. See `*"m"*` above | Example questions |
 
 #### styles.cssAttributes
 
-	"cssAttributes": {-"background-color": "color"- -, other optional CSS-}
+	"cssAttributes": {*"background-color": "color"* *, other optional CSS*}
 
 An object holding all CSS styles that will be used to style the section.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"background-color": "color"-` | An RGB or HEX value that will be the background color of the section. | "rgb(247,154,66)" |
-| `-, other optional CSS-` | Any styles added here will override those contained in *style.css*. Be careful. | N/A |
-
-<!-- An object holding all CSS styles that will be used to style the section. Any styles added to the object will override those contained in *style.css*. Be careful. -->
-
-<!-- By default, only one style is added to the `cssAttributes` object: -->
+| `*"background-color": "color"*` | An RGB or HEX value that will be the background color of the section. | "rgb(247,154,66)" |
+| `*, other optional CSS*` | Any styles added here will override those contained in *style.css*. Be careful. | N/A |
 
 #### styles.logo-url
 
-	"logo-url": -"url"-
+	"logo-url": *"url"*
 
 A URL or relative path to the logo that appears in the `header` section.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"url"-` | Only works in an object containing a `sectionId` of `header`. | `"img/logo.png"` In general, there is no need to change this&mdash;just replace *logo.png* in the *img* folder with a file that holds your logo that's also called *logo.png*. The logo should be at least 64 pixels high. |
-
-<!-- A URL or relative path to the logo that appears in the `header` section. Only works in an object containing a `sectionId` of `header`. By default, this is set to `"img/logo.png"`; in general, there is no need to change this&mdash;just replace *logo.png* in the *img* folder with a file that holds your logo that's also called *logo.png*. The logo should be at least 64 pixels high. -->
+| `*"url"*` | Only works in an object containing a `sectionId` of `header`. | `"img/logo.png"` In general, there is no need to change this&mdash;just replace *logo.png* in the *img* folder with a file that holds your logo that's also called *logo.png*. The logo should be at least 64 pixels high. |
 
 #### styles.content
 
-	"content": -"HTML content"-
+	"content": *"HTML content"*
 
 An HTML string that will be added to the section. The `content` of the `header` section object will automatically be formatted as an `<h1>` heading. The content of the `footer` section will be 80% of the height of normal paragraph text on the page. Adding social media buttons here should work.
 
@@ -144,42 +132,42 @@ In the descriptions below, `map` refers to each object in the map.json `pages` a
 
 #### map.library
 
-	"library": -"Leaflet"- -"Mapbox-GL"- -"D3"- -"image"- -"REST"- -"iframe"-
+	"library": *"Leaflet"* *"Mapbox-GL"* *"D3"* *"image"* *"REST"* *"iframe"*
 
 The web mapping library or service to use to create the map. Currently only supports `Leaflet`.
 
 #### map.interactions
 
 	"interactions": {
-		-"zoom"-
-		-"pan"-
-		-"retrieve"-
-		-"overlay"-
-		-"search"-
-		-"filter"-
-		-"sequence"-
-		-"reexpress"-
-		-"rotate"-
-		-"resymbolize"-
-		-"reproject"-
+		*"zoom"*
+		*"pan"*
+		*"retrieve"*
+		*"overlay"*
+		*"search"*
+		*"filter"*
+		*"sequence"*
+		*"reexpress"*
+		*"rotate"*
+		*"resymbolize"*
+		*"reproject"*
 	}
 
 An object containing the interactions that should be enabled on the map. Each interaction in turn references an object designating whether the interaction should be logged and options for its implementation.
 
 #### map.interactions.[interaction].logging
 
-			-"logging"-: -true- -false-
+			*"logging"*: *true* *false*
 
 Whether the interaction should be logged. Available for each interaction.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-true-` | If `true`, interactions will be logged. | `false` |
+| `*true*` | If `true`, interactions will be logged. | `false` |
 
 
 #### map.interactions.zoom
 
-		-"zoom"-: { -"logging"- -"interface"- }
+		*"zoom"*: { *"logging"* *"interface"* }
 
 Zoom interaction. Must be included to allow the user to change the zoom level/scale of the map.
 If an empty object, `logging` is considered to be `false`.
@@ -187,91 +175,78 @@ If an empty object, `logging` is considered to be `false`.
 
 #### map.interactions.zoom.interface
 
-		-"interface"-: {
-			-"touch": `false`-
-			-"scrollWheel": `false`-
-			-"doubleClick": `false`-
-			-"box": `false`-
-			-"keyboard": `false`-
-			-"widget": `false`-
+		*"interface"*: {
+			*"touch": `false`*
+			*"scrollWheel": `false`*
+			*"doubleClick": `false`*
+			*"box": `false`*
+			*"keyboard": `false`*
+			*"widget": `false`*
 		}
 
 How to implement zoom. All default to `true`; add only to disable an interface option.
 
-<!-- Each key implements a boolean value and is `true` by default. `"touch"` enables pinch-zoom on touch-enabled devices. `"scrollWheel"` enables zooming with the scroll wheel on a wheeled mouse. `"doubleClick"` enables zooming in with a mouse double-click or a double-tap on touch-enabled devices. `"box"` enables box-zoom using a mouse and the shift key. `"keyboard"` enables zooming with the + and - keys on a keyboard; it is recommended to keep this option `true` for accessibility. `"widget"` implements a zoom widget with + and - buttons in the lower-left corner of the map. -->
-
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"touch"-` | Enables pinch-zoom on touch-enabled devices. | `true` |
-| `-"scrollWheel"-` | Enables zooming with the scroll wheel on a wheeled mouse. | `true` |
-| `-"doubleClick"-` | Enables zooming in with a mouse double-click or a double-tap on touch-enabled devices. | `true` |
-| `-"box"-` | Enables box-zoom using a mouse and the shift key. | `true` |
-| `-"keyboard"-` | Enables zooming with the + and - keys on a keyboard; it is recommended to keep this option `true` for accessibility. | `true` |
-| `-"widget"-` | Implements a zoom widget with + and - buttons in the lower-left corner of the map. | `true` |
-
-<!--
-#### map.interactions[interaction].logging
-
-			-"logging"-: -true- -false-
-
-Whether the interaction should be logged. False by default. Available for each interaction. -->
+| `*"touch"*` | Enables pinch-zoom on touch-enabled devices. | `true` |
+| `*"scrollWheel"*` | Enables zooming with the scroll wheel on a wheeled mouse. | `true` |
+| `*"doubleClick"*` | Enables zooming in with a mouse double-click or a double-tap on touch-enabled devices. | `true` |
+| `*"box"*` | Enables box-zoom using a mouse and the shift key. | `true` |
+| `*"keyboard"*` | Enables zooming with the + and - keys on a keyboard; it is recommended to keep this option `true` for accessibility. | `true` |
+| `*"widget"*` | Implements a zoom widget with + and - buttons in the lower-left corner of the map. | `true` |
 
 #### map.interactions.pan
 
-		-"pan"-: { -"logging"- -"interface"- }
+		*"pan"*: { *"logging"* *"interface"* }
 
 Pan interaction. Must be included to allow the user to change map center by dragging the map.
 
 #### map.interactions.pan.interface
 
-		-"interface"-: {
-			-"drag": `false`-
-			-"keyboard": `false`-
-			-"widget": `false`-
+		*"interface"*: {
+			*"drag": `false`*
+			*"keyboard": `false`*
+			*"widget": `false`*
 		}
 
 How to implement pan. All default to `true`; add only to disable an interface option.
 
-<!-- Each key implements a boolean value and is `true` by default. `"drag"` enables panning by clicking and dragging or finger-dragging on the map. `"keyboard"` enables panning using the arrow keys of a keyboard; it is recommended to keep this option `true` for accessibility. `"widget"` implements a pan widget with arrow buttons in the lower-left corner of the map. -->
-
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"drag"-` | Enables panning by clicking and dragging or finger-dragging on the map. | `true` |
-| `-"keyboard"-` | Enables panning using the arrow keys of a keyboard; it is recommended to keep this option `true` for accessibility. | `true` |
-| `-"widget"-` | Implements a pan widget with arrow buttons in the lower-left corner of the map. | `true` |
+| `*"drag"*` | Enables panning by clicking and dragging or finger-dragging on the map. | `true` |
+| `*"keyboard"*` | Enables panning using the arrow keys of a keyboard; it is recommended to keep this option `true` for accessibility. | `true` |
+| `*"widget"*` | Implements a pan widget with arrow buttons in the lower-left corner of the map. | `true` |
 
 #### map.interactions.rotate
 
-		-"rotate"-: { -"logging"- }
+		*"rotate"*: { *"logging"* }
 
 Rotate interaction. Allows the user to rotate the map. Only available with Mapbox-GL and D3 libraries.
 
 #### map.interactions.retrieve
 
-		-"retrieve"-: { -"logging"- -"interface"- }
+		*"retrieve"*: { *"logging"* *"interface"* }
 
 Retrieve interaction. Allows the user to get information about features through a popup and/or window.
 
 #### map.interactions.retrieve.interface
 
-		-"interface"-: {
-			-"popup": `false`-
-			-"window": `false`-
+		*"interface"*: {
+			*"popup": `false`*
+			*"window": `false`*
 		}
 
 How to implement retrieve. All default to `true`; add only to disable an interface option.
 
-<!-- Each key implements a boolean value and is `true` by default. `"popup"` gives the user access to popups on each data layer feature that show all of the feature's display attributes. `"window"` implements a widget-like information window in the lower-left corner of the map where information about each feature is displayed when the feature is clicked on. -->
-
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"popup"-` | Gives the user access to popups on each data layer feature that show all of the feature's display attributes. | `true` |
-| `-"window"-` | Implements a widget-like information window in the lower-left corner of the map where information about each feature is displayed when the feature is clicked on. | `true` |
+| `*"popup"*` | Gives the user access to popups on each data layer feature that show all of the feature's display attributes. | `true` |
+| `*"window"*` | Implements a widget-like information window in the lower-left corner of the map where information about each feature is displayed when the feature is clicked on. | `true` |
 
 
 #### map.interactions.overlay
 
-		-"overlay"-: { -"logging"- "dataLayers" }
+		*"overlay"*: { *"logging"* "dataLayers" }
 
 Overlay interaction. Must be included to allow the user to add or remove data layers on the map. Must include a list of `dataLayers` for which to enable the interaction.
 
@@ -283,13 +258,13 @@ An array containing the names of `dataLayers` to allow users to add and remove w
 
 #### map.interactions.underlay
 
-		-"underlay"-: { -"logging"- }
+		*"underlay"*: { *"logging"* }
 
 Underlay interaction. Must be included to allow the user to change base layers on the map. If included, the names of all `baseLayers` will be shown with radio buttons in a layers control. Only one base layer can appear on the map at a time.
 
 #### map.interactions.search
 
-		-"search"-: { -"logging"- "dataLayers" }
+		*"search"*: { *"logging"* "dataLayers" }
 
 Search interaction. Creates a search box on the map.
 
@@ -301,7 +276,7 @@ An array of the `dataLayers` to include in the search. Must have at least one va
 
 #### map.interactions.filter
 
-		-"filter"-: { -"logging"- "dataLayers" -"tool"- }
+		*"filter"*: { *"logging"* "dataLayers" *"tool"* }
 
 Filter interaction. Creates a filter tool on the map.
 
@@ -313,18 +288,18 @@ An array of the `dataLayers` to include in the filter tool. Must have at least o
 
 #### map.interactions.filter.tool
 
-			-"tool"-: -"slider"- -"logic"-
+			*"tool"*: *"slider"* *"logic"*
 
 Which interface tool to use for filtering.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"slider"-` | Implements a slider with two handles as the filter tool. Data layers on map will respond immediately to user input. | `slider` |
-| `-"logic"-` | Implements a dropdown menu with "equal to", "not equal to", "greater than", and "less than" options, followed by a text box for user input, followed by a dropdown menu with blank, "and", and "or" options, followed by a repeat of the first dropdown and text box (e.g., "attribute is greater than 12 and less than 24"; "attribute is equal to 15"). Data layers on map will respond immediately to user input. | `slider` |
+| `*"slider"*` | Implements a slider with two handles as the filter tool. Data layers on map will respond immediately to user input. | `slider` |
+| `*"logic"*` | Implements a dropdown menu with "equal to", "not equal to", "greater than", and "less than" options, followed by a text box for user input, followed by a dropdown menu with blank, "and", and "or" options, followed by a repeat of the first dropdown and text box (e.g., "attribute is greater than 12 and less than 24"; "attribute is equal to 15"). Data layers on map will respond immediately to user input. | `slider` |
 
 #### map.interactions.sequence
 
-		-"sequence"-: { -"logging"- "dataLayers" -"tool"- }
+		*"sequence"*: { *"logging"* "dataLayers" *"tool"* }
 
 Sequence interaction. Allows the user to change the expressed attribute separately for each of the listed `dataLayers`. Interface tool allows the user to cycle through each layer's `displayAttribute`s in the order in which they are listed for the layer and the layer's specified `expressedAttribute`.
 
@@ -336,63 +311,63 @@ An array of the `dataLayers` to include in the sequence tool. Must have at least
 
 #### map.interactions.sequence.tool
 
-			-"tool"-: -"buttons"- -"slider"-
+			*"tool"*: *"buttons"* *"slider"*
 
 Which interface tool to user for sequencing.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"buttons"-` | Implements forward and back buttons on the map with which to sequence through the attributes. | `buttons` |
-| `-"slider"-` | Implements a slider on the map with which to sequence through the attributes. | `buttons` |
+| `*"buttons"*` | Implements forward and back buttons on the map with which to sequence through the attributes. | `buttons` |
+| `*"slider"*` | Implements a slider on the map with which to sequence through the attributes. | `buttons` |
 
 #### map.interactions.reexpress
 
-		-"reexpress"-: { -"logging"- }
+		*"reexpress"*: { *"logging"* }
 
-Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the `dataLayer` is expressed to any of the techniques listed in the layer's `techniques` array [(see map.dataLayers[i].techniques)](#mapdataLayers[i]techniques).
+Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the `dataLayer` is expressed to any of the techniques listed in the layer's `techniques` array (see [map.dataLayers[i].techniques](#mapdataLayers[i]techniques)).
 
 #### map.interactions.resymbolize
 
-		-"resymbolize"-: { -"logging"- -"reclassify"- -"rescale"- -"recolor"- }
+		*"resymbolize"*: { *"logging"* *"reclassify"* *"rescale"* *"recolor"* }
 
 Resymbolize interaction. Allows the user to manipulate the classification scheme via the legend. If included, users will be able to change the classification parameters of graduated maps (choropleth or proportional symbol), change the symbol scale or interval (proportional symbol, dot, isarithm, or heat), and/or change the symbol color (choropleth or proportional symbol). If `reclassify`, `rescale`, or `recolor` are omitted, their functionality will be included by default.
 
 #### map.interactions.resymbolize.reclassify
 
-	-"reclassify"-: -true- -false-
+	*"reclassify"*: *true* *false*
 
 Change the classification scheme, the number of classes, and the class breakpoints.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"true"-` | Allows the user to change the classification scheme, the number of classes, and the class breakpoints. Only available for choropleth and proportional symbol maps. | `true` |
-| `-"false"-` | Doesn't allow the user to change the classification scheme, the number of classes, and the class breakpoints. Only available for choropleth and proportional symbol maps.| `true` |
+| `*"true"*` | Allows the user to change the classification scheme, the number of classes, and the class breakpoints. Only available for choropleth and proportional symbol maps. | `true` |
+| `*"false"*` | Doesn't allow the user to change the classification scheme, the number of classes, and the class breakpoints. Only available for choropleth and proportional symbol maps.| `true` |
 
 #### map.interactions.resymbolize.rescale
 
-	-"rescale"-: -true- -false-
+	*"rescale"*: *true* *false*
 
 Changing the symbol scaling if a proportional symbol map, or the interval if a dot or isarithm map.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"true"-` | Allows the user to change the symbol scaling if a proportional symbol map, or the interval if a dot or isarithm map. | `true` |
-| `-"false"-` | Doesn't allow the user to change the symbol scaling if a proportional symbol map, or the interval if a dot or isarithm map.| `true` |
+| `*"true"*` | Allows the user to change the symbol scaling if a proportional symbol map, or the interval if a dot or isarithm map. | `true` |
+| `*"false"*` | Doesn't allow the user to change the symbol scaling if a proportional symbol map, or the interval if a dot or isarithm map.| `true` |
 
 #### map.interactions.resymbolize.recolor
 
-	-"recolor"-: -true- -false-
+	*"recolor"*: *true* *false*
 
  Changing the symbol color.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"true"-` | Allows the user to change the symbol color. For a choropleth map, the user may choose from any sequential ColorBrewer scale. For proportional symbol map, the user may enter any HEX value or choose from a palette the fill color of the symbols. | `true` |
-| `-"false"-` | Doesn't allow the user to change the symbol color.| `true` |
+| `*"true"*` | Allows the user to change the symbol color. For a choropleth map, the user may choose from any sequential ColorBrewer scale. For proportional symbol map, the user may enter any HEX value or choose from a palette the fill color of the symbols. | `true` |
+| `*"false"*` | Doesn't allow the user to change the symbol color.| `true` |
 
 #### map.interactions.reproject
 
-		-"reproject"-: { -"logging"- "projections" }
+		*"reproject"*: { *"logging"* "projections" }
 
 Allows the user to change the map projection. Only available with the D3 library.
 
@@ -404,24 +379,24 @@ An array of `projection` objects with the projection name and D3-style projectio
 
 #### map.mapOptions
 
-	-"mapOptions"-: { -library options- -legend- }
+	*"mapOptions"*: { *library options* *legend* }
 
 An object to hold any map options applied on the instantiation of a Leaflet, Mapbox-GL, or REST map. Not available for any other `library options`. If no `mapOptions` are included, library defaults will be applied. Refer to the [Leaflet](http://leafletjs.com/reference.html#map-options) or [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/#Map) documentation for lists of possible options for those libraries. REST `mapOptions` will be added as parameters to the map URL, and are thus dependent on the map server configuration. The `legend` option is a special option, described below.
 
 #### map.mapOptions.legend
 
-	-"legend"-: -true- -false-
+	*"legend"*: *true* *false*
 
 Including a legend on the map.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"true"-` | A legend is added to the map showing symbols for all `dataLayers`. | `true` |
-| `-"false"-` | A legend is not added to the map. | `true` |
+| `*"true"*` | A legend is added to the map showing symbols for all `dataLayers`. | `true` |
+| `*"false"*` | A legend is not added to the map. | `true` |
 
 #### map.projection
 
-	-"projection"-: { "name" -"options"- }
+	*"projection"*: { "name" *"options"* }
 
 An object containing the projection name and parameters for a D3 projection. Only available with the D3 `library options`. Must be included to instantiate a D3 map.
 
@@ -433,7 +408,7 @@ The name of the D3 projection, a string. Required if using D3. All [standard pro
 
 #### map.projection.options
 
-		-"options"-: {}
+		*"options"*: {}
 
 An object containing the [projection parameters](https://github.com/mbostock/d3/wiki/Geo-Projections) for the chosen projection. If not included, options will be projection defaults. Refer to the example block for your chosen projection to see which parameters are used. While in writing D3 code, each projection parameter is implemented as a selection operator method with the values as method parameters, here you give the parameter as an object key string followed by the parameter values. For example:
 
@@ -462,7 +437,7 @@ Make sure that any value that is either a string or a mix of numbers and strings
 
 #### map.baseLayers
 
-	-"baseLayers"-: [{
+	*"baseLayers"*: [{
 		"name"
 		"source"
 		"layerOptions"
@@ -478,7 +453,7 @@ The name of the base layer; a string. If `overlay` is included in the `interacti
 
 #### map.baseLayers[i].source
 
-		"source": -base layer URL- -provider name- -"postgis:"+tablename-
+		"source": *base layer URL* *provider name* *"postgis:"+tablename*
 
 The URL of a [raster tile layer](http://leafletjs.com/reference.html#tilelayer) for a Leaflet map, a TopoJSON or GeoJSON file or Postgis table containing the basemap geometry for a Mapbox-GL or D3 map, a RESTful web map service, an iframe embed link, or a static image in *.png*, *.jpg*, or *.tif* format. A string. Required to add the layer to the map for all libraries except Mapbox-GL.
 
@@ -494,7 +469,7 @@ For a REST service, the `source` should be the base URL with or without option p
 
 #### map.baseLayers[i].layerOptions
 
-		"layerOptions": -{}- -URL-
+		"layerOptions": *{}* *URL*
 
 Typically, an object containing [Leaflet TileLayer options](http://leafletjs.com/reference.html#tilelayer-options), [SVG styles](http://www.w3.org/TR/SVG/styling.html#SVGStylingProperties) for all layer paths drawn by D3, [Mapbox-GL styles](https://www.mapbox.com/mapbox-gl-style-spec), or REST parameters. May also be a URL string pointing to a JSON file that contains this information.
 
@@ -524,13 +499,13 @@ The REST parameters may also be added in the above format to `baseLayer.source` 
 
 #### map.dataLayers
 
-	-"dataLayers"-: [{
+	*"dataLayers"*: [{
 		"name"
 		"source"
 		"expressedAttribute"
-		-"displayAttributes"-
-		-"renderOnLoad"-
-		-"layerOptions"-
+		*"displayAttributes"*
+		*"renderOnLoad"*
+		*"layerOptions"*
 		"techniques"
 	}]
 
@@ -544,7 +519,7 @@ The name of the data layer; a string. If `overlay` is included in the `interacti
 
 #### map.dataLayers[i].source
 
-		"source": -layer data URL- -"postgis:"+table name-
+		"source": *layer data URL* *"postgis:"+table name*
 
 A URL string pointing to a TopoJSON or GeoJSON file containing the data to be mapped, or the string "postgis:" followed by the name of a PostGIS table from which to retrieve the data (with no space after the colon). In the latter case, PostgreSQL database connection parameters must be added to the *database.php* config file.
 
@@ -560,26 +535,24 @@ The name of the numerical attribute that will be visually expressed on the map; 
 
 #### map.dataLayers[i].displayAttributes
 
-		-"displayAttributes"-: []
+		*"displayAttributes"*: []
 
 An array of one or more attributes to include in that layer's pop-ups if the `retrieve` interaction is included, in the search tool if the `search` interaction is included, and in the filter tool if the `filter` interaction is included. Only categorical attributes with string values will be searchable (e.g., "name" but not "population"). Only numerical attributes will be added to the filter tool (e.g., "population" but not "name"), and will be accessible via a drop-down menu in the data layer's line in the filter tool. If `retrieve`, `search`, or `filter` are included but no `displayAttributes` are given, pop-ups and tools will be implemented using only the layer's `expressedAttribute`.
 
 #### map.dataLayers[i].renderOnLoad
 
-		-"renderOnLoad"-: -true- -false-
+		*"renderOnLoad"*: *true* *false*
 
 Whether to render the layer when the map loads.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-true-` | The layer will be rendered when the map loads. | `true` |
-| `-false-` | If multiple `dataLayers` are included with some having `renderOnLoad` set to `false`, the only way those layers will be visible is by including an `overlay` interaction that includes those layers. In this case, those layers will be unchecked in the layers control until selected by the user. | `true` |
-
-<!-- Whether to render the layer when the map loads. Optional; default is `true`. If multiple `dataLayers` are included with some having `renderOnLoad` set to `false`, the only way those layers will be visible is by including an `overlay` interaction that includes those layers. In this case, those layers will be unchecked in the layers control until selected by the user. -->
+| `*true*` | The layer will be rendered when the map loads. | `true` |
+| `*false*` | If multiple `dataLayers` are included with some having `renderOnLoad` set to `false`, the only way those layers will be visible is by including an `overlay` interaction that includes those layers. In this case, those layers will be unchecked in the layers control until selected by the user. | `true` |
 
 #### map.dataLayers[i].layerOptions
 
-		-"layerOptions"-: -{}- -URL-
+		*"layerOptions"*: *{}* *URL*
 
 An object or URL string pointing to a JSON file containing [Leaflet Path options](http://leafletjs.com/reference.html#path-options), [SVG styles](http://www.w3.org/TR/SVG/styling.html#SVGStylingProperties) for all layer paths drawn by D3, or [Mapbox-GL style layers](https://www.mapbox.com/mapbox-gl-style-spec/#layers). Properties added here that conflict with the `techniques` classification will be overridden for each feature to which the classification is applied (i.e., any not null values).
 
@@ -587,60 +560,49 @@ An object or URL string pointing to a JSON file containing [Leaflet Path options
 
 		"techniques": [{
 			"type"
-			-"classification"-
-			-"classes"-
-			-"symbol"-
-			-"interval"-
-			-"size"-
+			*"classification"*
+			*"classes"*
+			*"symbol"*
+			*"interval"*
+			*"size"*
 		}]
 
 An array of objects containing the thematic mapping techniques, including the map type and classification parameters for the data layer. At least one technique object is required. The first technique object in the array will be used for the layer's initial expression; all other techniques for the layer will only be available to the user if `map.interactions.reexpress` is included.
 
 #### map.dataLayers[i].techniques[ii].type
 
-			"type": -"choropleth"- -"proportional symbol"- -"dot"- -"isarithmic"- -"heat"-
+			"type": *"choropleth"* *"proportional symbol"* *"dot"* *"isarithmic"* *"heat"*
 
 The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Note that only a data layer with a `proportional symbol`, `isarithmic`, or `heat` technique type can use point feature data, but all technique types can use polygon data. The `retrieve` and `search` interactions are not available for `heat` map layers, and `search` is not available for `isarithmic` layers.
 
 #### map.dataLayers[i].techniques[ii].classification
 
-			"classification": -"quantile"- -"equal interval"- -"natural breaks"- -"unclassed"-
+			"classification": *"quantile"* *"equal interval"* *"natural breaks"* *"unclassed"*
 
 The classification technique for a choropleth or proportional symbol map. Which technique is chosen determines how the data values of the `expressedAttribute` are grouped for display on the map. Required for `choropleth` and `proportional symbol` types, and unavailable for `isarithmic`, `heat`, and `dot` type.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-quantile-` | A `quantile` classification groups the data into classes with an equal *number of* data values in each class. This works best when you want to create a map with the same number of features in each class but don't care about how wide the class ranges are. | N/A |
-| `-equal interval-` | An `equal interval` classification groups the data into classes each with an *equal range* of values (e.g., 0-10, 10-20, 20-30, etc.). This works best for data that are spread evenly across the entire data range, and usually turns out poorly if there is a small number of mapped features. It must be used if `type` is `isarithmic` and `classification` is included. | N/A |
-| `-natural breaks-` | A `natural breaks` classification uses the [Cartesian k-means](http://www.cs.toronto.edu/~norouzi/research/papers/ckmeans.pdf) algorithm to minimize the statistical distances between data points within each class. This classification is generally considered optimal for identifying groups of data values. | N/A |
-| `-unclassed-` | An `unclassed` classification creates a [linear scale](https://github.com/mbostock/d3/wiki/Quantitative-Scales#linear-scales) to map each input data value to an output value interpolated between the first two values given in the `classes` array. Thus, it results in a map with no defined classes. This is the most common classification for proportional symbol maps and the least common for choropleth maps. | N/A |
-
-
-<!-- The classification technique for a choropleth or proportional symbol map. Which technique is chosen determines how the data values of the `expressedAttribute` are grouped for display on the map. Required for `choropleth` and `proportional symbol` types, and unavailable for `isarithmic`, `heat`, and `dot` type.
-
-A `quantile` classification groups the data into classes with an equal *number of* data values in each class. This works best when you want to create a map with the same number of features in each class but don't care about how wide the class ranges are.
-
-An `equal interval` classification groups the data into classes each with an *equal range* of values (e.g., 0-10, 10-20, 20-30, etc.). This works best for data that are spread evenly across the entire data range, and usually turns out poorly if there is a small number of mapped features. It must be used if `type` is `isarithmic` and `classification` is included.
-
-A `natural breaks` classification uses the [Cartesian k-means](http://www.cs.toronto.edu/~norouzi/research/papers/ckmeans.pdf) algorithm to minimize the statistical distances between data points within each class. This classification is generally considered optimal for identifying groups of data values.
-
-An `unclassed` classification creates a [linear scale](https://github.com/mbostock/d3/wiki/Quantitative-Scales#linear-scales) to map each input data value to an output value interpolated between the first two values given in the `classes` array. Thus, it results in a map with no defined classes. This is the most common classification for proportional symbol maps and the least common for choropleth maps. -->
+| `*quantile*` | A `quantile` classification groups the data into classes with an equal *number of* data values in each class. This works best when you want to create a map with the same number of features in each class but don't care about how wide the class ranges are. | N/A |
+| `*equal interval*` | An `equal interval` classification groups the data into classes each with an *equal range* of values (e.g., 0-10, 10-20, 20-30, etc.). This works best for data that are spread evenly across the entire data range, and usually turns out poorly if there is a small number of mapped features. It must be used if `type` is `isarithmic` and `classification` is included. | N/A |
+| `*natural breaks*` | A `natural breaks` classification uses the [Cartesian k-means](http://www.cs.toronto.edu/~norouzi/research/papers/ckmeans.pdf) algorithm to minimize the statistical distances between data points within each class. This classification is generally considered optimal for identifying groups of data values. | N/A |
+| `*unclassed*` | An `unclassed` classification creates a [linear scale](https://github.com/mbostock/d3/wiki/Quantitative-Scales#linear-scales) to map each input data value to an output value interpolated between the first two values given in the `classes` array. Thus, it results in a map with no defined classes. This is the most common classification for proportional symbol maps and the least common for choropleth maps. | N/A |
 
 #### map.dataLayers[i].techniques[ii].classes
 
-			-"classes"-: -[]- -colorbrewer code.number of classes-
+			*"classes"*: *[]* *colorbrewer code.number of classes*
 
 An array containing the output values for each class or the name of a [ColorBrewer](http://colorbrewer2.org/) classification scheme. Required if `classification` is used. Array values should be numerical for proportional symbol maps&mdash;representing the diameter or width of each feature's symbol&mdash;and hexadecimal color strings for a choropleth map (e.g., `"#FFFFFF"`). The number of values in the array will correspond with the number of classes created. For choropleth maps only, if a ColorBrewer scheme is used, the value should be a string in the format `"code.number"`; for example, `"BuGn.5"` will create a five-class, blue-green color scheme. Scheme codes are shown at the top of the EXPORT panel on the lower-right of the ColorBrewer interface. Unless testing various color schemes, it is recommended you choose a colorblind-safe, sequential color scheme. If the `resymbolize` interaction is included, it is recommended to use a ColorBrewer code instead of an array of hex values, as reclassification by the user may result in an interpolated color scheme that differs spectrally from the original array of colors.
 
 #### map.dataLayers[i].techniques[ii].symbol
 
-			-"symbol"-: -"circle"- -image url-
+			*"symbol"*: *"circle"* *image url*
 
 Symbol to use for proportional symbol map. Optional; default is `circle`. Not available to choropleth or isarithmic maps. For proportional symbol maps, if the dataset consists of point features, symbols will be placed on point coordinates; otherwise, symbols will be placed on the centroids of polygon features.
 
 #### map.dataLayers[i].techniques[ii].interval
 
-			-"interval"-: -value interval-
+			*"interval"*: *value interval*
 
 The data interval by which to separate isarithms on an isarithmic map, or the ratio of data value to one dot for a dot map. Optional. Unavailable for choropleth or proportional symbol maps.
 
@@ -650,13 +612,13 @@ For a dot map, the value of `interval` is the denominator by which the feature's
 
 #### map.dataLayers[i].techniques[ii].size
 
-			-"size"-: -size-
+			*"size"*: *size*
 
 The size of dots on a dot map or isarithms on an isarithmic map; a number.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-size-` | Not available for other technique types. For a dot map, `size` is the dot radius. For an isarithmic map, `size` is the line width of each isarithm. | 1 pixel |
+| `*size*` | Not available for other technique types. For a dot map, `size` is the dot radius. For an isarithmic map, `size` is the line width of each isarithm. | 1 pixel |
 
 ## Questions
 ###Filename: questions.json
@@ -675,40 +637,76 @@ This config file holds the configuration options necessary to create the survey 
 		]
 	}
 
-#### questions.fullpage
+#### questions.pages[page].fullpage
 
-	-"fullpage"-: -true- -false-
+	*"fullpage"*: *true* *false*
 
 Used to set page width.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-true-` | Page takes up entire width of the content window in a one-column layout. Useful for informed consent pages, tutorial pages, and other pages that do not need to be accompanied by a map. | N/A |
-| `-false-` | Page does not take up entire with of the content window. | N/A |
+| `*true*` | Page takes up entire width of the content window in a one-column layout. Useful for informed consent pages, tutorial pages, and other pages that do not need to be accompanied by a map. | N/A |
+| `*false*` | Page does not take up entire with of the content window. | N/A |
 
-<!-- Whether or not the questions page should take up the entire width of the content window in a one-column layout. This option is useful for informed consent pages, tutorial pages, and other pages that do not need to be accompanied by a map. -->
+#### questions.pages[page].timer
 
-#### questions.sets
+	*"timer"*: {
+		*"direction"*,
+		*"starttime"*,
+		*"persist"*,
+		*"remove"*
+	}
+
+Whether to include a timer for the page and timer options. If `"timer"` is included, a timer will appear in the page header and count up or down until the next page or until replaced by another timer.
+
+#### questions.pages[page].timer.direction
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*up*` |  Default value. Timer will count up. | N/A |
+| `*down*` | Timer will count down. Once countdown reaches zero, the next page will be triggered. | N/A |
+
+#### questions.pages[page].timer.starttime
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*00:00:00*` |  Start time in H:M:S format. | 00:00:00 |
+
+#### questions.pages[page].timer.persist
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*true*` |  Timer will continue to be visible and count even after the page has been changed, until another timer is set or the end of the application is reached. | N/A |
+| `*false*` | Default value. Timer will reset and disappear when page changes. | N/A |
+
+#### questions.pages[page].timer.remove
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*true*` | Removes a persistent page timer without replacing it. If included, no other timer options will be applied. | N/A |
+
+#### questions.pages[page].sets
 
 	"sets": [
 		{
 			"blocks": [],
-			"buttons": []
+			"buttons": [],
+			"timer: {}"
 		}
 	]
 
 The sets of questions (blocks) and buttons that are viewable to the user at one time.
 
-#### questions.sets[i].blocks
+#### questions.pages[page].sets[i].blocks
 
 	"blocks": [
 		{
-			-"label": text string-
-			-"title": text string-
+			*"label": text string*
+			*"title": text string*
 			"ask": HTML string
-			-"description": HTML string-
-			-"input"-: {
-				-"required"- "type" -"options": []- -"items": []-
+			*"description": HTML string*
+			*"input"*: {
+				*"required"* "type" *"options": []* *"items": []*
 			}
 		}
 	]
@@ -717,100 +715,54 @@ A single question along with accompanying content and answer input(s). Each ques
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |:---------------|
-| `-"label": text string-` | Label for the question in the CSV or database table of responses, text string (<=20 characters).  | A label will be automatically generated consisting of the page, set, block, and input indexes (for example, "p1s3b1"). |
-| `-"title": text string-` | Title for the question. If included, the question title will appear in bold at the top of the question block. | Example text |
+| `*"label": text string*` | Label for the question in the CSV or database table of responses, text string (<=20 characters).  | A label will be automatically generated consisting of the page, set, block, and input indexes (for example, "p1s3b1"). |
+| `*"title": text string*` | Title for the question. If included, the question title will appear in bold at the top of the question block. | Example text |
 | `"ask": HTML string` | The question asked. Required. The question asked will appear in normal font below the title (if included) and above the other elements of the block (if included). It need not be a literal question; any text or html (such as image elements) may be included. | Example questions |
-| `-"description": HTML string-` | Further description tied to the question asked. Description text will appear in italicized font below the ask and above the other elements of the block (if included). Any text or html (such as image elements) may be included. | Example description |
-| `-"input"-: see below for options` | The answer input associated with the question. Appears below the ask and description (if included). | Example answers |
+| `*"description": HTML string*` | Further description tied to the question asked. Description text will appear in italicized font below the ask and above the other elements of the block (if included). Any text or html (such as image elements) may be included. | Example description |
+| `*"input"*: see below for options` | The answer input associated with the question. Appears below the ask and description (if included). | Example answers |
 
+#### questions.pages[page].sets[i].blocks[ii].input
 
-<!-- #### questions.sets[i].blocks[ii].label
-
-	-"label"-: text string (<=20 characters)
-
-Label for the question in the CSV or database table of responses. Optional. Must be 20 characters or less. If no label is provided, a label will be automatically generated consisting of the page, set, block, and input indexes (for example, "p1s3b1"). -->
-
-<!-- #### questions.sets[i].blocks[ii].title
-
-	-"title"-: text string
-
-Title for the question. Optional. If included, the question title will appear in bold at the top of the question block. -->
-
-<!-- #### questions.sets[i].blocks[ii].ask
-
-	"ask": HTML string
-
-The question asked. Required. The question ask will appear in normal font below the title (if included) and above the other elements of the block (if included). It need not be a literal question; any text or html (such as image elements) may be included. -->
-
-<!-- #### questions.sets[i].blocks[ii].description
-
-	-"description"-: HTML string
-
-Further description tied to the question ask. Optional. Description text will appear in italicized font below the ask and above the other elements of the block (if included). Any text or html (such as image elements) may be included. -->
-
-#### questions.sets[i].blocks[ii].input
-
-	-"input"-: {
-		-"required"-
+	*"input"*: {
+		*"required"*
 		"type"
-		-"options"-: []
-		-"items"-: []
+		*"options"*: []
+		*"items"*: []
 	}
 
-<!-- The answer input associated with the question. Optional. Appears below the ask and description (if included). -->
+#### questions.pages[page].sets[i].blocks[ii].input.required
 
-#### questions.sets[i].blocks[ii].input.required
-
-	-"required"-: -true- -false-
+	*"required"*: *true* *false*
 
 Whether the participant must provide input before moving to the next set.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |:---------------|
-| `-true-` | Participant must provide input to move to next set. | `false` |
+| `*true*` | Participant must provide input to move to next set. | `false` |
 
-<!-- -"required"-: -true- -false- -->
-<!-- Whether the participant must provide input before moving to the next set. Optional; default is `false`. -->
 
-#### questions.sets[i].blocks[ii].input.type
+#### questions.pages[page].sets[i].blocks[ii].input.type
 
-	"type": -"text"- -"paragraph"- -"checkboxes"- -"radios"- -"dropdown"- -"matrix"- -"rank"-
+	"type": *"text"* *"paragraph"* *"checkboxes"* *"radios"* *"dropdown"* *"matrix"* *"rank"*
 
 The type of answer input. Required if `input` is included with the block.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |:---------------|
-| `-"text"-` | A one-line text box. | Example text |
-| `-"paragraph"-` |  A multi-line text box that may be expanded by the participant. | Example paragraph |
-| `-"checkboxes"-` | A set of checkboxes allowing the participant to select more than one answer from a list of potential answers. Requires `items` array. | Example checkboxes |
-| `-"radios"-` | A set of radio buttons allowing the participant to select only one answer from a list of potential answers. Requires `options` array. | Example radios |
-| `-"dropdown"-` | A dropdown menu allowing the participant to select only one answer from a list of potential answers. Requires `options` array. | Example dropdown |
-| `-"matrix"-` | A table of radio buttons allowing the participant to select one answer from a list of potential answers for each item in a list of items. This is useful for Likert scale questions. Requires both `options` array and `items` array. | Example matrix |
-| `-"rank"-` | A list of items allowing the user to reorder the items. Requires `items` array. | Example rank |
+| `*"text"*` | A one-line text box. | Example text |
+| `*"paragraph"*` |  A multi-line text box that may be expanded by the participant. | Example paragraph |
+| `*"checkboxes"*` | A set of checkboxes allowing the participant to select more than one answer from a list of potential answers. Requires `items` array. | Example checkboxes |
+| `*"radios"*` | A set of radio buttons allowing the participant to select only one answer from a list of potential answers. Requires `options` array. | Example radios |
+| `*"dropdown"*` | A dropdown menu allowing the participant to select only one answer from a list of potential answers. Requires `options` array. | Example dropdown |
+| `*"matrix"*` | A table of radio buttons allowing the participant to select one answer from a list of potential answers for each item in a list of items. This is useful for Likert scale questions. Requires both `options` array and `items` array. | Example matrix |
+| `*"rank"*` | A list of items allowing the user to reorder the items. Requires `items` array. | Example rank |
 
-<!-- "type": -"text"- -"paragraph"- -"checkboxes"- -"radios"- -"dropdown"- -"matrix"- -"rank"- -->
-<!-- The type of answer input. Required if `input` is included with the block. Options are: -->
+#### questions.pages[page].sets[i].blocks[ii].input.options
 
-<!-- - `text`: A one-line text box.
-
-- `paragraph`: A multi-line text box that may be expanded by the participant. -->
-
-<!-- - `checkboxes`: A set of checkboxes allowing the participant to select more than one answer from a list of potential answers. Requires `items` array.
-
-- `radios`: A set of radio buttons allowing the participant to select only one answer from a list of potential answers. Requires `options` array. -->
-
-<!-- - `dropdown`: A dropdown menu allowing the participant to select only one answer from a list of potential answers. Requires `options` array. -->
-<!--
-- `matrix`: A table of radio buttons allowing the participant to select one answer from a list of potential answers for each item in a list of items. This is useful for Likert scale questions. Requires both `options` array and `items` array.
-
-- `rank`: A list of items allowing the user to reorder the items. Requires `items` array. -->
-
-#### questions.sets[i].blocks[ii].input.options
-
-	-"options"-: [
+	*"options"*: [
 		{
 			"text": text string
-			-"value": text string-
+			*"value": text string*
 		}
 	]
 
@@ -819,26 +771,14 @@ An array of input options. Required by `radios`, `dropdown`, and `matrix` input 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |:---------------|
 | `"text": text string` | The text to display to the participant for the option. Required if `options` is included. | Example text |
-| `-"value": text string-` |  The value to display in the resulting data cell for the question block or item if the option is selected.  | If omitted, the option `"text"` will be recorded as the value. |
+| `*"value": text string*` |  The value to display in the resulting data cell for the question block or item if the option is selected.  | If omitted, the option `"text"` will be recorded as the value. |
 
-<!-- #### questions.sets[i].blocks[ii].input.options[iii].text
+#### questions.pages[page].sets[i].blocks[ii].input.items
 
-	"text": text string
-
-The text to display to the participant for the option. Required if `options` is included. -->
-
-<!-- #### questions.sets[i].blocks[ii].input.options[iii].value
-
-	"value": text string
-
-The value to display in the resulting data cell for the question block or item if the option is selected. Optional. If omitted, the option `text` will be recorded as the value. -->
-
-#### questions.sets[i].blocks[ii].input.items
-
-	-"items"-: [
+	*"items"*: [
 		{
 			"text": text string
-			-"label": text string-
+			*"label": text string*
 		}
 	]
 
@@ -847,41 +787,63 @@ An array of input items. Required by `checkboxes`, `matrix`, and `rank` input ty
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |:---------------|
 | `"text": text string` | The text to display to the participant for the item. Required if `items` is included.| Example text |
-| `-"label": text string-` | (<= 20 characters) What to label the column for the item in the resulting data. Each item will be given its own column in the data table. For each item column, if the input type is `checkboxes`, each item's cell value will be recorded as `1` if the box is checked and no data if not checked. If the type is `matrix`, each item's cell value will correspond to the value of the selected option. If the type is `rank`, the cell value will be given the item's rank, starting at 1 for the top item.| If no `label` is provided for the item, a label will be automatically generated consisting of the block label and item indexes (for example, "p1s3b1i1") |
+| `*"label": text string*` | (<= 20 characters) What to label the column for the item in the resulting data. Each item will be given its own column in the data table. For each item column, if the input type is `checkboxes`, each item's cell value will be recorded as `1` if the box is checked and no data if not checked. If the type is `matrix`, each item's cell value will correspond to the value of the selected option. If the type is `rank`, the cell value will be given the item's rank, starting at 1 for the top item.| If no `label` is provided for the item, a label will be automatically generated consisting of the block label and item indexes (for example, "p1s3b1i1") |
 
-<!-- #### questions.sets[i].blocks[ii].input.items[iii].text
 
-	"text": text string
-
-The text to display to the participant for the item. Required if `items` is included.
-
-#### questions.sets[i].blocks[ii].input.items[iii].label
-
-	-"label"-: text string (<= 20 characters) -->
-
-<!-- What to label the column for the item in the resulting data. Optional. Each item will be given its own column in the data table. If no `label` is provided for the item, a label will be automatically generated consisting of the block label and item indexes (for example, "p1s3b1i1")
-
-For each item column, if the input type is `checkboxes`, each item's cell value will be recorded as `1` if the box is checked and no data if not checked. If the type is `matrix`, each item's cell value will correspond to the value of the selected option. If the type is `rank`, the cell value will be given the item's rank, starting at 1 for the top item. -->
-
-#### questions.sets[i].buttons
+#### questions.pages[page].sets[i].buttons
 
 	"buttons": [
-		-"next"-
-		-"back"-
-		-"save"-
-		-"submit"-
+		*"next"*
+		*"back"*
+		*"save"*
+		*"submit"*
 	]
 
 Buttons that should be included at the bottom of the question set, below all of the blocks.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `-"next"-` | Takes the user to the next question set, or to the next page if the end of the `sets` array has been reached. | Example next |
-| `-"back"-` | Takes the user to the previous question set, or to the previous page if the beginning of the `sets` array has been reached. | Example back |
-| `-"save"-` | Saves the participant's answers and position in the survey, enabling them to complete the survey at a later time; for this button to work, a database must be set up and working database parameters included in the *params.php* config file. | Example save |
-| `-"submit"-` | Submits the participant's answers, either via e-mail or to the database depending on the content of *params.php*, **and** takes the participant to the next page (which may or may not be the final page of the survey). | Example submit |
+| `*"next"*` | Takes the user to the next question set, or to the next page if the end of the `sets` array has been reached. | Example next |
+| `*"back"*` | Takes the user to the previous question set, or to the previous page if the beginning of the `sets` array has been reached. | Example back |
+| `*"save"*` | Saves the participant's answers and position in the survey, enabling them to complete the survey at a later time; for this button to work, a database must be set up and working database parameters included in the *params.php* config file. | Example save |
+| `*"submit"*` | Submits the participant's answers, either via e-mail or to the database depending on the content of *params.php*, **and** takes the participant to the next page (which may or may not be the final page of the survey). | Example submit |
 
-<!-- The `next` button takes the user to the next question set, or to the next page if the end of the `sets` array has been reached. The `back` button takes the user to the previous question set, or to the previous page if the beginning of the `sets` array has been reached. The `save` button saves the participant's answers and position in the survey, enabling them to complete the survey at a later time; for this button to work, a database must be set up and working database parameters included in the *params.php* config file. The `submit` button submits the participant's answers, either via e-mail or to the database depending on the content of *params.php*, **and** takes the participant to the next page (which may or may not be the final page of the survey). -->
+#### questions.pages[page].sets[i].timer
+
+	*"timer"*: {
+		*"direction"*,
+		*"starttime",
+		*"persist"*,
+		*"remove"*
+	}
+
+Whether to include a timer for the set and timer options. If `"timer"` is included, a timer will appear in the page header and count up or down until the next set or until replaced by another timer.
+
+#### questions.pages[page].sets[i].timer.direction
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*up*` | Default value. Timer will count up. | N/A |
+| `*down*` | Timer will count down. Once the countdown reaches zero, the next set will be triggered. | N/A |
+
+#### questions.pages[page].sets[i].timer.starttime
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*00:00:00*` | Start time in H:M:S format. | 00:00:00 |
+
+#### questions.pages[page].sets[i].timer.persist
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*true*` | Timer will continue to be visible and count even after the set has been changed, until another timer is set or the end of the application is reached. | N/A |
+| `*false*` | Default value. Timer will reset and disappear when set changes. | N/A |
+
+#### questions.pages[page].sets[i].timer.remove
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*true*` | Removes a persistent set timer without replacing it. If included, no other timer options will be applied. | N/A |
 
 
 ## Conditions
@@ -906,7 +868,7 @@ Every participant will be assigned one and only one condition for the duration o
 
 #### conditions[i].pages
 
-	"pages": -[]- -[[]]-
+	"pages": *[]* *[[]]*
 
 An array or nested array of the page numbers to be included in the condition, in the order in which they will be shown to participants assigned this condition. Required. The first page of the application is designated `1`, the second `2`, etc. If given an empty array (`[]`), all pages of the application will be presented to participants assigned the condition. If given a nested array, only pages within inner array(s) will be randomized. For example, given:
 
@@ -918,7 +880,7 @@ An array or nested array of the page numbers to be included in the condition, in
 
 #### conditions[i].weight
 
-	-"weight"-: number between 0 and 1
+	*"weight"*: number between 0 and 1
 
 A weight that determines the frequency with which the condition is assigned.
 
@@ -926,8 +888,6 @@ A weight that determines the frequency with which the condition is assigned.
 | :------------: | :----------- | :------------------- |
 | `number between 0 and 1` | All condition weights must sum to 1. | If weights are not included, the conditions will be randomly assigned with equal frequency for each. |
 
-
-<!-- Whether to randomize the order in which pages of the condition are displayed. Optional; default is `false`. If set to `true` and `pages` is a single-level array, all pages included in the condition will be shown in random order. If set to `true` and `pages` is a nested array, only those pages listed in the inner array(s) will be shown in random order. For example: -->
 
 ## Param
 ###Filename: param.php
@@ -964,7 +924,7 @@ To interact with a database, the following variables must be included in param.p
 
 #### $dbtype
 
-	$dbtype = -'cubrid'- -'dblib'- -'firebird'- -'ibm'- -'informix'- -'mysql'- -'oci'- -'odbc'- -'pgsql'- -'sqlite'- -'sqlsrv'- -'4d'-;
+	$dbtype = *'cubrid'* *'dblib'* *'firebird'* *'ibm'* *'informix'* *'mysql'* *'oci'* *'odbc'* *'pgsql'* *'sqlite'* *'sqlsrv'* *'4d'*;
 
 The type of database. The database types listed above are supported. See [this page](http://php.net/manual/en/pdo.drivers.php) for more information on PHP database drivers.
 
@@ -1041,3 +1001,11 @@ The subject line of the e-mail.
 	$message = 'Message';
 
 The content of the e-mail message. CSV files holding the participant data will be attached automatically.
+
+
+
+## Framework Architecture
+
+MapStudy is constructed with a modular architecture designed to allow for tremendous customization. The figure below shows an *approximate* graphical representation of the framework modules provided to explain the gist of how the framework is organized. The module stacking order based on the nested structure of module options in the config files (i.e., those modules on "top" are contained within the module immediately below them, which is contained within the module below that, etc.). With the exception of the Server module Note that this representation is approximate, and the structure it represents is subject to change; therefore it does not represent the full framework with complete precision or accuracy.
+
+<img src="img/architecture.png">

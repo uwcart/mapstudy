@@ -555,7 +555,7 @@
 			"file": "README.md",
 			"settings":
 			{
-				"buffer_size": 51611,
+				"buffer_size": 52449,
 				"line_ending": "Windows"
 			}
 		},
@@ -611,7 +611,7 @@
 			"file": "doc/README.md",
 			"settings":
 			{
-				"buffer_size": 62139,
+				"buffer_size": 54047,
 				"line_ending": "Windows"
 			}
 		}
@@ -640,6 +640,7 @@
 	},
 	"file_history":
 	[
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/README.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/data/tables.json",
 		"/C/Users/Carl/Downloads/README.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/setup/index.html",
@@ -766,8 +767,7 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/lib/leaflet/core/leaflet7/leaflet.0.7.3-src.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap1.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap.bak.js",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v7.md",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline.html"
+		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v7.md"
 	],
 	"find":
 	{
@@ -782,9 +782,11 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": false,
+		"case_sensitive": true,
 		"find_history":
 		[
+			"questions.",
+			"pages",
 			"optionTemplate",
 			"listTemplate",
 			"view.model.attributes.colorbrewer",
@@ -910,9 +912,7 @@
 			"name=",
 			"page-",
 			"q-section",
-			"q-section-",
-			"removeBlock",
-			"block"
+			"q-section-"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -920,6 +920,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"questions.pages[page].",
 			"listItemTemplate",
 			"button",
 			"colorScaleList",
@@ -1046,19 +1047,18 @@
 			"technique",
 			"spanParent",
 			"FilterLogicView",
-			"FilterSliderView",
-			"\"2008\", \"2009\""
+			"FilterSliderView"
 		],
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": false,
+		"whole_word": true,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 11,
 			"sheets":
 			[
 				{
@@ -1175,15 +1175,15 @@
 					"file": "README.md",
 					"settings":
 					{
-						"buffer_size": 51611,
+						"buffer_size": 52449,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1374,
-								1374
+								0,
+								52449
 							]
 						],
 						"settings":
@@ -1192,7 +1192,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 374.0,
+						"translation.y": 24387.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1237,8 +1237,8 @@
 						"selection":
 						[
 							[
-								42769,
-								42769
+								43303,
+								43303
 							]
 						],
 						"settings":
@@ -1248,7 +1248,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 26954.0,
+						"translation.y": 27054.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1364,15 +1364,15 @@
 					"file": "doc/README.md",
 					"settings":
 					{
-						"buffer_size": 62139,
+						"buffer_size": 54047,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1901,
-								1901
+								38587,
+								38587
 							]
 						],
 						"settings":
@@ -1381,7 +1381,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 700.0,
+						"translation.y": 17667.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
