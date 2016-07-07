@@ -648,6 +648,43 @@ Used to set page width.
 | `*true*` | Page takes up entire width of the content window in a one-column layout. Useful for informed consent pages, tutorial pages, and other pages that do not need to be accompanied by a map. | N/A |
 | `*false*` | Page does not take up entire with of the content window. | N/A |
 
+#### questions.pages[page].timer
+
+	*"timer"*: {
+		*"direction"*,
+		*"starttime"*,
+		*"persist"*,
+		*"remove"*
+	}
+
+Whether to include a timer for the page and timer options. If `"timer"` is included, a timer will appear in the page header and count up or down until the next page or until replaced by another timer.
+
+#### questions.pages[page].timer.direction
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*up*` |  Default value. Timer will count up. | N/A |
+| `*down*` | Timer will count down. Once countdown reaches zero, the next page will be triggered. | N/A |
+
+#### questions.pages[page].timer.starttime
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*00:00:00*` |  Start time in H:M:S format. | 00:00:00 |
+
+#### questions.pages[page].timer.persist
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*true*` |  Timer will continue to be visible and count even after the page has been changed, until another timer is set or the end of the application is reached. | N/A |
+| `*false*` | Default value. Timer will reset and disappear when page changes. | N/A |
+
+#### questions.pages[page].timer.remove
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*true*` | Removes a persistent page timer without replacing it. If included, no other timer options will be applied. | N/A |
+
 #### questions.pages[page].sets
 
 	"sets": [

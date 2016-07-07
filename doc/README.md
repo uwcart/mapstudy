@@ -846,6 +846,7 @@ Whether to include a timer for the set and timer options. If `"timer"` is includ
 | `*true*` | Removes a persistent set timer without replacing it. If included, no other timer options will be applied. | N/A |
 
 
+
 ## Conditions
 ###Filename: conditions.json
 
