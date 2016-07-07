@@ -252,6 +252,110 @@ var ButtonView = Backbone.View.extend({
 	}
 });
 
+/******************* timer *********************/
+
+var TimerModel = Backbone.Model.extend({
+	defaults: {
+		level: 'set',
+		direction: 'up',
+		starttime: '00:00:00',
+		persist: false,
+		remove: false
+	}
+});
+
+var TimerView = Backbone.View.extend({
+	interval: function(view){
+		//get starting time
+		var st = view.$el.html().split(':'),
+			h = parseInt(st[0]),
+			m = parseInt(st[1]),
+			s = parseInt(st[2]),
+			nt = '';
+		if (view.model.get('direction') == 'up'){
+			//count up
+			if (s < 59){
+				s++;
+			} else {
+				s = 0;
+				if (m < 59){
+					m++;
+				} else {
+					m = 0;
+					if (h < 99){
+						h++
+					} else {
+						h = 0;
+					};
+				};
+			};	
+		} else {
+			//count down
+			if (s > 0){
+				s--;
+			} else {
+				s = 59;
+				if (m > 0){
+					m--;
+				} else {
+					m = 59;
+					if (h > 0){
+						h--;
+					} else {
+						h = 99;
+					}
+				}
+			}
+		};
+		//if countdown gets to 0, trigger next
+		if (h == 99){
+			view.removeTimer();
+			view.model.get('level') == "page" ? document.trigger('>>') : document.trigger('nextset');
+			return false;
+		};
+		//set new time
+		[h, m, s].forEach(function(d, i){
+			nt += d < 10 ? '0' + String(d) : String(d);
+			nt += i < 2 ? ':' : '';
+		});
+		view.$el.html(nt);
+	},
+	removeTimer: function(){
+		var level = this.model.get('level');
+		if (document.hasOwnProperty(level+'Timer')){
+			window.clearInterval(document[level+'Timer']);
+			delete document[level+'Timer'];
+		};
+		this.$el.empty();
+	},
+	setTimer: function(){
+		var level = this.model.get('level'),
+			view = this;
+		this.$el.html(this.model.get('starttime'));
+		document[level+'Timer'] = window.setInterval(function(){
+			view.interval(view);
+		}, 1000);
+
+		//remove timer on next or back if not persistent
+		if (level == 'set' && !this.model.get('persist')){
+			document.once('set>> set<< >> <<', this.removeTimer, this);
+		} else if (!this.model.get('persist')){
+			document.once('>> <<', this.removeTimer, this);
+		};
+	},
+	render: function(){
+		//clear any previous timers
+		this.removeTimer();
+		//set new timer unless instructed otherwise
+		if (!this.model.get('remove')){
+			this.setTimer();
+		};
+	},
+	initialize: function(){
+		this.setElement('#'+this.model.get('level')+'-timer');
+	}
+});
+
 /******************** data *********************/
 
 var Data = Backbone.Model.extend({
@@ -359,6 +463,14 @@ var Questions = Backbone.View.extend({
 		if (qset.hasOwnProperty('buttons') && qset.buttons.length > 0){
 			this.renderButtons(qset.buttons);
 		};
+		//set timer
+		if (qset.hasOwnProperty('timer')){
+			var timerOptions = _.extend({level: 'set'}, qset.timer),
+				timerModel = new TimerModel(timerOptions),
+				timerView = new TimerView({model: timerModel});
+			timerView.render();
+		};
+		document.on('nextset', this.next, this);
 	},
 	addData: function(input){
 		var askText = $('[name='+input.name+']').parents('.block').find('.ask').html(),
@@ -414,6 +526,7 @@ var Questions = Backbone.View.extend({
 			//render the next set or page
 			_set++;
 			if (_set < this.model.get('sets').length){
+				document.trigger('set>>');
 				this.render();
 			} else {
 				document.trigger('>>');
@@ -425,6 +538,7 @@ var Questions = Backbone.View.extend({
 		//render the previous set or page
 		_set--;
 		if (_set > -1){
+			document.trigger('set<<');
 			this.render();
 		} else {
 			document.trigger('<<');
@@ -468,6 +582,14 @@ function setQuestions(options){
 		questions.model = page;
 		questions.resize(questions);
 		questions.render();
+
+		//set page timer
+		if (page.attributes.hasOwnProperty('timer')){
+			var timerOptions = _.extend({level: 'page'}, page.get('timer')),
+				timerModel = new TimerModel(timerOptions),
+				timerView = new TimerView({model: timerModel});
+			timerView.render();
+		};
 	};
 
 	document.trigger('ready');

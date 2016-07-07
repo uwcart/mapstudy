@@ -459,7 +459,7 @@ The URL of a [raster tile layer](http://leafletjs.com/reference.html#tilelayer) 
 
 For a Leaflet map, the standard URL format is `"http://{s}.domain.com/tiles/{z}/{x}/{y}.png"` where `{s}` is a variable standing for the server instance, `{z}` stands for the zoom level, `{x}` stands for the left-to-right horizontal tile coordinate, and `{y}` stands for the top-to-bottom vertical tile coordinate. Check for specifics of the tileset you want to use by viewing a single tile as an image in a browser and noting the contents of the URL bar.
 
-For a D3 map, the `source` URL should point to a TopoJSON or GeoJSON file containing the geometry to be mapped. Alternatively, the value of `source` can be a string containing `"postgis:"` and the name of the table in a PostGIS database (with no space after the colon). In the latter case, PostgreSQL database connection parameters must be added to the *params.php* config file. The geometry will be added to the map as [data](https://github.com/mbostock/d3/wiki/Selections#data) to allow for individualized feature styles, and drawn as SVG paths.
+For a D3 map, the `source` URL should point to a TopoJSON or GeoJSON file containing the geometry to be mapped. Alternatively, the value of `source` can be a string containing `"postgis:"` and the name of the table in a PostGIS database (with no space after the colon). In the latter case, PostgreSQL database connection parameters must be added to the *database.php* config file. The geometry will be added to the map as [data](https://github.com/mbostock/d3/wiki/Selections#data) to allow for individualized feature styles, and drawn as SVG paths.
 
 For a Mapbox-GL map, `source` is optional and may be a raster tileset URL, a vector tileset URL, a TopoJSON or GeoJSON file, or a PostGIS table. If included, it will be used to add a [data source](https://www.mapbox.com/mapbox-gl-style-spec/#sources) to the styles object.
 
@@ -521,7 +521,7 @@ The name of the data layer; a string. If `overlay` is included in the `interacti
 
 		"source": *layer data URL* *"postgis:"+table name*
 
-A URL string pointing to a TopoJSON or GeoJSON file containing the data to be mapped, or the string "postgis:" followed by the name of a PostGIS table from which to retrieve the data (with no space after the colon). In the latter case, PostgreSQL database connection parameters must be added to the *params.php* config file.
+A URL string pointing to a TopoJSON or GeoJSON file containing the data to be mapped, or the string "postgis:" followed by the name of a PostGIS table from which to retrieve the data (with no space after the colon). In the latter case, PostgreSQL database connection parameters must be added to the *database.php* config file.
 
 The data should include feature geometries with *unprojected* WGS-84 coordinates. Feature geometries must be polygons unless creating a proportional symbol or isarithmic layer, and must be points if creating an isarithmic layer. The data must include at least one numerical attribute in each feature's `properties` object. Including feature names and IDs in the `properties` is encouraged, as these will generally be useful to show in pop-ups if the `retrieve` interaction is included.
 
@@ -651,53 +651,47 @@ Used to set page width.
 #### questions.pages[page].timer
 
 	*"timer"*: {
-		*position*,
-		*direction*,
-		*persist*
+		*"direction"*,
+		*"starttime"*,
+		*"persist"*,
+		*"remove"*
 	}
 
-Whether to include a timer for the page and timer options. If `"timer"` is included, a timer will appear on the page and count up or down until the next page or until replaced by another timer.
-
-#### questions.pages[page].timer.position
-
-| Value  | Description | Default |
-| :------------: | :----------- | :------------------- |
-| `*header*` |  Default value. Timer will appear in the center of the page header element, if one is included.
-| N/A |
-| `*footer*` | Timer will appear in the center of the page footer element, if one is included.
-| N/A |
+Whether to include a timer for the page and timer options. If `"timer"` is included, a timer will appear in the page header and count up or down until the next page or until replaced by another timer.
 
 #### questions.pages[page].timer.direction
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `*up*` |  Default value. Timer will count up.
-| N/A |
-| `*down*` | Timer will count down.
-| N/A |
+| `*up*` |  Default value. Timer will count up. | N/A |
+| `*down*` | Timer will count down. Once countdown reaches zero, the next page will be triggered. | N/A |
 
 #### questions.pages[page].timer.starttime
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `*00:00:00*` |  Start time in H:M:S format. 00:00:00 by default.
-| N/A |
+| `*00:00:00*` |  Start time in H:M:S format. | 00:00:00 |
 
 #### questions.pages[page].timer.persist
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `*true*` |  Timer will continue to be visible and count even after the page has been changed, until another timer is set or the end of the application is reached.
-| N/A |
-| `*false*` | Default value. Timer will reset and disappear when page changes.
-| N/A |
+| `*true*` |  Timer will continue to be visible and count even after the page has been changed, until another timer is set or the end of the application is reached. | N/A |
+| `*false*` | Default value. Timer will reset and disappear when page changes. | N/A |
+
+#### questions.pages[page].timer.remove
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*true*` | Removes a persistent page timer without replacing it. If included, no other timer options will be applied. | N/A |
 
 #### questions.pages[page].sets
 
 	"sets": [
 		{
 			"blocks": [],
-			"buttons": []
+			"buttons": [],
+			"timer: {}"
 		}
 	]
 
@@ -813,6 +807,43 @@ Buttons that should be included at the bottom of the question set, below all of 
 | `*"back"*` | Takes the user to the previous question set, or to the previous page if the beginning of the `sets` array has been reached. | Example back |
 | `*"save"*` | Saves the participant's answers and position in the survey, enabling them to complete the survey at a later time; for this button to work, a database must be set up and working database parameters included in the *params.php* config file. | Example save |
 | `*"submit"*` | Submits the participant's answers, either via e-mail or to the database depending on the content of *params.php*, **and** takes the participant to the next page (which may or may not be the final page of the survey). | Example submit |
+
+#### questions.pages[page].sets[i].timer
+
+	*"timer"*: {
+		*"direction"*,
+		*"starttime",
+		*"persist"*,
+		*"remove"*
+	}
+
+Whether to include a timer for the set and timer options. If `"timer"` is included, a timer will appear in the page header and count up or down until the next set or until replaced by another timer.
+
+#### questions.pages[page].sets[i].timer.direction
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*up*` | Default value. Timer will count up. | N/A |
+| `*down*` | Timer will count down. Once the countdown reaches zero, the next set will be triggered. | N/A |
+
+#### questions.pages[page].sets[i].timer.starttime
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*00:00:00*` | Start time in H:M:S format. | 00:00:00 |
+
+#### questions.pages[page].sets[i].timer.persist
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*true*` | Timer will continue to be visible and count even after the set has been changed, until another timer is set or the end of the application is reached. | N/A |
+| `*false*` | Default value. Timer will reset and disappear when set changes. | N/A |
+
+#### questions.pages[page].sets[i].timer.remove
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*true*` | Removes a persistent set timer without replacing it. If included, no other timer options will be applied. | N/A |
 
 
 ## Conditions

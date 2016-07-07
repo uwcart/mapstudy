@@ -128,7 +128,7 @@
 					"set": 2,
 					"blocks": [
 						{
-							"title": "This is the second set of Page 2.",
+							"title": "This is the second set of Page 2. Note the countdown timer up top.",
 							"ask": "How far were you catapulted?",
 							"description": "aaaaaaaaaaaaaaaah!",
 							"input": {
@@ -170,7 +170,11 @@
 					"buttons": [
 						"back",
 						"next"
-					]
+					],
+					"timer": {
+						"direction": "down",
+						"starttime": "00:00:30"
+					}
 				}
 			]
 		},
@@ -181,7 +185,7 @@
 					"blocks": [
 						{
 							"title": "A paragraph question for Page 3, Set 1",
-							"ask": "This is Page 3. The order of pages 3 and 4 has been randomized.",
+							"ask": "This is Page 3. The order of pages 3 and 4 has been randomized. This page has a page timer that counts up. It will count until the next page is triggered.",
 							"input": {
 								"type": "paragraph"
 							}
@@ -208,7 +212,8 @@
 						"save"
 					]
 				}
-			]
+			],
+			"timer": {}
 		},
 		{
 			"page": 4,
