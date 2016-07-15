@@ -2097,11 +2097,13 @@ var LeafletMap = Backbone.View.extend({
 				leafletView.trigger('retrieve');
 			};
 			controlView.addInteraction = function(){
-				//close any hidden-but-open popups
-				map.closePopup();
-				$('.leaflet-popup-pane').show();
 				$('.leaflet-interactive').removeAttr('style');
-				map.on('popupopen', triggerRetrieve);
+				if (controlView.popups){
+					//close any hidden-but-open popups
+					map.closePopup();
+					$('.leaflet-popup-pane').show();
+					map.on('popupopen', triggerRetrieve);
+				};
 			};
 			controlView.removeInteraction = function(){
 				$('.leaflet-popup-pane').hide();
@@ -2135,6 +2137,9 @@ var LeafletMap = Backbone.View.extend({
 				//add retrieve-control-container class to allow popup pane show/hide
 				var popupPane = $('.leaflet-popup-pane');
 				popupPane.attr('class', popupPane.attr('class') + ' retrieve-control-container');
+				controlView.popups = true;
+			} else {
+				controlView.popups = false;
 			};
 			return controlView;
 		},

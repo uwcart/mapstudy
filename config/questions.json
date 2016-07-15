@@ -100,9 +100,10 @@
 						{
 							"title": "Swallow Type",
 							"ask": "African or European?",
+							"description": "Select an answer to move to the next set...",
 							"input": {
-								"required": true,
 								"type": "radios",
+								"autoadvance": true,
 								"options": [
 									{
 										"text": "African"
@@ -119,11 +120,9 @@
 						}
 					],
 					"buttons": [
-						"next",
 						"back",
 						"save"
-					],
-					"autoadvance": true
+					]
 				},
 				{
 					"set": 2,

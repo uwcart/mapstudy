@@ -750,6 +750,17 @@ Whether the participant must provide input before moving to the next set.
 | `*true*` | Participant must provide input to move to next set. | `false` |
 
 
+#### questions.pages[page].sets[i].blocks[ii].input.autoadvance
+
+	*"autoadvance"*: *true* *false*
+
+Whether to advance to the next set when the user makes an input choice. Only available for `radios`, `dropdown`, and `matrix` input types. *This option should only be used on the last input in a set, and renders a `next` button superfluous.*
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |:---------------|
+| `*true*` | Advance to next set when user makes a choice. Overrides and sets `required` to `true`. | `false` |
+
+
 #### questions.pages[page].sets[i].blocks[ii].input.type
 
 	"type": *"text"* *"paragraph"* *"checkboxes"* *"radios"* *"dropdown"* *"matrix"* *"rank"*
