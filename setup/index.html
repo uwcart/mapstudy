@@ -174,6 +174,11 @@
                 table-layout: fixed;
             }
 
+            .i-section table, .i-section th, .i-section td {
+                text-align: left;
+                padding: 0 10px 0 0;
+            }
+
             .bigtext {
                 font-size: 1.2em;
             }
@@ -399,25 +404,73 @@
                                         <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom"> Zoom
                                     </p>
                                     <div class="zoom i-section">
-                                        <div>Interface options:</div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom.interface.touch" checked> Touch
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom.interface.scrollWheel" checked> Scroll wheel
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom.interface.doubleClick" checked> Double click
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom.interface.box" checked> Box
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom.interface.keyboard" checked> Keyboard
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.zoom.interface.widget" checked> Widget
-                                        </div>
+                                        <table>
+                                            <tr>
+                                                <th>on</th>
+                                                <th>off</th>
+                                                <th>Interface options</th>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.zoom.interface.touch" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.zoom.interface.touch" value="false">
+                                                </td>
+                                                <td>
+                                                    Touch
+                                                </td>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.zoom.interface.scrollWheel" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.zoom.interface.scrollWheel" value="false">
+                                                </td>
+                                                <td>
+                                                    Scroll wheel
+                                                </td>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.zoom.interface.doubleClick" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.zoom.interface.doubleClick" value="false">
+                                                </td>
+                                                <td>
+                                                    Double click
+                                                </td>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.zoom.interface.box" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.zoom.interface.box" value="false">
+                                                </td>
+                                                <td>
+                                                    Box
+                                                </td>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.zoom.interface.keyboard" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.zoom.interface.keyboard" value="false">
+                                                </td>
+                                                <td>
+                                                    Keyboard
+                                                </td>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.zoom.interface.widget" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.zoom.interface.widget" value="false">
+                                                </td>
+                                                <td>
+                                                    Widget
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
 
@@ -426,16 +479,43 @@
                                         <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.pan"> Pan
                                     </p>
                                     <div class="pan i-section">
-                                        <div>Interface options:</div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.pan.interface.drag" checked> Drag
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.pan.interface.keyboard" checked> Keyboard
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.pan.interface.widget" checked> Widget
-                                        </div>
+                                        <table>
+                                            <tr>
+                                                <th>on</th>
+                                                <th>off</th>
+                                                <th>Interface options</th>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.pan.interface.drag" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.pan.interface.drag" value="false">
+                                                </td>
+                                                <td>
+                                                    Drag
+                                                </td>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.pan.interface.keyboard" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.pan.interface.keyboard" value="false">
+                                                </td>
+                                                <td>
+                                                    Keyboard
+                                                </td>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.pan.interface.widget" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.pan.interface.widget" value="false">
+                                                </td>
+                                                <td>
+                                                    Widget
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
                                 
@@ -451,13 +531,33 @@
                                         <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.retrieve"> Retrieve
                                     </p>
                                     <div class="retrieve i-section">
-                                        <div>Interface options:</div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.retrieve.interface.popup" checked> Popups
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.retrieve.interface.window" checked> Window
-                                        </div>
+                                        <table>
+                                            <tr>
+                                                <th>on</th>
+                                                <th>off</th>
+                                                <th>Interface options</th>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.retrieve.interface.popup" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.retrieve.interface.popup" value="false">
+                                                </td>
+                                                <td>
+                                                    Popups
+                                                </td>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.retrieve.interface.window" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.retrieve.interface.window" value="false">
+                                                </td>
+                                                <td>
+                                                    Window
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
                                 
@@ -528,15 +628,43 @@
                                         <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.resymbolize"> Resymbolize
                                     </p>
                                     <div class="resymbolize i-section">
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.resymbolize.reclassify" checked> Reclassify
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.resymbolize.rescale" checked> Rescale
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" name="map.pages.<%= pagenum %>.interactions.resymbolize.recolor" checked> Recolor
-                                        </div>
+                                        <table>
+                                            <tr>
+                                                <th>on</th>
+                                                <th>off</th>
+                                                <th>Options</th>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.resymbolize.reclassify" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.resymbolize.reclassify" value="false">
+                                                </td>
+                                                <td>
+                                                    Reclassify
+                                                </td>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.resymbolize.rescale" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.resymbolize.rescale" value="false">
+                                                </td>
+                                                <td>
+                                                    Rescale
+                                                </td>
+                                            </tr><tr>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.resymbolize.recolor" value="true" checked>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="map.pages.<%= pagenum %>.interactions.resymbolize.recolor" value="false">
+                                                </td>
+                                                <td>
+                                                    Recolor
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
