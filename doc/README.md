@@ -164,6 +164,16 @@ Whether the interaction should be logged. Available for each interaction.
 | :------------: | :----------- | :------------------- |
 | `*true*` | If `true`, interactions will be logged. | `false` |
 
+#### map.interactions.[interaction].switch
+
+			*"switch"*: *true* *false*
+
+Whether to add a switch for toggling the interaction to the top toolbar on the map. Available for each interaction.
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*true*` | If `true`, interaction switch will be added and the interaction will be "off" by default. If `false`, the interaction will always be "on". | `false` |
+
 
 #### map.interactions.zoom
 
@@ -691,7 +701,8 @@ Whether to include a timer for the page and timer options. If `"timer"` is inclu
 		{
 			"blocks": [],
 			"buttons": [],
-			"timer: {}"
+			"timer: {}",
+			"autoadvance"
 		}
 	]
 
@@ -844,6 +855,12 @@ Whether to include a timer for the set and timer options. If `"timer"` is includ
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
 | `*true*` | Removes a persistent set timer without replacing it. If included, no other timer options will be applied. | N/A |
+
+#### questions.pages[page].sets[i].autoadvance
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*true*` | Advances to next set after user interacts with last input in set. | N/A |
 
 
 

@@ -2,22 +2,26 @@
 	"pages": [
 		{},
 		{
-			"page": 1,
+			"page": 2,
 			"library": "Leaflet",
 			"interactions": {
 				"retrieve": {
 					"logging": true,
 					"interface": {
-						"popup": false
+						"window": false
 					}
 				},
 				"pan": {
 					"logging": true,
-					"interface": {}
+					"interface": {
+						"widget": false
+					}
 				},
 				"zoom": {
 					"logging": true,
-					"interface": {}
+					"interface": {
+						"widget": false
+					}
 				},
 				"overlay": {
 					"logging": true,

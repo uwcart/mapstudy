@@ -39,21 +39,23 @@ var CheckboxesInputView = TextInputView.extend({
 		//get or create item label
 		var label = item.hasOwnProperty('label') && item.label.length > 0 ? item.label.substring(0,20) : this.model.get('label')+"i"+(i+1);
 		//append item input
-		this.$el.find('.input').append(this.template({
+		this.$el.find('.input-items').append(this.template({
 			label: label,
 			text: item.text,
 			value: i+1
 		}));
 	},
 	render: function(){
-		this.$el.append('<div class="input">');
+		this.$el.append('<div class="input-items">');
 		var items = this.model.get('items');
 		_.each(items, this.appendItem, this);
 		this.required();
 		this.$el.find('input').click(function(){
 			if (!$(this).is(':checked')){
-				_options.attributes.data[$(this).attr('name')].value = '';
-				_options.attributes.data[$(this).attr('name')].tmsp = Date.now();
+				_options.attributes.data[$(this).attr('name')] = {
+					value: '',
+					tmsp: Date.now()
+				};
 			};			
 		});
 	}
@@ -63,21 +65,22 @@ var RadiosInputView = CheckboxesInputView.extend({
 	template: _.template( $('#radio-input-template').html() ),
 	appendInputDiv: function(option,i){
 		var inputDivTemplate = _.template( $('#input-div-template').html() );
-		this.$el.append(inputDivTemplate({className: String(i)}));
+		this.$el.find('.radio-input').append(inputDivTemplate({className: String(i)}));
 	},
 	appendOption: function(option, i, label){
 		option.value = option.hasOwnProperty('value') && option.value.length > 0 ? option.value : option.text;
 		label = label || this.model.get('label');
-		this.$el.find('.input.'+i).append(this.template({
+		this.$el.find('.input-item.'+i).append(this.template({
 			label: label,
 			text: option.text,
 			value: option.value
 		}));
 	},
 	appendOptionText: function(option,i){
-		this.$el.find('.input.'+i).append(option.text);
+		this.$el.find('.input-item.'+i).append(option.text);
 	},
 	render: function(){
+		this.$el.append('<div class="input radio-input">');
 		var options = this.model.get('options');
 		_.each(options, function(option, i){
 			this.appendInputDiv(option, i);
@@ -161,11 +164,11 @@ var RankInputView = CheckboxesInputView.extend({
 		});
 	},
 	render: function(){
-		this.$el.append('<div class="input">');
+		this.$el.append('<div class="input-items input">');
 		var items = this.model.get('items');
 		_.each(items, this.appendItem, this);
 		//make input sortable
-		this.$el.find('.input').sortable({
+		this.$el.find('.input-items').sortable({
 			axis: "y",
 			containment: "parent"
 		});
@@ -426,6 +429,16 @@ var Questions = Backbone.View.extend({
 		//add each button
 		_.each(buttons, this.renderButton, this);
 	},
+	setAutoAdvance: function(){
+		//advance to next set a second after last input in set is clicked
+		var timeout = window.setTimeout(function(){},0);
+		this.$el.find('.input').last().click(function(){
+			window.clearTimeout(timeout);
+			timeout = window.setTimeout(function(){
+				document.trigger('nextset');
+			}, 1000);
+		});
+	},
 	render: function(){
 		//erase current contents of questions section
 		this.$el.empty().append('<form>');
@@ -470,6 +483,11 @@ var Questions = Backbone.View.extend({
 				timerView = new TimerView({model: timerModel});
 			timerView.render();
 		};
+		//set auto-advance if included
+		if (qset.hasOwnProperty('autoadvance') && qset.autoadvance){
+			this.setAutoAdvance();
+		};
+		//set next listener
 		document.on('nextset', this.next, this);
 	},
 	addData: function(input){

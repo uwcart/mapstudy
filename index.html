@@ -257,21 +257,25 @@
         </script>
 
         <script type="text/template" id="text-input-template">
-            <input type="text" name="<%= label %>">
+            <div class="input">
+                <input type="text" name="<%= label %>">
+            </div>
         </script>
 
         <script type="text/template" id="paragraph-input-template">
-            <textarea rows="4" name="<%= label %>"></textarea>
+            <div class="input">
+                <textarea rows="4" name="<%= label %>"></textarea>
+            </div>
         </script>
 
         <script type="text/template" id="checkbox-input-template">
-            <div class="<%= label %>">
+            <div class="input <%= label %>">
                 <input type="checkbox" value="1" name="<%= label %>"><span class="item"><%= text %></span>
             </div>
         </script>
 
         <script type="text/template" id="input-div-template">
-            <div class="input <%= className %>"></div>
+            <div class="input-item <%= className %>"></div>
         </script>
 
         <script type="text/template" id="radio-input-template">
@@ -289,7 +293,7 @@
         </script>
 
         <script type="text/template" id="matrix-item-text-template">
-            <tr class="input <%= className %>"><td><%= text %></td></tr>
+            <tr class="input input-item <%= className %>"><td><%= text %></td></tr>
         </script>
 
         <script type="text/template" id="matrix-input-template">

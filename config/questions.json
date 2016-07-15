@@ -122,7 +122,8 @@
 						"next",
 						"back",
 						"save"
-					]
+					],
+					"autoadvance": true
 				},
 				{
 					"set": 2,

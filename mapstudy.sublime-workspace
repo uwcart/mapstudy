@@ -523,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 16041,
+				"buffer_size": 16264,
 				"line_ending": "Windows"
 			}
 		},
@@ -547,7 +547,7 @@
 			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 10992,
+				"buffer_size": 11225,
 				"line_ending": "Windows"
 			}
 		},
@@ -555,7 +555,7 @@
 			"file": "README.md",
 			"settings":
 			{
-				"buffer_size": 52449,
+				"buffer_size": 56160,
 				"line_ending": "Windows"
 			}
 		},
@@ -587,7 +587,7 @@
 			"file": "js/modules/q-section.js",
 			"settings":
 			{
-				"buffer_size": 14260,
+				"buffer_size": 17673,
 				"line_ending": "Windows"
 			}
 		},
@@ -608,10 +608,26 @@
 			}
 		},
 		{
+			"file": "config/styles.json",
+			"settings":
+			{
+				"buffer_size": 338,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "config/questions.json",
+			"settings":
+			{
+				"buffer_size": 5938,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "doc/README.md",
 			"settings":
 			{
-				"buffer_size": 54047,
+				"buffer_size": 55790,
 				"line_ending": "Windows"
 			}
 		}
@@ -782,9 +798,30 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": true,
+		"case_sensitive": false,
 		"find_history":
 		[
+			".input",
+			"class=\"input",
+			"map.",
+			"map.json",
+			"questions.",
+			"questions.pages[page].sets[i].buttons",
+			"#### questions.pages[page].sets[i].buttons",
+			"console",
+			"set>>",
+			">>",
+			"timer.direction",
+			"nextset",
+			"next",
+			"TimerView",
+			"empty",
+			"_set",
+			"setQuestions",
+			"_page",
+			"header",
+			"I'm some credits",
+			"database.php",
 			"questions.",
 			"pages",
 			"optionTemplate",
@@ -891,28 +928,7 @@
 			"bdd",
 			"form",
 			"createBooleanDropdown",
-			"resortPages",
-			"change",
-			"condition-page",
-			"th",
-			"align: left",
-			"td class=",
-			"td",
-			"conditions",
-			"condition-add",
-			".page",
-			"createCondition",
-			"addDataLayer",
-			"dataLayer",
-			"Step",
-			"header",
-			".header",
-			"header",
-			"questions.page",
-			"name=",
-			"page-",
-			"q-section",
-			"q-section-"
+			"resortPages"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -920,6 +936,10 @@
 		"regex": false,
 		"replace_history":
 		[
+			"map.pages[page].",
+			"questions.pages[page].",
+			"questions.pages[page",
+			"params.php",
 			"questions.pages[page].",
 			"listItemTemplate",
 			"button",
@@ -1043,22 +1063,18 @@
 			"buttonCounts",
 			"this",
 			"dataLayerModels[i+a]",
-			"dataLayer.techniques[0]",
-			"technique",
-			"spanParent",
-			"FilterLogicView",
-			"FilterSliderView"
+			"dataLayer.techniques[0]"
 		],
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 11,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -1066,15 +1082,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 16041,
+						"buffer_size": 16264,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10280,
-								10293
+								13282,
+								13282
 							]
 						],
 						"settings":
@@ -1084,7 +1100,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4154.0,
+						"translation.y": 1054.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1147,15 +1163,15 @@
 					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 10992,
+						"buffer_size": 11225,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5869,
-								5869
+								6869,
+								6875
 							]
 						],
 						"settings":
@@ -1165,7 +1181,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 7088.0,
+						"translation.y": 8594.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1175,15 +1191,15 @@
 					"file": "README.md",
 					"settings":
 					{
-						"buffer_size": 52449,
+						"buffer_size": 56160,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								52449
+								39205,
+								39205
 							]
 						],
 						"settings":
@@ -1192,7 +1208,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 24387.0,
+						"translation.y": 17587.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1237,8 +1253,8 @@
 						"selection":
 						[
 							[
-								43303,
-								43303
+								100017,
+								100017
 							]
 						],
 						"settings":
@@ -1248,7 +1264,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 27054.0,
+						"translation.y": 58674.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1285,24 +1301,25 @@
 					"file": "js/modules/q-section.js",
 					"settings":
 					{
-						"buffer_size": 14260,
+						"buffer_size": 17673,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10308,
-								10308
+								2460,
+								2460
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 6662.0,
+						"translation.y": 1194.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1361,18 +1378,73 @@
 				},
 				{
 					"buffer": 11,
-					"file": "doc/README.md",
+					"file": "config/styles.json",
 					"settings":
 					{
-						"buffer_size": 54047,
+						"buffer_size": 338,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								38587,
-								38587
+								253,
+								253
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "config/questions.json",
+					"settings":
+					{
+						"buffer_size": 5938,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3068,
+								3068
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2383.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "doc/README.md",
+					"settings":
+					{
+						"buffer_size": 55790,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								47005,
+								47005
 							]
 						],
 						"settings":
@@ -1381,7 +1453,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 17667.0,
+						"translation.y": 21687.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
