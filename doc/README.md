@@ -130,13 +130,13 @@ In the descriptions below, `map` refers to each object in the map.json `pages` a
 		]
 	}
 
-#### map.library
+#### map.pages[page].library
 
 	"library": *"Leaflet"* *"Mapbox-GL"* *"D3"* *"image"* *"REST"* *"iframe"*
 
 The web mapping library or service to use to create the map. Currently only supports `Leaflet`.
 
-#### map.interactions
+#### map.pages[page].interactions
 
 	"interactions": {
 		*"zoom"*
@@ -154,7 +154,7 @@ The web mapping library or service to use to create the map. Currently only supp
 
 An object containing the interactions that should be enabled on the map. Each interaction in turn references an object designating whether the interaction should be logged and options for its implementation.
 
-#### map.interactions.[interaction].logging
+#### map.pages[page].interactions[interaction].logging
 
 			*"logging"*: *true* *false*
 
@@ -164,9 +164,9 @@ Whether the interaction should be logged. Available for each interaction.
 | :------------: | :----------- | :------------------- |
 | `*true*` | If `true`, interactions will be logged. | `false` |
 
-#### map.interactions.[interaction].switch
+#### map.pages[page].interactions[interaction].toggle
 
-			*"switch"*: *true* *false*
+			*"toggle"*: *true* *false*
 
 Whether to add a switch for toggling the interaction to the top toolbar on the map. Available for each interaction.
 
@@ -174,8 +174,7 @@ Whether to add a switch for toggling the interaction to the top toolbar on the m
 | :------------: | :----------- | :------------------- |
 | `*true*` | If `true`, interaction switch will be added and the interaction will be "off" by default. If `false`, the interaction will always be "on". | `false` |
 
-
-#### map.interactions.zoom
+#### map.pages[page].interactions.zoom
 
 		*"zoom"*: { *"logging"* *"interface"* }
 
@@ -183,7 +182,7 @@ Zoom interaction. Must be included to allow the user to change the zoom level/sc
 If an empty object, `logging` is considered to be `false`.
 
 
-#### map.interactions.zoom.interface
+#### map.pages[page].interactions.zoom.interface
 
 		*"interface"*: {
 			*"touch": `false`*
@@ -205,13 +204,13 @@ How to implement zoom. All default to `true`; add only to disable an interface o
 | `*"keyboard"*` | Enables zooming with the + and - keys on a keyboard; it is recommended to keep this option `true` for accessibility. | `true` |
 | `*"widget"*` | Implements a zoom widget with + and - buttons in the lower-left corner of the map. | `true` |
 
-#### map.interactions.pan
+#### map.pages[page].interactions.pan
 
 		*"pan"*: { *"logging"* *"interface"* }
 
 Pan interaction. Must be included to allow the user to change map center by dragging the map.
 
-#### map.interactions.pan.interface
+#### map.pages[page].interactions.pan.interface
 
 		*"interface"*: {
 			*"drag": `false`*
@@ -227,19 +226,19 @@ How to implement pan. All default to `true`; add only to disable an interface op
 | `*"keyboard"*` | Enables panning using the arrow keys of a keyboard; it is recommended to keep this option `true` for accessibility. | `true` |
 | `*"widget"*` | Implements a pan widget with arrow buttons in the lower-left corner of the map. | `true` |
 
-#### map.interactions.rotate
+#### map.pages[page].interactions.rotate
 
 		*"rotate"*: { *"logging"* }
 
 Rotate interaction. Allows the user to rotate the map. Only available with Mapbox-GL and D3 libraries.
 
-#### map.interactions.retrieve
+#### map.pages[page].interactions.retrieve
 
 		*"retrieve"*: { *"logging"* *"interface"* }
 
 Retrieve interaction. Allows the user to get information about features through a popup and/or window.
 
-#### map.interactions.retrieve.interface
+#### map.pages[page].interactions.retrieve.interface
 
 		*"interface"*: {
 			*"popup": `false`*
@@ -254,49 +253,49 @@ How to implement retrieve. All default to `true`; add only to disable an interfa
 | `*"window"*` | Implements a widget-like information window in the lower-left corner of the map where information about each feature is displayed when the feature is clicked on. | `true` |
 
 
-#### map.interactions.overlay
+#### map.pages[page].interactions.overlay
 
 		*"overlay"*: { *"logging"* "dataLayers" }
 
 Overlay interaction. Must be included to allow the user to add or remove data layers on the map. Must include a list of `dataLayers` for which to enable the interaction.
 
-#### map.interactions.overlay.dataLayers
+#### map.pages[page].interactions.overlay.dataLayers
 
 		"dataLayers": []
 
 An array containing the names of `dataLayers` to allow users to add and remove with a layers control. Required. Each data layer will be represented by a checkbox in the layers control, allowing any number of included layers to be added or removed.
 
-#### map.interactions.underlay
+#### map.pages[page].interactions.underlay
 
 		*"underlay"*: { *"logging"* }
 
 Underlay interaction. Must be included to allow the user to change base layers on the map. If included, the names of all `baseLayers` will be shown with radio buttons in a layers control. Only one base layer can appear on the map at a time.
 
-#### map.interactions.search
+#### map.pages[page].interactions.search
 
 		*"search"*: { *"logging"* "dataLayers" }
 
 Search interaction. Creates a search box on the map.
 
-#### map.interactions.search.dataLayers
+#### map.pages[page].interactions.search.dataLayers
 
 			"dataLayers": []
 
 An array of the `dataLayers` to include in the search. Must have at least one value to enable searching.
 
-#### map.interactions.filter
+#### map.pages[page].interactions.filter
 
 		*"filter"*: { *"logging"* "dataLayers" *"tool"* }
 
 Filter interaction. Creates a filter tool on the map.
 
-#### map.interactions.filter.dataLayers
+#### map.pages[page].interactions.filter.dataLayers
 
 			"dataLayers": []
 
 An array of the `dataLayers` to include in the filter tool. Must have at least one value to enable filtering. Each data layer will have its own line in the filter tool.
 
-#### map.interactions.filter.tool
+#### map.pages[page].interactions.filter.tool
 
 			*"tool"*: *"slider"* *"logic"*
 
@@ -307,19 +306,19 @@ Which interface tool to use for filtering.
 | `*"slider"*` | Implements a slider with two handles as the filter tool. Data layers on map will respond immediately to user input. | `slider` |
 | `*"logic"*` | Implements a dropdown menu with "equal to", "not equal to", "greater than", and "less than" options, followed by a text box for user input, followed by a dropdown menu with blank, "and", and "or" options, followed by a repeat of the first dropdown and text box (e.g., "attribute is greater than 12 and less than 24"; "attribute is equal to 15"). Data layers on map will respond immediately to user input. | `slider` |
 
-#### map.interactions.sequence
+#### map.pages[page].interactions.sequence
 
 		*"sequence"*: { *"logging"* "dataLayers" *"tool"* }
 
 Sequence interaction. Allows the user to change the expressed attribute separately for each of the listed `dataLayers`. Interface tool allows the user to cycle through each layer's `displayAttribute`s in the order in which they are listed for the layer and the layer's specified `expressedAttribute`.
 
-#### map.interactions.sequence.dataLayers
+#### map.pages[page].interactions.sequence.dataLayers
 
 			"dataLayers": []
 
 An array of the `dataLayers` to include in the sequence tool. Must have at least one value to enable sequencing. Each data layer will have its own line in the sequence tool.
 
-#### map.interactions.sequence.tool
+#### map.pages[page].interactions.sequence.tool
 
 			*"tool"*: *"buttons"* *"slider"*
 
@@ -330,19 +329,19 @@ Which interface tool to user for sequencing.
 | `*"buttons"*` | Implements forward and back buttons on the map with which to sequence through the attributes. | `buttons` |
 | `*"slider"*` | Implements a slider on the map with which to sequence through the attributes. | `buttons` |
 
-#### map.interactions.reexpress
+#### map.pages[page].interactions.reexpress
 
 		*"reexpress"*: { *"logging"* }
 
-Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the `dataLayer` is expressed to any of the techniques listed in the layer's `techniques` array (see [map.dataLayers[i].techniques](#mapdataLayers[i]techniques)).
+Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the `dataLayer` is expressed to any of the techniques listed in the layer's `techniques` array (see [map.pages[page].dataLayers[i].techniques](#mappagespagedatalayersitechniques)).
 
-#### map.interactions.resymbolize
+#### map.pages[page].interactions.resymbolize
 
 		*"resymbolize"*: { *"logging"* *"reclassify"* *"rescale"* *"recolor"* }
 
 Resymbolize interaction. Allows the user to manipulate the classification scheme via the legend. If included, users will be able to change the classification parameters of graduated maps (choropleth or proportional symbol), change the symbol scale or interval (proportional symbol, dot, isarithm, or heat), and/or change the symbol color (choropleth or proportional symbol). If `reclassify`, `rescale`, or `recolor` are omitted, their functionality will be included by default.
 
-#### map.interactions.resymbolize.reclassify
+#### map.pages[page].interactions.resymbolize.reclassify
 
 	*"reclassify"*: *true* *false*
 
@@ -353,7 +352,7 @@ Change the classification scheme, the number of classes, and the class breakpoin
 | `*"true"*` | Allows the user to change the classification scheme, the number of classes, and the class breakpoints. Only available for choropleth and proportional symbol maps. | `true` |
 | `*"false"*` | Doesn't allow the user to change the classification scheme, the number of classes, and the class breakpoints. Only available for choropleth and proportional symbol maps.| `true` |
 
-#### map.interactions.resymbolize.rescale
+#### map.pages[page].interactions.resymbolize.rescale
 
 	*"rescale"*: *true* *false*
 
@@ -364,7 +363,7 @@ Changing the symbol scaling if a proportional symbol map, or the interval if a d
 | `*"true"*` | Allows the user to change the symbol scaling if a proportional symbol map, or the interval if a dot or isarithm map. | `true` |
 | `*"false"*` | Doesn't allow the user to change the symbol scaling if a proportional symbol map, or the interval if a dot or isarithm map.| `true` |
 
-#### map.interactions.resymbolize.recolor
+#### map.pages[page].interactions.resymbolize.recolor
 
 	*"recolor"*: *true* *false*
 
@@ -375,25 +374,25 @@ Changing the symbol scaling if a proportional symbol map, or the interval if a d
 | `*"true"*` | Allows the user to change the symbol color. For a choropleth map, the user may choose from any sequential ColorBrewer scale. For proportional symbol map, the user may enter any HEX value or choose from a palette the fill color of the symbols. | `true` |
 | `*"false"*` | Doesn't allow the user to change the symbol color.| `true` |
 
-#### map.interactions.reproject
+#### map.pages[page].interactions.reproject
 
 		*"reproject"*: { *"logging"* "projections" }
 
 Allows the user to change the map projection. Only available with the D3 library.
 
-#### map.interactions.reproject.projections
+#### map.pages[page].interactions.reproject.projections
 
 			"projections":[]
 
 An array of `projection` objects with the projection name and D3-style projection parameters for each alternative projection to include. Must have at least one projection object to enable reprojection.
 
-#### map.mapOptions
+#### map.pages[page].mapOptions
 
 	*"mapOptions"*: { *library options* *legend* }
 
 An object to hold any map options applied on the instantiation of a Leaflet, Mapbox-GL, or REST map. Not available for any other `library options`. If no `mapOptions` are included, library defaults will be applied. Refer to the [Leaflet](http://leafletjs.com/reference.html#map-options) or [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/#Map) documentation for lists of possible options for those libraries. REST `mapOptions` will be added as parameters to the map URL, and are thus dependent on the map server configuration. The `legend` option is a special option, described below.
 
-#### map.mapOptions.legend
+#### map.pages[page].mapOptions.legend
 
 	*"legend"*: *true* *false*
 
@@ -404,19 +403,19 @@ Including a legend on the map.
 | `*"true"*` | A legend is added to the map showing symbols for all `dataLayers`. | `true` |
 | `*"false"*` | A legend is not added to the map. | `true` |
 
-#### map.projection
+#### map.pages[page].projection
 
 	*"projection"*: { "name" *"options"* }
 
 An object containing the projection name and parameters for a D3 projection. Only available with the D3 `library options`. Must be included to instantiate a D3 map.
 
-#### map.projection.name
+#### map.pages[page].projection.name
 
 		"name": "projection name"
 
 The name of the D3 projection, a string. Required if using D3. All [standard projections](https://github.com/mbostock/d3/wiki/Geo-Projections#standard-projections) and [extended projections](https://github.com/d3/d3-geo-projection/#extended-geographic-projections) are supported. The `name` is lowercase and does not include a reference to the `d3.geo` library object or parentheses (e.g. `"albers"`, not `"d3.geo.albers()"`).
 
-#### map.projection.options
+#### map.pages[page].projection.options
 
 		*"options"*: {}
 
@@ -445,7 +444,7 @@ in *map.json* becomes
 
 Make sure that any value that is either a string or a mix of numbers and strings is represented as a string with double-quotes. The variables `"width"` and `"height"` will be recognized as the map width and the map height. You may wish to adjust these after you see the instantiated map.
 
-#### map.baseLayers
+#### map.pages[page].baseLayers
 
 	*"baseLayers"*: [{
 		"name"
@@ -455,13 +454,13 @@ Make sure that any value that is either a string or a mix of numbers and strings
 
 An array of objects containing the information needed to add a basemap layer for any `library options`. Only the first base layer object will be rendered on the map on load. All `baseLayers` will be included as base layer options in the layers control if `underlay` is an included interaction.
 
-#### map.baseLayers[i].name
+#### map.pages[page].baseLayers[i].name
 
 		"name": layer name
 
 The name of the base layer; a string. If `overlay` is included in the `interactions`, this name will appear in the layers control on the map.
 
-#### map.baseLayers[i].source
+#### map.pages[page].baseLayers[i].source
 
 		"source": *base layer URL* *provider name* *"postgis:"+tablename*
 
@@ -469,7 +468,7 @@ The URL of a [raster tile layer](http://leafletjs.com/reference.html#tilelayer) 
 
 For a Leaflet map, the standard URL format is `"http://{s}.domain.com/tiles/{z}/{x}/{y}.png"` where `{s}` is a variable standing for the server instance, `{z}` stands for the zoom level, `{x}` stands for the left-to-right horizontal tile coordinate, and `{y}` stands for the top-to-bottom vertical tile coordinate. Check for specifics of the tileset you want to use by viewing a single tile as an image in a browser and noting the contents of the URL bar.
 
-For a D3 map, the `source` URL should point to a TopoJSON or GeoJSON file containing the geometry to be mapped. Alternatively, the value of `source` can be a string containing `"postgis:"` and the name of the table in a PostGIS database (with no space after the colon). In the latter case, PostgreSQL database connection parameters must be added to the *database.php* config file. The geometry will be added to the map as [data](https://github.com/mbostock/d3/wiki/Selections#data) to allow for individualized feature styles, and drawn as SVG paths.
+For a D3 map, the `source` URL should point to a TopoJSON or GeoJSON file containing the geometry to be mapped. Alternatively, the value of `source` can be a string containing `"postgis:"` and the name of the table in a PostGIS database (with no space after the colon). In the latter case, PostgreSQL database connection parameters must be added to the *params.php* config file. The geometry will be added to the map as [data](https://github.com/mbostock/d3/wiki/Selections#data) to allow for individualized feature styles, and drawn as SVG paths.
 
 For a Mapbox-GL map, `source` is optional and may be a raster tileset URL, a vector tileset URL, a TopoJSON or GeoJSON file, or a PostGIS table. If included, it will be used to add a [data source](https://www.mapbox.com/mapbox-gl-style-spec/#sources) to the styles object.
 
@@ -477,7 +476,7 @@ For an iframe, the `source` should be the iframe `src` URL given in the embed HT
 
 For a REST service, the `source` should be the base URL with or without option parameters. For a static map image, the `source` should be a URL pointing to the image.
 
-#### map.baseLayers[i].layerOptions
+#### map.pages[page].baseLayers[i].layerOptions
 
 		"layerOptions": *{}* *URL*
 
@@ -507,7 +506,7 @@ When sent to the server will translate as:
 
 The REST parameters may also be added in the above format to `baseLayer.source` with `layerOptions` omitted.
 
-#### map.dataLayers
+#### map.pages[page].dataLayers
 
 	*"dataLayers"*: [{
 		"name"
@@ -521,35 +520,35 @@ The REST parameters may also be added in the above format to `baseLayer.source` 
 
 An array of objects containing information about the data to be visualized on the map, if any. Only available for Leaflet, Mapbox-GL, and D3 maps. Layers will be rendered on the map from bottom to top in the order in which they are listed in the array.
 
-#### map.dataLayers[i].name
+#### map.pages[page].dataLayers[i].name
 
 		"name": layer name
 
 The name of the data layer; a string. If `overlay` is included in the `interactions`, this name will appear in the layers control on the map.
 
-#### map.dataLayers[i].source
+#### map.pages[page].dataLayers[i].source
 
 		"source": *layer data URL* *"postgis:"+table name*
 
-A URL string pointing to a TopoJSON or GeoJSON file containing the data to be mapped, or the string "postgis:" followed by the name of a PostGIS table from which to retrieve the data (with no space after the colon). In the latter case, PostgreSQL database connection parameters must be added to the *database.php* config file.
+A URL string pointing to a TopoJSON or GeoJSON file containing the data to be mapped, or the string "postgis:" followed by the name of a PostGIS table from which to retrieve the data (with no space after the colon). In the latter case, PostgreSQL database connection parameters must be added to the *params.php* config file.
 
 The data should include feature geometries with *unprojected* WGS-84 coordinates. Feature geometries must be polygons unless creating a proportional symbol or isarithmic layer, and must be points if creating an isarithmic layer. The data must include at least one numerical attribute in each feature's `properties` object. Including feature names and IDs in the `properties` is encouraged, as these will generally be useful to show in pop-ups if the `retrieve` interaction is included.
 
 For a Mapbox-GL map, the `source` may also be a vector tileset. The data retrieved by `source` will be added as a [data source](https://www.mapbox.com/mapbox-gl-style-spec/#sources) to the styles object.
 
-#### map.dataLayers[i].expressedAttribute
+#### map.pages[page].dataLayers[i].expressedAttribute
 
 		"expressedAttribute": attribute name
 
 The name of the numerical attribute that will be visually expressed on the map; a string. Must correspond to a key within each feature's `properties` object that references a numerical value (or no value or `null` if null for that feature).
 
-#### map.dataLayers[i].displayAttributes
+#### map.pages[page].dataLayers[i].displayAttributes
 
 		*"displayAttributes"*: []
 
 An array of one or more attributes to include in that layer's pop-ups if the `retrieve` interaction is included, in the search tool if the `search` interaction is included, and in the filter tool if the `filter` interaction is included. Only categorical attributes with string values will be searchable (e.g., "name" but not "population"). Only numerical attributes will be added to the filter tool (e.g., "population" but not "name"), and will be accessible via a drop-down menu in the data layer's line in the filter tool. If `retrieve`, `search`, or `filter` are included but no `displayAttributes` are given, pop-ups and tools will be implemented using only the layer's `expressedAttribute`.
 
-#### map.dataLayers[i].renderOnLoad
+#### map.pages[page].dataLayers[i].renderOnLoad
 
 		*"renderOnLoad"*: *true* *false*
 
@@ -560,13 +559,13 @@ Whether to render the layer when the map loads.
 | `*true*` | The layer will be rendered when the map loads. | `true` |
 | `*false*` | If multiple `dataLayers` are included with some having `renderOnLoad` set to `false`, the only way those layers will be visible is by including an `overlay` interaction that includes those layers. In this case, those layers will be unchecked in the layers control until selected by the user. | `true` |
 
-#### map.dataLayers[i].layerOptions
+#### map.pages[page].dataLayers[i].layerOptions
 
 		*"layerOptions"*: *{}* *URL*
 
 An object or URL string pointing to a JSON file containing [Leaflet Path options](http://leafletjs.com/reference.html#path-options), [SVG styles](http://www.w3.org/TR/SVG/styling.html#SVGStylingProperties) for all layer paths drawn by D3, or [Mapbox-GL style layers](https://www.mapbox.com/mapbox-gl-style-spec/#layers). Properties added here that conflict with the `techniques` classification will be overridden for each feature to which the classification is applied (i.e., any not null values).
 
-#### map.dataLayers[i].techniques
+#### map.pages[page].dataLayers[i].techniques
 
 		"techniques": [{
 			"type"
@@ -577,15 +576,15 @@ An object or URL string pointing to a JSON file containing [Leaflet Path options
 			*"size"*
 		}]
 
-An array of objects containing the thematic mapping techniques, including the map type and classification parameters for the data layer. At least one technique object is required. The first technique object in the array will be used for the layer's initial expression; all other techniques for the layer will only be available to the user if `map.interactions.reexpress` is included.
+An array of objects containing the thematic mapping techniques, including the map type and classification parameters for the data layer. At least one technique object is required. The first technique object in the array will be used for the layer's initial expression; all other techniques for the layer will only be available to the user if `map.pages[page].interactions.reexpress` is included.
 
-#### map.dataLayers[i].techniques[ii].type
+#### map.pages[page].dataLayers[i].techniques[ii].type
 
 			"type": *"choropleth"* *"proportional symbol"* *"dot"* *"isarithmic"* *"heat"*
 
 The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Note that only a data layer with a `proportional symbol`, `isarithmic`, or `heat` technique type can use point feature data, but all technique types can use polygon data. The `retrieve` and `search` interactions are not available for `heat` map layers, and `search` is not available for `isarithmic` layers.
 
-#### map.dataLayers[i].techniques[ii].classification
+#### map.pages[page].dataLayers[i].techniques[ii].classification
 
 			"classification": *"quantile"* *"equal interval"* *"natural breaks"* *"unclassed"*
 
@@ -598,19 +597,19 @@ The classification technique for a choropleth or proportional symbol map. Which 
 | `*natural breaks*` | A `natural breaks` classification uses the [Cartesian k-means](http://www.cs.toronto.edu/~norouzi/research/papers/ckmeans.pdf) algorithm to minimize the statistical distances between data points within each class. This classification is generally considered optimal for identifying groups of data values. | N/A |
 | `*unclassed*` | An `unclassed` classification creates a [linear scale](https://github.com/mbostock/d3/wiki/Quantitative-Scales#linear-scales) to map each input data value to an output value interpolated between the first two values given in the `classes` array. Thus, it results in a map with no defined classes. This is the most common classification for proportional symbol maps and the least common for choropleth maps. | N/A |
 
-#### map.dataLayers[i].techniques[ii].classes
+#### map.pages[page].dataLayers[i].techniques[ii].classes
 
 			*"classes"*: *[]* *colorbrewer code.number of classes*
 
 An array containing the output values for each class or the name of a [ColorBrewer](http://colorbrewer2.org/) classification scheme. Required if `classification` is used. Array values should be numerical for proportional symbol maps&mdash;representing the diameter or width of each feature's symbol&mdash;and hexadecimal color strings for a choropleth map (e.g., `"#FFFFFF"`). The number of values in the array will correspond with the number of classes created. For choropleth maps only, if a ColorBrewer scheme is used, the value should be a string in the format `"code.number"`; for example, `"BuGn.5"` will create a five-class, blue-green color scheme. Scheme codes are shown at the top of the EXPORT panel on the lower-right of the ColorBrewer interface. Unless testing various color schemes, it is recommended you choose a colorblind-safe, sequential color scheme. If the `resymbolize` interaction is included, it is recommended to use a ColorBrewer code instead of an array of hex values, as reclassification by the user may result in an interpolated color scheme that differs spectrally from the original array of colors.
 
-#### map.dataLayers[i].techniques[ii].symbol
+#### map.pages[page].dataLayers[i].techniques[ii].symbol
 
 			*"symbol"*: *"circle"* *image url*
 
 Symbol to use for proportional symbol map. Optional; default is `circle`. Not available to choropleth or isarithmic maps. For proportional symbol maps, if the dataset consists of point features, symbols will be placed on point coordinates; otherwise, symbols will be placed on the centroids of polygon features.
 
-#### map.dataLayers[i].techniques[ii].interval
+#### map.pages[page].dataLayers[i].techniques[ii].interval
 
 			*"interval"*: *value interval*
 
@@ -620,7 +619,7 @@ For an isarithmic map, `interval` is the value by which each line will be separa
 
 For a dot map, the value of `interval` is the denominator by which the feature's expressed attribute value will be divided to determine the number of dots to add within the boundaries of a feature. Omitting `interval` will result in a default of one dot for every 10 units. For example, if the expressed attribute value for a feature is `15,607`, by default there will be 1,561 dots scattered within that feature's boundaries. Designating `interval` as `1` will result in a dot being added for each whole number increase in the expressed attribute value, resulting in a true dot (as opposed to dot density) map. The larger the `interval`, the fewer dots will be created, and vice-versa. Note that the more dots are created, *and the more irregular the polygons in the dataset*, the longer the map will take to render. It is not recommended to use an `interval` that will create more than 10,000 dots total.
 
-#### map.dataLayers[i].techniques[ii].size
+#### map.pages[page].dataLayers[i].techniques[ii].size
 
 			*"size"*: *size*
 
@@ -701,8 +700,7 @@ Whether to include a timer for the page and timer options. If `"timer"` is inclu
 		{
 			"blocks": [],
 			"buttons": [],
-			"timer: {}",
-			"autoadvance"
+			"timer: {}"
 		}
 	]
 
@@ -855,12 +853,6 @@ Whether to include a timer for the set and timer options. If `"timer"` is includ
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
 | `*true*` | Removes a persistent set timer without replacing it. If included, no other timer options will be applied. | N/A |
-
-#### questions.pages[page].sets[i].autoadvance
-
-| Value  | Description | Default |
-| :------------: | :----------- | :------------------- |
-| `*true*` | Advances to next set after user interacts with last input in set. | N/A |
 
 
 

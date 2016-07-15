@@ -24,7 +24,6 @@ To access the setup application (which has a live preview feature), [click here]
 
 #### [Config files](#config-files-1)
 
-<<<<<<< HEAD
 #### &emsp;[Styles](#styles-1)
 
 #### &emsp;[Map](#map-1)
@@ -36,17 +35,6 @@ To access the setup application (which has a live preview feature), [click here]
 #### &emsp;[Param](#param-1)
 
 #### [Framework Architecture](#framework-architecture-1)
-=======
-#### &emsp;[Styles](#styles)
-
-#### &emsp;[Map](#map)
-
-#### &emsp;[Questions](#questions)
-
-#### &emsp;[Conditions](#conditions)
-
-#### &emsp;[Param](#param)
->>>>>>> 61fc00ec2c401953342eabbac81592a640529d6e
 
 ## About the API documentation:
 
@@ -166,7 +154,7 @@ The web mapping library or service to use to create the map. Currently only supp
 
 An object containing the interactions that should be enabled on the map. Each interaction in turn references an object designating whether the interaction should be logged and options for its implementation.
 
-#### map.pages[page].interactions[interaction].logging
+#### map.pages[page].interactions.[interaction].logging
 
 			*"logging"*: *true* *false*
 
@@ -176,7 +164,7 @@ Whether the interaction should be logged. Available for each interaction.
 | :------------: | :----------- | :------------------- |
 | `*true*` | If `true`, interactions will be logged. | `false` |
 
-#### map.pages[page].interactions[interaction].toggle
+#### map.interactions.[interaction].toggle
 
 			*"toggle"*: *true* *false*
 
@@ -345,7 +333,7 @@ Which interface tool to user for sequencing.
 
 		*"reexpress"*: { *"logging"* }
 
-Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the `dataLayer` is expressed to any of the techniques listed in the layer's `techniques` array (see [map.pages[page].dataLayers[i].techniques](#mappagespagedatalayersitechniques)).
+Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the `dataLayer` is expressed to any of the techniques listed in the layer's `techniques` array (see [map.pages[page].dataLayers[i].techniques](#mapdataLayers[i]techniques)).
 
 #### map.pages[page].interactions.resymbolize
 
@@ -711,8 +699,7 @@ Whether to include a timer for the page and timer options. If `"timer"` is inclu
 	"sets": [
 		{
 			"blocks": [],
-			"buttons": [],
-			"timer: {}"
+			"buttons": []
 		}
 	]
 
@@ -1023,7 +1010,6 @@ The subject line of the e-mail.
 	$message = 'Message';
 
 The content of the e-mail message. CSV files holding the participant data will be attached automatically.
-<<<<<<< HEAD
 
 
 
@@ -1032,5 +1018,3 @@ The content of the e-mail message. CSV files holding the participant data will b
 MapStudy is constructed with a modular architecture designed to allow for tremendous customization. The figure below shows an *approximate* graphical representation of the framework modules provided to explain the gist of how the framework is organized. The module stacking order based on the nested structure of module options in the config files (i.e., those modules on "top" are contained within the module immediately below them, which is contained within the module below that, etc.). With the exception of the Server module Note that this representation is approximate, and the structure it represents is subject to change; therefore it does not represent the full framework with complete precision or accuracy.
 
 <img src="img/architecture.png">
-=======
->>>>>>> 61fc00ec2c401953342eabbac81592a640529d6e
