@@ -8,8 +8,7 @@
 				"retrieve": {
 					"logging": true,
 					"interface": {
-						"window": false,
-						"popup": true
+						"window": false
 					}
 				},
 				"pan": {
@@ -140,43 +139,52 @@
 			"interactions": {
 				"retrieve": {
 					"logging": true,
+					"toggle": true,
 					"interface": {
 						"popup": false
 					}
 				},
 				"pan": {
 					"logging": true,
+					"toggle": true,
 					"interface": {}
 				},
 				"zoom": {
 					"logging": true,
+					"toggle": true,
 					"interface": {}
 				},
 				"overlay": {
 					"logging": true,
+					"toggle": true,
 					"dataLayers": [
 						"Population Density"
 					]
 				},
 				"underlay": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"search": {
 					"attributes": ["name", "density"],
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"filter": {
 					"dataLayers": [
 						"Population Density"
 					],
 					"tool": "slider",
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"reexpress": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"resymbolize": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				}
 			},
 			"mapOptions": {
@@ -235,45 +243,52 @@
 			"interactions": {
 				"retrieve": {
 					"logging": true,
+					"toggle": true,
 					"interface": {
 						"popup": false
 					}
 				},
 				"pan": {
 					"logging": true,
+					"toggle": true,
 					"interface": {}
 				},
 				"zoom": {
 					"logging": true,
+					"toggle": true,
 					"interface": {}
 				},
 				"overlay": {
 					"logging": true,
+					"toggle": true,
 					"dataLayers": [
-						"US States",
-						"Cities Layer"
+						"Population Density"
 					]
 				},
 				"underlay": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"search": {
-					"attributes": ["name", "Density (ppl/sq. mile)"],
-					"logging": true
+					"attributes": ["name", "density"],
+					"logging": true,
+					"toggle": true
 				},
 				"filter": {
 					"dataLayers": [
-						"Population Density", 
-						"Cities Layer"
+						"Population Density"
 					],
 					"tool": "slider",
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"reexpress": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"resymbolize": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				}
 			},
 			"mapOptions": {
@@ -362,45 +377,52 @@
 			"interactions": {
 				"retrieve": {
 					"logging": true,
+					"toggle": true,
 					"interface": {
 						"popup": false
 					}
 				},
 				"pan": {
 					"logging": true,
+					"toggle": true,
 					"interface": {}
 				},
 				"zoom": {
 					"logging": true,
+					"toggle": true,
 					"interface": {}
 				},
 				"overlay": {
 					"logging": true,
+					"toggle": true,
 					"dataLayers": [
-						"US States",
-						"Cities Layer"
+						"Population Density"
 					]
 				},
 				"underlay": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"search": {
-					"attributes": ["name", "Density (ppl/sq. mile)"],
-					"logging": true
+					"attributes": ["name", "density"],
+					"logging": true,
+					"toggle": true
 				},
 				"filter": {
 					"dataLayers": [
-						"Population Density", 
-						"US Population"
+						"Population Density"
 					],
 					"tool": "slider",
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"reexpress": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"resymbolize": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				}
 			},
 			"mapOptions": {
@@ -474,43 +496,52 @@
 			"interactions": {
 				"retrieve": {
 					"logging": true,
+					"toggle": true,
 					"interface": {
 						"popup": false
 					}
 				},
 				"pan": {
 					"logging": true,
+					"toggle": true,
 					"interface": {}
 				},
 				"zoom": {
 					"logging": true,
+					"toggle": true,
 					"interface": {}
 				},
 				"overlay": {
 					"logging": true,
+					"toggle": true,
 					"dataLayers": [
 						"Population Density"
 					]
 				},
 				"underlay": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"search": {
 					"attributes": ["name", "density"],
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"filter": {
 					"dataLayers": [
 						"Population Density"
 					],
 					"tool": "slider",
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"reexpress": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"resymbolize": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				}
 			},
 			"mapOptions": {

@@ -9,6 +9,7 @@ var _options = {},
 var InputModel = Backbone.Model.extend({
 	defaults: {
 		"required": false,
+		"autoadvance": false,
 		"type": "text",
 		"label": "foobar",
 		"options": [],
@@ -19,7 +20,7 @@ var InputModel = Backbone.Model.extend({
 var TextInputView = Backbone.View.extend({
 	template: _.template( $('#text-input-template').html() ),
 	required: function(){
-		if (this.model.get('required')){
+		if (this.model.get('required') || this.model.get('autoadvance')){
 			this.$el.find('.ask').before('<a class="required">*</a>');
 		};
 	},
@@ -63,6 +64,9 @@ var CheckboxesInputView = TextInputView.extend({
 
 var RadiosInputView = CheckboxesInputView.extend({
 	template: _.template( $('#radio-input-template').html() ),
+	events: {
+		'change .input:last input[type=radio]': 'autoadvance'
+	},
 	appendInputDiv: function(option,i){
 		var inputDivTemplate = _.template( $('#input-div-template').html() );
 		this.$el.find('.radio-input').append(inputDivTemplate({className: String(i)}));
@@ -79,6 +83,13 @@ var RadiosInputView = CheckboxesInputView.extend({
 	appendOptionText: function(option,i){
 		this.$el.find('.input-item.'+i).append(option.text);
 	},
+	autoadvance: function(e){
+		if (this.model.get('autoadvance')){
+			window.setTimeout(function(){
+				document.trigger('nextset');
+			}, 100);
+		};
+	},
 	render: function(){
 		this.$el.append('<div class="input radio-input">');
 		var options = this.model.get('options');
@@ -93,6 +104,9 @@ var RadiosInputView = CheckboxesInputView.extend({
 
 var DropdownInputView = RadiosInputView.extend({
 	template: _.template( $('#dropdown-input-template').html() ),
+	events: {
+		'change select': 'autoadvance'
+	},
 	render: function(){
 		var className = '',
 			selectTemplate = _.template( $('#dropdown-select-template').html() ),
@@ -429,16 +443,6 @@ var Questions = Backbone.View.extend({
 		//add each button
 		_.each(buttons, this.renderButton, this);
 	},
-	setAutoAdvance: function(){
-		//advance to next set a second after last input in set is clicked
-		var timeout = window.setTimeout(function(){},0);
-		this.$el.find('.input').last().click(function(){
-			window.clearTimeout(timeout);
-			timeout = window.setTimeout(function(){
-				document.trigger('nextset');
-			}, 1000);
-		});
-	},
 	render: function(){
 		//erase current contents of questions section
 		this.$el.empty().append('<form>');
@@ -483,11 +487,8 @@ var Questions = Backbone.View.extend({
 				timerView = new TimerView({model: timerModel});
 			timerView.render();
 		};
-		//set auto-advance if included
-		if (qset.hasOwnProperty('autoadvance') && qset.autoadvance){
-			this.setAutoAdvance();
-		};
 		//set next listener
+		document.off('nextset');
 		document.on('nextset', this.next, this);
 	},
 	addData: function(input){
