@@ -154,7 +154,7 @@ The web mapping library or service to use to create the map. Currently only supp
 
 An object containing the interactions that should be enabled on the map. Each interaction in turn references an object designating whether the interaction should be logged and options for its implementation.
 
-#### map.pages[page].interactions[interaction].logging
+#### map.pages[page].interactions.[interaction].logging
 
 			*"logging"*: *true* *false*
 
@@ -164,7 +164,7 @@ Whether the interaction should be logged. Available for each interaction.
 | :------------: | :----------- | :------------------- |
 | `*true*` | If `true`, interactions will be logged. | `false` |
 
-#### map.pages[page].interactions[interaction].toggle
+#### map.interactions.[interaction].toggle
 
 			*"toggle"*: *true* *false*
 
@@ -333,7 +333,7 @@ Which interface tool to user for sequencing.
 
 		*"reexpress"*: { *"logging"* }
 
-Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the `dataLayer` is expressed to any of the techniques listed in the layer's `techniques` array (see [map.pages[page].dataLayers[i].techniques](#mappagespagedatalayersitechniques)).
+Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the `dataLayer` is expressed to any of the techniques listed in the layer's `techniques` array (see [map.pages[page].dataLayers[i].techniques](#mapdataLayers[i]techniques)).
 
 #### map.pages[page].interactions.resymbolize
 
@@ -699,8 +699,7 @@ Whether to include a timer for the page and timer options. If `"timer"` is inclu
 	"sets": [
 		{
 			"blocks": [],
-			"buttons": [],
-			"timer: {}"
+			"buttons": []
 		}
 	]
 

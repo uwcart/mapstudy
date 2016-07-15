@@ -609,28 +609,40 @@ var InteractionToggleView = Backbone.View.extend({
 	addInteraction: function(){},
 	removeInteraction: function(){},
 	toggle: function(e, toggleView){
-		//get target and interaction
-		var target = $(e.target).attr('class') ? $(e.target) : $(e.target).parent(),
-			className = target.attr('class'),
-			interaction = className.split('-')[0];
-		//toggle
-		var action, state;
-		if (className.indexOf(' active') > -1){
-			action = 'inactivate', state = 'inactive';
-			//close associated interaction widget
-			$('.'+interaction+'-control-container').hide();
-			//remove active class
-			target.attr('class', className.substring(0, className.indexOf(' active')));
-			//remove any additional interaction scripts
-			toggleView.removeInteraction();
-		} else {
-			action = 'activate', state = 'active';
+		var action, state, interaction;
+		if (typeof e == "string"){
+			//for implementation without a toggle switch
+			action = 'activate';
+			state = 'active';
+			interaction = e;
 			//open associated interaction widget
 			$('.'+interaction+'-control-container').show();
-			//add active class
-			target.attr('class', className + ' active');
 			//add any additional interaction scripts
-			toggleView.addInteraction();
+			this.addInteraction();
+			toggleView = this;
+		} else {
+			//get target and interaction
+			var target = $(e.target).attr('class') ? $(e.target) : $(e.target).parent(),
+				className = target.attr('class');
+			interaction = className.split('-')[0];
+			//toggle
+			if (className.indexOf(' active') > -1){
+				action = 'inactivate', state = 'inactive';
+				//close associated interaction widget
+				$('.'+interaction+'-control-container').hide();
+				//remove active class
+				target.attr('class', className.substring(0, className.indexOf(' active')));
+				//remove any additional interaction scripts
+				toggleView.removeInteraction();
+			} else {
+				action = 'activate', state = 'active';
+				//open associated interaction widget
+				$('.'+interaction+'-control-container').show();
+				//add active class
+				target.attr('class', className + ' active');
+				//add any additional interaction scripts
+				toggleView.addInteraction();
+			};
 		};
 		//fire inactivate event
 		toggleView.trigger('toggle', {
@@ -646,6 +658,7 @@ var InteractionToggleView = Backbone.View.extend({
 		this.$el.children('.'+this.model.get('interaction')+'-control').click(function(e){
 			toggle(e, toggleView);
 		});
+		return this;
 	},
 	initialize: function(){
 		return this;
@@ -2747,7 +2760,8 @@ var LeafletMap = Backbone.View.extend({
 			var interactionControl = new InteractionControl();
 			interactionControl.addTo(map);
 			//create new button for each interaction
-			for (var interaction in this.model.get('interactions')){
+			var interactions = this.model.get('interactions');
+			for (var interaction in interactions){
 				//instantiate model
 				var interactionControlModel = new InteractionControlModel({interaction: interaction});
 				//instantiate view
@@ -2762,8 +2776,13 @@ var LeafletMap = Backbone.View.extend({
 					//change interaction property of Leaflet view from false to 'inactive'
 					this.interactions[interaction] = 'inactive';
 				};
-				//render interaction toggle button
-				interactionToggleView.render();
+				if (interactions[interaction].toggle){
+					//render interaction toggle button
+					interactionToggleView.render();	
+				} else {
+					$('.'+interaction+'-control-container').show();
+					interactionToggleView.toggle(interaction);
+				};
 			};
 		}, this);
 
@@ -2773,8 +2792,10 @@ var LeafletMap = Backbone.View.extend({
 				this.addLegend();
 			};
 			//prevent retrieve by default
-			$('.leaflet-popup-pane').hide();
-			$('.leaflet-interactive').css('cursor', 'default');
+			if (!this.interactions.retrieve || this.interactions.retrieve == "inactive"){
+				$('.leaflet-popup-pane').hide();
+				$('.leaflet-interactive').css('cursor', 'default');
+			};
 		}, this);
 	},
 	logInteractions: function(){

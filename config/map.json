@@ -8,7 +8,8 @@
 				"retrieve": {
 					"logging": true,
 					"interface": {
-						"window": false
+						"window": false,
+						"popup": true
 					}
 				},
 				"pan": {
@@ -18,36 +19,39 @@
 					}
 				},
 				"zoom": {
-					"logging": true,
-					"interface": {
-						"widget": false
-					}
+					"logging": true
 				},
 				"overlay": {
 					"logging": true,
+					"toggle": true,
 					"dataLayers": [
 						"US States"
 					]
 				},
 				"underlay": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"search": {
 					"attributes": ["name", "Density (ppl/sq. mile)"],
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"filter": {
 					"dataLayers": [
 						"US States"
 					],
 					"tool": "slider",
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"reexpress": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				},
 				"resymbolize": {
-					"logging": true
+					"logging": true,
+					"toggle": true
 				}
 			},
 			"mapOptions": {
