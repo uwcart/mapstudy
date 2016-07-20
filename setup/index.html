@@ -1035,8 +1035,12 @@
                         <div class="input hideonno">
                             <h3>Input</h3>
 
-                            <p class="reqd">
+                            <p class="reqd q">
                                 Required question? <select name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.required" class="bdd no"></select>
+                            </p>
+
+                            <p class="autoadv q">
+                                Auto-advance when participant chooses an option? <select name="questions.pages.<%= pagenum %>.sets.<%= i %>.blocks.<%= ii %>.input.autoadvance" class="bdd no" disabled></select>
                             </p>
 
                             <div class="input-type bigtext mb20">
