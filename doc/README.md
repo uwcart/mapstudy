@@ -130,11 +130,24 @@ In the descriptions below, `map` refers to each object in the map.json `pages` a
 		]
 	}
 
+
 #### map.pages[page].library
 
 	"library": *"Leaflet"* *"Mapbox-GL"* *"D3"* *"image"* *"REST"* *"iframe"*
 
 The web mapping library or service to use to create the map. Currently only supports `Leaflet`.
+
+
+#### map.pages[page].resetButton
+
+	*"resetButton"*: *true* *false*
+
+Whether to include a button allowing the participant to reset the map to its original state. True by default.
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*false*` | If `false`, reset button will not be included | `true` |
+
 
 #### map.pages[page].interactions
 

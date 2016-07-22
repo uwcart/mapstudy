@@ -729,7 +729,7 @@ var OverlayControlView = Backbone.View.extend({
 		this.$el.append(this.template(this.model.attributes));
 		//set click interaction on this child element only
 		var view = this;
-		this.$el.find('.layer-'+this.model.get('layerId')+' input').click(function(e){
+		this.$el.find('.layer-'+this.model.get('layerId')+' input').change(function(e){
 			view.toggleLayer($(e.target).val(), $(e.target).prop('checked'));
 		});
 	}
@@ -1589,6 +1589,7 @@ var LeafletMap = Backbone.View.extend({
 	events: {
 		'click .reexpress': 'reexpress'
 	},
+	firstLayers: {},
 	offLayers: {},
 	//all available interactions
 	interactions: {
@@ -1610,10 +1611,8 @@ var LeafletMap = Backbone.View.extend({
 	},
 	addLayer: function(layerId){
 		this.offLayers[layerId].addTo(this.map);
-		delete this.offLayers[layerId];
 	},
 	removeLayer: function(layerId){
-		this.offLayers[layerId] = this.map._layers[layerId];
 		this.map.removeLayer(this.map._layers[layerId]);
 	},
 	setBaseLayer: function(baseLayer, i){
@@ -1640,6 +1639,7 @@ var LeafletMap = Backbone.View.extend({
 		//only add first base layer to the map
 		if (i==0){ 
 			leafletBaseLayer.addTo(this.map);
+			this.firstLayers[layerId] = leafletBaseLayer;
 		} else {
 			this.offLayers[layerId] = leafletBaseLayer;
 		};
@@ -1807,11 +1807,14 @@ var LeafletMap = Backbone.View.extend({
 			leafletDataLayer.layerName = techniqueModel.get('name');
 			leafletDataLayer.className = techniqueModel.get('className');
 			leafletDataLayer.techniqueType = technique.type;
+			leafletDataLayer.techniqueOrder = i;
 
 			//render immediately by default
 			if (i==0 && (typeof dataLayerModel.get('renderOnLoad') === 'undefined' || dataLayerModel.get('renderOnLoad') == true)){
+				dataLayerModel.attributes.renderOnLoad = true;
 				//add layer to map
 				leafletDataLayer.addTo(map);
+				this.firstLayers[layerId] = leafletDataLayer;
 			} else {
 				//stick it in offLayers array
 				view.offLayers[layerId] = leafletDataLayer;
@@ -1888,10 +1891,16 @@ var LeafletMap = Backbone.View.extend({
 		});
 		return Control;
 	},
-	layerChange: function(e){
+	layerChange: function(e, view){
 		//edit legend
-		var legendEntry = $('#legend-'+e.layer._leaflet_id);
+		var layerId = e.layer._leaflet_id,
+			legendEntry = $('#legend-'+layerId);
 		legendEntry.length > 0 && e.type == 'layeradd' ? legendEntry.show() : legendEntry.hide();
+		if (e.type == 'layeradd'){
+			delete view.offLayers[layerId];
+		} else {
+			this.offLayers[layerId] = e.layer;
+		};
 	},
 	addLegend: function(){
 		var model = this.model,
@@ -2168,15 +2177,18 @@ var LeafletMap = Backbone.View.extend({
 						//turn layer on/off
 						if (map._layers[layerId] && !addLayer){
 							leafletView.removeLayer(layerId);
+							$('input[value='+layerId+']').removeAttr('checked');
 						} else if (!map._layers[layerId] && offLayers[layerId]){
 							leafletView.addLayer(layerId);
+							$('input[value='+layerId+']').prop('checked', true);
 						};
 					};
 					overlayControlView.render();
-					//only show the layers that are on the map
-					if (offLayers[layerId]){
+					//only show the control for the first technique of each data layer
+					if (dataLayer.techniqueOrder > 0){
 						$('#overlay-layer-'+layerId).hide();
-					} else {
+					//check controls of layers that are on the map
+					} else if (!offLayers[layerId]) {
 						$('#overlay-layer-'+layerId+' input').prop('checked', true);
 					};
 				}, this);
@@ -2526,10 +2538,27 @@ var LeafletMap = Backbone.View.extend({
 					};
 				}, this);
 			};
+			//function to check for any sections with no layers on the map and disable
+			function checkDisabled(){
+				//get class names of initial layers
+				var classNames = [];
+				for (var layerId in leafletView.firstLayers){
+					classNames.push(leafletView.firstLayers[layerId].className);
+				};
+				//disable any sections for data layers that aren't rendered on load
+				$('.reexpress-section').each(function(){
+					var className = $(this).attr('id').split('-reexpress')[0];
+					if (_.indexOf(classNames, className) == -1){
+						$(this).find('input').prop('disabled', true);
+						$(this).find('label').css('opacity', '0.5');
+					};
+				});
+			};
 			//add data layers after loaded
 			leafletView.on('dataLayersDone', function(){
 				setInputs();
 				resetTechniques();
+				checkDisabled();
 			}, this);
 			//disable reexpress for data layers not shown on map
 			map.on('layeradd layerremove', function(e){
@@ -2743,6 +2772,41 @@ var LeafletMap = Backbone.View.extend({
 			return controlView;
 		}
 	},
+	resetLayerControls: function(layersObject, dataLayers){
+		$('.underlay-control-layer input, .overlay-control-layer input, .reexpress-input-div input').each(function(){
+			//check all controls for included layers and uncheck for excluded layers
+			var layerId = parseInt(this.value);
+			if (layersObject.hasOwnProperty(layerId)){
+				$(this).prop('checked', true);
+			} else {
+				$(this).removeAttr('checked');
+			};
+		});
+		//reset overlay controls
+		dataLayers.forEach(function(layer){
+			if (layer.techniqueOrder == 0){
+				$('#overlay-layer-'+layer._leaflet_id).show();
+			} else {
+				$('#overlay-layer-'+layer._leaflet_id).hide();
+			}
+		})
+	},
+	refreshMap: function(view){
+		var map = view.map,
+			firstLayers = view.firstLayers;
+		//reset map view
+		map.setView(map.options.center, map.options.zoom);
+		//remove all layers
+		map.eachLayer(function(layer){
+			map.removeLayer(layer);
+		});
+		//add back in initial map layers
+		for (var layerId in firstLayers){
+			map.addLayer(firstLayers[layerId]);
+		};
+		//reset all layer controls
+		view.resetLayerControls(firstLayers, view.model.get('leafletDataLayers'));
+	},
 	setInteractionControls: function(){
 		//set no-interaction map option defaults
 		var noInteraction = {
@@ -2789,6 +2853,20 @@ var LeafletMap = Backbone.View.extend({
 					interactionToggleView.toggle(interaction);
 				};
 			};
+			//if resetButton is true or undefined, add to map
+			if (!this.model.attributes.hasOwnProperty('resetButton') || this.model.get('resetButton')){
+				var ResetControl = this.CustomControl('reset', 'topright');
+				var resetControl = new ResetControl();
+				resetControl.addTo(map);
+				var container = $('.reset-control-container'),
+					refreshMap = this.refreshMap,
+					view = this;
+				container.show()
+					.css('cursor', 'pointer')
+					.click(function(){
+						refreshMap(view);
+					});
+			};	
 		}, this);
 
 		this.on('dataLayersDone', function(){
@@ -2839,8 +2917,10 @@ var LeafletMap = Backbone.View.extend({
 		this.trigger('mapset');
 
 		//set layer change listener
-		var layerChange = this.layerChange;
-		this.map.on('layeradd layerremove', layerChange);
+		var view = this;
+		this.map.on('layeradd layerremove', function(e){
+			view.layerChange(e, view);
+		});
 
 		//add initial tile layers
 		var baseLayers = this.model.get('baseLayers');
@@ -2863,8 +2943,8 @@ function setMapView(options){
 	if (typeof options != 'undefined'){
 		var initTables = new Interaction(options.attributes);
 		initTables.record();
+		_options = options;
 	};
-	_options = options || _options;
 	if (!_options.attributes.hasOwnProperty('maps')){
 		_options.attributes.maps = {};
 	};

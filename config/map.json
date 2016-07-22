@@ -4,6 +4,7 @@
 		{
 			"page": 2,
 			"library": "Leaflet",
+			"resetButton": true,
 			"interactions": {
 				"retrieve": {
 					"logging": true,
@@ -105,6 +106,7 @@
 			{
 				"name": "Cities Layer",
 				"source": "data/city-data.geojson",
+				"renderOnLoad": false,
 				"expressedAttribute": "2011",
 				"displayAttributes": [
 					"name", 
