@@ -523,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 16264,
+				"buffer_size": 16275,
 				"line_ending": "Windows"
 			}
 		},
@@ -555,7 +555,7 @@
 			"file": "README.md",
 			"settings":
 			{
-				"buffer_size": 56160,
+				"buffer_size": 57206,
 				"line_ending": "Windows"
 			}
 		},
@@ -571,7 +571,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 100142,
+				"buffer_size": 100939,
 				"line_ending": "Windows"
 			}
 		},
@@ -579,7 +579,7 @@
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 11770,
+				"buffer_size": 12556,
 				"line_ending": "Windows"
 			}
 		},
@@ -587,7 +587,7 @@
 			"file": "js/modules/q-section.js",
 			"settings":
 			{
-				"buffer_size": 17673,
+				"buffer_size": 17523,
 				"line_ending": "Windows"
 			}
 		},
@@ -619,7 +619,7 @@
 			"file": "config/questions.json",
 			"settings":
 			{
-				"buffer_size": 5938,
+				"buffer_size": 5970,
 				"line_ending": "Windows"
 			}
 		},
@@ -627,7 +627,7 @@
 			"file": "doc/README.md",
 			"settings":
 			{
-				"buffer_size": 55790,
+				"buffer_size": 57227,
 				"line_ending": "Windows"
 			}
 		}
@@ -801,6 +801,51 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"required",
+			"autoadvance",
+			"console",
+			"$('.leaflet-popup-pane').show",
+			"$('.leaflet-popup-pane').hide",
+			"$('.leaflet-popup-pane')",
+			"popup",
+			"console",
+			"i",
+			"nextset",
+			"autoadvance",
+			"next",
+			"nextset",
+			"autoadvance",
+			"_set",
+			"autoadvance",
+			"set>>",
+			"nextset",
+			"autoadvance",
+			"events",
+			"autoadvance",
+			"autoa",
+			"toggle",
+			"default",
+			"console",
+			"leaflet-popup",
+			"\"-control-container",
+			"'-control-container'",
+			"-control-container",
+			"retrieve-control-container",
+			"InteractionToggleView",
+			"leaflet-popup-pane",
+			"retrieve",
+			"InteractionToggleView",
+			"CustomControl",
+			"toggleLayer",
+			"InteractionToggleView",
+			"switch",
+			"setMapInteractions",
+			"console",
+			"interface",
+			"widget",
+			"zoom",
+			"widget",
+			"interaction",
 			".input",
 			"class=\"input",
 			"map.",
@@ -883,52 +928,7 @@
 			"console",
 			"readForm",
 			"makeFiles.php",
-			"object",
-			".ajax",
-			"server",
-			"interface",
-			"styles",
-			"server",
-			"interface",
-			"qpages",
-			"server",
-			"qpages",
-			"mpages",
-			"interface",
-			"mpages",
-			"conditions",
-			".php",
-			"p",
-			"Database",
-			"align",
-			"p",
-			"<a",
-			"removecondition",
-			"pagenum",
-			"createPage",
-			"addPage",
-			"addCondition",
-			"console",
-			"1.00",
-			"stopSlider",
-			"randomorder",
-			"random order",
-			"conditionnum",
-			"disabled",
-			"console",
-			"weightval",
-			"weightwarning",
-			"$(this).val()",
-			"condition-weight input",
-			"mb20",
-			"displayonyes",
-			"createBooleanDropdown",
-			"createBooleanDropdown(select, toggleAll)",
-			"condition",
-			"bdd",
-			"form",
-			"createBooleanDropdown",
-			"resortPages"
+			"object"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -936,6 +936,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"toggle",
 			"map.pages[page].",
 			"questions.pages[page].",
 			"questions.pages[page",
@@ -1062,8 +1063,7 @@
 			"dataLayerName",
 			"buttonCounts",
 			"this",
-			"dataLayerModels[i+a]",
-			"dataLayer.techniques[0]"
+			"dataLayerModels[i+a]"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1074,7 +1074,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -1082,15 +1082,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 16264,
+						"buffer_size": 16275,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								13282,
-								13282
+								14050,
+								14050
 							]
 						],
 						"settings":
@@ -1100,7 +1100,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1054.0,
+						"translation.y": 5974.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1191,15 +1191,15 @@
 					"file": "README.md",
 					"settings":
 					{
-						"buffer_size": 56160,
+						"buffer_size": 57206,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								39205,
-								39205
+								42597,
+								42597
 							]
 						],
 						"settings":
@@ -1208,7 +1208,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 17587.0,
+						"translation.y": 19528.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1246,15 +1246,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 100142,
+						"buffer_size": 100939,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								100017,
-								100017
+								64186,
+								64190
 							]
 						],
 						"settings":
@@ -1264,7 +1264,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 58674.0,
+						"translation.y": 39674.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1274,24 +1274,25 @@
 					"file": "config/map.json",
 					"settings":
 					{
-						"buffer_size": 11770,
+						"buffer_size": 12556,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4409,
-								4409
+								10298,
+								10298
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3862.0,
+						"translation.y": 4754.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1301,15 +1302,15 @@
 					"file": "js/modules/q-section.js",
 					"settings":
 					{
-						"buffer_size": 17673,
+						"buffer_size": 17523,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2460,
-								2460
+								231,
+								231
 							]
 						],
 						"settings":
@@ -1319,7 +1320,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1194.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1408,15 +1409,15 @@
 					"file": "config/questions.json",
 					"settings":
 					{
-						"buffer_size": 5938,
+						"buffer_size": 5970,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3068,
-								3068
+								3059,
+								3059
 							]
 						],
 						"settings":
@@ -1426,7 +1427,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2383.0,
+						"translation.y": 2274.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1436,15 +1437,15 @@
 					"file": "doc/README.md",
 					"settings":
 					{
-						"buffer_size": 55790,
+						"buffer_size": 57227,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								47005,
-								47005
+								42618,
+								42056
 							]
 						],
 						"settings":
@@ -1453,7 +1454,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 21687.0,
+						"translation.y": 19448.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

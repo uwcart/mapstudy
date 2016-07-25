@@ -130,11 +130,24 @@ In the descriptions below, `map` refers to each object in the map.json `pages` a
 		]
 	}
 
+
 #### map.pages[page].library
 
 	"library": *"Leaflet"* *"Mapbox-GL"* *"D3"* *"image"* *"REST"* *"iframe"*
 
 The web mapping library or service to use to create the map. Currently only supports `Leaflet`.
+
+
+#### map.pages[page].resetButton
+
+	*"resetButton"*: *true* *false*
+
+Whether to include a button allowing the participant to reset the map to its original state. The button appears as an interaction toggle switch and can also be added through `map.pages[page].interactions.reset` (in which case `toggle` for the interaction must be set to `true`).
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*false*` | If `true`, reset button will be included | `false` |
+
 
 #### map.pages[page].interactions
 
@@ -149,14 +162,15 @@ The web mapping library or service to use to create the map. Currently only supp
 		*"reexpress"*
 		*"rotate"*
 		*"resymbolize"*
-		*"reproject"*
+		*"reproject"*,
+		*"reset"*
 	}
 
 An object containing the interactions that should be enabled on the map. Each interaction in turn references an object designating whether the interaction should be logged and options for its implementation.
 
 #### map.pages[page].interactions[interaction].logging
 
-			*"logging"*: *true* *false*
+			*"logging"* *"toggle"*: *true* *false*
 
 Whether the interaction should be logged. Available for each interaction.
 
@@ -176,7 +190,7 @@ Whether to add a switch for toggling the interaction to the top toolbar on the m
 
 #### map.pages[page].interactions.zoom
 
-		*"zoom"*: { *"logging"* *"interface"* }
+		*"zoom"*: { *"logging"* *"toggle"* *"interface"* }
 
 Zoom interaction. Must be included to allow the user to change the zoom level/scale of the map.
 If an empty object, `logging` is considered to be `false`.
@@ -206,7 +220,7 @@ How to implement zoom. All default to `true`; add only to disable an interface o
 
 #### map.pages[page].interactions.pan
 
-		*"pan"*: { *"logging"* *"interface"* }
+		*"pan"*: { *"logging"* *"toggle"* *"interface"* }
 
 Pan interaction. Must be included to allow the user to change map center by dragging the map.
 
@@ -228,13 +242,13 @@ How to implement pan. All default to `true`; add only to disable an interface op
 
 #### map.pages[page].interactions.rotate
 
-		*"rotate"*: { *"logging"* }
+		*"rotate"*: { *"logging"* *"toggle"* }
 
 Rotate interaction. Allows the user to rotate the map. Only available with Mapbox-GL and D3 libraries.
 
 #### map.pages[page].interactions.retrieve
 
-		*"retrieve"*: { *"logging"* *"interface"* }
+		*"retrieve"*: { *"logging"* *"toggle"* *"interface"* }
 
 Retrieve interaction. Allows the user to get information about features through a popup and/or window.
 
@@ -255,7 +269,7 @@ How to implement retrieve. All default to `true`; add only to disable an interfa
 
 #### map.pages[page].interactions.overlay
 
-		*"overlay"*: { *"logging"* "dataLayers" }
+		*"overlay"*: { *"logging"* *"toggle"* "dataLayers" }
 
 Overlay interaction. Must be included to allow the user to add or remove data layers on the map. Must include a list of `dataLayers` for which to enable the interaction.
 
@@ -267,13 +281,13 @@ An array containing the names of `dataLayers` to allow users to add and remove w
 
 #### map.pages[page].interactions.underlay
 
-		*"underlay"*: { *"logging"* }
+		*"underlay"*: { *"logging"* *"toggle"* }
 
 Underlay interaction. Must be included to allow the user to change base layers on the map. If included, the names of all `baseLayers` will be shown with radio buttons in a layers control. Only one base layer can appear on the map at a time.
 
 #### map.pages[page].interactions.search
 
-		*"search"*: { *"logging"* "dataLayers" }
+		*"search"*: { *"logging"* *"toggle"* "dataLayers" }
 
 Search interaction. Creates a search box on the map.
 
@@ -285,7 +299,7 @@ An array of the `dataLayers` to include in the search. Must have at least one va
 
 #### map.pages[page].interactions.filter
 
-		*"filter"*: { *"logging"* "dataLayers" *"tool"* }
+		*"filter"*: { *"logging"* *"toggle"* "dataLayers" *"tool"* }
 
 Filter interaction. Creates a filter tool on the map.
 
@@ -308,7 +322,7 @@ Which interface tool to use for filtering.
 
 #### map.pages[page].interactions.sequence
 
-		*"sequence"*: { *"logging"* "dataLayers" *"tool"* }
+		*"sequence"*: { *"logging"* *"toggle"* "dataLayers" *"tool"* }
 
 Sequence interaction. Allows the user to change the expressed attribute separately for each of the listed `dataLayers`. Interface tool allows the user to cycle through each layer's `displayAttribute`s in the order in which they are listed for the layer and the layer's specified `expressedAttribute`.
 
@@ -331,13 +345,13 @@ Which interface tool to user for sequencing.
 
 #### map.pages[page].interactions.reexpress
 
-		*"reexpress"*: { *"logging"* }
+		*"reexpress"*: { *"logging"* *"toggle"* }
 
 Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the `dataLayer` is expressed to any of the techniques listed in the layer's `techniques` array (see [map.pages[page].dataLayers[i].techniques](#mappagespagedatalayersitechniques)).
 
 #### map.pages[page].interactions.resymbolize
 
-		*"resymbolize"*: { *"logging"* *"reclassify"* *"rescale"* *"recolor"* }
+		*"resymbolize"*: { *"logging"* *"toggle"* *"reclassify"* *"rescale"* *"recolor"* }
 
 Resymbolize interaction. Allows the user to manipulate the classification scheme via the legend. If included, users will be able to change the classification parameters of graduated maps (choropleth or proportional symbol), change the symbol scale or interval (proportional symbol, dot, isarithm, or heat), and/or change the symbol color (choropleth or proportional symbol). If `reclassify`, `rescale`, or `recolor` are omitted, their functionality will be included by default.
 
@@ -376,7 +390,7 @@ Changing the symbol scaling if a proportional symbol map, or the interval if a d
 
 #### map.pages[page].interactions.reproject
 
-		*"reproject"*: { *"logging"* "projections" }
+		*"reproject"*: { *"logging"* *"toggle"* "projections" }
 
 Allows the user to change the map projection. Only available with the D3 library.
 
@@ -385,6 +399,12 @@ Allows the user to change the map projection. Only available with the D3 library
 			"projections":[]
 
 An array of `projection` objects with the projection name and D3-style projection parameters for each alternative projection to include. Must have at least one projection object to enable reprojection.
+
+#### map.pages[page].interactions.reset
+
+		*"reset"*: { *"logging"* "toggle" }
+
+Allows the user to reset the map to its original state. The same reset button can also be added through `map.pages[page].resetButton`, but including it as an interaction allows for the `reset` interaction to be logged. If only included in the `interactions` object, `"toggle"` **must** be set to `true` or the button will not appear.
 
 #### map.pages[page].mapOptions
 

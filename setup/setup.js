@@ -752,13 +752,16 @@ var BlockView = Backbone.View.extend({
 	events: {
 		"click .addblock": "addBlock",
 		"click .removeblock": "removeBlock",
-		"change .input-type-select": "toggleInputType"
+		"change .input-type-select": "toggleInputType",
+		"change .autoadv select": "toggleRequired",
+		"change .reqd select": "toggleRequired"
 	},
 	i: 0,
 	ii: 0,
 	toggleInputType: function(e){
 		var inputType = e.target.value,
 			parent = $(e.target).parent().parent(),
+			autoadv = parent.find('.autoadv'),
 			optionsDiv = parent.find('.options-div'),
 			itemsDiv = parent.find('.items-div');
 
@@ -766,7 +769,13 @@ var BlockView = Backbone.View.extend({
 		if (inputType == 'radios' || inputType == 'dropdown' || inputType == 'matrix'){
 			optionsDiv.show();
 			optionsDiv.find('input').removeAttr('disabled');
+			if (this.ii == $('#page-'+this.model.get('pagenum')+'-set-'+this.i+' .input').length-1){
+				autoadv.show();
+				autoadv.find('select').removeAttr('disabled');
+			}
 		} else {
+			autoadv.hide();
+			autoadv.find('select').attr('disabled', true);
 			optionsDiv.hide();
 			optionsDiv.find('input').attr('disabled', true);
 		};
@@ -778,6 +787,14 @@ var BlockView = Backbone.View.extend({
 		} else {
 			itemsDiv.hide();
 			itemsDiv.find('input').attr('disabled', true);
+		};
+	},
+	toggleRequired: function(e){
+		var parent = $(e.target).parent()[0],
+			value = $(e.target).val();
+		//if auto-advance is true, required must be true; if required is false, auto-advance must be false
+		if ((parent.className == 'reqd q' && value == 'false') || (parent.className == 'autoadv q' && value == 'true')){
+			$(parent).parent().find('.reqd select, .autoadv select').val(value);
 		};
 	},
 	removeButton: function(){
@@ -816,10 +833,17 @@ var BlockView = Backbone.View.extend({
 				};
 			});
 		});
+		//show auto-advance if last block's input is set to radio, dropdown, or matrix
+		var prevBlock = $('#'+'page-'+pagenum+'-set-'+this.i+'-block-'+this.ii),
+			selectVal = prevBlock.find('.input-type-select').val();
+		if (selectVal == 'radios' || selectVal == 'dropdown' || selectVal == 'matrix'){
+			prevBlock.find('.autoadv').show().find('select').removeAttr('disabled');
+		};
 	},
 	addBlock: function(){
 		this.ii = parseInt(this.$el.find('.blocknumber').html())-1;
-		this.$el.find('.addbutton').hide();
+		this.$el.find('.addbutton, .autoadv').hide();
+		this.$el.find('.autoadv').find('select').attr('disabled', true);
 		this.$el.find('.removebutton').show();
 		createBlock(this.i, this.ii+1);
 	},
@@ -844,7 +868,7 @@ var BlockView = Backbone.View.extend({
 		this.$el.find('.displayonyes').hide();
 
 		//hide options and items initially
-		this.toggleInputType({target: this.el});
+		this.toggleInputType({target: this.$el.find('.input-type-select')[0]});
 
 		//add option and item properties
 		createOptionItem(this.i, this.ii, 0, 'option');
