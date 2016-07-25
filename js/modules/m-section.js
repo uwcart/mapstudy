@@ -608,7 +608,9 @@ var InteractionToggleView = Backbone.View.extend({
 	template: _.template( $('#interaction-control-template').html() ),
 	addInteraction: function(){},
 	removeInteraction: function(){},
-	toggle: function(e, toggleView){
+	reset: function(){},
+	toggle: function(e, toggleView, inactivate){
+		inactivate = inactivate || false;
 		var action, state, interaction;
 		if (typeof e == "string"){
 			//for implementation without a toggle switch
@@ -650,6 +652,9 @@ var InteractionToggleView = Backbone.View.extend({
 			state: state,
 			interaction: interaction
 		});
+
+		//trigger reset on DOM event only
+		if (!inactivate){ toggleView.reset(e) };
 	},
 	render: function(){
 		this.$el.append(this.template(this.model.attributes));
@@ -727,7 +732,7 @@ var OverlayControlView = Backbone.View.extend({
 	toggleLayer: function(layerId, addLayer){},
 	render: function(){
 		this.$el.append(this.template(this.model.attributes));
-		//set click interaction on this child element only
+		//set change interaction on this child element only
 		var view = this;
 		this.$el.find('.layer-'+this.model.get('layerId')+' input').change(function(e){
 			view.toggleLayer($(e.target).val(), $(e.target).prop('checked'));
@@ -1047,7 +1052,7 @@ var ResymbolizeSectionView = ReexpressSectionView.extend({
 //view for reclassify section of resymbolize widget
 var ReclassifyView = ReexpressInputView.extend({
 	template: _.template( $('#reclassify-template').html() ),
-	resymbolize: function(scale){},
+	resymbolize: function(param, r){},
 	setLegend: function(){
 		//get svg
 		var legendSvg = $('#'+this.model.get('layerNameClass')+'-'+this.model.get('techniqueTypeClass')+'-legend');
@@ -1065,20 +1070,21 @@ var ReclassifyView = ReexpressInputView.extend({
 			});
 		};
 	},
-	setScale: function(){
+	setScale: function(r){
+		var r = r || false;
 		var classificationModel = this.model.get('classificationModel') || classification.where({type: this.model.get('classificationType')})[0],
 			scale = classificationModel.scale(this.model.get('domain'), this.model.get('range'));
 		this.model.attributes.scale = scale;
 		//need to reset layer model scale to update legend
 		this.model.attributes.layer.model.attributes.scale = scale;
-		this.resymbolize(scale);
+		this.resymbolize(scale, r);
 		this.setLegend();
 	},
-	setClassification: function(view, classificationType){
+	setClassification: function(view, classificationType, r){
 		//get correct reclassify div
 		var classifyDiv = view.$el.children('.reclassify');
 		//set classification type in select element if first run
-		if (typeof classificationType == 'undefined'){
+		if (!classificationType){
 			classificationType = view.model.get('classificationType');
 			classifyDiv.find('select[name=classification]').val(classificationType);
 			//hide class breaks
@@ -1091,7 +1097,7 @@ var ReclassifyView = ReexpressInputView.extend({
 			view.model.attributes.classificationModel = classificationModel;
 			//if user defined classification, reset classification
 			if (classificationType == 'user defined'){
-				view.setNClasses(view, view.model.get('nClasses'));
+				view.setNClasses(view, view.model.get('nClasses'), r);
 				return;
 			} else {
 				//reset domain to undo user defined class breaks
@@ -1103,22 +1109,22 @@ var ReclassifyView = ReexpressInputView.extend({
 					var range = view.model.get('range');
 					view.model.attributes.range = [range[0], range[range.length-1]];
 					//set a new scale and reclassify
-					view.setScale();
+					view.setScale(r);
 				} else {
 					//reset range using correct number of classes
-					view.setNClasses(view, view.model.get('nClasses'));
+					view.setNClasses(view, view.model.get('nClasses'), r);
 				};
 			};
 		};
-		view.setClassBreaks();
+		view.setClassBreaks(null, r);
 	},
-	setNClasses: function(view, nClasses){
+	setNClasses: function(view, nClasses, r){
 		//get DOM elements
 		var classifyDiv = view.$el.children('.reclassify'),
 			nClassesSelect = classifyDiv.find('.n-classes select'),
 			inputsDiv = classifyDiv.find('.class-break-inputs');
 		//set up classes if the first run
-		if (typeof nClasses == 'undefined'){
+		if (!nClasses){
 			var nClasses = view.model.get('nClasses'),
 				min = view.model.get('min'),
 				max = view.model.get('max');
@@ -1165,17 +1171,17 @@ var ReclassifyView = ReexpressInputView.extend({
 			view.model.attributes.range = newRange;
 			//if user defined classification, reset classification
 			if (view.model.get('classificationType') == 'user defined'){
-				view.setClassBreaks(view);
+				view.setClassBreaks(view, r);
 				return;
 			};
-			view.setScale();
+			view.setScale(r);
 		};
-		view.setClassBreaks();
+		view.setClassBreaks(null, r);
 	},
-	setClassBreaks: function(view){
+	setClassBreaks: function(view, r){
 		var reclassify = true;
 		//use the parameter to determine if setting or using input values
-		if (typeof view == 'undefined'){
+		if (!view){
 			view = this;
 			reclassify = false;
 		};
@@ -1205,7 +1211,7 @@ var ReclassifyView = ReexpressInputView.extend({
 			});
 			//set domain based on input values
 			view.model.attributes.domain = classBreaks;
-			view.setScale();
+			view.setScale(r);
 		} else {
 			//set input values
 			//for natural breaks, domain array is class breaks array
@@ -1228,7 +1234,7 @@ var ReclassifyView = ReexpressInputView.extend({
 			};
 			//don't reset inputs for user defined
 		};
-		this.model.trigger('reclassified');
+		view.model.trigger('reclassified');
 	},
 	setForm: function(){
 		//set model variables
@@ -1254,8 +1260,8 @@ var ReclassifyView = ReexpressInputView.extend({
 			}));
 		};
 		//call setup methods
-		this.setNClasses(this);
-		this.setClassification(this);
+		this.setNClasses(this, null);
+		this.setClassification(this, null);
 
 	},
 	getEl: function(){
@@ -1274,7 +1280,7 @@ var ReclassifyView = ReexpressInputView.extend({
 			setClassBreaks = this.setClassBreaks;
 		
 		//set reclassification listener on classification dropdown
-		this.$el.find('select[name=classification]').change(function(){
+		this.$el.find('select[name=classification]').change(function(e, r){
 			//get classification parameters
 			var classificationType = $(this).val(),
 				parent = $(this).parents('.reclassify');
@@ -1286,17 +1292,17 @@ var ReclassifyView = ReexpressInputView.extend({
 				parent.find('.class-breaks').hide();
 			};
 			//reset classification
-			setClassification(view, classificationType);
+			setClassification(view, classificationType, r);
 		});
 		//set reclassification listener on nClasses dropdown
-		this.$el.find('select[name=n-classes]').change(function(){
-			setNClasses(view, $(this).val());
+		this.$el.find('select[name=n-classes]').change(function(e, r){
+			setNClasses(view, $(this).val(), r);
 		});
 		//set reclassification listener on class breaks keyup
 		var timeout = setTimeout(function(){},0);
-		this.$el.find('.class-break input').keyup(function(){
+		this.$el.find('.class-break input').keyup(function(e, r){
 			clearTimeout(timeout);
-			timeout = setTimeout(function(){ setClassBreaks(view) }, 1000);
+			timeout = setTimeout(function(){ setClassBreaks(view, r) }, 1000);
 		});
 	}
 });
@@ -1304,7 +1310,7 @@ var ReclassifyView = ReexpressInputView.extend({
 //view for recolor section of resymbolize widget
 var RecolorView = ReclassifyView.extend({
 	template: _.template( $('#recolor-template').html() ),
-	recolor: function(color){},
+	recolor: function(color, r){},
 	setLegendColor: function(model, color){
 		//get svg
 		var legendSvg = $('#'+model.get('layerNameClass')+'-'+model.get('techniqueTypeClass')+'-legend');
@@ -1341,8 +1347,9 @@ var RecolorView = ReclassifyView.extend({
 			//add color change event
 			var recolor = this.recolor,
 				setLegendColor = this.setLegendColor;
-			colorInput.change(function(){
-				recolor($(this).val());
+			colorInput.change(function(e, r){
+				r = r || false;
+				recolor($(this).val(), r);
 				setLegendColor(model, $(this).val());
 			});
 		};
@@ -1417,7 +1424,7 @@ var RecolorView = ReclassifyView.extend({
 				var range = colorbrewer[colorcode][nClasses];
 				view.model.attributes.range = range;
 				//reset scale and reclassify
-				view.setScale();
+				view.setScale(e);
 				var html = $(this).html(),
 					recolor = $(this).closest('.recolor'),
 					palette = recolor.find('.color-scale-palette'),
@@ -1476,7 +1483,7 @@ var RecolorView = ReclassifyView.extend({
 			var palette = this.$el.find('.color-scale-palette').empty();
 			_.each(this.model.get('range'), function(rangeVal){
 				//make sure it's a color
-				if (rangeVal.indexOf('#') > -1){
+				if (typeof rangeVal == 'string' && rangeVal.indexOf('#') > -1){
 					palette.append(swatchTemplate({
 						stroke: '#000',
 						fillColor: rangeVal
@@ -1546,7 +1553,7 @@ var RescaleView = RecolorView.extend({
 			minInput.val(range[0]);
 			maxInput.val(range[range.length-1]);
 			//set keyup listener
-			view.$el.find('.rescale input').keyup(function(){
+			view.$el.find('.rescale input').keyup(function(e, r){
 				clearTimeout(timeout);
 				timeout = setTimeout(function(){
 					var min = minInput.val().length > 0 ? parseFloat(minInput.val()) : 0,
@@ -1554,7 +1561,7 @@ var RescaleView = RecolorView.extend({
 						classificationType = view.$el.find('select[name=classification]').val() || model.get('classificationType');
 					if (!isNaN(min) && !isNaN(max)){
 						model.attributes.range = [min, max];
-						view.setClassification(view, classificationType);
+						view.setClassification(view, classificationType, r);
 					};
 				}, 500);
 			});
@@ -1566,13 +1573,14 @@ var RescaleView = RecolorView.extend({
 				inputVal = layerModel.get('interval') || layerModel.get('size');
 			maxInput.val(inputVal);
 			//set keyup listener
-			maxInput.keyup(function(){
+			maxInput.keyup(function(e, r){
+				r = r || false;
 				clearTimeout(timeout);
 				timeout = setTimeout(function(){
 					//param is isarithm interval or point radius
 					var param = parseFloat(maxInput.val());
 					if (!isNaN(param)){
-						view.resymbolize(param);
+						view.resymbolize(param, r);
 						view.setLegend();
 					};
 				}, 500);
@@ -1607,6 +1615,8 @@ var LeafletMap = Backbone.View.extend({
 	render: function(){
 		this.$el.html("<div id='map'>");
 		this.model.attributes.allFeatures = [];
+		this.firstLayers = {};
+		this.offLayers = {};
 		return this;
 	},
 	addLayer: function(layerId){
@@ -1755,6 +1765,7 @@ var LeafletMap = Backbone.View.extend({
 					//leaflet heatmap layer instance
 					var heatmapLayer = new HeatmapOverlay(heatmapConfig);
 					heatmapLayer.setData(data);
+					heatmapLayer._leaflet_id = Math.round(Math.random()*10000);
 					tModel.attributes.heatmapLayer = heatmapLayer;
 				};
 			};
@@ -1898,7 +1909,7 @@ var LeafletMap = Backbone.View.extend({
 		legendEntry.length > 0 && e.type == 'layeradd' ? legendEntry.show() : legendEntry.hide();
 		if (e.type == 'layeradd'){
 			delete view.offLayers[layerId];
-		} else {
+		} else if (e.layer.hasOwnProperty('layerName')) {
 			this.offLayers[layerId] = e.layer;
 		};
 	},
@@ -1976,8 +1987,8 @@ var LeafletMap = Backbone.View.extend({
 					leafletView.trigger('zoom');
 				};
 			};
-			//set timer to avoid autopan triggering	
-			leafletView.on('search', function(){
+			//set timer to avoid autopan triggering
+			leafletView.on('search refreshmap', function(){
 				autozoom = true;
 				setTimeout(function(){ autozoom = false }, 500);
 			});
@@ -2100,10 +2111,20 @@ var LeafletMap = Backbone.View.extend({
 			return controlView;
 		},
 		retrieve: function(controlView, leafletView){
-			var map = leafletView.map;
+			var map = leafletView.map,
+				autoretrieve = false;
+
+			//set timer to avoid autoretrieve triggering
+			leafletView.on('search', function(){
+				autoretrieve = true;
+				setTimeout(function(){ autoretrieve = false }, 500);
+			});
+
 			//listener handler for posting retrieve interaction
 			function triggerRetrieve(){
-				leafletView.trigger('retrieve');
+				if (!autoretrieve){
+					leafletView.trigger('retrieve');
+				};
 			};
 			controlView.addInteraction = function(){
 				$('.leaflet-interactive').removeAttr('style');
@@ -2161,7 +2182,7 @@ var LeafletMap = Backbone.View.extend({
 			map.addControl(overlayControl);
 
 			//add to overlay control
-			leafletView.on('dataLayersDone', function(){
+			leafletView.once('dataLayersDone', function(){
 				_.each(leafletView.model.get('leafletDataLayers'), function(dataLayer){
 					var layerId = dataLayer._leaflet_id;
 					var overlayControlModel = new OverlayControlModel({
@@ -2173,7 +2194,7 @@ var LeafletMap = Backbone.View.extend({
 					//toggleLayer function must be defined for leaflet view
 					overlayControlView.toggleLayer = function(layerId, addLayer){
 						//trigger interaction logging if toggle was not due to reexpression
-						if (!leafletView.reexpressed){ leafletView.trigger('overlay'); };
+						leafletView.trigger('overlay');
 						//turn layer on/off
 						if (map._layers[layerId] && !addLayer){
 							leafletView.removeLayer(layerId);
@@ -2194,6 +2215,29 @@ var LeafletMap = Backbone.View.extend({
 				}, this);
 			}, this);
 
+			function overlayRefresh(e){
+				$('.overlay-control-layer input').each(function(){
+					//check all controls for included layers and uncheck for excluded layers
+					var layerId = parseInt(this.value);
+					if (e.layersObject.hasOwnProperty(layerId)){
+						$(this).prop('checked', true);
+					} else {
+						$(this).removeAttr('checked');
+					};
+				});
+				//reset overlay controls
+				e.dataLayers.forEach(function(layer){
+					if (layer.techniqueOrder == 0){
+						$('#overlay-layer-'+layer._leaflet_id).show();
+					} else {
+						$('#overlay-layer-'+layer._leaflet_id).hide();
+					}
+				});
+			};
+			//remove previous listener if participant went back a page
+			leafletView.off('refreshmap', overlayRefresh);
+			leafletView.on('refreshmap', overlayRefresh);
+
 			return controlView;
 		},
 		underlay: function(controlView, leafletView){
@@ -2204,7 +2248,7 @@ var LeafletMap = Backbone.View.extend({
 			map.addControl(underlayControl);
 
 			//add to underlay control
-			leafletView.on('baseLayersDone', function(){
+			leafletView.once('baseLayersDone', function(){
 				_.each(leafletView.model.get('leafletBaseLayers'), function(baseLayer){
 					var layerId = baseLayer._leaflet_id;
 					var underlayControlModel = new UnderlayControlModel({
@@ -2236,6 +2280,21 @@ var LeafletMap = Backbone.View.extend({
 				}, this);
 			}, this);
 
+			function underlayRefresh(e){
+				$('.underlay-control-layer input').each(function(){
+					//check all controls for included layers and uncheck for excluded layers
+					var layerId = parseInt(this.value);
+					if (e.layersObject.hasOwnProperty(layerId)){
+						$(this).prop('checked', true);
+					} else {
+						$(this).removeAttr('checked');
+					};
+				});
+			};
+			//remove previous listener if participant went back a page
+			leafletView.off('refreshmap', underlayRefresh);
+			leafletView.on('refreshmap', underlayRefresh);
+
 			return controlView;
 		},
 		search: function(controlView, leafletView){
@@ -2254,6 +2313,8 @@ var LeafletMap = Backbone.View.extend({
 			var searchView = new SearchView();
 			//function to show popup for clicked feature
 			searchView.selectFeature = function(e, result){
+				//record search interaction
+				leafletView.trigger('search');
 				//reveal popups pane if retrieve is off
 				map.closePopup();
 				$('.leaflet-popup-pane').show();
@@ -2278,11 +2339,9 @@ var LeafletMap = Backbone.View.extend({
 						};
 					}
 				}, this);
-				//record search interaction
-				leafletView.trigger('search');
 			};
 			//replace search model when mapped layers change
-			function setSearchInput(){
+			function setSearchInput(e){
 				//reset search widget content
 				$('#search-box input').val('');
 				$('#search-results-box').empty();
@@ -2346,12 +2405,13 @@ var LeafletMap = Backbone.View.extend({
 							newData = [],
 							offData = leafletView.offData[layer.layerName];
 						//remove data that fall within filter range from offData array and add to layer
-						_.each(offData, function(datum){
+						for (var datumKey in offData){
+							var datum = offData[datumKey];
 							if (datum[attribute] >= min && datum[attribute] <= max){
 								newData.push(datum);
 								offData = _.without(offData, datum);
 							};
-						});
+						};
 						//pass new offData array to view object
 						leafletView.offData[layer.layerName] = offData;
 						//remove data that fall outside of filter range from layer and put in offData array
@@ -2372,7 +2432,8 @@ var LeafletMap = Backbone.View.extend({
 					};
 				});
 				//add layers within filter range
-				_.each(offLayers, function(layer){
+				for (var layerId in offLayers){
+					var layer = offLayers[layerId];
 					if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
 						var layerValue = layer.feature.properties[attribute];
 						//if value within range, add to map and remove from removed layers array
@@ -2381,7 +2442,7 @@ var LeafletMap = Backbone.View.extend({
 							delete offLayers[layer._leaflet_id + '-filter'];
 						};
 					};
-				});
+				};
 
 			};
 			//get interaction variables
@@ -2441,12 +2502,13 @@ var LeafletMap = Backbone.View.extend({
 				//reset logic inputs
 				$('.filter-row input').val('');
 				//reset layers
-				_.each(offLayers, function(layer){
-					if (offLayers[layer._leaflet_id + '-filter']){
+				for (var layerId in offLayers){
+					var layer = offLayers[layerId];
+					if (offLayers.hasOwnProperty(layerId + '-filter')){
 						layer.addTo(map);
-						delete offLayers[layer._leaflet_id + '-filter'];
+						delete offLayers[layerId + '-filter'];
 					};
-				});
+				};
 			};
 			//update filter on overlay change
 			leafletView.map.on('layeradd layerremove', function(e){
@@ -2555,7 +2617,7 @@ var LeafletMap = Backbone.View.extend({
 				});
 			};
 			//add data layers after loaded
-			leafletView.on('dataLayersDone', function(){
+			leafletView.once('dataLayersDone', function(){
 				setInputs();
 				resetTechniques();
 				checkDisabled();
@@ -2573,6 +2635,22 @@ var LeafletMap = Backbone.View.extend({
 					};
 				};
 			});
+
+			function reexpressRefresh(e){
+				$('.reexpress-input-div input').each(function(){
+					//check all controls for included layers and uncheck for excluded layers
+					var layerId = parseInt(this.value);
+					if (e.layersObject.hasOwnProperty(layerId)){
+						$(this).prop('checked', true);
+					} else {
+						$(this).removeAttr('checked');
+					};
+				});
+			};
+			//remove previous listener if participant went back a page
+			leafletView.off('refreshmap', reexpressRefresh);
+			leafletView.on('refreshmap', reexpressRefresh);
+
 			return controlView;
 		},
 		resymbolize: function(controlView, leafletView){
@@ -2622,14 +2700,14 @@ var LeafletMap = Backbone.View.extend({
 						var reclassifyView = new ReclassifyView({model: resymbolizeModel}),
 							recolorView = new RecolorView({model: resymbolizeModel});
 						//designate resymbolize function specific to Leaflet
-						reclassifyView.resymbolize = function(scale){
+						reclassifyView.resymbolize = function(scale, r){
+							if (!r){ if (!r){ leafletView.trigger('resymbolize') }; };
 							layer.eachLayer(function(sublayer){
 								var style = {
 									fillColor: scale(sublayer.feature.properties[expressedAttribute])
 								};
 								sublayer.setStyle(style);
 							});
-							leafletView.trigger('resymbolize');
 						};
 						//recolor method is reclassification
 						recolorView.resymbolize = reclassifyView.resymbolize;
@@ -2653,21 +2731,21 @@ var LeafletMap = Backbone.View.extend({
 							rescaleView = new RescaleView({model: resymbolizeModel}),
 							recolorView = new RecolorView({model: resymbolizeModel});
 						//designate resymbolize function specific to Leaflet
-						reclassifyView.resymbolize = function(scale){
+						reclassifyView.resymbolize = function(scale, r){
+							if (!r){ leafletView.trigger('resymbolize') };
 							layer.eachLayer(function(sublayer){
 								var radius = scale(sublayer.feature.properties[expressedAttribute]);
 								sublayer.setRadius(radius);
 							});
-							leafletView.trigger('resymbolize');
 						};
 						//rescaleView also changes radius with new scale
 						rescaleView.resymbolize = reclassifyView.resymbolize;
 						//recolor function takes a single color as parameter rather than scale
-						recolorView.recolor = function(color){
+						recolorView.recolor = function(color, r){
+							if (!r){ leafletView.trigger('resymbolize') };
 							layer.eachLayer(function(sublayer){
 								sublayer.setStyle({fillColor: color});
 							});
-							leafletView.trigger('resymbolize');
 						};
 						//render views
 						if (reclassify){ reclassifyView.render() };
@@ -2677,7 +2755,8 @@ var LeafletMap = Backbone.View.extend({
 						//instantiate just rescale view
 						var rescaleView = new RescaleView({model: resymbolizeModel});
 						//designate resymbolize function specific to Leaflet
-						rescaleView.resymbolize = function(interval){
+						rescaleView.resymbolize = function(interval, r){
+							if (!r){ leafletView.trigger('resymbolize') };
 							//reset and show progress bar
 							var progressBar = $('#'+layer.model.get('className')+'-isarithmic-rescale .rendering-progress-bar'),
 								progressBarFill = progressBar.find('.progress-bar-fill');
@@ -2701,7 +2780,6 @@ var LeafletMap = Backbone.View.extend({
 									progressBarFill.css('width', w+'px');
 								});
 								setTimeout(function(){ progressBar.hide() }, 500);
-								leafletView.trigger('resymbolize');
 							}, 500);
 						};
 						//render rescale view
@@ -2710,11 +2788,11 @@ var LeafletMap = Backbone.View.extend({
 						//instantiate just rescale view
 						var rescaleView = new RescaleView({model: resymbolizeModel});
 						//designate resymbolize function specific to Leaflet
-						rescaleView.resymbolize = function(radius){
+						rescaleView.resymbolize = function(radius, r){
+							if (!r){ leafletView.trigger('resymbolize') };
 							//reset heatmap
 							layer.cfg.radius = radius;
 							layer._draw();
-							leafletView.trigger('resymbolize');
 						};
 						//render rescale view
 						if (rescale){ rescaleView.render() };
@@ -2722,7 +2800,8 @@ var LeafletMap = Backbone.View.extend({
 						//instantiate just rescale view
 						var rescaleView = new RescaleView({model: resymbolizeModel});
 						//designate resymbolize function specific to Leaflet
-						rescaleView.resymbolize = function(interval){
+						rescaleView.resymbolize = function(interval, r){
+							if (!r){ leafletView.trigger('resymbolize') };
 							//reset and show progress bar
 							var progressBar = $('#'+layer.model.get('className')+'-dot-rescale .rendering-progress-bar'),
 								progressBarFill = progressBar.find('.progress-bar-fill');
@@ -2749,7 +2828,6 @@ var LeafletMap = Backbone.View.extend({
 								progressBarFill.css('width', w+'px');
 							});
 							setTimeout(function(){ progressBar.hide() }, 500);
-							leafletView.trigger('resymbolize');
 						};
 						//render rescale view
 						if (rescale){ rescaleView.render() };
@@ -2762,50 +2840,123 @@ var LeafletMap = Backbone.View.extend({
 			};
 
 			//add tools for data layers after loaded
-			leafletView.on('dataLayersDone', function(){
+			leafletView.once('dataLayersDone', function(){
 				setTools();
 			}, this);
+
+			function resymbolizeRefresh(e){
+				e.dataLayers.forEach(function(layer){
+					var attributes = layer.model.attributes,
+						initialTechnique = attributes.techniques[attributes.techniqueIndex],
+						resymbolizeSection = $('#'+layer.className + '-' + layer.techniqueType.replace(' ', '-') + '-resymbolize-section'),
+						nClasses,
+						colorClass = null;
+					//reset classification
+					resymbolizeSection.find('select[name=classification]').val(initialTechnique.classification).trigger('change', true);
+					//reset number of classes
+					if (typeof initialTechnique.classes == 'string'){
+						var parts = initialTechnique.classes.split('.');
+						nClasses = parseInt(parts[1]);
+						colorClass = parts[0];
+					} else if (initialTechnique.hasOwnProperty('classes')) {
+						nClasses = initialTechnique.classes.length;
+					} else {
+						nClasses = 0;
+					}
+					resymbolizeSection.find('select[name=n-classes]').val(nClasses).trigger('change', true);
+					//reset color scale
+					var colorList = resymbolizeSection.find('.color-scale-list');
+					if (colorList.length > 0){
+						if (colorClass){
+							colorList.children('.'+colorClass).trigger('click', true);
+						} else {
+							attributes.scale.range(initialTechnique.classes);
+							layer.eachLayer(function(sublayer){
+								var style = {
+									fillColor: attributes.scale(sublayer.feature.properties[attributes.expressedAttribute])
+								};
+								sublayer.setStyle(style);
+							});
+							resymbolizeSection.find('.color-scale-palette span').each(function(i){
+								$(this).css('background-color', initialTechnique.classes[i]);
+							});
+						}
+					};
+					//reset value scale
+					if (typeof initialTechnique.classes == 'object' && typeof initialTechnique.classes[0] == 'number'){
+						resymbolizeSection.find('input[name=scale-value-min]').val(initialTechnique.classes[0]).trigger('keyup');
+						resymbolizeSection.find('input[name=scale-value-max]').val(initialTechnique.classes[initialTechnique.classes.length-1]).trigger('keyup', true);
+					};
+					//reset color input
+					try {
+						var color = attributes.layerOptions.fillColor || attributes.layerOptions.fill,
+							colorInput = resymbolizeSection.find('input[name=fill-color]');
+						//set background color of input
+						colorInput.css('background-color', color);
+						//get rgb color value and convert to hex value
+						var rgb = colorInput.css('background-color').replace(/rgb\(|\)/g, '').split(','),
+							red = parseInt(rgb[0]), green = parseInt(rgb[1]), blue = parseInt(rgb[2]),
+							rgb2 = blue | (green << 8) | (red << 16),
+							hex = '#' + (0x1000000 + rgb2).toString(16).slice(1);
+						//remove background color of input and trigger new color
+						colorInput.removeAttr('style').val(hex).trigger('change', true);
+						//reset class breaks if user defined
+						if (initialTechnique.classification == 'user defined'){
+							var scale = attributes.scale,
+								range = scale.range();
+							_.each(range, function(r, i){
+								if (i < range.length-1){
+									resymbolizeSection.find('.cb-'+i+' input').val(scale.invertExtent(r)[1]).trigger('keyup', true);
+								};
+							});
+						};
+					} catch (e){};
+					//reset size/interval input
+					if (initialTechnique.hasOwnProperty('size')){
+						resymbolizeSection.find('input[name=scale-value-max]').val(initialTechnique.size).trigger('keyup', true);
+					} else if (initialTechnique.hasOwnProperty('interval')){
+						resymbolizeSection.find('input[name=scale-value-max]').val(initialTechnique.interval).trigger('keyup', true);
+					}
+				});
+			};
+
+			//remove previous listener if participant went back a page
+			leafletView.off('refreshmap', resymbolizeRefresh);
+			leafletView.on('refreshmap', resymbolizeRefresh);
 
 			return controlView;
 		},
 		reproject: function(controlView, leafletView){
 			return controlView;
-		}
-	},
-	resetLayerControls: function(layersObject, dataLayers){
-		$('.underlay-control-layer input, .overlay-control-layer input, .reexpress-input-div input').each(function(){
-			//check all controls for included layers and uncheck for excluded layers
-			var layerId = parseInt(this.value);
-			if (layersObject.hasOwnProperty(layerId)){
-				$(this).prop('checked', true);
-			} else {
-				$(this).removeAttr('checked');
+		},
+		reset: function(controlView, leafletView){
+			//change reset function to refresh the map
+			controlView.reset = function(){
+				window.setTimeout(function(){
+					var map = leafletView.map,
+						firstLayers = leafletView.firstLayers;
+					map.setView(map.options.center, map.options.zoom);
+					//remove all layers
+					map.eachLayer(function(layer){
+						map.removeLayer(layer);
+					});
+					//add back in initial map layers
+					for (var layerId in firstLayers){
+						map.addLayer(firstLayers[layerId]);
+					};
+					//reset all layer controls
+					leafletView.trigger('refreshmap', {
+						layersObject: firstLayers,
+						dataLayers: leafletView.model.get('leafletDataLayers')
+					});
+
+					//toggle off
+					controlView.toggle({target: $('.reset-control')[0]}, controlView, true);
+				}, 100);
 			};
-		});
-		//reset overlay controls
-		dataLayers.forEach(function(layer){
-			if (layer.techniqueOrder == 0){
-				$('#overlay-layer-'+layer._leaflet_id).show();
-			} else {
-				$('#overlay-layer-'+layer._leaflet_id).hide();
-			}
-		})
-	},
-	refreshMap: function(view){
-		var map = view.map,
-			firstLayers = view.firstLayers;
-		//reset map view
-		map.setView(map.options.center, map.options.zoom);
-		//remove all layers
-		map.eachLayer(function(layer){
-			map.removeLayer(layer);
-		});
-		//add back in initial map layers
-		for (var layerId in firstLayers){
-			map.addLayer(firstLayers[layerId]);
-		};
-		//reset all layer controls
-		view.resetLayerControls(firstLayers, view.model.get('leafletDataLayers'));
+
+			return controlView;
+		}
 	},
 	setInteractionControls: function(){
 		//set no-interaction map option defaults
@@ -2828,6 +2979,16 @@ var LeafletMap = Backbone.View.extend({
 			var InteractionControl = this.CustomControl('interaction', 'topright');
 			var interactionControl = new InteractionControl();
 			interactionControl.addTo(map);
+			//if resetButton is true, add to map interactions
+			if (this.model.get('resetButton')){
+				if (!this.model.get('interactions').hasOwnProperty('reset')){
+					this.model.attributes.interactions.reset = {};
+				};
+				var resetI = this.model.attributes.interactions.reset;
+				if (!resetI.hasOwnProperty('toggle')){
+					resetI.toggle = true;
+				};
+			};
 			//create new button for each interaction
 			var interactions = this.model.get('interactions');
 			for (var interaction in interactions){
@@ -2848,25 +3009,13 @@ var LeafletMap = Backbone.View.extend({
 				if (interactions[interaction].toggle){
 					//render interaction toggle button
 					interactionToggleView.render();	
+					//change the reset control title
+					$('.reset-control img').attr('title', 'reset map');
 				} else {
 					$('.'+interaction+'-control-container').show();
 					interactionToggleView.toggle(interaction);
 				};
 			};
-			//if resetButton is true or undefined, add to map
-			if (!this.model.attributes.hasOwnProperty('resetButton') || this.model.get('resetButton')){
-				var ResetControl = this.CustomControl('reset', 'topright');
-				var resetControl = new ResetControl();
-				resetControl.addTo(map);
-				var container = $('.reset-control-container'),
-					refreshMap = this.refreshMap,
-					view = this;
-				container.show()
-					.css('cursor', 'pointer')
-					.click(function(){
-						refreshMap(view);
-					});
-			};	
 		}, this);
 
 		this.on('dataLayersDone', function(){
@@ -2892,7 +3041,8 @@ var LeafletMap = Backbone.View.extend({
 			search: {search: this},
 			filter: {filter: this},
 			reexpress: {reexpress: this},
-			resymbolize: {resymbolize: this}
+			resymbolize: {resymbolize: this},
+			reset: {refreshmap: this}
 		};
 		//create a new interaction object for each interaction with logging
 		var interactions = this.model.get('interactions');
@@ -2954,14 +3104,11 @@ function setMapView(options){
 	var mapView;
 	if (_options.attributes.maps.hasOwnProperty(_page)){
 		mapView = _options.get('maps')[_page];
-		mapView.render();
-		mapView.setMap(false);
-	} else {
-		if (page.attributes.hasOwnProperty('library')){
-			mapView = eval("new " + page.get('library') + "Map({model: page})");
-			_options.attributes.maps[_page] = mapView;
-			mapView.render().setMap(true);
-		};
+		mapView.render().setMap(false);
+	} else if (page.attributes.hasOwnProperty('library')){
+		mapView = eval("new " + page.get('library') + "Map({model: page})");
+		_options.attributes.maps[_page] = mapView;
+		mapView.render().setMap(true);
 	};
 
 	document.trigger('ready');

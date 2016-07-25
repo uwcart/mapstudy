@@ -138,6 +138,7 @@
 		{
 			"page": 3,
 			"library": "Leaflet",
+			"resetButton": true,
 			"interactions": {
 				"retrieve": {
 					"logging": true,
@@ -242,6 +243,7 @@
 		{
 			"page": 4,
 			"library": "Leaflet",
+			"resetButton": true,
 			"interactions": {
 				"retrieve": {
 					"logging": true,
@@ -376,6 +378,7 @@
 		{
 			"page": 5,
 			"library": "Leaflet",
+			"resetButton": true,
 			"interactions": {
 				"retrieve": {
 					"logging": true,
@@ -495,6 +498,7 @@
 		{
 			"page": 7,
 			"library": "Leaflet",
+			"resetButton": true,
 			"interactions": {
 				"retrieve": {
 					"logging": true,
