@@ -36,7 +36,9 @@ var PageView = Backbone.View.extend({
 		"change select[name=library]": "setLibrary",
 		"change .i-checkbox": "toggleInteraction",
 		"change .fullpage": "toggleMaponpage",
-		"change .maponpage": "toggleFullpage"
+		"change .maponpage": "toggleFullpage",
+		"change .resetSelect": "toggleResetButton",
+		"change .reset-p input": "toggleResetButton"
 	},
 	removepage: function(){
 		//reset page numbering
@@ -63,6 +65,10 @@ var PageView = Backbone.View.extend({
 		this.$el.find('.i-section').each(function(){
 			var interaction = $(this).attr('class').split(' ')[0];
 			$(this).prepend(loggingTemplate({pagenum: pagenum, interaction: interaction}));
+			//hide toggle option and set to true for reset button
+			if (interaction == 'reset'){
+				$(this).find('.interaction-toggle').hide().find('select').val('true');
+			};
 			$(this).find('input, select').attr('disabled', true);
 			$(this).hide();
 		});
@@ -74,7 +80,7 @@ var PageView = Backbone.View.extend({
 			isection.slideDown(250);
 		} else {
 			isection.slideUp(250);
-			isection.find('input, select')
+			isection.find('input, select').prop('disabled', true);
 		};
 	},
 	toggleMaponpage: function(e){
@@ -90,6 +96,21 @@ var PageView = Backbone.View.extend({
 		} else {
 			this.$el.find('.fullpage').val("true").trigger("change");
 		}
+	},
+	toggleResetButton: function(e){
+		if ($(e.target).attr('class').indexOf('resetSelect') > -1){
+			if (e.target.value == 'true'){
+				this.$el.find('.reset-p input').prop('checked', true).trigger('change')
+			} else {
+				this.$el.find('.reset-p input').removeAttr('checked').trigger('change');
+			};
+		} else {
+			if (e.target.checked){
+				this.$el.find('.resetButton select').val('true');
+			} else {
+				this.$el.find('.resetButton select').val('false');
+			};
+		};
 	},
 	setLibrary: function(library){
 		//extract name of library from select change event

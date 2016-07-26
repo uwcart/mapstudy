@@ -2980,7 +2980,8 @@ var LeafletMap = Backbone.View.extend({
 			var interactionControl = new InteractionControl();
 			interactionControl.addTo(map);
 			//if resetButton is true, add to map interactions
-			if (this.model.get('resetButton')){
+			var resetButton = this.model.get('mapOptions').resetButton || false;
+			if (resetButton){
 				if (!this.model.get('interactions').hasOwnProperty('reset')){
 					this.model.attributes.interactions.reset = {};
 				};
