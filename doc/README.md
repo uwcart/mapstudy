@@ -138,17 +138,6 @@ In the descriptions below, `map` refers to each object in the map.json `pages` a
 The web mapping library or service to use to create the map. Currently only supports `Leaflet`.
 
 
-#### map.pages[page].resetButton
-
-	*"resetButton"*: *true* *false*
-
-Whether to include a button allowing the participant to reset the map to its original state. The button appears as an interaction toggle switch and can also be added through `map.pages[page].interactions.reset` (in which case `toggle` for the interaction must be set to `true`).
-
-| Value  | Description | Default |
-| :------------: | :----------- | :------------------- |
-| `*false*` | If `true`, reset button will be included | `false` |
-
-
 #### map.pages[page].interactions
 
 	"interactions": {
@@ -404,11 +393,11 @@ An array of `projection` objects with the projection name and D3-style projectio
 
 		*"reset"*: { *"logging"* "toggle" }
 
-Allows the user to reset the map to its original state. The same reset button can also be added through `map.pages[page].resetButton`, but including it as an interaction allows for the `reset` interaction to be logged. If only included in the `interactions` object, `"toggle"` **must** be set to `true` or the button will not appear.
+Allows the user to reset the map to its original state. The same reset button can also be added through `map.pages[page].mapOptions.resetButton`, but including it as an interaction allows for the `reset` interaction to be logged. If only included in the `interactions` object, `"toggle"` **must** be set to `true` or the button will not appear.
 
 #### map.pages[page].mapOptions
 
-	*"mapOptions"*: { *library options* *legend* }
+	*"mapOptions"*: { *library options* *legend* *resetButton* }
 
 An object to hold any map options applied on the instantiation of a Leaflet, Mapbox-GL, or REST map. Not available for any other `library options`. If no `mapOptions` are included, library defaults will be applied. Refer to the [Leaflet](http://leafletjs.com/reference.html#map-options) or [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/#Map) documentation for lists of possible options for those libraries. REST `mapOptions` will be added as parameters to the map URL, and are thus dependent on the map server configuration. The `legend` option is a special option, described below.
 
@@ -422,6 +411,16 @@ Including a legend on the map.
 | :------------: | :----------- | :------------------- |
 | `*"true"*` | A legend is added to the map showing symbols for all `dataLayers`. | `true` |
 | `*"false"*` | A legend is not added to the map. | `true` |
+
+#### map.pages[page].mapOptions.resetButton
+
+	*"resetButton"*: *true* *false*
+
+Whether to include a button allowing the participant to reset the map to its original state. The button appears as an interaction toggle switch and can also be added through `map.pages[page].interactions.reset` (in which case `toggle` for the interaction must be set to `true`).
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*false*` | If `true`, reset button will be included | `false` |
 
 #### map.pages[page].projection
 

@@ -379,6 +379,10 @@
                                     <option value="false">no</option>
                                 </select>
                             </p>
+
+                            <p class="q resetButton">
+                                Include a reset button? <select class="bdd no resetSelect" name="map.pages.<%= pagenum %>.mapOptions.resetButton"></select>
+                            </p>
                             
                             <div class="map-options q">
                                 <p class="nomargin"><a class="ext" href="http://leafletjs.com/reference.html#map-options" target="_blank">Map Options</a>:
@@ -666,6 +670,13 @@
                                             </tr>
                                         </table>
                                     </div>
+                                </div>
+
+                                <div>
+                                    <p class="reset-p nomargin">
+                                        <input class="i-checkbox" type="checkbox" name="map.pages.<%= pagenum %>.interactions.reset"> Reset
+                                    </p>
+                                    <div class="reset i-section"></div>
                                 </div>
                             </div>
                         </div>
@@ -958,6 +969,11 @@
                     <div class="interaction-logging mb20">
                         Log this interaction? 
                         <select class="bdd yes" name="map.pages.<%= pagenum %>.interactions.<%= interaction %>.logging"></select>
+                    </div>
+
+                    <div class="interaction-toggle mb20">
+                        Include toggle switch? 
+                        <select class="bdd no" name="map.pages.<%= pagenum %>.interactions.<%= interaction %>.toggle"></select>
                     </div>
                 </script>
 
