@@ -346,7 +346,36 @@ var Dot = Backbone.Model.extend({
 		this.attributes.interval = interval;
 		this.polygonsToDots();
 	}
-})
+});
+
+var Label = Backbone.Model.extend({
+	defaults: {
+		techniqueIndex: 0,
+		techniqueType: 'label'
+	},
+	setLabels: function(feature){
+		var label = feature.properties[this.get('displayAttributes')[0]],
+			textAnchor = feature.geometry.type == 'Point' ? 'start' : 'middle',
+			yOffset = textAnchor == 'start' ? this.get('size') : 0;
+		feature = turf.pointOnSurface(feature);
+		feature.properties = {
+			label: label,
+			size: this.get('size'),
+			yOffset: yOffset,
+			textAnchor: textAnchor,
+			layerOptions: this.get('layerOptions') || {}
+		};
+		return feature;
+	},
+	symbolize: function(){
+		var technique = this.get('techniques')[this.get('techniqueIndex')],
+			size = technique.size || 12;
+		this.attributes.size = size;
+
+		//turn each feature into a point feature with just the label property
+		this.attributes.features = _.map(this.get('features'), this.setLabels, this);
+	}
+});
 
 //an object references technique classes to their types
 var techniquesObj = {
@@ -354,7 +383,8 @@ var techniquesObj = {
 	'proportional symbol': ProportionalSymbol,
 	'isarithmic': Isarithmic,
 	'heat': Heat,
-	'dot': Dot
+	'dot': Dot,
+	'label': Label
 };
 
 //view for legend creation
@@ -527,7 +557,8 @@ var LegendLayerView = Backbone.View.extend({
 			view.append(size, interval, 0);
 			//set svg dimensions
 			view.setSvgDims();
-		}
+		},
+		label: function(view){}
 	},
 	initialize: function(){
 		//set styles according to layer options
@@ -1613,11 +1644,41 @@ var LeafletMap = Backbone.View.extend({
 		reproject: false
 	},
 	render: function(){
+		this.extendLeaflet();
 		this.$el.html("<div id='map'>");
 		this.model.attributes.allFeatures = [];
 		this.firstLayers = {};
 		this.offLayers = {};
 		return this;
+	},
+	extendLeaflet: function(){
+		//extend Leaflet to create Label vector layer
+		L.SVG = L.SVG.extend({
+			_updateLabel: function(layer){
+				var p = layer._point;
+				layer._path = layer._path.nodeName == 'text' ? layer._path : L.SVG.create('text');
+				// position text
+				layer._path.setAttribute('x', p.x);
+				layer._path.setAttribute('y', p.y-layer.feature.properties.yOffset);
+				textAnchor = layer.options['text-anchor'] || layer.feature.properties.textAnchor;
+				layer._path.setAttribute('text-anchor', textAnchor);
+				layer._path.setAttribute('font-family', 'sans-serif');
+				layer._path.setAttribute('font-size', layer.feature.properties.size+'px');
+				//set inner html
+				layer._path.innerHTML = layer.feature.properties.label || 'nolabel';
+				//adjust options for text visibility
+				layer.options.opacity = 0;
+				layer.options.fillOpacity = 1;
+				//update style
+				this._updateStyle(layer);
+			}
+		});
+
+		L.Label = L.CircleMarker.extend({
+			_updatePath: function(){
+				this._renderer._updateLabel(this);
+			}
+		});
 	},
 	addLayer: function(layerId){
 		this.offLayers[layerId].addTo(this.map);
@@ -1806,6 +1867,12 @@ var LeafletMap = Backbone.View.extend({
 				};
 				//add pointToLayer to create dots
 				overlayOptions.pointToLayer = pointToLayer;
+			} else if (technique.type == 'label'){
+				//implement pointToLayer conversion to labels
+				overlayOptions.pointToLayer = function(feature, latlng){
+					//make a new label for each feature
+					return new L.Label(latlng);
+				}
 			};
 			//instantiate Leaflet layer
 			if (technique.type == 'heat'){

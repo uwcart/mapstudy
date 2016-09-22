@@ -133,6 +133,21 @@
 						20
 					]
 				}]
+			},
+			{
+				"name": "US States Labels",
+				"source": "data/us-states.geojson",
+				"renderOnLoad": true,
+				"expressedAttribute": "Density (ppl/sq. mile)",
+				"displayAttributes": ["name"],
+				"layerOptions": {
+					"fillColor": "#555",
+					"minZoom": 5
+				},
+				"techniques": [{
+					"type": "label",
+					"size": 14
+				}]
 			}]
 		},
 		{
