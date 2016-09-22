@@ -2,16 +2,16 @@
 	{
 		"sectionId": "header",
 		"cssAttributes": {
-			"background-color": "rgb(247,154,66)"
+			"background-color": "#f13e29"
 		},
-		"logo-url": "img/logo.png",
-		"content": "MapStudy Template"
+		"logo-url": "img/uw.png",
+		"content": "The Role of Cartographic Interface Complexity on Spatial Decision-Making"
 	},
 	{
 		"sectionId": "footer",
 		"cssAttributes": {
-			"background-color": "rgb(247,154,66)"
+			"background-color": "#f03d28"
 		},
-		"content": "I'm some credits, maybe a Twitter or Facebook share button."
+		"content": "This Project is Sponsored by the University of Wisconsin-Madison Cartography Lab and the National Science Foundataion."
 	}
 ]
