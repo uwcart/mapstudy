@@ -601,7 +601,7 @@ An array of objects containing the thematic mapping techniques, including the ma
 
 			"type": *"choropleth"* *"proportional symbol"* *"dot"* *"isarithmic"* *"heat"* *"label"*
 
-The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Note that only a data layer with a `proportional symbol`, `isarithmic`, or `heat` technique type can use point feature data, but all technique types can use polygon data. The `retrieve` and `search` interactions are not available for `heat` map layers, and `search` is not available for `isarithmic` layers. `label` layers create labels using the first of the `displayAttributes` centered within each polygon feature, or to the upper-right of each point feature.
+The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Note that only a data layer with a `proportional symbol`, `isarithmic`, or `heat` technique type can use point feature data, but all technique types can use polygon data. The `retrieve` and `search` interactions are not available for `heat` map layers, and `search` is not available for `isarithmic` layers. `label` layers create labels using the first of the `displayAttributes` centered within each polygon feature, or to the upper-right of each point feature. If creating labels, creating a separate `dataLayer` with `label` as the only technique is recommended.
 
 #### map.pages[page].dataLayers[i].techniques[ii].classification
 

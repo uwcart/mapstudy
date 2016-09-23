@@ -1681,9 +1681,13 @@ var LeafletMap = Backbone.View.extend({
 		});
 	},
 	addLayer: function(layerId){
+		this.offLayers[layerId].show = true;
 		this.offLayers[layerId].addTo(this.map);
 	},
-	removeLayer: function(layerId){
+	removeLayer: function(layerId, maintain){
+		//mark layer as hidden only if manually hidden by user
+		var maintain = maintain || false;
+		if (!maintain){ this.map._layers[layerId].show = false };
 		this.map.removeLayer(this.map._layers[layerId]);
 	},
 	setBaseLayer: function(baseLayer, i){
@@ -1838,7 +1842,9 @@ var LeafletMap = Backbone.View.extend({
 			var overlayOptions = {
 				onEachFeature: onEachFeature,
 				style: style,
-				className: dataLayerModel.get('className')
+				className: dataLayerModel.get('className'),
+				minZoom: dataLayerModel.get('layerOptions').minZoom || 0,
+				maxZoom: dataLayerModel.get('layerOptions').maxZoom || 30
 			};
 
 			//special processing for prop symbol maps
@@ -1872,7 +1878,7 @@ var LeafletMap = Backbone.View.extend({
 				overlayOptions.pointToLayer = function(feature, latlng){
 					//make a new label for each feature
 					return new L.Label(latlng);
-				}
+				};
 			};
 			//instantiate Leaflet layer
 			if (technique.type == 'heat'){
@@ -1887,15 +1893,24 @@ var LeafletMap = Backbone.View.extend({
 			leafletDataLayer.techniqueType = technique.type;
 			leafletDataLayer.techniqueOrder = i;
 
+			var mapZoom = map.getZoom();
+
 			//render immediately by default
-			if (i==0 && (typeof dataLayerModel.get('renderOnLoad') === 'undefined' || dataLayerModel.get('renderOnLoad') == true)){
-				dataLayerModel.attributes.renderOnLoad = true;
-				//add layer to map
-				leafletDataLayer.addTo(map);
-				this.firstLayers[layerId] = leafletDataLayer;
+			dataLayerModel.attributes.renderOnLoad = dataLayerModel.attributes.renderOnLoad || true;
+			if (i==0 && dataLayerModel.get('renderOnLoad')){
+				leafletDataLayer.show = true;
+				if (mapZoom > overlayOptions.minZoom && mapZoom < overlayOptions.maxZoom){
+					//add layer to map
+					leafletDataLayer.addTo(map);
+					this.firstLayers[layerId] = leafletDataLayer;
+				} else {
+					//stick it in offLayers array
+					view.offLayers[layerId] = leafletDataLayer;
+				};
 			} else {
 				//stick it in offLayers array
 				view.offLayers[layerId] = leafletDataLayer;
+				leafletDataLayer.show = false;
 			};
 			//add to layers
 			model.attributes.leafletDataLayers.push(leafletDataLayer);
@@ -1979,6 +1994,35 @@ var LeafletMap = Backbone.View.extend({
 		} else if (e.layer.hasOwnProperty('layerName')) {
 			this.offLayers[layerId] = e.layer;
 		};
+	},
+	checkLayerZoom: function(e, view){
+		//compare layer zoom bounds to map zoom
+		var map = view.map,
+			zoom = map.getZoom();
+		//remove out-of-bounds layers
+		map.eachLayer(function(layer){
+			if (!layer._url && 
+				(layer.options.minZoom > zoom || layer.options.maxZoom < zoom)
+			){
+				//remove but leave "shown" so it appears on zoom in
+				view.removeLayer(layer._leaflet_id, true);
+				$('input[value='+layer._leaflet_id+']').removeAttr('checked').prop('disabled', true);
+			}
+		});
+		//add in-bounds layers that should be shown
+		_.each(view.offLayers, function(layer){
+			if (layer.options.minZoom <= zoom && layer.options.maxZoom >= zoom){
+				$('input[value='+layer._leaflet_id+']').removeAttr('disabled');
+				if (!layer._url && layer.show){
+					view.addLayer(layer._leaflet_id);
+					$('input[value='+layer._leaflet_id+']').prop('checked', true);
+				};
+			} else {
+				//disable checkboxes for out-of-bounds layers
+				$('input[value='+layer._leaflet_id+']').prop('disabled', true);
+			};
+		});
+		return false;
 	},
 	addLegend: function(){
 		var model = this.model,
@@ -2278,6 +2322,9 @@ var LeafletMap = Backbone.View.extend({
 					//check controls of layers that are on the map
 					} else if (!offLayers[layerId]) {
 						$('#overlay-layer-'+layerId+' input').prop('checked', true);
+					} else if (offLayers[layerId] && offLayers[layerId].show) {
+						//disable checkboxes for out-of-bounds layers
+						$('input[value='+layerId+']').prop('disabled', true);
 					};
 				}, this);
 			}, this);
@@ -2613,6 +2660,7 @@ var LeafletMap = Backbone.View.extend({
 			//set inputs
 			function setInputs(){
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					if (layer.techniqueType == 'label'){ return false };
 					//create reexpressModel for layer
 					var reexpressModel = new ReexpressModel({ layer:layer });
 					//instantiate section and input views
@@ -3139,6 +3187,17 @@ var LeafletMap = Backbone.View.extend({
 		this.map.on('layeradd layerremove', function(e){
 			view.layerChange(e, view);
 		});
+
+		//set zoom listener for data layer min and max zoom
+		var go = true;
+		this.map.on('zoomend', function(e){
+			//hack for double-execution bug--not sure what's causing this
+			if (go){
+				view.checkLayerZoom(e, view);
+				go = false;
+				window.setTimeout(function(){go = true}, 100);
+			}
+		});	
 
 		//add initial tile layers
 		var baseLayers = this.model.get('baseLayers');
