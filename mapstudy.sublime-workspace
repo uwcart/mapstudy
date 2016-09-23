@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"auto",
+				"autosubmit"
+			],
+			[
 				"blur",
 				"blurCSList"
 			],
@@ -510,10 +514,6 @@
 			[
 				"leafletDat",
 				"leafletDataLayers"
-			],
-			[
-				"search-",
-				"search-control-container"
 			]
 		]
 	},
@@ -539,7 +539,7 @@
 			"file": "config/param.php",
 			"settings":
 			{
-				"buffer_size": 411,
+				"buffer_size": 141,
 				"line_ending": "Windows"
 			}
 		},
@@ -555,7 +555,7 @@
 			"file": "README.md",
 			"settings":
 			{
-				"buffer_size": 57206,
+				"buffer_size": 58344,
 				"line_ending": "Windows"
 			}
 		},
@@ -571,7 +571,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 100939,
+				"buffer_size": 109905,
 				"line_ending": "Windows"
 			}
 		},
@@ -579,7 +579,7 @@
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 12556,
+				"buffer_size": 12708,
 				"line_ending": "Windows"
 			}
 		},
@@ -627,7 +627,15 @@
 			"file": "doc/README.md",
 			"settings":
 			{
-				"buffer_size": 57227,
+				"buffer_size": 58344,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "php/data.php",
+			"settings":
+			{
+				"buffer_size": 8290,
 				"line_ending": "Windows"
 			}
 		}
@@ -656,6 +664,7 @@
 	},
 	"file_history":
 	[
+		"/C/Program Files (x86)/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/mapstudy/config/param.php",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/README.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/data/tables.json",
 		"/C/Users/Carl/Downloads/README.md",
@@ -782,8 +791,7 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/TODO.txt",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/lib/leaflet/core/leaflet7/leaflet.0.7.3-src.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap1.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap.bak.js",
-		"/C/Users/Carl/Documents/School/UW/Teaching/Geog575/G575_2017_Spring_Online/Module0_Outline/ModuleOutline_v7.md"
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap.bak.js"
 	],
 	"find":
 	{
@@ -801,6 +809,19 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"set",
+			"action",
+			"record",
+			"nextset",
+			"_.extend(doc",
+			"extend",
+			"document",
+			"nextset",
+			"autoadvance",
+			"submit",
+			"update",
+			"turf.",
+			"turf",
 			"required",
 			"autoadvance",
 			"console",
@@ -915,20 +936,7 @@
 			"setDataLayer",
 			"setBaseLayer",
 			"setMap",
-			"Leaflet",
-			"ButtonModel",
-			"#q",
-			"setMapView",
-			"conditions",
-			"styles",
-			"init",
-			"config",
-			"\"config",
-			"config",
-			"console",
-			"readForm",
-			"makeFiles.php",
-			"object"
+			"Leaflet"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1074,7 +1082,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 11,
 			"sheets":
 			[
 				{
@@ -1137,15 +1145,15 @@
 					"file": "config/param.php",
 					"settings":
 					{
-						"buffer_size": 411,
+						"buffer_size": 141,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								411,
-								0
+								141,
+								141
 							]
 						],
 						"settings":
@@ -1170,8 +1178,8 @@
 						"selection":
 						[
 							[
-								6869,
-								6875
+								2680,
+								2680
 							]
 						],
 						"settings":
@@ -1181,7 +1189,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 8594.0,
+						"translation.y": 2587.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1191,15 +1199,15 @@
 					"file": "README.md",
 					"settings":
 					{
-						"buffer_size": 57206,
+						"buffer_size": 58344,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								42597,
-								42597
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1208,7 +1216,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 19528.0,
+						"translation.y": 12133.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1225,8 +1233,8 @@
 						"selection":
 						[
 							[
-								3205,
-								3205
+								293,
+								305
 							]
 						],
 						"settings":
@@ -1246,15 +1254,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 100939,
+						"buffer_size": 109905,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								64186,
-								64190
+								6974,
+								6979
 							]
 						],
 						"settings":
@@ -1264,7 +1272,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 39674.0,
+						"translation.y": 2682.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1274,15 +1282,15 @@
 					"file": "config/map.json",
 					"settings":
 					{
-						"buffer_size": 12556,
+						"buffer_size": 12708,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10298,
-								10298
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1292,7 +1300,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4754.0,
+						"translation.y": 554.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1309,8 +1317,8 @@
 						"selection":
 						[
 							[
-								231,
-								231
+								2294,
+								2294
 							]
 						],
 						"settings":
@@ -1320,7 +1328,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1467.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1389,8 +1397,8 @@
 						"selection":
 						[
 							[
-								253,
-								253
+								158,
+								158
 							]
 						],
 						"settings":
@@ -1437,15 +1445,15 @@
 					"file": "doc/README.md",
 					"settings":
 					{
-						"buffer_size": 57227,
+						"buffer_size": 58344,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								42618,
-								42056
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1455,6 +1463,33 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 19448.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "php/data.php",
+					"settings":
+					{
+						"buffer_size": 8290,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4033,
+								4039
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 5181.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

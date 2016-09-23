@@ -2,19 +2,7 @@
 	"folders":
 	[
 		{
-			"path": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy"
-		},
-		{
-			"path": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/backbonejs"
-		},
-		{
-			"path": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/cartographic-perspectives/time-series-prop-map-leaflet/time-series-prop-map"
-		},
-		{
-			"path": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/leaflet-lab"
-		},
-		{
-			"path": "/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/d3-coordinated-viz"
+			"path": "/C/Program Files (x86)/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/mapstudy"
 		}
 	]
 }

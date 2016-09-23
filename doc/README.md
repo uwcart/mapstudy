@@ -599,9 +599,9 @@ An array of objects containing the thematic mapping techniques, including the ma
 
 #### map.pages[page].dataLayers[i].techniques[ii].type
 
-			"type": *"choropleth"* *"proportional symbol"* *"dot"* *"isarithmic"* *"heat"*
+			"type": *"choropleth"* *"proportional symbol"* *"dot"* *"isarithmic"* *"heat"* *"label"*
 
-The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Note that only a data layer with a `proportional symbol`, `isarithmic`, or `heat` technique type can use point feature data, but all technique types can use polygon data. The `retrieve` and `search` interactions are not available for `heat` map layers, and `search` is not available for `isarithmic` layers.
+The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Note that only a data layer with a `proportional symbol`, `isarithmic`, or `heat` technique type can use point feature data, but all technique types can use polygon data. The `retrieve` and `search` interactions are not available for `heat` map layers, and `search` is not available for `isarithmic` layers. `label` layers create labels using the first of the `displayAttributes` centered within each polygon feature, or to the upper-right of each point feature. If creating labels, creating a separate `dataLayer` with `label` as the only technique is recommended.
 
 #### map.pages[page].dataLayers[i].techniques[ii].classification
 
@@ -642,11 +642,11 @@ For a dot map, the value of `interval` is the denominator by which the feature's
 
 			*"size"*: *size*
 
-The size of dots on a dot map or isarithms on an isarithmic map; a number.
+The size of dots on a dot map or isarithms on an isarithmic map, or the pixel size of labels; a number.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `*size*` | Not available for other technique types. For a dot map, `size` is the dot radius. For an isarithmic map, `size` is the line width of each isarithm. | 1 pixel |
+| `*size*` | Not available for other technique types. For a dot map, `size` is the dot radius. For an isarithmic map, `size` is the line width of each isarithm. For a label layer, the size is the pixel size of the label text | 1 pixel (12 pixels for labels) |
 
 ## Questions
 ###Filename: questions.json
