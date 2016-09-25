@@ -1879,6 +1879,7 @@ var LeafletMap = Backbone.View.extend({
 					//make a new label for each feature
 					return new L.Label(latlng);
 				};
+				overlayOptions.onEachFeature = function(){};
 			};
 			//instantiate Leaflet layer
 			if (technique.type == 'heat'){

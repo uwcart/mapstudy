@@ -2,7 +2,7 @@
 
 # What is MapStudy?
 
-MapStudy is an integrated, modularized framework for the creation of survey applications designed to test cartographic design and interaction hypotheses in a modern web map environment. It leverages Postgresql and PHP on the server side and Javascript, jQuery, Leaflet, and D3 on the client. MapStudy is being developed specifically for use in the University of Wisconsin-Madison Cartography program through the support of the UW-Madison Cartography Lab and the Wisconsin Alumni Research Foundation.
+MapStudy is an integrated, modularized framework for the creation of survey applications designed to test cartographic design and interaction hypotheses in a modern web map environment. It currently leverages Postgresql and PHP on the server side and Javascript, jQuery, Leaflet, and D3 on the client. MapStudy is being developed specifically for use in the University of Wisconsin-Madison Cartography program through the support of the UW-Madison Cartography Lab and the Wisconsin Alumni Research Foundation.
 
 ## What is the status of MapStudy?
 
@@ -114,7 +114,7 @@ An HTML string that will be added to the section. The `content` of the `header` 
 ## Map
 ###Filename: map.json
 
-This config file holds the configuration options necessary to create the map. MapStudy will eventually support creating web maps with interaction logging in [Leaflet](http://leafletjs.com/), [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/), and [D3](http://d3js.org/), and maps with no interaction logging as any of the first three plus a static image, REST service, or embedded iframe with any other web mapping service (e.g. [CartoDB](https://cartodb.com/) and [ArcGIS Online Viewer](https://www.arcgis.com/home/webmap/viewer.html)).
+This config file holds the configuration options necessary to create the map. MapStudy will eventually support creating web maps with interaction logging in [Leaflet](http://leafletjs.com/), [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/), and [D3](http://d3js.org/), and maps with no interaction logging as any of the first three plus a static image, REST service, or embedded iframe with any other web mapping service (e.g. [CartoDB](https://cartodb.com/) and [ArcGIS Online Viewer](https://www.arcgis.com/home/webmap/viewer.html)). Currently, Leaflet is the only supported library.
 
 In the descriptions below, `map` refers to each object in the map.json `pages` array. The map.json file should be structured thus:
 
@@ -582,7 +582,7 @@ Whether to render the layer when the map loads.
 
 		*"layerOptions"*: *{}* *URL*
 
-An object or URL string pointing to a JSON file containing [Leaflet Path options](http://leafletjs.com/reference.html#path-options), [SVG styles](http://www.w3.org/TR/SVG/styling.html#SVGStylingProperties) for all layer paths drawn by D3, or [Mapbox-GL style layers](https://www.mapbox.com/mapbox-gl-style-spec/#layers). Properties added here that conflict with the `techniques` classification will be overridden for each feature to which the classification is applied (i.e., any not null values).
+An object or URL string pointing to a JSON file containing [Leaflet Path options](http://leafletjs.com/reference.html#path-options), [SVG styles](http://www.w3.org/TR/SVG/styling.html#SVGStylingProperties) for all layer paths drawn by D3, or [Mapbox-GL style layers](https://www.mapbox.com/mapbox-gl-style-spec/#layers). Properties added here that conflict with the `techniques` classification will be overridden for each feature to which the classification is applied (i.e., any not null values). In addition to Leaflet Path options, `minZoom` and `maxZoom` can be included as data layer options for Leaflet maps.
 
 #### map.pages[page].dataLayers[i].techniques
 
