@@ -1659,11 +1659,13 @@ var LeafletMap = Backbone.View.extend({
 				layer._path = layer._path.nodeName == 'text' ? layer._path : L.SVG.create('text');
 				// position text
 				layer._path.setAttribute('x', p.x);
-				layer._path.setAttribute('y', p.y-layer.feature.properties.yOffset);
-				textAnchor = layer.options['text-anchor'] || layer.feature.properties.textAnchor;
+				var yOffset = layer.feature.properties.yOffset || 0;
+				layer._path.setAttribute('y', p.y-yOffset);
+				var textAnchor = layer.options['text-anchor'] || layer.feature.properties.textAnchor || "middle";
 				layer._path.setAttribute('text-anchor', textAnchor);
 				layer._path.setAttribute('font-family', 'sans-serif');
-				layer._path.setAttribute('font-size', layer.feature.properties.size+'px');
+				var size = layer.feature.properties.size || "12";
+				layer._path.setAttribute('font-size', size+'px');
 				//set inner html
 				layer._path.innerHTML = layer.feature.properties.label || 'nolabel';
 				//adjust options for text visibility
