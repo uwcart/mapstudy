@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"text",
+				"textAnchor"
+			],
+			[
+				"tex",
+				"textAnchor"
+			],
+			[
+				"display",
+				"displayAttributes"
+			],
+			[
 				"auto",
 				"autosubmit"
 			],
@@ -62,10 +74,6 @@
 			[
 				"reset",
 				"resetSelect"
-			],
-			[
-				"display",
-				"displayonyes"
 			],
 			[
 				"randomized",
@@ -506,14 +514,6 @@
 			[
 				"id",
 				"id"
-			],
-			[
-				"expressed",
-				"expressedAttributes"
-			],
-			[
-				"leafletDat",
-				"leafletDataLayers"
 			]
 		]
 	},
@@ -571,7 +571,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 109905,
+				"buffer_size": 114407,
 				"line_ending": "Windows"
 			}
 		},
@@ -579,7 +579,7 @@
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 12708,
+				"buffer_size": 13043,
 				"line_ending": "Windows"
 			}
 		},
@@ -588,14 +588,6 @@
 			"settings":
 			{
 				"buffer_size": 17523,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "doc/versions.md",
-			"settings":
-			{
-				"buffer_size": 651,
 				"line_ending": "Windows"
 			}
 		},
@@ -627,7 +619,7 @@
 			"file": "doc/README.md",
 			"settings":
 			{
-				"buffer_size": 58344,
+				"buffer_size": 58905,
 				"line_ending": "Windows"
 			}
 		},
@@ -637,6 +629,14 @@
 			{
 				"buffer_size": 8290,
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Program Files (x86)/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy1/config/conditions.json",
+			"settings":
+			{
+				"buffer_size": 568,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -664,6 +664,8 @@
 	},
 	"file_history":
 	[
+		"/C/Program Files (x86)/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/mapstudy/doc/versions.md",
+		"/C/Program Files (x86)/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/mapstudy/js/lib/leaflet-src.js",
 		"/C/Program Files (x86)/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/mapstudy/config/param.php",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy/doc/README.md",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/data/tables.json",
@@ -789,13 +791,11 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/messages.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap.js",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/TODO.txt",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/lib/leaflet/core/leaflet7/leaflet.0.7.3-src.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap1.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap.bak.js"
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/lib/leaflet/core/leaflet7/leaflet.0.7.3-src.js"
 	],
 	"find":
 	{
-		"height": 41.0
+		"height": 44.0
 	},
 	"find_in_files":
 	{
@@ -809,6 +809,54 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"legend",
+			"textAnchor",
+			"text-anchor",
+			"text",
+			"techniquesObj",
+			"Label",
+			"Leaflet",
+			"layerOptions",
+			"console",
+			"label",
+			"removeLayer",
+			"addLayer",
+			"minZoom",
+			".show",
+			"minZoom",
+			"Label",
+			"checkLayerZoom",
+			"console",
+			"checkLayerZoom",
+			"offLayer",
+			"addLayer",
+			"layerChange",
+			"setBaseLayer",
+			"Leaflet",
+			"map.on",
+			"console",
+			"zoomend",
+			"zoomstart",
+			"\"zoom\"",
+			"'zoom'",
+			"Label",
+			"console",
+			"yOffset",
+			"'label",
+			"\"label",
+			"\"labbel",
+			"label",
+			"console",
+			"({\n",
+			"console",
+			"techniquesObj",
+			"Label",
+			"label",
+			"L.SVG",
+			"techniquesObj",
+			"Isarithmic",
+			"dataLayerModel",
+			"dataLayer",
 			"set",
 			"action",
 			"record",
@@ -888,55 +936,7 @@
 			"header",
 			"I'm some credits",
 			"database.php",
-			"questions.",
-			"pages",
-			"optionTemplate",
-			"listTemplate",
-			"view.model.attributes.colorbrewer",
-			"select",
-			"pseudoSelect",
-			".recolor select",
-			"setColorSwatches",
-			"color-scale",
-			"color-swatch",
-			"setHeatmap",
-			"heat",
-			"heatmapInstance",
-			"heat",
-			"Map-1",
-			"color-scale",
-			"setClassBreaks",
-			"colorbrewer",
-			"colorInput",
-			"colorInput.change",
-			"recolor(",
-			"this.recolor",
-			"recolor",
-			"RecolorView",
-			"recolor = function",
-			"recolor: function",
-			"recolor",
-			"colorbrewer",
-			"colorcode",
-			"colorbrewer",
-			"n-classes",
-			"setBaseLayer",
-			"baseLayer",
-			"Fuse",
-			"jscolor",
-			"heatmapLayer",
-			"HeatmapOverlay",
-			"heatmap",
-			"baselayer",
-			"setDataLayer",
-			"setBaseLayer",
-			"setDataLayer",
-			"sourceLinks",
-			"sourceUrlExample",
-			"setDataLayer",
-			"setBaseLayer",
-			"setMap",
-			"Leaflet"
+			"questions."
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1082,7 +1082,7 @@
 	"groups":
 	[
 		{
-			"selected": 11,
+			"selected": 8,
 			"sheets":
 			[
 				{
@@ -1097,8 +1097,8 @@
 						"selection":
 						[
 							[
-								14050,
-								14050
+								16100,
+								16101
 							]
 						],
 						"settings":
@@ -1108,7 +1108,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 5974.0,
+						"translation.y": 6426.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1254,35 +1254,7 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 109905,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6974,
-								6979
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2682.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "config/map.json",
-					"settings":
-					{
-						"buffer_size": 12708,
+						"buffer_size": 114407,
 						"regions":
 						{
 						},
@@ -1295,12 +1267,40 @@
 						],
 						"settings":
 						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 10729.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "config/map.json",
+					"settings":
+					{
+						"buffer_size": 13043,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								83,
+								83
+							]
+						],
+						"settings":
+						{
 							"syntax": "Packages/JavaScript/JSON.tmLanguage",
 							"translate_tabs_to_spaces": false,
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 554.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1328,39 +1328,13 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1467.0,
+						"translation.y": 87.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 9,
-					"file": "doc/versions.md",
-					"settings":
-					{
-						"buffer_size": 651,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								490,
-								490
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 360.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 10,
 					"file": "LICENSE.txt",
 					"settings":
 					{
@@ -1386,7 +1360,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 10,
 					"file": "config/styles.json",
 					"settings":
 					{
@@ -1397,8 +1371,8 @@
 						"selection":
 						[
 							[
-								158,
-								158
+								191,
+								191
 							]
 						],
 						"settings":
@@ -1413,7 +1387,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 11,
 					"file": "config/questions.json",
 					"settings":
 					{
@@ -1441,19 +1415,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 12,
 					"file": "doc/README.md",
 					"settings":
 					{
-						"buffer_size": 58344,
+						"buffer_size": 58905,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								8252,
+								8252
 							]
 						],
 						"settings":
@@ -1462,13 +1436,13 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 19448.0,
+						"translation.y": 2969.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 13,
 					"file": "php/data.php",
 					"settings":
 					{
@@ -1490,6 +1464,33 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 5181.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/C/Program Files (x86)/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy1/config/conditions.json",
+					"settings":
+					{
+						"buffer_size": 568,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								134,
+								134
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
