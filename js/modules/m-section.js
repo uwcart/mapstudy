@@ -1813,14 +1813,15 @@ var LeafletMap = Backbone.View.extend({
 						values = getAllAttributeValues(features, expressedAttribute),
 						points = tModel.featuresToDataPoints(features, expressedAttribute),
 						technique = tModel.get('techniques')[tModel.get('techniqueIndex')],
-						size = technique.size ? technique.size : 1;
+						layerOptions = tModel.get('layerOptions'),
+						size = technique.size ? technique.size : layerOptions.radius ? layerOptions.radius : 1;
 					//leaflet heatmap layer data
 					var data = {
 						max: values[values.length-1],
 						data: points
 					};
 					//leaflet heatmap layer config
-					var heatmapConfig = {
+					var heatmapConfig = _.extend({
 						radius: size,
 						maxOpacity: 0.8,
 						scaleRadius: true,
@@ -1828,7 +1829,7 @@ var LeafletMap = Backbone.View.extend({
 						latField: 'lat',
 						lngField: 'lng',
 						valueField: expressedAttribute
-					};
+					}, layerOptions);
 					//leaflet heatmap layer instance
 					var heatmapLayer = new HeatmapOverlay(heatmapConfig);
 					heatmapLayer.setData(data);
