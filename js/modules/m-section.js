@@ -413,7 +413,6 @@ var LegendLayerView = Backbone.View.extend({
 		return this.model.get('techniqueType').replace(/\s/g, '-') + '-legend';
 	},
 	append: function(range, domain, i){
-		console.log(this.model.attributes);
 		var techniqueType = this.model.get('techniqueType');
 		var template = _.template( $('#'+techniqueType.replace(/\s/g, '-')+'-legend-template').html() );
 		//set y attribute as function of index

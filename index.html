@@ -322,6 +322,14 @@
             <button type="button" name="<%= buttonName %>" class="<%= buttonName %>"><%= buttonCap %></button>
         </script>
 
+        <script type="text/template" id="video-template">
+            <video width="<%= width %>" height="<%= height %>" controls src="<%= source %>" allowfullscreen></video>
+        </script>
+
+        <script type="text/template" id="iframe-template">
+            <iframe width="<%= width %>" height="<%= height %>" frameborder="0" src="<%= source %>" allowfullscreen></iframe>
+        </script>
+
         <!-- Supported libraries -->
         <script type="text/javascript" src="js/lib/jquery.js"></script>
         <script type="text/javascript" src="js/lib/jquery-ui/jquery-ui.js"></script>

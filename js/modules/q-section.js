@@ -209,6 +209,7 @@ var BlockModel = Backbone.Model.extend({
 		"title": "",
 		"ask": "",
 		"description": "",
+		"video": "",
 		"input": {}
 	}
 });
@@ -237,6 +238,19 @@ var BlockView = Backbone.View.extend({
 		if (this.model.get('description').length > 0){
 			this.$el.append('<p class="description">'+ this.model.get('description') +'</p>');
 		};
+		//set video
+		if (this.model.get('video').length > 0){
+			var video = this.model.get('video'),
+				template = video.indexOf('http') > -1 ? _.template( $('#iframe-template').html() ) : _.template( $('#video-template').html() ),
+				width = $("#q").width(),
+				height = width * 9 / 16;
+			this.$el.append(template({
+				width: width,
+				height: height,
+				source: video 
+			}));
+		};
+
 		//set input
 		if (this.model.get('input').hasOwnProperty('type')){
 			var inputModel = new InputModel(this.model.get('input'));
@@ -248,6 +262,12 @@ var BlockView = Backbone.View.extend({
 			inputView.render();
 		};
 		$('#q form').append(this.$el);
+		//hack to fix video sizing issue--no idea why this only works with pre-set width and height
+		var w = $('#q form').width();
+		$('video, iframe').attr({
+			width: w,
+			height: w * 9 / 16
+		});
 	}
 });
 

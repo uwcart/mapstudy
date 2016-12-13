@@ -148,6 +148,7 @@
 						},
 						{
 							"ask": "Rank the importance of the following:",
+							"video": "https://www.youtube.com/embed/pWS8Mg-JWSg",
 							"input": {
 								"type": "rank",
 								"items": [
