@@ -886,6 +886,12 @@ Whether to include a timer for the set and timer options. If `"timer"` is includ
 | :------------: | :----------- | :------------------- |
 | `*true*` | Removes a persistent set timer without replacing it. If included, no other timer options will be applied. | N/A |
 
+#### questions.pages[page].sets[i].resetMap
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*true*` | Resets the map to its original state when set is loaded. Has no affect if applied to the first set on a page. | `false` |
+
 
 
 ## Conditions

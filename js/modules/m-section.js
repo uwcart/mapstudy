@@ -1814,7 +1814,7 @@ var LeafletMap = Backbone.View.extend({
 						points = tModel.featuresToDataPoints(features, expressedAttribute),
 						technique = tModel.get('techniques')[tModel.get('techniqueIndex')],
 						layerOptions = tModel.get('layerOptions'),
-						size = technique.size ? technique.size : layerOptions.radius ? layerOptions.radius : 1;
+						size = technique.size ? technique.size : 1;
 					//leaflet heatmap layer data
 					var data = {
 						max: values[values.length-1],
@@ -1822,7 +1822,6 @@ var LeafletMap = Backbone.View.extend({
 					};
 					//leaflet heatmap layer config
 					var heatmapConfig = _.extend({
-						radius: size,
 						maxOpacity: 0.8,
 						scaleRadius: true,
 						useLocalExtrema: true,
@@ -1830,6 +1829,8 @@ var LeafletMap = Backbone.View.extend({
 						lngField: 'lng',
 						valueField: expressedAttribute
 					}, layerOptions);
+					heatmapConfig.radius = size; //set radius to size to override other techniques' settings
+					delete heatmapConfig.opacity; //no set opacity!
 					//leaflet heatmap layer instance
 					var heatmapLayer = new HeatmapOverlay(heatmapConfig);
 					heatmapLayer.setData(data);
@@ -3050,7 +3051,7 @@ var LeafletMap = Backbone.View.extend({
 		},
 		reset: function(controlView, leafletView){
 			//change reset function to refresh the map
-			controlView.reset = function(){
+			controlView.reset = function(e){
 				window.setTimeout(function(){
 					var map = leafletView.map,
 						firstLayers = leafletView.firstLayers;
@@ -3068,6 +3069,10 @@ var LeafletMap = Backbone.View.extend({
 						layersObject: firstLayers,
 						dataLayers: leafletView.model.get('leafletDataLayers')
 					});
+					//only trigger logging if reset triggered by user
+					if (!e.hasOwnProperty('isTrigger')){
+						leafletView.trigger('resetMap');
+					};
 
 					//toggle off
 					controlView.toggle({target: $('.reset-control')[0]}, controlView, true);
@@ -3098,17 +3103,19 @@ var LeafletMap = Backbone.View.extend({
 			var InteractionControl = this.CustomControl('interaction', 'topright');
 			var interactionControl = new InteractionControl();
 			interactionControl.addTo(map);
-			//if resetButton is true, add to map interactions
+
+			//add reset button to allow reset to be triggered by user if specified or from questions regardless
 			var resetButton = this.model.get('mapOptions').resetButton || false;
-			if (resetButton){
-				if (!this.model.get('interactions').hasOwnProperty('reset')){
-					this.model.attributes.interactions.reset = {};
-				};
-				var resetI = this.model.attributes.interactions.reset;
-				if (!resetI.hasOwnProperty('toggle')){
-					resetI.toggle = true;
+			if (!this.model.get('interactions').hasOwnProperty('reset')){
+				this.model.attributes.interactions.reset = {
+					button: resetButton
 				};
 			};
+			var resetI = this.model.attributes.interactions.reset;
+			if (!resetI.hasOwnProperty('toggle')){
+				resetI.toggle = true;
+			};
+
 			//create new button for each interaction
 			var interactions = this.model.get('interactions');
 			for (var interaction in interactions){
@@ -3136,6 +3143,10 @@ var LeafletMap = Backbone.View.extend({
 					interactionToggleView.toggle(interaction);
 				};
 			};
+			//hide reset button if not specified
+			if (!resetButton){
+				$('.reset-control').css('display', 'none');
+			};
 		}, this);
 
 		this.on('dataLayersDone', function(){
@@ -3162,7 +3173,7 @@ var LeafletMap = Backbone.View.extend({
 			filter: {filter: this},
 			reexpress: {reexpress: this},
 			resymbolize: {resymbolize: this},
-			reset: {refreshmap: this}
+			reset: {resetMap: this}
 		};
 		//create a new interaction object for each interaction with logging
 		var interactions = this.model.get('interactions');

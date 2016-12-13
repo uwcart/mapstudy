@@ -448,6 +448,10 @@ var Questions = Backbone.View.extend({
 		this.$el.empty().append('<form>');
 		//get current set
 		var qset = this.model.get('sets')[_set];
+		//reset map if specified
+		if (qset.hasOwnProperty('resetMap') && qset.resetMap){
+			$('.reset-control').trigger('click');
+		};
 		//render blocks
 		_.each(qset.blocks, this.renderBlock, this);
 		//assign any values stored in data

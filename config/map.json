@@ -54,7 +54,7 @@
 				}
 			},
 			"mapOptions": {
-				"resetButton": true,
+				"resetButton": false,
 				"center": [39.83,-98.583],
 				"zoom": 3,
 				"minZoom": 3,
