@@ -136,7 +136,8 @@ var classification = new Backbone.Collection([
 var Choropleth = Backbone.Model.extend({
 	defaults: {
 		techniqueIndex: 0,
-		techniqueType: 'choropleth'
+		techniqueType: 'choropleth',
+		showOnLegend: true
 	},
 	setLayerOptions: function(feature, scale, expressedAttribute){
 		//weed out NaN and null values
@@ -159,6 +160,8 @@ var Choropleth = Backbone.Model.extend({
 		var expressedAttribute = this.get('expressedAttribute'),
 			techniqueIndex = this.get('techniqueIndex'),
 			technique = this.get('techniques')[techniqueIndex];
+		//set whether to show on legend
+		if (technique.hasOwnProperty('showOnLegend')){ this.attributes.showOnLegend = technique.showOnLegend };
 		//retrieve ColorBrewer scheme if classes is a colorbrewer code
 		var classes;
 		if (typeof technique.classes == 'string'){
@@ -185,7 +188,8 @@ var Choropleth = Backbone.Model.extend({
 var ProportionalSymbol = Choropleth.extend({
 	defaults: {
 		symbol: 'circle',
-		techniqueType: 'proportional symbol'
+		techniqueType: 'proportional symbol',
+		showOnLegend: true
 	},
 	polygonsToPoints: function(rawfeatures, expressedAttribute){
 		var features = [];
@@ -220,7 +224,8 @@ var ProportionalSymbol = Choropleth.extend({
 var Isarithmic = ProportionalSymbol.extend({
 	defaults: {
 		interval: 1,
-		techniqueType: 'isarithmic'
+		techniqueType: 'isarithmic',
+		showOnLegend: true
 	},
 	setIsarithms: function(interval){
 		var size = this.get('size'),
@@ -262,6 +267,8 @@ var Isarithmic = ProportionalSymbol.extend({
 		var expressedAttribute = this.get('expressedAttribute'),
 			technique = this.get('techniques')[this.get('techniqueIndex')],
 			interval = technique.interval || 10;
+		//set whether to show on legend
+		if (technique.hasOwnProperty('showOnLegend')){ this.attributes.showOnLegend = technique.showOnLegend };
 		//set point feature set to enable resymbolize
 		this.attributes.pointFeatures = this.polygonsToPoints(this.get('features'), expressedAttribute);
 		this.attributes.size = technique.size || null;
@@ -272,7 +279,8 @@ var Isarithmic = ProportionalSymbol.extend({
 
 var Heat = Isarithmic.extend({
 	defaults: {
-		techniqueType: 'heat'
+		techniqueType: 'heat',
+		showOnLegend: true
 	},
 	featuresToDataPoints: function(features, expressedAttribute){
 		//return data usable to leaflet-heatmap
@@ -293,6 +301,9 @@ var Heat = Isarithmic.extend({
 	symbolize: function(){
 		var technique = this.get('techniques')[this.get('techniqueIndex')],
 			size = technique.size || null;
+		//set whether to show on legend
+		if (technique.hasOwnProperty('showOnLegend')){ this.attributes.showOnLegend = technique.showOnLegend };
+		//set heatmap
 		this.attributes.size = size;
 		this.setHeatmap(this);
 	}
@@ -301,7 +312,8 @@ var Heat = Isarithmic.extend({
 var Dot = Backbone.Model.extend({
 	defaults: {
 		techniqueIndex: 0,
-		techniqueType: 'dot'
+		techniqueType: 'dot',
+		showOnLegend: true
 	},
 	polygonsToDots: function(interval){
 		var expressedAttribute = this.get('expressedAttribute'),
@@ -342,6 +354,9 @@ var Dot = Backbone.Model.extend({
 		var technique = this.get('techniques')[this.get('techniqueIndex')],
 			size = technique.size || 1,
 			interval = technique.interval || 10;
+		//set whether to show on legend
+		if (technique.hasOwnProperty('showOnLegend')){ this.attributes.showOnLegend = technique.showOnLegend };
+		//create dots
 		this.attributes.size = size;
 		this.attributes.interval = interval;
 		this.polygonsToDots();
@@ -351,7 +366,8 @@ var Dot = Backbone.Model.extend({
 var Label = Backbone.Model.extend({
 	defaults: {
 		techniqueIndex: 0,
-		techniqueType: 'label'
+		techniqueType: 'label',
+		showOnLegend: false
 	},
 	setLabels: function(feature){
 		var label = feature.properties[this.get('displayAttributes')[0]],
@@ -397,6 +413,7 @@ var LegendLayerView = Backbone.View.extend({
 		return this.model.get('techniqueType').replace(/\s/g, '-') + '-legend';
 	},
 	append: function(range, domain, i){
+		console.log(this.model.attributes);
 		var techniqueType = this.model.get('techniqueType');
 		var template = _.template( $('#'+techniqueType.replace(/\s/g, '-')+'-legend-template').html() );
 		//set y attribute as function of index
@@ -408,7 +425,15 @@ var LegendLayerView = Backbone.View.extend({
 		};
 		//set label content
 		if (typeof domain == 'object'){
-			attributes.label = domain[0] + ' - ' + domain[1];
+			var min, max;
+			if (this.model.attributes.hasOwnProperty('roundTo')){
+				min = domain[0].toFixed(parseInt(this.model.get('roundTo')));
+				max = domain[1].toFixed(parseInt(this.model.get('roundTo')));
+			} else {
+				min = domain[0];
+				max = domain[1];
+			};
+			attributes.label = min + ' - ' + max;
 		} else {
 			attributes.label = String(domain)
 		};
@@ -1897,6 +1922,7 @@ var LeafletMap = Backbone.View.extend({
 			leafletDataLayer.className = techniqueModel.get('className');
 			leafletDataLayer.techniqueType = technique.type;
 			leafletDataLayer.techniqueOrder = i;
+			leafletDataLayer.showOnLegend = techniqueModel.get('showOnLegend');
 
 			var mapZoom = map.getZoom();
 
@@ -2042,6 +2068,7 @@ var LeafletMap = Backbone.View.extend({
 			var innerHTML = '<div class="open button" title="click to open legend"><img src="img/icons/legend.png" alt="legend"><span class="control-title">Legend</span></div><div id="legend-wrapper">';
 			//add legend entry for each visible data layer
 			_.each(model.get('leafletDataLayers'), function(layer, i){
+				if (!layer.showOnLegend){ return };
 				var id = 'legend-'+layer._leaflet_id;
 				//only show immediately if layer is visible
 				var display = map.hasLayer(layer) ? 'block' : 'none';

@@ -83,6 +83,7 @@
 					"name", 
 					"Density (ppl/sq. mile)"
 				],
+				"roundTo": 1,
 				"layerOptions": {
 					"fillOpacity": 0.8,
 					"color": "black",

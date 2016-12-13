@@ -532,6 +532,7 @@ The REST parameters may also be added in the above format to `baseLayer.source` 
 		"source"
 		"expressedAttribute"
 		*"displayAttributes"*
+		*"roundTo"*
 		*"renderOnLoad"*
 		*"layerOptions"*
 		"techniques"
@@ -566,6 +567,12 @@ The name of the numerical attribute that will be visually expressed on the map; 
 		*"displayAttributes"*: []
 
 An array of one or more attributes to include in that layer's pop-ups if the `retrieve` interaction is included, in the search tool if the `search` interaction is included, and in the filter tool if the `filter` interaction is included. Only categorical attributes with string values will be searchable (e.g., "name" but not "population"). Only numerical attributes will be added to the filter tool (e.g., "population" but not "name"), and will be accessible via a drop-down menu in the data layer's line in the filter tool. If `retrieve`, `search`, or `filter` are included but no `displayAttributes` are given, pop-ups and tools will be implemented using only the layer's `expressedAttribute`.
+
+#### map.pages[page].dataLayers[i].roundTo
+
+		*"roundTo"*: *number*
+
+A number of digits to which to round the expressed attribute values displayed on the legend. Positive values represent the number of digits to the right of the decimal point (with 0 representing an integer with no decimals); negative values represent the number of places to the left of the decimal point.
 
 #### map.pages[page].dataLayers[i].renderOnLoad
 
