@@ -740,6 +740,7 @@ The sets of questions (blocks) and buttons that are viewable to the user at one 
 			*"title": text string*
 			"ask": HTML string
 			*"description": HTML string*
+			*"image": url or path to image file*
 			*"video": url or path to video file*
 			*"input"*: {
 				*"required"* "type" *"options": []* *"items": []*
@@ -755,7 +756,8 @@ A single question along with accompanying content and answer input(s). Each ques
 | `*"title": text string*` | Title for the question. If included, the question title will appear in bold at the top of the question block. | Example text |
 | `"ask": HTML string` | The question asked. Required. The question asked will appear in normal font below the title (if included) and above the other elements of the block (if included). It need not be a literal question; any text or html (such as image elements) may be included. | Example questions |
 | `*"description": HTML string*` | Further description tied to the question asked. Description text will appear in italicized font below the ask and above the other elements of the block (if included). Any text or html (such as image elements) may be included. | Example description |
-| `*"video": url or path to video file*` | A url to an online video or a path to a video file in MP4, WebM, or Ogg format. If a url, must link to the embeddable version of the video. | Example description |
+| `*"image": url or path to image file*` | A url or path to an image in PNG, JPEG, or GIF format | Example image |
+| `*"video": url or path to video file*` | A url to an online video or a path to a video file in MP4, WebM, or Ogg format. If a url, must link to the embeddable version of the video. | Example video |
 | `*"input"*: see below for options` | The answer input associated with the question. Appears below the ask and description (if included). | Example answers |
 
 

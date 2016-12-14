@@ -209,6 +209,7 @@ var BlockModel = Backbone.Model.extend({
 		"title": "",
 		"ask": "",
 		"description": "",
+		"image": "",
 		"video": "",
 		"input": {}
 	}
@@ -237,6 +238,10 @@ var BlockView = Backbone.View.extend({
 		//set description
 		if (this.model.get('description').length > 0){
 			this.$el.append('<p class="description">'+ this.model.get('description') +'</p>');
+		};
+		//set image
+		if (this.model.get('image').length > 0){
+			this.$el.append('<p class="image"><img src="'+ this.model.get('image') +'"></p>');
 		};
 		//set video
 		if (this.model.get('video').length > 0){
@@ -268,6 +273,7 @@ var BlockView = Backbone.View.extend({
 			width: w,
 			height: w * 9 / 16
 		});
+		$('#q img').css('max-width', w);
 	}
 });
 
