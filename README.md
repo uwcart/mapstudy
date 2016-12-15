@@ -692,7 +692,7 @@ Used to set page width.
 		*"remove"*
 	}
 
-Whether to include a timer for the page and timer options. If `"timer"` is included, a timer will appear in the page header and count up or down until the next page or until replaced by another timer.
+Whether to include a timer for the page and timer options. If `"timer"` is included, a timer will appear in the page header and count up or down until the next page or until replaced by another timer. *Caution*: Do not use both a page timer and a set timer on the same page.
 
 #### questions.pages[page].timer.direction
 
@@ -869,7 +869,7 @@ Buttons that should be included at the bottom of the question set, below all of 
 		*"remove"*
 	}
 
-Whether to include a timer for the set and timer options. If `"timer"` is included, a timer will appear in the page header and count up or down until the next set or until replaced by another timer.
+Whether to include a timer for the set and timer options. If `"timer"` is included, a timer will appear in the page header and count up or down until the next set or until replaced by another timer. *Caution*: Do not use both a page timer and a set timer on the same page.
 
 #### questions.pages[page].sets[i].timer.direction
 

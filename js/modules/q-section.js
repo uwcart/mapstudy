@@ -311,9 +311,10 @@ var TimerView = Backbone.View.extend({
 	interval: function(view){
 		//get starting time
 		var st = view.$el.html().split(':'),
-			h = parseInt(st[0]),
-			m = parseInt(st[1]),
-			s = parseInt(st[2]),
+			txt = st[0] + ': ',
+			h = parseInt(st[1]),
+			m = parseInt(st[2]),
+			s = parseInt(st[3]),
 			nt = '';
 		if (view.model.get('direction') == 'up'){
 			//count up
@@ -361,7 +362,7 @@ var TimerView = Backbone.View.extend({
 			nt += d < 10 ? '0' + String(d) : String(d);
 			nt += i < 2 ? ':' : '';
 		});
-		view.$el.html(nt);
+		view.$el.html(txt+nt);
 	},
 	removeTimer: function(){
 		var level = this.model.get('level');
@@ -372,9 +373,18 @@ var TimerView = Backbone.View.extend({
 		this.$el.empty();
 	},
 	setTimer: function(){
-		var level = this.model.get('level'),
-			view = this;
-		this.$el.html(this.model.get('starttime'));
+		var level = this.model.get('level')
+			dir = this.model.get('direction'),
+			view = this,
+			txt = dir == 'up' ? 'Time elapsed: ' : 'Time remaining: ';
+		this.$el.html(txt+this.model.get('starttime'));
+		//set right margin of timer
+		var rmargin = parseFloat(this.$el.css('right').split('px')[0]) + $('#header img').width() + 'px';
+		this.$el.css({
+			right: rmargin
+		});
+		$(window).trigger('resize');
+		//start counting
 		document[level+'Timer'] = window.setInterval(function(){
 			view.interval(view);
 		}, 1000);

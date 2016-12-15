@@ -174,7 +174,7 @@
 						"next"
 					],
 					"timer": {
-						"direction": "down",
+						"direction": "up",
 						"starttime": "00:00:30"
 					},
 					"resetMap": true

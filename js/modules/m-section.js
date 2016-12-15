@@ -1806,7 +1806,8 @@ var LeafletMap = Backbone.View.extend({
 		//variables needed by internal functions
 		var view = this, 
 			model = view.model,
-			map = view.map;
+			map = view.map,
+			dataLayerOptions = dataLayerModel.get('layerOptions') || {};
 		//translate topojson
 		if (dataLayerModel.attributes.type && dataLayerModel.get('type') == 'Topology'){
 			var featureCollection = view.topoToGeoJSON(dataLayerModel.get('transform'), dataLayerModel.get('arcs'), dataLayerModel.get('objects'), dataLayerModel.get('crs'));
@@ -1821,7 +1822,7 @@ var LeafletMap = Backbone.View.extend({
 		function style(feature){
 			//combine layer options objects from config file and feature properties
 			//classification will take precedence over base options
-			return _.defaults(feature.properties.layerOptions, dataLayerModel.get('layerOptions'));
+			return _.defaults(feature.properties.layerOptions, dataLayerOptions);
 		};
 
 		//create a new Leaflet layer for each technique
@@ -1871,8 +1872,8 @@ var LeafletMap = Backbone.View.extend({
 				onEachFeature: onEachFeature,
 				style: style,
 				className: dataLayerModel.get('className'),
-				minZoom: dataLayerModel.get('layerOptions').minZoom || 0,
-				maxZoom: dataLayerModel.get('layerOptions').maxZoom || 30
+				minZoom: dataLayerOptions.minZoom || 0,
+				maxZoom: dataLayerOptions.maxZoom || 30
 			};
 
 			//special processing for prop symbol maps

@@ -141,7 +141,22 @@ _.extend(document, Backbone.Events);
 		$("#container").css({
 			//		whatever this is   -  5em for header + footer
 			height: $(window).height() - (5/3 * $("#header").height())
-		})
+		});
+		$("#header h1, .timer").css({ 'font-size': '' });
+		["1em", "0.7em"].forEach(function(h){
+			["#header h1", "#set-timer", "#page-timer"].forEach(function(s){
+				if ($(s).height() > $("#header").height()){
+					$(s).css({
+						'font-size': h
+					});
+				};
+				var mw = s.indexOf('timer') > -1 ? Math.abs($('#header').width() - $('#header h1').width() - $('#header img').width() - 50) + 'px' : '';
+				$(s).css({
+					padding: String(($("#header").height()-$(s).height())/2) + "px 0",
+					'max-width': mw
+				});
+			});
+		});
 		$("#footer").css({
 			width: $("#header").width(),
 			height: "2em"
