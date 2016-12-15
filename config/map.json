@@ -38,7 +38,8 @@
 				},
 				"filter": {
 					"dataLayers": [
-						"US States"
+						"US States",
+						"Cities Layer"
 					],
 					"tool": "slider",
 					"logging": true,

@@ -1690,6 +1690,7 @@ var LeafletMap = Backbone.View.extend({
 	},
 	firstLayers: {},
 	offLayers: {},
+	timeout: window.setTimeout(function(){},0),
 	//all available interactions
 	interactions: {
 		zoom: false,
@@ -1742,18 +1743,28 @@ var LeafletMap = Backbone.View.extend({
 			}
 		});
 	},
-	bringLabelsToFront: function(){
-		//bring any labels to front
-		this.map.eachLayer(function(layer){
-			if (layer.hasOwnProperty('techniqueType') && layer.techniqueType == 'label'){
-				layer.bringToFront();
+	orderLayers: function(filter){
+		filter = filter || false;
+		//redraw layers according to layer order
+		_.each(this.model.get('leafletDataLayers'), function(layer){
+			if (this.map.hasLayer(layer)){
+				//if filtering, need to selectively target sub-layers
+				if (filter && layer.hasOwnProperty('_layers')){
+					_.each(layer._layers, function(l){
+						if (this.map.hasLayer(l)){
+							l.bringToFront();
+						};
+					}, this);
+				} else {
+					layer.bringToFront();
+				}
 			};
-		});
+		}, this);
 	},
 	addLayer: function(layerId){
 		this.offLayers[layerId].show = true;
 		this.offLayers[layerId].addTo(this.map);
-		this.bringLabelsToFront();
+		this.orderLayers();
 	},
 	removeLayer: function(layerId, maintain){
 		//mark layer as hidden only if manually hidden by user
@@ -1990,8 +2001,6 @@ var LeafletMap = Backbone.View.extend({
 			};
 			//add to layers
 			model.attributes.leafletDataLayers.push(leafletDataLayer);
-			//bring any labels to front
-			this.bringLabelsToFront();
 
 			//interval needed to keep checking if layer not yet fully processed
 			var interval = setInterval(triggerDone, 100);
@@ -2636,7 +2645,8 @@ var LeafletMap = Backbone.View.extend({
 						};
 					};
 				};
-
+				window.clearTimeout(leafletView.timeout);
+				leafletView.timeout = window.setTimeout(function(){ leafletView.orderLayers(true) }, 500);
 			};
 			//get interaction variables
 			var filterLayers = leafletView.model.get('interactions.filter.dataLayers'),
