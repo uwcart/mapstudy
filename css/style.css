@@ -477,6 +477,10 @@ svg {
     text-align: center;
 }
 
+.radio-text {
+    margin-left: 10px;
+}
+
 .rank-item {
     border: 1px solid #999;
     padding: 2px;

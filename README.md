@@ -823,7 +823,7 @@ The type of answer input. Required if `input` is included with the block.
 	*"options"*: [
 		{
 			"text": text string
-			*"value": text string*
+			*"value": text string -or- "get from participant"*
 		}
 	]
 
@@ -832,7 +832,7 @@ An array of input options. Required by `radios`, `dropdown`, and `matrix` input 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |:---------------|
 | `"text": text string` | The text to display to the participant for the option. Required if `options` is included. | Example text |
-| `*"value": text string*` |  The value to display in the resulting data cell for the question block or item if the option is selected.  | If omitted, the option `"text"` will be recorded as the value. |
+| `*"value": text string -or- "get from participant"*` |  The value to display in the resulting data cell for the question block or item if the option is selected. If the input type is `radios` and the string provided is `"get from participant"`, a text box will be added for participant input (this is good for "other" options). | If omitted, the option `"text"` will be recorded as the value. |
 
 #### questions.pages[page].sets[i].blocks[ii].input.items
 
@@ -840,6 +840,7 @@ An array of input options. Required by `radios`, `dropdown`, and `matrix` input 
 		{
 			"text": text string
 			*"label": text string*
+			*"value": text string -or- "get from participant"*
 		}
 	]
 
@@ -848,7 +849,8 @@ An array of input items. Required by `checkboxes`, `matrix`, and `rank` input ty
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |:---------------|
 | `"text": text string` | The text to display to the participant for the item. Required if `items` is included.| Example text |
-| `*"label": text string*` | (<= 20 characters) What to label the column for the item in the resulting data. Each item will be given its own column in the data table. For each item column, if the input type is `checkboxes`, each item's cell value will be recorded as `1` if the box is checked and no data if not checked. If the type is `matrix`, each item's cell value will correspond to the value of the selected option. If the type is `rank`, the cell value will be given the item's rank, starting at 1 for the top item.| If no `label` is provided for the item, a label will be automatically generated consisting of the block label and item indexes (for example, "p1s3b1i1") |
+| `*"label": text string*` | (<= 20 characters) What to label the column for the item in the resulting data. Each item will be given its own column in the data table. For each item column, if the input type is `checkboxes`, each item's cell value will be recorded as `1` or a value provided for `value` if the box is checked and no data if not checked. If the type is `matrix`, each item's cell value will correspond to the value of the selected option (this overrides the item `value` option). If the type is `rank`, the cell value will be given the item's rank, starting at 1 for the top item (this also overrides the item `value` option).| If no `label` is provided for the item, a label will be automatically generated consisting of the block label and item indexes (for example, "p1s3b1i1") |
+| `*"value": text string -or- "get from participant"*` | Only useful if the input type is `checkboxes`. Replaces `1` as the value recorded for each item that is checked. If the string provided is `"get from participant"`, a text box will be added for participant input (this is good for "other" items). |
 
 
 #### questions.pages[page].sets[i].buttons

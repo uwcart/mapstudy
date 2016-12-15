@@ -38,26 +38,39 @@ var CheckboxesInputView = TextInputView.extend({
 	template: _.template( $('#checkbox-input-template').html() ),
 	appendItem: function(item, i){
 		//get or create item label
-		var label = item.hasOwnProperty('label') && item.label.length > 0 ? item.label.substring(0,20) : this.model.get('label')+"i"+(i+1);
+		var label = item.hasOwnProperty('label') && item.label.length > 0 ? item.label.substring(0,20) : this.model.get('label')+"i"+(i+1),
+			value = item.value || i+1;
 		//append item input
 		this.$el.find('.input-items').append(this.template({
 			label: label,
 			text: item.text,
-			value: i+1
+			value: value === 'get from participant' ? item.text : value
 		}));
+		if (value === 'get from participant'){
+			this.$el.find('input[name='+label+'-text-input]').show()
+				.css('width', 'inherit');
+		};
 	},
 	render: function(){
 		this.$el.append('<div class="input-items">');
 		var items = this.model.get('items');
-		_.each(items, this.appendItem, this);
+		_.each(items, function(item, i){
+			item.value = item.value || 1;
+			this.appendItem(item, i);
+		}, this);
 		this.required();
-		this.$el.find('input').click(function(){
+		this.$el.find('input[type=checkbox]').click(function(){
 			if (!$(this).is(':checked')){
 				_options.attributes.data[$(this).attr('name')] = {
 					value: '',
 					tmsp: Date.now()
 				};
 			};			
+		});
+		this.$el.find('input[type=text]').on('keyup', function(e){
+			var label = e.target.name.split('-')[0],
+				text = $(e.target).parent().find('.item').html();
+			$('input[name='+label+']').val(text+': '+e.target.value);
 		});
 	}
 });
@@ -77,11 +90,16 @@ var RadiosInputView = CheckboxesInputView.extend({
 		this.$el.find('.input-item.'+i).append(this.template({
 			label: label,
 			text: option.text,
-			value: option.value
+			value: option.value == 'get from participant' ? option.text : option.value,
+			i: i
 		}));
+		if (option.value === 'get from participant'){
+			this.$el.find('input[name='+label+'-'+i+'-text-input]').show()
+				.css('width', 'inherit');
+		};
 	},
 	appendOptionText: function(option,i){
-		this.$el.find('.input-item.'+i).append(option.text);
+		this.$el.find('.input-item.'+i+' span').html(option.text);
 	},
 	autoadvance: function(e){
 		if (this.model.get('autoadvance')){
@@ -99,6 +117,11 @@ var RadiosInputView = CheckboxesInputView.extend({
 			this.appendOptionText(option, i);
 		}, this);
 		this.required();
+		this.$el.find('input[type=text]').on('keyup', function(e){
+			var label = e.target.name.split('-')[0],
+				text = $(e.target).parent().find('.radio-text').html();
+			$('input[name='+label+']').val(text+': '+e.target.value);
+		});
 	}
 });
 
@@ -544,7 +567,7 @@ var Questions = Backbone.View.extend({
 		$('.required').each(function(){
 			var required = $(this).parent(),
 				inputSet = required.find('input[type=checkbox], input[type=radio]'),
-				textbox = required.find('input[type=text]'),
+				textbox = required.find('.text-input'),
 				textarea = required.find('textarea'),
 				select = required.find('select'),
 				inputNames = [];
