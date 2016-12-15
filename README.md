@@ -600,15 +600,16 @@ An object or URL string pointing to a JSON file containing [Leaflet Path options
 			*"symbol"*
 			*"interval"*
 			*"size"*
+			*"showOnLegend"*
 		}]
 
 An array of objects containing the thematic mapping techniques, including the map type and classification parameters for the data layer. At least one technique object is required. The first technique object in the array will be used for the layer's initial expression; all other techniques for the layer will only be available to the user if `map.pages[page].interactions.reexpress` is included.
 
 #### map.pages[page].dataLayers[i].techniques[ii].type
 
-			"type": *"choropleth"* *"proportional symbol"* *"dot"* *"isarithmic"* *"heat"*
+			"type": *"choropleth"* *"proportional symbol"* *"dot"* *"isarithmic"* *"heat"* *"label"* *"point"*
 
-The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Note that only a data layer with a `proportional symbol`, `isarithmic`, or `heat` technique type can use point feature data, but all technique types can use polygon data. The `retrieve` and `search` interactions are not available for `heat` map layers, and `search` is not available for `isarithmic` layers.
+The [thematic map type](https://en.wikipedia.org/wiki/Thematic_map). Note that only a data layer with a `proportional symbol`, `isarithmic`, `heat`, or `point` technique type can use point feature data, but all technique types can use polygon data. The `retrieve` and `search` interactions are not available for `heat` map layers, and `search` is not available for `isarithmic` layers. A `label` data layer will place labels on the map for each feature expressing the layer's first display attribute, either adjacent to the feature if point data or centered within the feature if polygons. A `point` layer renders a single size of circle for each point feature or centroid using the technique `size` option.
 
 #### map.pages[page].dataLayers[i].techniques[ii].classification
 
@@ -649,11 +650,19 @@ For a dot map, the value of `interval` is the denominator by which the feature's
 
 			*"size"*: *size*
 
-The size of dots on a dot map or isarithms on an isarithmic map; a number.
+The size of dots on a dot map, isarithms on an isarithmic map, or label font size in pixels; a number.
 
 | Value  | Description | Default |
 | :------------: | :----------- | :------------------- |
-| `*size*` | Not available for other technique types. For a dot map, `size` is the dot radius. For an isarithmic map, `size` is the line width of each isarithm. | 1 pixel |
+| `*size*` | Not available for other technique types. For a dot map and points, `size` is the dot or point radius. For an isarithmic map, `size` is the line width of each isarithm. For labels, `size` is the pixel size of each label. | 1 pixel |
+
+#### map.pages[page].dataLayers[i].techniques[ii].showOnLegend
+
+			*"showOnLegend"*: *true* *false*
+
+Whether or not to show the technique on the legend when visible on the map. Default is `true`.
+
+
 
 ## Questions
 ###Filename: questions.json

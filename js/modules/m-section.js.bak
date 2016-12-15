@@ -156,9 +156,7 @@ var Choropleth = Backbone.Model.extend({
 			};
 		};
 	},
-	changeData: function(){},
 	symbolize: function(){
-		this.changeData(); //placeholder
 		var expressedAttribute = this.get('expressedAttribute'),
 			techniqueIndex = this.get('techniqueIndex'),
 			technique = this.get('techniques')[techniqueIndex];
@@ -209,6 +207,8 @@ var ProportionalSymbol = Choropleth.extend({
 		return features;
 	},
 	setLayerOptions: function(feature, scale, expressedAttribute){
+		//turn any polygons into points
+		this.attributes.features = this.polygonsToPoints(this.get('features'), expressedAttribute);
 		//ensure scale range values are numbers
 		var range = _.map(scale.range(), function(val){
 			return parseFloat(val);
@@ -218,10 +218,6 @@ var ProportionalSymbol = Choropleth.extend({
 		return {
 			radius: scale(parseFloat(feature.properties[expressedAttribute]))
 		};
-	},
-	changeData: function(){
-		//turn any polygons into points
-		this.attributes.features = this.polygonsToPoints(this.get('features'), this.get('expressedAttribute'));
 	}
 });
 
@@ -233,13 +229,14 @@ var Point = ProportionalSymbol.extend({
 		showOnLegend: false
 	},
 	setLayerOptions: function(feature, expressedAttribute){
+		//turn any polygons into points
+		this.attributes.features = this.polygonsToPoints(this.get('features'), expressedAttribute);
 		//set a new radius property for each feature with the size option
 		return {
 			radius: this.get('size')
 		};
 	},
 	symbolize: function(){
-		this.changeData();
 		var expressedAttribute = this.get('expressedAttribute'),
 			techniqueIndex = this.get('techniqueIndex'),
 			technique = this.get('techniques')[techniqueIndex];
@@ -1922,7 +1919,7 @@ var LeafletMap = Backbone.View.extend({
 			};
 
 			//special processing for prop symbol maps
-			if (technique.type == 'proportional symbol' || technique.type == 'point'){
+			if (technique.type == 'proportional symbol'){
 				//implement pointToLayer conversion for proportional symbol maps
 				function pointToLayer(feature, latlng){
 					var markerOptions = style(feature);
