@@ -2551,6 +2551,9 @@ var LeafletMap = Backbone.View.extend({
 				$('#search-results-box').empty();
 				var allFeatures = [];
 				_.each(leafletView.model.get('leafletDataLayers'), function(layer){
+					if (_.indexOf(leafletView.model.get('interactions').search.dataLayers, layer.layerName) == -1){
+						return false;
+					};
 					if (layer.techniqueType != 'heat' && map.hasLayer(layer)){
 						allFeatures = _.union(allFeatures, layer.toGeoJSON().features);
 					};

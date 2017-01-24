@@ -32,7 +32,9 @@
 					"toggle": true
 				},
 				"search": {
-					"attributes": ["name", "Density (ppl/sq. mile)"],
+					"dataLayers": [
+						"US States"
+					],
 					"logging": true,
 					"toggle": true
 				},
