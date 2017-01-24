@@ -24,7 +24,7 @@
 					"logging": true,
 					"toggle": true,
 					"dataLayers": [
-						"US States"
+						"Cities Layer"
 					]
 				},
 				"underlay": {

@@ -1981,9 +1981,10 @@ var LeafletMap = Backbone.View.extend({
 			leafletDataLayer.showOnLegend = techniqueModel.get('showOnLegend');
 
 			var mapZoom = map.getZoom();
-
 			//render immediately by default
-			dataLayerModel.attributes.renderOnLoad = dataLayerModel.attributes.renderOnLoad || true;
+			if (!dataLayerModel.attributes.hasOwnProperty('renderOnLoad')){
+				dataLayerModel.attributes.renderOnLoad = true;
+			};
 			if (i==0 && dataLayerModel.get('renderOnLoad')){
 				leafletDataLayer.show = true;
 				if (mapZoom > overlayOptions.minZoom && mapZoom < overlayOptions.maxZoom){
