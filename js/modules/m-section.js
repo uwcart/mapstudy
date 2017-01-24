@@ -2379,10 +2379,12 @@ var LeafletMap = Backbone.View.extend({
 			var OverlayControl = leafletView.CustomControl('overlay', 'bottomleft');
 			var overlayControl = new OverlayControl();
 			map.addControl(overlayControl);
-
 			//add to overlay control
 			leafletView.once('dataLayersDone', function(){
 				_.each(leafletView.model.get('leafletDataLayers'), function(dataLayer){
+					if (_.indexOf(leafletView.model.get('interactions').overlay.dataLayers, dataLayer.layerName) == -1){
+						return false;
+					};
 					var layerId = dataLayer._leaflet_id;
 					var overlayControlModel = new OverlayControlModel({
 						layerName: dataLayer.layerName,
