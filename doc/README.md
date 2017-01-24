@@ -648,6 +648,14 @@ The size of dots on a dot map or isarithms on an isarithmic map, or the pixel si
 | :------------: | :----------- | :------------------- |
 | `*size*` | Not available for other technique types. For a dot map, `size` is the dot radius. For an isarithmic map, `size` is the line width of each isarithm. For a label layer, the size is the pixel size of the label text | 1 pixel (12 pixels for labels) |
 
+#### map.pages[page].dataLayers[i].techniques[ii].showOnLegend
+
+| Value  | Description | Default |
+| :------------: | :----------- | :------------------- |
+| `*false*` | Whether or not to show the data layer technique in the legend | `true` |
+
+
+
 ## Questions
 ###Filename: questions.json
 

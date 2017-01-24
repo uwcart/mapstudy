@@ -29,8 +29,8 @@
         <div id="container">
             <section id="header">
                 <h1 class="content"></h1>
-                <span id="page-timer"></span>
-                <span id="set-timer"></span>
+                <p id="page-timer" class="timer"></p>
+                <p id="set-timer" class="timer"></p>
                 <img>
             </section>
             <section id="m">Error, Will Robinson! Your map configuration is bad!</section>
@@ -258,7 +258,7 @@
 
         <script type="text/template" id="text-input-template">
             <div class="input">
-                <input type="text" name="<%= label %>">
+                <input class="text-input" type="text" name="<%= label %>">
             </div>
         </script>
 
@@ -270,7 +270,8 @@
 
         <script type="text/template" id="checkbox-input-template">
             <div class="input <%= label %>">
-                <input type="checkbox" value="1" name="<%= label %>"><span class="item"><%= text %></span>
+                <input type="checkbox" value="<%= value %>" name="<%= label %>"><span class="item"><%= text %></span>
+                <input type="text" name="<%= label %>-text-input" style="display: none;">
             </div>
         </script>
 
@@ -279,7 +280,8 @@
         </script>
 
         <script type="text/template" id="radio-input-template">
-            <input type="radio" value="<%= value %>" name="<%= label %>">
+            <input type="radio" value="<%= value %>" name="<%= label %>"><span class="radio-text"></span>&nbsp;
+            <input type="text" name="<%= label %>-<%= i %>-text-input" style="display: none;">
         </script>
 
         <script type="text/template" id="matrix-table-template">
@@ -320,6 +322,14 @@
 
         <script type="text/template" id="questions-button-template">
             <button type="button" name="<%= buttonName %>" class="<%= buttonName %>"><%= buttonCap %></button>
+        </script>
+
+        <script type="text/template" id="video-template">
+            <video width="<%= width %>" height="<%= height %>" controls src="<%= source %>" allowfullscreen></video>
+        </script>
+
+        <script type="text/template" id="iframe-template">
+            <iframe width="<%= width %>" height="<%= height %>" frameborder="0" src="<%= source %>" allowfullscreen></iframe>
         </script>
 
         <!-- Supported libraries -->

@@ -141,33 +141,39 @@ svg {
 
 #header {
     height: 3em;
-    text-align: right;
+    /*text-align: right;*/
 }
 
 #header h1 {
-    float: left;
+    /*float: left;*/
+    display: inline-block;
     margin: 0 1em;
+    text-align: left;
+    max-width: 75%;
 }
 
 #header img {
     max-height: 4em;
     margin: 5px 20px 0 0;
-}
-
-#page-timer {
     position: absolute;
-    left: 47.5%;
-    top: 0.5em;
-    font-size: 1.3em;
+    right: 5em;
 }
 
-#set-timer {
+.timer {
+    position: absolute;
+    right: 5em;
+    font-size: 1.3em;
+    display: inline-block;
+    margin: 0;
+}
+
+/*#set-timer {
     display: inline-block;
     font-size: 1.3em;
     padding-top: 0.5em;
     vertical-align: top;
     margin-right: 2em;
-}
+}*/
 
 #wrapper {
     min-height: 100%;
@@ -469,6 +475,10 @@ svg {
 
 .option {
     text-align: center;
+}
+
+.radio-text {
+    margin-left: 10px;
 }
 
 .rank-item {

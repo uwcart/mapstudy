@@ -24,7 +24,7 @@
 					"logging": true,
 					"toggle": true,
 					"dataLayers": [
-						"US States"
+						"Cities Layer"
 					]
 				},
 				"underlay": {
@@ -32,13 +32,16 @@
 					"toggle": true
 				},
 				"search": {
-					"attributes": ["name", "Density (ppl/sq. mile)"],
+					"dataLayers": [
+						"US States"
+					],
 					"logging": true,
 					"toggle": true
 				},
 				"filter": {
 					"dataLayers": [
-						"US States"
+						"US States",
+						"Cities Layer"
 					],
 					"tool": "slider",
 					"logging": true,
@@ -54,7 +57,7 @@
 				}
 			},
 			"mapOptions": {
-				"resetButton": true,
+				"resetButton": false,
 				"center": [39.83,-98.583],
 				"zoom": 3,
 				"minZoom": 3,
@@ -83,6 +86,7 @@
 					"name", 
 					"Density (ppl/sq. mile)"
 				],
+				"roundTo": 1,
 				"layerOptions": {
 					"fillOpacity": 0.8,
 					"color": "black",

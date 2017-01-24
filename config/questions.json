@@ -112,6 +112,10 @@
 										"text": "European"
 									},
 									{
+										"text": "Other",
+										"value": "get from participant"
+									},
+									{
 										"text": "I don't know that!",
 										"value": "aaaaaaaaaaaaaaaah!"
 									}
@@ -129,6 +133,11 @@
 					"blocks": [
 						{
 							"title": "This is the second set of Page 2. Note the countdown timer up top.",
+							"ask": "See the important image and video below.",
+							"image": "http://www1.pictures.zimbio.com/mp/RhtLxy-IdwQx.jpg",
+							"video": "https://www.youtube.com/embed/pWS8Mg-JWSg"
+						},
+						{
 							"ask": "How far were you catapulted?",
 							"description": "aaaaaaaaaaaaaaaah!",
 							"input": {
@@ -173,8 +182,9 @@
 					],
 					"timer": {
 						"direction": "down",
-						"starttime": "00:00:30"
-					}
+						"starttime": "00:01:00"
+					},
+					"resetMap": true
 				}
 			]
 		},
