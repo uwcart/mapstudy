@@ -518,7 +518,7 @@ var LegendLayerView = Backbone.View.extend({
 				view.model.attributes.maxRadius = parseFloat(range[range.length-1]);
 				//svg height should be whichever is larger, label heights or largest circle diameter
 				var heightArray = [
-					13 * range.length + 6, 
+					13 * range.length + 6,
 					parseFloat(range[range.length-1]) * 2 + 6
 				];
 				heightArray.sort(function(a,b){ return b-a });
@@ -646,7 +646,7 @@ var LegendLayerView = Backbone.View.extend({
 		this.css = css;
 		//set legend elements
 		var techniqueType = this.model.get('techniqueType');
-		this.techniques[techniqueType](this);		
+		this.techniques[techniqueType](this);
 		//style according to layer options
 		for (var style in css){
 			this.$el.children('rect').each(function(){
@@ -921,6 +921,9 @@ var FilterModel = Backbone.Model.extend({
 	}
 });
 
+//array to save user-assigned slider data
+var userInputSliders = [];
+
 //slider view for filter interaction
 var FilterSliderView = Backbone.View.extend({
 	el: ".filter-control-container",
@@ -936,7 +939,7 @@ var FilterSliderView = Backbone.View.extend({
 	setSlider: function(attribute, className){
 		//get attribute values for all features with given attribute
 		var allAttributeValues = getAllAttributeValues(this.model.get('features'), attribute);
-		//set values for slider
+		//set values for sliderv
 		var min = _.min(allAttributeValues),
 			max = _.max(allAttributeValues),
 			mindiff = _.reduce(allAttributeValues, function(memo, val, i){
@@ -973,18 +976,52 @@ var FilterSliderView = Backbone.View.extend({
 		labelsDiv.children(".right").html(max);
 		//to pass to slide callback
 		var applyFilter = this.applyFilter;
+
+		//Check to see if user data exists for slider positions
+		//If not, adds values to array
+		var setMin;
+		var setMax;
+		var objectExists = false;
+		var objIndex = -1;
+		if(min!=Infinity){ //not sure why sometime this shows as Infinity, but this fixes it
+				for(i = 0; i < userInputSliders.length; i++){
+					if(userInputSliders[i].name === attribute){ //searches for objects named w/attribute
+						objectExists = true;
+						objIndex = i;
+					}
+				}
+				if(objectExists){ //if data exists, sets slider min/max
+					setMin = userInputSliders[objIndex].uMin;
+					setMax = userInputSliders[objIndex].uMax;
+				} else { //if data does not exist, adds it to the userInputSliders array
+					userInputSliders.push({name:attribute,uMin:min,uMax:max})
+					setMin = min;
+					setMax = max;
+				}
+		}
+
 		//call once to reset layer
 		applyFilter(attribute, [min, max], true);
+
 		//set slider
 		this.$el.find("#"+className+"-slider").slider({
 			range: true,
 			min: min,
 			max: max,
-			values: [min, max],
+			values: [setMin,setMax],
 			step: step,
 			slide: function(e, slider){
 				labelsDiv.children(".left").html(slider.values[0]);
 				labelsDiv.children(".right").html(slider.values[1]);
+
+				//iterate through saved slider value array and set slider to previous value
+				for(j = 0; j< userInputSliders.length; j++){
+					if(userInputSliders[j].name === attribute){ //searches for objects named w/attribute
+						userInputSliders[j].uMin = slider.values[0];
+						userInputSliders[j].uMax = slider.values[1];
+					}
+				}
+
 				applyFilter(attribute, slider.values);
 			}
 		});
@@ -1346,7 +1383,7 @@ var ReclassifyView = ReexpressInputView.extend({
 			//set display and values based on number of classes
 			var display = i < scale.range().length-1 ? 'inline' : 'none';
 			this.$el.find('.class-break-inputs').append(cbTemplate({
-				index: i, 
+				index: i,
 				display: display
 			}));
 		};
@@ -1369,7 +1406,7 @@ var ReclassifyView = ReexpressInputView.extend({
 			setClassification = this.setClassification,
 			setNClasses = this.setNClasses,
 			setClassBreaks = this.setClassBreaks;
-		
+
 		//set reclassification listener on classification dropdown
 		this.$el.find('select[name=classification]').change(function(e, r){
 			//get classification parameters
@@ -1431,7 +1468,7 @@ var RecolorView = ReclassifyView.extend({
 			} else {
 				var hex = this.model.get('color');
 			};
-			//set default color of input 
+			//set default color of input
 			colorInput.attr('value', hex);
 			//hide color scale select
 			this.$el.find('.recolor select, .color-scale-palette, .color-scale-button').hide();
@@ -1565,7 +1602,7 @@ var RecolorView = ReclassifyView.extend({
 				});
 			};
 		}, this);
-		
+
 		//set listeners on each list element in color scale list
 		this.setColorSelectListeners(list);
 
@@ -1583,7 +1620,7 @@ var RecolorView = ReclassifyView.extend({
 			}, this);
 		}, this);
 		//go ahead with palette if first run
-		if (init){ 
+		if (init){
 			this.model.trigger('reclassified')
 		};
 	},
@@ -1794,7 +1831,7 @@ var LeafletMap = Backbone.View.extend({
 		leafletBaseLayer._leaflet_id = Math.round(Math.random()*10000);
 		var layerId = leafletBaseLayer._leaflet_id;
 		//only add first base layer to the map
-		if (i==0){ 
+		if (i==0){
 			leafletBaseLayer.addTo(this.map);
 			this.firstLayers[layerId] = leafletBaseLayer;
 		} else {
@@ -1860,7 +1897,7 @@ var LeafletMap = Backbone.View.extend({
 	},
 	setTechniques: function(dataLayerModel){
 		//variables needed by internal functions
-		var view = this, 
+		var view = this,
 			model = view.model,
 			map = view.map,
 			dataLayerOptions = dataLayerModel.get('layerOptions') || {};
@@ -2014,7 +2051,7 @@ var LeafletMap = Backbone.View.extend({
 						view.trigger('dataLayersDone');
 					};
 				};
-			};			
+			};
 		}, this);
 	},
 	setDataLayer: function(dataLayer, i){
@@ -2089,7 +2126,7 @@ var LeafletMap = Backbone.View.extend({
 			zoom = map.getZoom();
 		//remove out-of-bounds layers
 		map.eachLayer(function(layer){
-			if (!layer._url && 
+			if (!layer._url &&
 				(layer.options.minZoom > zoom || layer.options.maxZoom < zoom)
 			){
 				//remove but leave "shown" so it appears on zoom in
@@ -2162,7 +2199,7 @@ var LeafletMap = Backbone.View.extend({
 				}]
 			});
 		});
-		
+
 		//add close button
 		var closeButton = _.template( $('#close-button-template').html() );
 		$('.legend-control-container').prepend(closeButton());
@@ -2256,7 +2293,7 @@ var LeafletMap = Backbone.View.extend({
 					leafletView.trigger('pan');
 				};
 			};
-			//set timer to avoid autopan triggering	
+			//set timer to avoid autopan triggering
 			map.on('autopanstart', function(){
 				autopan = true;
 				setTimeout(function(){ autopan = false }, 500);
@@ -2738,7 +2775,7 @@ var LeafletMap = Backbone.View.extend({
 						$('#'+layerName+'-logic-div input').val('');
 						$('#'+layerName+'-logic-div input').prop('disabled', true);
 					}
-				};	
+				};
 			});
 
 			return controlView;
@@ -3225,7 +3262,7 @@ var LeafletMap = Backbone.View.extend({
 				};
 				if (interactions[interaction].toggle){
 					//render interaction toggle button
-					interactionToggleView.render();	
+					interactionToggleView.render();
 					//change the reset control title
 					$('.reset-control img').attr('title', 'reset map');
 				} else {
@@ -3302,7 +3339,7 @@ var LeafletMap = Backbone.View.extend({
 				go = false;
 				window.setTimeout(function(){go = true}, 100);
 			}
-		});	
+		});
 
 		//add initial tile layers
 		var baseLayers = this.model.get('baseLayers');
