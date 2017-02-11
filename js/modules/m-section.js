@@ -999,9 +999,8 @@ var FilterSliderView = Backbone.View.extend({
 					setMax = max;
 				}
 		}
-
 		//call once to reset layer
-		applyFilter(attribute, [min, max], true);
+		applyFilter(attribute, [setMin, setMax], true);
 
 		//set slider
 		this.$el.find("#"+className+"-slider").slider({
@@ -1021,7 +1020,6 @@ var FilterSliderView = Backbone.View.extend({
 						userInputSliders[j].uMax = slider.values[1];
 					}
 				}
-
 				applyFilter(attribute, slider.values);
 			}
 		});
