@@ -65,7 +65,7 @@ var CheckboxesInputView = TextInputView.extend({
 					value: '',
 					tmsp: Date.now()
 				};
-			};			
+			};
 		});
 		this.$el.find('input[type=text]').on('keyup', function(e){
 			var label = e.target.name.split('-')[0],
@@ -233,6 +233,7 @@ var BlockModel = Backbone.Model.extend({
 		"ask": "",
 		"description": "",
 		"image": "",
+		"image2": "",
 		"video": "",
 		"input": {}
 	}
@@ -265,6 +266,7 @@ var BlockView = Backbone.View.extend({
 		//set image
 		if (this.model.get('image').length > 0){
 			this.$el.append('<p class="image"><img src="'+ this.model.get('image') +'"></p>');
+			this.$el.append('<p class="image2"><img src="'+ this.model.get('image2') +'"></p>');
 		};
 		//set video
 		if (this.model.get('video').length > 0){
@@ -275,7 +277,7 @@ var BlockView = Backbone.View.extend({
 			this.$el.append(template({
 				width: width,
 				height: height,
-				source: video 
+				source: video
 			}));
 		};
 
@@ -355,7 +357,7 @@ var TimerView = Backbone.View.extend({
 						h = 0;
 					};
 				};
-			};	
+			};
 		} else {
 			//count down
 			if (s > 0){
@@ -517,7 +519,12 @@ var Questions = Backbone.View.extend({
 		var data = _options.get('data');
 		_.each(data, function(d){
 			this.$el.find('input[type=text][name="'+d.name+'"], input[type=hidden][name="'+d.name+'"], textarea[name="'+d.name+'"], select[name="'+d.name+'"]').val(d.value);
-			this.$el.find('input[type=checkbox][name="'+d.name+'"][value="'+d.value+'"], input[type=radio][name="'+d.name+'"][value="'+d.value+'"]').attr('checked', 'checked');
+			//HULK SMASH USER INPUT BUG
+			if (d.value.length > 20 || String(d.value).indexOf('"') > -1){
+				return false;
+			} else {
+				this.$el.find('input[type=checkbox][name="'+d.name+'"][value="'+d.value+'"], input[type=radio][name="'+d.name+'"][value="'+d.value+'"]').attr('checked', 'checked');
+			};
 		}, this);
 		//re-sort rank inputs
 		$('.ui-sortable').each(function(){
