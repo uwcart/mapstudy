@@ -567,6 +567,12 @@ var Questions = Backbone.View.extend({
 		input.ask = typeof itemText == 'undefined' ? askText : askText + '_' + itemText;
 		input.page = _page+1;
 		input.tmsp = Date.now();
+		//replace value with user-entered text if it exists
+		if (input.name.indexOf('-text-input') > -1){
+			input.name = input.name.split('-text-input')[0];
+			//kill function if blank
+			if (input.value.length == 0){ return false };
+		};
 		_options.attributes.data[input.name] = input;
 	},
 	validate: function(){
@@ -596,6 +602,7 @@ var Questions = Backbone.View.extend({
 	record: function(action){
 		//get all input values in set
 		var inputs = this.$el.find('form').serializeArray();
+		console.log(inputs);
 		//check for required answers
 		if (this.validate()){
 			_.each(inputs, this.addData, this);
