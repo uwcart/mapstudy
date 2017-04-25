@@ -571,7 +571,7 @@
 			"file": "js/modules/q-section.js",
 			"settings":
 			{
-				"buffer_size": 19771,
+				"buffer_size": 20005,
 				"line_ending": "Windows"
 			}
 		},
@@ -579,7 +579,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 117992,
+				"buffer_size": 119480,
 				"line_ending": "Windows"
 			}
 		},
@@ -595,7 +595,7 @@
 			"file": "config/styles.json",
 			"settings":
 			{
-				"buffer_size": 401,
+				"buffer_size": 338,
 				"line_ending": "Windows"
 			}
 		},
@@ -619,7 +619,7 @@
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 13084,
+				"buffer_size": 13079,
 				"line_ending": "Windows"
 			}
 		}
@@ -648,6 +648,7 @@
 	},
 	"file_history":
 	[
+		"/C/Program Files (x86)/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/mapstudy/js/modules/m-section.js",
 		"/C/Program Files (x86)/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/mapstudy/doc/README.md",
 		"/C/Program Files (x86)/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/MapStudy1/config/conditions.json",
 		"/C/Program Files (x86)/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/mapstudy/doc/versions.md",
@@ -774,8 +775,7 @@
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/php/query.php",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/css/style.css",
 		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/index.html",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/messages.js",
-		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/wikimap.js"
+		"/C/Program Files/PostgreSQL/EnterpriseDB-ApachePHP/apache/www/Senegal/js/messages.js"
 	],
 	"find":
 	{
@@ -793,6 +793,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"marker",
+			"symbol",
+			".addInteraction",
+			"console",
+			"overlay:",
+			"overlay",
 			"consle",
 			"console",
 			"text-input",
@@ -914,13 +920,7 @@
 			"set",
 			"action",
 			"record",
-			"nextset",
-			"_.extend(doc",
-			"extend",
-			"document",
-			"nextset",
-			"autoadvance",
-			"submit"
+			"nextset"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1066,6 +1066,7 @@
 	"groups":
 	[
 		{
+			"selected": 7,
 			"sheets":
 			[
 				{
@@ -1080,8 +1081,8 @@
 						"selection":
 						[
 							[
-								12029,
-								12029
+								1358,
+								1358
 							]
 						],
 						"settings":
@@ -1091,7 +1092,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4889.0,
+						"translation.y": 474.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1135,8 +1136,8 @@
 						"selection":
 						[
 							[
-								141,
-								141
+								137,
+								137
 							]
 						],
 						"settings":
@@ -1216,8 +1217,8 @@
 						"selection":
 						[
 							[
-								3836,
-								3836
+								330,
+								330
 							]
 						],
 						"settings":
@@ -1227,7 +1228,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2689.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1237,15 +1238,15 @@
 					"file": "js/modules/q-section.js",
 					"settings":
 					{
-						"buffer_size": 19771,
+						"buffer_size": 20005,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								12673,
-								12673
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1255,7 +1256,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 9029.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1265,25 +1266,24 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 117992,
+						"buffer_size": 119480,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								88765,
-								88765
+								64466,
+								64466
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 52769.0,
+						"translation.y": 43216.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1319,15 +1319,15 @@
 					"file": "config/styles.json",
 					"settings":
 					{
-						"buffer_size": 401,
+						"buffer_size": 338,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								221,
-								141
+								158,
+								158
 							]
 						],
 						"settings":
@@ -1363,7 +1363,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 5181.0,
+						"translation.y": 500.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1380,8 +1380,8 @@
 						"selection":
 						[
 							[
-								4349,
-								4349
+								948,
+								948
 							]
 						],
 						"settings":
@@ -1391,7 +1391,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3329.0,
+						"translation.y": 1560.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1401,15 +1401,15 @@
 					"file": "config/map.json",
 					"settings":
 					{
-						"buffer_size": 13084,
+						"buffer_size": 13079,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								688,
-								688
+								5100,
+								5100
 							]
 						],
 						"settings":
@@ -1418,7 +1418,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 360.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

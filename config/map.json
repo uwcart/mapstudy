@@ -83,7 +83,7 @@
 				"renderOnLoad": true,
 				"expressedAttribute": "Density (ppl/sq. mile)",
 				"displayAttributes": [
-					"name", 
+					"name",
 					"Density (ppl/sq. mile)"
 				],
 				"roundTo": 1,
@@ -101,6 +101,7 @@
 				},{
 					"type": "proportional symbol",
 					"classification": "unclassed",
+					"symbol": "img/grail.jpg",
 					"classes": [
 						5,
 						20
@@ -113,7 +114,7 @@
 				"renderOnLoad": false,
 				"expressedAttribute": "2011",
 				"displayAttributes": [
-					"name", 
+					"name",
 					"2005",
 					"2006",
 					"2007",
@@ -368,7 +369,7 @@
 				"source": "data/city-data.geojson",
 				"expressedAttribute": "2011",
 				"displayAttributes": [
-					"name", 
+					"name",
 					"2005",
 					"2006",
 					"2007",
