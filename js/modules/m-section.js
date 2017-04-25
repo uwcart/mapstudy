@@ -1717,6 +1717,18 @@ var RescaleView = RecolorView.extend({
 
 /************** map.library ****************/
 
+//Static Image
+var ImageMap = Backbone.View.extend({
+	el: '#m',
+	render: function(){
+		var template = _.template($('#image-map-template').html()),
+				source = this.model.attributes.hasOwnProperty('source') ? this.model.get('source') : null;
+		this.$el.html(template({source: source}));
+		return this;
+	},
+	setMap: function(){} //not used for image but required to load view
+});
+
 //Leaflet
 var LeafletMap = Backbone.View.extend({
 	el: '#m',
@@ -3353,6 +3365,7 @@ var LeafletMap = Backbone.View.extend({
 		};
 	}
 });
+//End Leaflet Map
 
 /************** set map view ****************/
 
