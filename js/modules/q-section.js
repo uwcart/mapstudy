@@ -602,7 +602,6 @@ var Questions = Backbone.View.extend({
 	record: function(action){
 		//get all input values in set
 		var inputs = this.$el.find('form').serializeArray();
-		console.log(inputs);
 		//check for required answers
 		if (this.validate()){
 			_.each(inputs, this.addData, this);

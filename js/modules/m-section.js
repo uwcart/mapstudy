@@ -1919,7 +1919,7 @@ var LeafletMap = Backbone.View.extend({
 		//create a new Leaflet layer for each technique
 		_.each(dataLayerModel.get('techniques'), function(technique, i){
 			//instantiate new model based on technique type and combine with data layer model
-			var techniqueModel = new techniquesObj[technique.type]({techniqueIndex: i});
+			var techniqueModel = new techniquesObj[technique.type](_.extend(technique, {techniqueIndex: i}));
 			_.defaults(techniqueModel, dataLayerModel);
 			_.extend(techniqueModel.attributes, dataLayerModel.attributes);
 			if (technique.type == 'heat'){
