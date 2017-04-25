@@ -1718,15 +1718,20 @@ var RescaleView = RecolorView.extend({
 /************** map.library ****************/
 
 //Static Image
-var ImageMap = Backbone.View.extend({
+var imageMap = Backbone.View.extend({
 	el: '#m',
+	template: _.template($('#image-map-template').html()),
 	render: function(){
-		var template = _.template($('#image-map-template').html()),
-				source = this.model.attributes.hasOwnProperty('source') ? this.model.get('source') : null;
-		this.$el.html(template({source: source}));
+		var source = this.model.attributes.hasOwnProperty('source') ? this.model.get('source') : null;
+		this.$el.html(this.template({source: source}));
 		return this;
 	},
 	setMap: function(){} //not used for image but required to load view
+});
+
+//Iframe
+var iframeMap = imageMap.extend({
+	template: _.template($('#iframe-map-template').html())
 });
 
 //Leaflet
