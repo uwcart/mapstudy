@@ -192,7 +192,7 @@
                 <label for="scale-value-max" class="scale-value-hideable">max: </label>
                 <input name="scale-value-max" type="text" size="3">
                 <div class="rendering-progress-bar" style="display: none;">
-                    Rendering&mdash;please wait... 
+                    Rendering&mdash;please wait...
                     <div class="progress-bar-border">
                         <div class="progress-bar-fill">.</div>
                     </div>
@@ -330,6 +330,18 @@
 
         <script type="text/template" id="iframe-template">
             <iframe width="<%= width %>" height="<%= height %>" frameborder="0" src="<%= source %>" allowfullscreen></iframe>
+        </script>
+
+        <script type="text/template" id="image-map-template">
+            <div id='map' style="border: none;">
+                <img src="<%= source %>" alt="map image">
+            </div>
+        </script>
+
+        <script type="text/template" id="iframe-map-template">
+            <div id='map' style="border: none;">
+                <iframe frameborder="0" src="<%= source %>" alt="map iframe"></iframe>
+            </div>
         </script>
 
         <!-- Supported libraries -->

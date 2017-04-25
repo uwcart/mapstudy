@@ -1717,6 +1717,23 @@ var RescaleView = RecolorView.extend({
 
 /************** map.library ****************/
 
+//Static Image
+var imageMap = Backbone.View.extend({
+	el: '#m',
+	template: _.template($('#image-map-template').html()),
+	render: function(){
+		var source = this.model.attributes.hasOwnProperty('source') ? this.model.get('source') : null;
+		this.$el.html(this.template({source: source}));
+		return this;
+	},
+	setMap: function(){} //not used for image but required to load view
+});
+
+//Iframe
+var iframeMap = imageMap.extend({
+	template: _.template($('#iframe-map-template').html())
+});
+
 //Leaflet
 var LeafletMap = Backbone.View.extend({
 	el: '#m',
@@ -1919,7 +1936,7 @@ var LeafletMap = Backbone.View.extend({
 		//create a new Leaflet layer for each technique
 		_.each(dataLayerModel.get('techniques'), function(technique, i){
 			//instantiate new model based on technique type and combine with data layer model
-			var techniqueModel = new techniquesObj[technique.type]({techniqueIndex: i});
+			var techniqueModel = new techniquesObj[technique.type](_.extend(technique, {techniqueIndex: i}));
 			_.defaults(techniqueModel, dataLayerModel);
 			_.extend(techniqueModel.attributes, dataLayerModel.attributes);
 			if (technique.type == 'heat'){
@@ -3353,6 +3370,7 @@ var LeafletMap = Backbone.View.extend({
 		};
 	}
 });
+//End Leaflet Map
 
 /************** set map view ****************/
 

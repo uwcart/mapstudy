@@ -571,7 +571,7 @@
 			"file": "js/modules/q-section.js",
 			"settings":
 			{
-				"buffer_size": 19771,
+				"buffer_size": 20005,
 				"line_ending": "Windows"
 			}
 		},
@@ -579,7 +579,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 118285,
+				"buffer_size": 119480,
 				"line_ending": "Windows"
 			}
 		},
@@ -793,6 +793,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"marker",
+			"symbol",
 			".addInteraction",
 			"console",
 			"overlay:",
@@ -918,9 +920,7 @@
 			"set",
 			"action",
 			"record",
-			"nextset",
-			"_.extend(doc",
-			"extend"
+			"nextset"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1238,15 +1238,15 @@
 					"file": "js/modules/q-section.js",
 					"settings":
 					{
-						"buffer_size": 19771,
+						"buffer_size": 20005,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								19758,
-								19758
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1266,15 +1266,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 118285,
+						"buffer_size": 119480,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								64466,
+								64466
 							]
 						],
 						"settings":
@@ -1283,7 +1283,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 43216.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

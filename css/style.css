@@ -219,6 +219,15 @@ svg {
     display: inline-block;
 }
 
+#map img {
+    width: inherit;
+}
+
+#map iframe {
+    width: 100%;
+    height: 100%;
+}
+
 .attr {
     font-weight: bold;
     padding-right: 10px;
@@ -262,7 +271,7 @@ svg {
 }
 
 .range-slider {
-    width: 300px;  
+    width: 300px;
 }
 
 .slider-labels {
