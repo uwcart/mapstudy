@@ -262,6 +262,10 @@ svg {
     font-size: 1.2em;
 }
 
+.leaflet-control a {
+    width: auto !important;
+}
+
 .leaflet-left {
     bottom: 10px;
 }
