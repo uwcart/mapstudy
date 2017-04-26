@@ -523,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 16942,
+				"buffer_size": 17385,
 				"line_ending": "Windows"
 			}
 		},
@@ -547,7 +547,7 @@
 			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 11406,
+				"buffer_size": 11490,
 				"line_ending": "Windows"
 			}
 		},
@@ -571,7 +571,7 @@
 			"file": "js/modules/q-section.js",
 			"settings":
 			{
-				"buffer_size": 20005,
+				"buffer_size": 20240,
 				"line_ending": "Windows"
 			}
 		},
@@ -579,7 +579,7 @@
 			"file": "js/modules/m-section.js",
 			"settings":
 			{
-				"buffer_size": 119480,
+				"buffer_size": 120004,
 				"line_ending": "Windows"
 			}
 		},
@@ -619,7 +619,7 @@
 			"file": "config/map.json",
 			"settings":
 			{
-				"buffer_size": 13079,
+				"buffer_size": 13109,
 				"line_ending": "Windows"
 			}
 		}
@@ -1074,15 +1074,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 16942,
+						"buffer_size": 17385,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1358,
-								1358
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1155,15 +1155,15 @@
 					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 11406,
+						"buffer_size": 11490,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7342,
-								7342
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1238,7 +1238,7 @@
 					"file": "js/modules/q-section.js",
 					"settings":
 					{
-						"buffer_size": 20005,
+						"buffer_size": 20240,
 						"regions":
 						{
 						},
@@ -1266,15 +1266,15 @@
 					"file": "js/modules/m-section.js",
 					"settings":
 					{
-						"buffer_size": 119480,
+						"buffer_size": 120004,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								64466,
-								64466
+								55234,
+								55234
 							]
 						],
 						"settings":
@@ -1283,7 +1283,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 43216.0,
+						"translation.y": 37760.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1401,15 +1401,15 @@
 					"file": "config/map.json",
 					"settings":
 					{
-						"buffer_size": 13079,
+						"buffer_size": 13109,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5100,
-								5100
+								0,
+								0
 							]
 						],
 						"settings":

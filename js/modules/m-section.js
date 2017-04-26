@@ -45,7 +45,7 @@ var Quantile = Backbone.Model.extend({
 	},
 	scale: function(values, classes){
 		//create scale generator
-		var scale = d3.scale.quantile()
+		var scale = d3.scaleQuantile()
 			.range(classes);
 		//assign array of values as scale domain
 		scale.domain(values);
@@ -60,7 +60,7 @@ var EqualInterval = Backbone.Model.extend({
 	},
 	scale: function(values, classes){
 		//create scale generator
-		var scale = d3.scale.quantile()
+		var scale = d3.scaleQuantile()
 			.range(classes);
 		//assign two-value array as scale domain
 		scale.domain([d3.min(values), d3.max(values)]);
@@ -75,7 +75,7 @@ var NaturalBreaks = Backbone.Model.extend({
 	},
 	scale: function(values, classes){
 		//create scale generator
-		var scale = d3.scale.threshold()
+		var scale = d3.scaleThreshold()
 			.range(classes);
 		//cluster data using ckmeans clustering algorithm to create natural breaks
 		var clusters = ss.ckmeans(values, classes.length);
@@ -98,7 +98,7 @@ var Unclassed = Backbone.Model.extend({
 	},
 	scale: function(values, rangeBounds){
 		//create scale generator
-		var scale = d3.scale.linear()
+		var scale = d3.scaleLinear()
 			.range(rangeBounds);
 		//assign two-value array as scale domain
 		scale.domain([d3.min(values), d3.max(values)]);
@@ -113,7 +113,7 @@ var UserDefined = Backbone.Model.extend({
 	},
 	scale: function(domain, classes){
 		//create scale generator
-		var scale = d3.scale.threshold()
+		var scale = d3.scaleThreshold()
 			.range(classes)
 			.domain(domain);
 		//done
