@@ -2181,7 +2181,8 @@ var LeafletMap = Backbone.View.extend({
 				var id = 'legend-'+layer._leaflet_id;
 				//only show immediately if layer is visible
 				var display = map.hasLayer(layer) ? 'block' : 'none';
-				innerHTML += '<div id="'+id+'" style="display: '+display+';"><p class="legend-layer-title">'+layer.layerName+' '+layer.techniqueType+'<br/>Attribute: '+layer.model.get('expressedAttribute')+'</p>';
+				var acc = display == 'block' ? ' acc-open' : ' acc-closed';
+				innerHTML += '<div id="'+id+'" class="legend-layer-div display-'+display+'" style="display: '+display+';"><a class="leg-accordion'+acc+'"><img src="img/accordion_arrow.png" class="acc-arrow" title="click to minimize legend for layer"><p class="legend-layer-title">'+layer.layerName+' '+layer.techniqueType+'<br/>Attribute: '+layer.model.get('expressedAttribute')+'</p></a>';
 				var legendView = new LegendLayerView({model: layer.model});
 				innerHTML += legendView.$el[0].outerHTML + '</div>';
 			}, this);
@@ -2225,8 +2226,53 @@ var LeafletMap = Backbone.View.extend({
 		$('.legend-control-container .close').click(function(){
 			$('#legend-wrapper, .legend-control-container .close').hide();
 		});
+		//add minimize/maximize listeners
+		var view = this;
+		$(".leg-accordion").click(view.legendLayerAccordion);
+		//minimize visible layers if more than one is visible
+		var legLayerCount = $('.legend-layer-div.display-block').length;
+		if (legLayerCount > 1){
+			$(".acc-open .acc-arrow").trigger("click")
+				.css("transform", "rotate(0deg)");
+		} else {
+			$(".acc-open .acc-arrow").css("transform", "rotate(90deg)");
+		};
+		//minimize invisible layers
+		$(".acc-closed .acc-arrow").css("transform", "rotate(0deg)");
+		$(".acc-closed").parent().children("svg, .heatmap-legend-wrapper").hide();
 		//hide everything but icon to start
 		$('#legend-wrapper').hide();
+	},
+	legendLayerAccordion: function(e){
+		legLayerA = $(e.target).is("a") ? $(e.target) : $(e.target).parent();
+		function stepCallback(now){
+            legLayerA.children("img").css({
+                transform: 'rotate(' + now + 'deg)'
+            });
+        }
+		if (legLayerA.attr("class").indexOf("closed") > -1){
+			//reset classname to open
+			legLayerA.attr("class", "leg-accordion acc-open");
+			//rotate arrow
+			$({deg: 0}).animate({deg: 90}, {
+		        step: stepCallback
+		    });
+		    //reset title on image
+		    legLayerA.children("img").attr("title", "click to minimize legend for layer")
+			//reveal SVG
+			legLayerA.parent().children("svg, .heatmap-legend-wrapper").slideDown(400);
+		} else {
+			//reset classname to closed
+			legLayerA.attr("class", "leg-accordion acc-closed");
+			//rotate arrow
+			$({deg: 90}).animate({deg: 0}, {
+		        step: stepCallback
+		    });
+		    //reset title on image
+		    legLayerA.children("img").attr("title", "click to view legend for layer")
+			//reveal SVG
+			legLayerA.parent().children("svg, .heatmap-legend-wrapper").slideUp(400);
+		}
 	},
 	setMapInteractions: {
 		zoom: function(controlView, leafletView){

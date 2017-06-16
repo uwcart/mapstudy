@@ -316,10 +316,39 @@ svg {
     background-color: #ccc;
 }
 
+.interaction-control:hover {
+    background-color: #eee;
+}
+
+.legend-layer-div {
+    background-color: #eee;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.legend-layer-div img {
+    float: left;
+    margin-right: 5px;
+    padding: 8px 0 15px;
+}
+
 .legend-layer-title {
     font-size: 1em;
     line-height: 1.2em;
     margin: 5px 0;
+    display: inline;
+}
+
+.leg-accordion {
+    cursor: pointer;
+    color: #000 !important;
+    display: block;
+    padding: 5px 2px 2px;
+    border-radius: 5px;
+}
+
+.leg-accordion:hover {
+    background-color: #ccc;
 }
 
 .legend-control-container rect, .legend-control-container circle {
