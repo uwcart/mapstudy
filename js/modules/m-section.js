@@ -45,7 +45,7 @@ var Quantile = Backbone.Model.extend({
 	},
 	scale: function(values, classes){
 		//create scale generator
-		var scale = d3.scaleQuantile()
+		var scale = d3.scale.quantile()
 			.range(classes);
 		//assign array of values as scale domain
 		scale.domain(values);
@@ -60,7 +60,7 @@ var EqualInterval = Backbone.Model.extend({
 	},
 	scale: function(values, classes){
 		//create scale generator
-		var scale = d3.scaleQuantile()
+		var scale = d3.scale.quantile()
 			.range(classes);
 		//assign two-value array as scale domain
 		scale.domain([d3.min(values), d3.max(values)]);
@@ -75,7 +75,7 @@ var NaturalBreaks = Backbone.Model.extend({
 	},
 	scale: function(values, classes){
 		//create scale generator
-		var scale = d3.scaleThreshold()
+		var scale = d3.scale.threshold()
 			.range(classes);
 		//cluster data using ckmeans clustering algorithm to create natural breaks
 		var clusters = ss.ckmeans(values, classes.length);
@@ -98,7 +98,7 @@ var Unclassed = Backbone.Model.extend({
 	},
 	scale: function(values, rangeBounds){
 		//create scale generator
-		var scale = d3.scaleLinear()
+		var scale = d3.scale.linear()
 			.range(rangeBounds);
 		//assign two-value array as scale domain
 		scale.domain([d3.min(values), d3.max(values)]);
@@ -113,7 +113,7 @@ var UserDefined = Backbone.Model.extend({
 	},
 	scale: function(domain, classes){
 		//create scale generator
-		var scale = d3.scaleThreshold()
+		var scale = d3.scale.threshold()
 			.range(classes)
 			.domain(domain);
 		//done
@@ -807,6 +807,7 @@ var RetrieveControlView = InteractionControlView.extend({
 	}
 });
 
+
 //model for overlay control
 var OverlayControlModel = Backbone.Model.extend({
 	defaults: {
@@ -816,6 +817,9 @@ var OverlayControlModel = Backbone.Model.extend({
 	}
 });
 
+//to connect radio buttons w/sliders
+var radioToSliders = [];
+var rtsCount = 0;
 //view for overlay control
 var OverlayControlView = Backbone.View.extend({
 	el: '.overlay-control-container',
@@ -825,8 +829,49 @@ var OverlayControlView = Backbone.View.extend({
 		this.$el.append(this.template(this.model.attributes));
 		//set change interaction on this child element only
 		var view = this;
+		radioToSliders[rtsCount].value = this.model.get('layerId');
+
+		if(rtsCount == 0){ //on first round, initially disable first slider
+			$(".filter-row").first().css('opacity', '0.3'); //gray out slider
+			$(".filter-row .range-slider").first().slider({disabled:true}); //disable slider
+		}
+
+		if(rtsCount == radioToSliders.length - 1){
+			$(".filtLabel").last().html(radioToSliders[rtsCount].trigVal); //label last slider
+		}
+
+		rtsCount++;
 		this.$el.find('.layer-'+this.model.get('layerId')+' input').change(function(e){
-			view.toggleLayer($(e.target).val(), $(e.target).prop('checked'));
+
+			var targetVal = $(e.target).val();
+			var targetBool = $(e.target).prop('checked');
+
+			var rtsNum = -1;
+			for(i = 0; i < radioToSliders.length; i++){
+				if(radioToSliders[i].value == targetVal){
+					rtsNum = i;
+				}
+			}
+			view.toggleLayer(targetVal, targetBool);
+
+			if(rtsNum === 0){
+				$(".filter-row").first().css('opacity', '0.3'); //gray out slider
+				$(".filter-row .range-slider").first().slider({disabled:true}); //disable slider
+			}
+			else if(rtsNum != -1 && rtsNum < radioToSliders.length-1){
+				$(".filter-row .range-slider").first().slider({disabled:false});
+				$(".filter-row select").first().val(radioToSliders[rtsNum].trigVal).change();
+				$(".filter-row").first().css('opacity', '1');
+				$(".filtLabel").first().html(radioToSliders[rtsNum].trigVal);
+			} else if(rtsNum != -1 && rtsNum === radioToSliders.length-1){ //if last radio button is clicked
+				$(".filter-row").first().css('opacity', '0.3'); //gray out slider
+				$(".filter-row .range-slider").first().slider({disabled:true}); //disable slider
+				//$(".filtLabel").last().html(radioToSliders[rtsNum].trigVal); //label last slider
+			}
+
+			//console.log($(e.target).val() + " " + $(e.target).prop('checked'))
+			//$(".filter-row select").first().change();
+
 		});
 	}
 });
@@ -968,12 +1013,12 @@ var FilterSliderView = Backbone.View.extend({
 			};
 		};
 		//add a small amount of padding to ensure max and min values stay within range
-		min = min == 0 ? min : Math.floor(min / step) * step - step;
-		max = max == 0 ? max : Math.ceil(max / step) * step + step;
+		// min = min == 0 ? min : Math.floor(min / step) * step - step;
+		// max = max == 0 ? max : Math.ceil(max / step) * step + step;
 		//add labels
 		var labelsDiv = this.$el.find("#"+className+"-labels");
-		labelsDiv.children(".left").html(min);
-		labelsDiv.children(".right").html(max);
+		labelsDiv.children(".left").html("Low");
+		labelsDiv.children(".right").html("High");
 		//to pass to slide callback
 		var applyFilter = this.applyFilter;
 
@@ -1010,8 +1055,8 @@ var FilterSliderView = Backbone.View.extend({
 			values: [setMin,setMax],
 			step: step,
 			slide: function(e, slider){
-				labelsDiv.children(".left").html(slider.values[0]);
-				labelsDiv.children(".right").html(slider.values[1]);
+				labelsDiv.children(".left").html("Low");
+				labelsDiv.children(".right").html("High");
 
 				//iterate through saved slider value array and set slider to previous value
 				for(j = 0; j< userInputSliders.length; j++){
@@ -1044,7 +1089,9 @@ var FilterSliderView = Backbone.View.extend({
 		var optionTemplate = _.template($('#filter-options-template').html()),
 			select = this.$el.find('select[name=' + this.model.get('className') + ']');
 		_.each(numericAttributes, function(attribute){
-			select.append(optionTemplate({attribute: attribute}))
+			radioToSliders.push({trigVal:attribute});
+			select.append(optionTemplate({attribute: attribute}));
+			select.css('display', 'none');
 		}, this);
 	},
 	initialize: function(options){
@@ -1717,23 +1764,6 @@ var RescaleView = RecolorView.extend({
 
 /************** map.library ****************/
 
-//Static Image
-var imageMap = Backbone.View.extend({
-	el: '#m',
-	template: _.template($('#image-map-template').html()),
-	render: function(){
-		var source = this.model.attributes.hasOwnProperty('source') ? this.model.get('source') : null;
-		this.$el.html(this.template({source: source}));
-		return this;
-	},
-	setMap: function(){} //not used for image but required to load view
-});
-
-//Iframe
-var iframeMap = imageMap.extend({
-	template: _.template($('#iframe-map-template').html())
-});
-
 //Leaflet
 var LeafletMap = Backbone.View.extend({
 	el: '#m',
@@ -1816,7 +1846,7 @@ var LeafletMap = Backbone.View.extend({
 	addLayer: function(layerId){
 		this.offLayers[layerId].show = true;
 		this.offLayers[layerId].addTo(this.map);
-		this.orderLayers();
+		//this.orderLayers();
 	},
 	removeLayer: function(layerId, maintain){
 		//mark layer as hidden only if manually hidden by user
@@ -1884,10 +1914,25 @@ var LeafletMap = Backbone.View.extend({
 			var popupContent = "<table>";
 			if (dataLayerModel.attributes.displayAttributes){
 				dataLayerModel.get('displayAttributes').forEach(function(attr){
-					popupContent += _.template($('#popup-line-template').html())({
-						attribute: attr,
-						value: feature.properties[attr]
-					});
+					var popVal;
+					if(feature.properties[attr] == 1){
+						popVal = 'Low';
+					} else if(feature.properties[attr] == 2){
+						popVal = "Medium";
+					} else if(feature.properties[attr] == 3){
+						popVal = "High";
+					}
+					if(popVal != undefined){
+						popupContent += _.template($('#popup-line-template').html())({
+							attribute: attr,
+							value: popVal
+						});
+					} else if(feature.properties[attr] !== "No Overlays"){
+						popupContent += _.template($('#popup-line-template').html())({
+							attribute: attr,
+							value: feature.properties[attr]
+						});
+					}
 				});
 			} else {
 				var attr = dataLayerModel.get('expressedAttribute');
@@ -1936,7 +1981,7 @@ var LeafletMap = Backbone.View.extend({
 		//create a new Leaflet layer for each technique
 		_.each(dataLayerModel.get('techniques'), function(technique, i){
 			//instantiate new model based on technique type and combine with data layer model
-			var techniqueModel = new techniquesObj[technique.type](_.extend(technique, {techniqueIndex: i}));
+			var techniqueModel = new techniquesObj[technique.type]({techniqueIndex: i});
 			_.defaults(techniqueModel, dataLayerModel);
 			_.extend(techniqueModel.attributes, dataLayerModel.attributes);
 			if (technique.type == 'heat'){
@@ -2181,8 +2226,7 @@ var LeafletMap = Backbone.View.extend({
 				var id = 'legend-'+layer._leaflet_id;
 				//only show immediately if layer is visible
 				var display = map.hasLayer(layer) ? 'block' : 'none';
-				var acc = display == 'block' ? ' acc-open' : ' acc-closed';
-				innerHTML += '<div id="'+id+'" class="legend-layer-div display-'+display+'" style="display: '+display+';"><a class="leg-accordion'+acc+'"><img src="img/accordion_arrow.png" class="acc-arrow" title="click to minimize legend for layer"><p class="legend-layer-title">'+layer.layerName+' '+layer.techniqueType+'<br/>Attribute: '+layer.model.get('expressedAttribute')+'</p></a>';
+				innerHTML += '<div id="'+id+'" style="display: '+display+';"><p class="legend-layer-title">'+layer.layerName+' '+layer.techniqueType+'<br/>Attribute: '+layer.model.get('expressedAttribute')+'</p>';
 				var legendView = new LegendLayerView({model: layer.model});
 				innerHTML += legendView.$el[0].outerHTML + '</div>';
 			}, this);
@@ -2226,53 +2270,8 @@ var LeafletMap = Backbone.View.extend({
 		$('.legend-control-container .close').click(function(){
 			$('#legend-wrapper, .legend-control-container .close').hide();
 		});
-		//add minimize/maximize listeners
-		var view = this;
-		$(".leg-accordion").click(view.legendLayerAccordion);
-		//minimize visible layers if more than one is visible
-		var legLayerCount = $('.legend-layer-div.display-block').length;
-		if (legLayerCount > 1){
-			$(".acc-open .acc-arrow").trigger("click")
-				.css("transform", "rotate(0deg)");
-		} else {
-			$(".acc-open .acc-arrow").css("transform", "rotate(90deg)");
-		};
-		//minimize invisible layers
-		$(".acc-closed .acc-arrow").css("transform", "rotate(0deg)");
-		$(".acc-closed").parent().children("svg, .heatmap-legend-wrapper").hide();
 		//hide everything but icon to start
 		$('#legend-wrapper').hide();
-	},
-	legendLayerAccordion: function(e){
-		legLayerA = $(e.target).is("a") ? $(e.target) : $(e.target).parent();
-		function stepCallback(now){
-            legLayerA.children("img").css({
-                transform: 'rotate(' + now + 'deg)'
-            });
-        }
-		if (legLayerA.attr("class").indexOf("closed") > -1){
-			//reset classname to open
-			legLayerA.attr("class", "leg-accordion acc-open");
-			//rotate arrow
-			$({deg: 0}).animate({deg: 90}, {
-		        step: stepCallback
-		    });
-		    //reset title on image
-		    legLayerA.children("img").attr("title", "click to minimize legend for layer")
-			//reveal SVG
-			legLayerA.parent().children("svg, .heatmap-legend-wrapper").slideDown(400);
-		} else {
-			//reset classname to closed
-			legLayerA.attr("class", "leg-accordion acc-closed");
-			//rotate arrow
-			$({deg: 90}).animate({deg: 0}, {
-		        step: stepCallback
-		    });
-		    //reset title on image
-		    legLayerA.children("img").attr("title", "click to view legend for layer")
-			//reveal SVG
-			legLayerA.parent().children("svg, .heatmap-legend-wrapper").slideUp(400);
-		}
 	},
 	setMapInteractions: {
 		zoom: function(controlView, leafletView){
@@ -2493,16 +2492,24 @@ var LeafletMap = Backbone.View.extend({
 					var overlayControlView = new OverlayControlView({model: overlayControlModel});
 					//toggleLayer function must be defined for leaflet view
 					overlayControlView.toggleLayer = function(layerId, addLayer){
+
+						//console.log(layerId + " " + addLayer);
 						//trigger interaction logging if toggle was not due to reexpression
 						leafletView.trigger('overlay');
 						//turn layer on/off
-						if (map._layers[layerId] && !addLayer){
-							leafletView.removeLayer(layerId);
-							$('input[value='+layerId+']').removeAttr('checked');
-						} else if (!map._layers[layerId] && offLayers[layerId]){
+						if (!map._layers[layerId] && offLayers[layerId]){
 							leafletView.addLayer(layerId);
-							$('input[value='+layerId+']').prop('checked', true);
+							//$('input[value='+layerId+']').prop('checked', true);
 						};
+
+						//console.log($('.overlay-control-layer'));
+						//turn other layers off
+						$('.overlay-control-layer').each(function(){
+							var thisId = $(this).attr('id').split('-')[2];
+							if (layerId != thisId && map._layers[thisId]){
+								leafletView.removeLayer(thisId);
+							};
+						});
 					};
 					overlayControlView.render();
 					//only show the control for the first technique of each data layer
@@ -2515,6 +2522,7 @@ var LeafletMap = Backbone.View.extend({
 						//disable checkboxes for out-of-bounds layers
 						$('input[value='+layerId+']').prop('disabled', true);
 					};
+
 				}, this);
 			}, this);
 
@@ -2743,7 +2751,7 @@ var LeafletMap = Backbone.View.extend({
 					if (layer.feature && layer.feature.properties && layer.feature.properties[attribute]){
 						var layerValue = layer.feature.properties[attribute];
 						//if value within range, add to map and remove from removed layers array
-						if (layerValue > min && layerValue < max){
+						if (layerValue >= min && layerValue <= max){
 							layer.addTo(map);
 							delete offLayers[layer._leaflet_id + '-filter'];
 						};
@@ -3416,7 +3424,6 @@ var LeafletMap = Backbone.View.extend({
 		};
 	}
 });
-//End Leaflet Map
 
 /************** set map view ****************/
 
@@ -3458,6 +3465,10 @@ function config(){
 };
 
 function resetMap(){
+	radioToSliders = [];
+	rtsCount = 0;
+	userInputSliders = [];
+
 	$('#cover').show();
 	_page = _pages[_pagesi]-1;
 	//reset map and questions

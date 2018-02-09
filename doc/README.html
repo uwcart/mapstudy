@@ -1,0 +1,1301 @@
+<h1 id="-img-src-mapstudy-png-mapstudy"><img src="mapstudy.png"> MapStudy</h1>
+<h1 id="what-is-mapstudy-">What is MapStudy?</h1>
+<p>MapStudy is an integrated, modularized framework for the creation of survey applications designed to test cartographic design and interaction hypotheses in a modern web map environment. It leverages Postgresql and PHP on the server side and Javascript, jQuery, Leaflet, and D3 on the client. MapStudy is being developed specifically for use in the University of Wisconsin-Madison Cartography program through the support of the UW-Madison Cartography Lab and the Wisconsin Alumni Research Foundation.</p>
+<h2 id="what-is-the-status-of-mapstudy-">What is the status of MapStudy?</h2>
+<p>The MapStudy framework is currently in beta release, version 0.1. Note that not all functionality is complete. At this time, Leaflet is the only active map library.</p>
+<h2 id="can-i-have-a-preview-please-">Can I have a preview please?</h2>
+<p>To see a demo app created with the MapStudy framework, <a href="http://uwcart.github.io/mapstudy/">click here</a>.</p>
+<p>To access the setup application (which has a live preview feature), <a href="http://grad.geography.wisc.edu/cmsack/mapstudy/setup/">click here</a></p>
+<h2 id="documentation-version-0-1">Documentation - Version 0.1</h2>
+<h2 id="contents">Contents</h2>
+<h4 id="-about-the-api-documentation-about-the-api-documentation-1-"><a href="#about-the-api-documentation-1">About the API Documentation</a></h4>
+<h4 id="-setup-setup-1-"><a href="#setup-1">Setup</a></h4>
+<h4 id="-config-files-config-files-1-"><a href="#config-files-1">Config files</a></h4>
+<h4 id="-emsp-styles-styles-1-">&emsp;<a href="#styles-1">Styles</a></h4>
+<h4 id="-emsp-map-map-1-">&emsp;<a href="#map-1">Map</a></h4>
+<h4 id="-emsp-questions-questions-1-">&emsp;<a href="#questions-1">Questions</a></h4>
+<h4 id="-emsp-conditions-conditions-1-">&emsp;<a href="#conditions-1">Conditions</a></h4>
+<h4 id="-emsp-param-param-1-">&emsp;<a href="#param-1">Param</a></h4>
+<h4 id="-framework-architecture-framework-architecture-1-"><a href="#framework-architecture-1">Framework Architecture</a></h4>
+<h2 id="about-the-api-documentation-">About the API documentation:</h2>
+<p>MapStudy is a flexible framework for creating map-based survey applications. It includes a range of components that are selected by setting and extending the options in the <em>.json</em> files within the <em>config</em> directory. For now, those files must be edited manually in a basic text editor such as Sublime or Notepad++. Hopefully there will eventually be a helper GUI for setting up the config files.</p>
+<p>The API documentation lists the options available in the config files. Each option is shown as code, with the option key to the left of a colon and each explicit possible value <code>between asterisks (*)</code>. <strong>Everything <code>between asterisks (*)</code> is optional; everything else is required.</strong> Special cases are noted at their respective documentation sections.</p>
+<p>This documentation assumes a basic working knowledge of JSON formatting, geographic data structure, and geographic databases.</p>
+<h2 id="setup-">Setup:</h2>
+<ol>
+<li><p>Clone or download a zipped copy of the framework from the <a href="https://github.com/uwcart/mapstudy">Github page</a>.</p>
+</li>
+<li><p>Unzip the files and place them where you want to provide access to the survey&mdash;either on a public server or a private localhost server.</p>
+</li>
+<li><p>Replace the <em>logo.png</em> file in the <em>img</em> folder with your own icon if desired.</p>
+</li>
+<li><p>If you will create a thematic map, gather geographic data and convert to GeoJSON format or store it in a PostGIS database. Geographic data should include every feature that will be mapped and each attribute that will be used to generate the thematic map. Thematic attributes should be numerical. Options for adding data to the map are covered in the <em>map.json</em> section below. A good source of geographic base data is <a href="http://www.naturalearthdata.com/">Natural Earth</a>.</p>
+</li>
+<li><p>If you plan to embed a static map image or pre-rendered web map from a service such as <a href="https://cartodb.com/">CartoDB</a>, prepare that map separately. <em>Note that if you do this, you lose the benefit of the embedded user interaction logging.</em></p>
+</li>
+<li><p>Set up a PostgreSQL, MySQL, or Microsoft Access database to store question answers and interaction logs. The MapStudy application will need administrator-level access to that database.</p>
+</li>
+<li><p>Edit and extend each <em>.json</em> file in the <em>config</em> directory using the options below. Your edits should be reflected immediately in the browser upon loading or reloading <em>index.html</em>.</p>
+</li>
+</ol>
+<h2 id="config-files-">Config files:</h2>
+<p>The remainder of the documentation describes each of the configuration files stored in the <em>config</em> folder and the options available with each. It is recommended to use the <a href="http://grad.geography.wisc.edu/cmsack/mapstudy/setup/">form-based setup application</a> to create these, as it makes it easy to configure a custom MapStudy application without having to open up the config files and write a bunch of JSON code. But be forewarned that the setup app is still <em>very</em> beta; use at your own risk and compare the resulting files with this documentation if you run into trouble!</p>
+<h2 id="styles">Styles</h2>
+<h3 id="filename-styles-json">Filename: styles.json</h3>
+<p>This config file is set up by default to style two page sections: the header and the footer. Other sections may be added as additional section objects, but it is not recommended.</p>
+<h4 id="styles-sectionid">styles.sectionId</h4>
+<pre><code>&quot;sectionId&quot;: *&quot;header&quot;* *&quot;footer&quot;* *&quot;m&quot;* *&quot;q&quot;*
+</code></pre><p>The <code>id</code> attribute of each HTML <code>&lt;section&gt;</code> element on the page.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;header&quot;*</code></td>
+<td style="text-align:left">The page header; the banner on top of the page. If there is no section object with a <code>sectionId</code> of <code>header</code>, a strip of white space will appear at the top of the page.</td>
+<td style="text-align:left">Orange background with a &quot;MapStudy Template&quot; heading and MapStudy icon.</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;footer&quot;*</code></td>
+<td style="text-align:left">The page footer; the strip at the bottom of the page. If there is no section object with a <code>sectionId</code> of <code>footer</code>, a strip of white space will appear at the bottom of the page.</td>
+<td style="text-align:left">Orange background with placeholder text content.</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;m&quot;*</code></td>
+<td style="text-align:left">The section holding the map, on the left half of the main part of the web page. You can add a third section object for this or change one of the existing objects, but it&#39;s not recommended. Any <code>cssAttributes</code> will override the styles in <em>style.css</em>, but any HTML content will not be overridden.</td>
+<td style="text-align:left">Example map</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;q&quot;*</code></td>
+<td style="text-align:left">The section holding the questions, on the right half of the main part of the web page. See <code>*&quot;m&quot;*</code> above</td>
+<td style="text-align:left">Example questions</td>
+</tr>
+</tbody>
+</table>
+<h4 id="styles-cssattributes">styles.cssAttributes</h4>
+<pre><code>&quot;cssAttributes&quot;: {*&quot;background-color&quot;: &quot;color&quot;* *, other optional CSS*}
+</code></pre><p>An object holding all CSS styles that will be used to style the section.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;background-color&quot;: &quot;color&quot;*</code></td>
+<td style="text-align:left">An RGB or HEX value that will be the background color of the section.</td>
+<td style="text-align:left">&quot;rgb(247,154,66)&quot;</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*, other optional CSS*</code></td>
+<td style="text-align:left">Any styles added here will override those contained in <em>style.css</em>. Be careful.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+</tbody>
+</table>
+<h4 id="styles-logo-url">styles.logo-url</h4>
+<pre><code>&quot;logo-url&quot;: *&quot;url&quot;*
+</code></pre><p>A URL or relative path to the logo that appears in the <code>header</code> section.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;url&quot;*</code></td>
+<td style="text-align:left">Only works in an object containing a <code>sectionId</code> of <code>header</code>.</td>
+<td style="text-align:left"><code>&quot;img/logo.png&quot;</code> In general, there is no need to change this&mdash;just replace <em>logo.png</em> in the <em>img</em> folder with a file that holds your logo that&#39;s also called <em>logo.png</em>. The logo should be at least 64 pixels high.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="styles-content">styles.content</h4>
+<pre><code>&quot;content&quot;: *&quot;HTML content&quot;*
+</code></pre><p>An HTML string that will be added to the section. The <code>content</code> of the <code>header</code> section object will automatically be formatted as an <code>&lt;h1&gt;</code> heading. The content of the <code>footer</code> section will be 80% of the height of normal paragraph text on the page. Adding social media buttons here should work.</p>
+<hr>
+<h2 id="map">Map</h2>
+<h3 id="filename-map-json">Filename: map.json</h3>
+<p>This config file holds the configuration options necessary to create the map. MapStudy will eventually support creating web maps with interaction logging in <a href="http://leafletjs.com/">Leaflet</a>, <a href="https://www.mapbox.com/mapbox-gl-js/api/">Mapbox-GL</a>, and <a href="http://d3js.org/">D3</a>, and maps with no interaction logging as any of the first three plus a static image, REST service, or embedded iframe with any other web mapping service (e.g. <a href="https://cartodb.com/">CartoDB</a> and <a href="https://www.arcgis.com/home/webmap/viewer.html">ArcGIS Online Viewer</a>).</p>
+<p>In the descriptions below, <code>map</code> refers to each object in the map.json <code>pages</code> array. The map.json file should be structured thus:</p>
+<pre><code>{
+    &quot;pages&quot;: [
+        {
+            //map options for page 1
+        },
+        {
+            //map options for page 2
+        },
+        ...
+    ]
+}
+</code></pre><h4 id="map-pages-page-library">map.pages[page].library</h4>
+<pre><code>&quot;library&quot;: *&quot;Leaflet&quot;* *&quot;Mapbox-GL&quot;* *&quot;D3&quot;* *&quot;image&quot;* *&quot;REST&quot;* *&quot;iframe&quot;*
+</code></pre><p>The web mapping library or service to use to create the map. Currently only supports <code>Leaflet</code>.</p>
+<h4 id="map-pages-page-interactions">map.pages[page].interactions</h4>
+<pre><code>&quot;interactions&quot;: {
+    *&quot;zoom&quot;*
+    *&quot;pan&quot;*
+    *&quot;retrieve&quot;*
+    *&quot;overlay&quot;*
+    *&quot;search&quot;*
+    *&quot;filter&quot;*
+    *&quot;sequence&quot;*
+    *&quot;reexpress&quot;*
+    *&quot;rotate&quot;*
+    *&quot;resymbolize&quot;*
+    *&quot;reproject&quot;*,
+    *&quot;reset&quot;*
+}
+</code></pre><p>An object containing the interactions that should be enabled on the map. Each interaction in turn references an object designating whether the interaction should be logged and options for its implementation.</p>
+<h4 id="map-pages-page-interactions-interaction-logging">map.pages[page].interactions[interaction].logging</h4>
+<pre><code>        *&quot;logging&quot;* *&quot;toggle&quot;*: *true* *false*
+</code></pre><p>Whether the interaction should be logged. Available for each interaction.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*true*</code></td>
+<td style="text-align:left">If <code>true</code>, interactions will be logged.</td>
+<td style="text-align:left"><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-interactions-interaction-toggle">map.pages[page].interactions[interaction].toggle</h4>
+<pre><code>        *&quot;toggle&quot;*: *true* *false*
+</code></pre><p>Whether to add a switch for toggling the interaction to the top toolbar on the map. Available for each interaction.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*true*</code></td>
+<td style="text-align:left">If <code>true</code>, interaction switch will be added and the interaction will be &quot;off&quot; by default. If <code>false</code>, the interaction will always be &quot;on&quot;.</td>
+<td style="text-align:left"><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-interactions-zoom">map.pages[page].interactions.zoom</h4>
+<pre><code>    *&quot;zoom&quot;*: { *&quot;logging&quot;* *&quot;toggle&quot;* *&quot;interface&quot;* }
+</code></pre><p>Zoom interaction. Must be included to allow the user to change the zoom level/scale of the map.
+If an empty object, <code>logging</code> is considered to be <code>false</code>.</p>
+<h4 id="map-pages-page-interactions-zoom-interface">map.pages[page].interactions.zoom.interface</h4>
+<pre><code>    *&quot;interface&quot;*: {
+        *&quot;touch&quot;: `false`*
+        *&quot;scrollWheel&quot;: `false`*
+        *&quot;doubleClick&quot;: `false`*
+        *&quot;box&quot;: `false`*
+        *&quot;keyboard&quot;: `false`*
+        *&quot;widget&quot;: `false`*
+    }
+</code></pre><p>How to implement zoom. All default to <code>true</code>; add only to disable an interface option.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;touch&quot;*</code></td>
+<td style="text-align:left">Enables pinch-zoom on touch-enabled devices.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;scrollWheel&quot;*</code></td>
+<td style="text-align:left">Enables zooming with the scroll wheel on a wheeled mouse.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;doubleClick&quot;*</code></td>
+<td style="text-align:left">Enables zooming in with a mouse double-click or a double-tap on touch-enabled devices.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;box&quot;*</code></td>
+<td style="text-align:left">Enables box-zoom using a mouse and the shift key.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;keyboard&quot;*</code></td>
+<td style="text-align:left">Enables zooming with the + and - keys on a keyboard; it is recommended to keep this option <code>true</code> for accessibility.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;widget&quot;*</code></td>
+<td style="text-align:left">Implements a zoom widget with + and - buttons in the lower-left corner of the map.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-interactions-pan">map.pages[page].interactions.pan</h4>
+<pre><code>    *&quot;pan&quot;*: { *&quot;logging&quot;* *&quot;toggle&quot;* *&quot;interface&quot;* }
+</code></pre><p>Pan interaction. Must be included to allow the user to change map center by dragging the map.</p>
+<h4 id="map-pages-page-interactions-pan-interface">map.pages[page].interactions.pan.interface</h4>
+<pre><code>    *&quot;interface&quot;*: {
+        *&quot;drag&quot;: `false`*
+        *&quot;keyboard&quot;: `false`*
+        *&quot;widget&quot;: `false`*
+    }
+</code></pre><p>How to implement pan. All default to <code>true</code>; add only to disable an interface option.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;drag&quot;*</code></td>
+<td style="text-align:left">Enables panning by clicking and dragging or finger-dragging on the map.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;keyboard&quot;*</code></td>
+<td style="text-align:left">Enables panning using the arrow keys of a keyboard; it is recommended to keep this option <code>true</code> for accessibility.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;widget&quot;*</code></td>
+<td style="text-align:left">Implements a pan widget with arrow buttons in the lower-left corner of the map.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-interactions-rotate">map.pages[page].interactions.rotate</h4>
+<pre><code>    *&quot;rotate&quot;*: { *&quot;logging&quot;* *&quot;toggle&quot;* }
+</code></pre><p>Rotate interaction. Allows the user to rotate the map. Only available with Mapbox-GL and D3 libraries.</p>
+<h4 id="map-pages-page-interactions-retrieve">map.pages[page].interactions.retrieve</h4>
+<pre><code>    *&quot;retrieve&quot;*: { *&quot;logging&quot;* *&quot;toggle&quot;* *&quot;interface&quot;* }
+</code></pre><p>Retrieve interaction. Allows the user to get information about features through a popup and/or window.</p>
+<h4 id="map-pages-page-interactions-retrieve-interface">map.pages[page].interactions.retrieve.interface</h4>
+<pre><code>    *&quot;interface&quot;*: {
+        *&quot;popup&quot;: `false`*
+        *&quot;window&quot;: `false`*
+    }
+</code></pre><p>How to implement retrieve. All default to <code>true</code>; add only to disable an interface option.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;popup&quot;*</code></td>
+<td style="text-align:left">Gives the user access to popups on each data layer feature that show all of the feature&#39;s display attributes.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;window&quot;*</code></td>
+<td style="text-align:left">Implements a widget-like information window in the lower-left corner of the map where information about each feature is displayed when the feature is clicked on.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-interactions-overlay">map.pages[page].interactions.overlay</h4>
+<pre><code>    *&quot;overlay&quot;*: { *&quot;logging&quot;* *&quot;toggle&quot;* &quot;dataLayers&quot; }
+</code></pre><p>Overlay interaction. Must be included to allow the user to add or remove data layers on the map. Must include a list of <code>dataLayers</code> for which to enable the interaction.</p>
+<h4 id="map-pages-page-interactions-overlay-datalayers">map.pages[page].interactions.overlay.dataLayers</h4>
+<pre><code>    &quot;dataLayers&quot;: []
+</code></pre><p>An array containing the names of <code>dataLayers</code> to allow users to add and remove with a layers control. Required. Each data layer will be represented by a checkbox in the layers control, allowing any number of included layers to be added or removed.</p>
+<h4 id="map-pages-page-interactions-underlay">map.pages[page].interactions.underlay</h4>
+<pre><code>    *&quot;underlay&quot;*: { *&quot;logging&quot;* *&quot;toggle&quot;* }
+</code></pre><p>Underlay interaction. Must be included to allow the user to change base layers on the map. If included, the names of all <code>baseLayers</code> will be shown with radio buttons in a layers control. Only one base layer can appear on the map at a time.</p>
+<h4 id="map-pages-page-interactions-search">map.pages[page].interactions.search</h4>
+<pre><code>    *&quot;search&quot;*: { *&quot;logging&quot;* *&quot;toggle&quot;* &quot;dataLayers&quot; }
+</code></pre><p>Search interaction. Creates a search box on the map.</p>
+<h4 id="map-pages-page-interactions-search-datalayers">map.pages[page].interactions.search.dataLayers</h4>
+<pre><code>        &quot;dataLayers&quot;: []
+</code></pre><p>An array of the <code>dataLayers</code> to include in the search. Must have at least one value to enable searching.</p>
+<h4 id="map-pages-page-interactions-filter">map.pages[page].interactions.filter</h4>
+<pre><code>    *&quot;filter&quot;*: { *&quot;logging&quot;* *&quot;toggle&quot;* &quot;dataLayers&quot; *&quot;tool&quot;* }
+</code></pre><p>Filter interaction. Creates a filter tool on the map.</p>
+<h4 id="map-pages-page-interactions-filter-datalayers">map.pages[page].interactions.filter.dataLayers</h4>
+<pre><code>        &quot;dataLayers&quot;: []
+</code></pre><p>An array of the <code>dataLayers</code> to include in the filter tool. Must have at least one value to enable filtering. Each data layer will have its own line in the filter tool.</p>
+<h4 id="map-pages-page-interactions-filter-tool">map.pages[page].interactions.filter.tool</h4>
+<pre><code>        *&quot;tool&quot;*: *&quot;slider&quot;* *&quot;logic&quot;*
+</code></pre><p>Which interface tool to use for filtering.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;slider&quot;*</code></td>
+<td style="text-align:left">Implements a slider with two handles as the filter tool. Data layers on map will respond immediately to user input.</td>
+<td style="text-align:left"><code>slider</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;logic&quot;*</code></td>
+<td style="text-align:left">Implements a dropdown menu with &quot;equal to&quot;, &quot;not equal to&quot;, &quot;greater than&quot;, and &quot;less than&quot; options, followed by a text box for user input, followed by a dropdown menu with blank, &quot;and&quot;, and &quot;or&quot; options, followed by a repeat of the first dropdown and text box (e.g., &quot;attribute is greater than 12 and less than 24&quot;; &quot;attribute is equal to 15&quot;). Data layers on map will respond immediately to user input.</td>
+<td style="text-align:left"><code>slider</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-interactions-sequence">map.pages[page].interactions.sequence</h4>
+<pre><code>    *&quot;sequence&quot;*: { *&quot;logging&quot;* *&quot;toggle&quot;* &quot;dataLayers&quot; *&quot;tool&quot;* }
+</code></pre><p>Sequence interaction. Allows the user to change the expressed attribute separately for each of the listed <code>dataLayers</code>. Interface tool allows the user to cycle through each layer&#39;s <code>displayAttribute</code>s in the order in which they are listed for the layer and the layer&#39;s specified <code>expressedAttribute</code>.</p>
+<h4 id="map-pages-page-interactions-sequence-datalayers">map.pages[page].interactions.sequence.dataLayers</h4>
+<pre><code>        &quot;dataLayers&quot;: []
+</code></pre><p>An array of the <code>dataLayers</code> to include in the sequence tool. Must have at least one value to enable sequencing. Each data layer will have its own line in the sequence tool.</p>
+<h4 id="map-pages-page-interactions-sequence-tool">map.pages[page].interactions.sequence.tool</h4>
+<pre><code>        *&quot;tool&quot;*: *&quot;buttons&quot;* *&quot;slider&quot;*
+</code></pre><p>Which interface tool to user for sequencing.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;buttons&quot;*</code></td>
+<td style="text-align:left">Implements forward and back buttons on the map with which to sequence through the attributes.</td>
+<td style="text-align:left"><code>buttons</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;slider&quot;*</code></td>
+<td style="text-align:left">Implements a slider on the map with which to sequence through the attributes.</td>
+<td style="text-align:left"><code>buttons</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-interactions-reexpress">map.pages[page].interactions.reexpress</h4>
+<pre><code>    *&quot;reexpress&quot;*: { *&quot;logging&quot;* *&quot;toggle&quot;* }
+</code></pre><p>Reexpress interaction. For each visible data layer, allows the user to change the visual technique in which the <code>dataLayer</code> is expressed to any of the techniques listed in the layer&#39;s <code>techniques</code> array (see <a href="#mappagespagedatalayersitechniques">map.pages[page].dataLayers[i].techniques</a>).</p>
+<h4 id="map-pages-page-interactions-resymbolize">map.pages[page].interactions.resymbolize</h4>
+<pre><code>    *&quot;resymbolize&quot;*: { *&quot;logging&quot;* *&quot;toggle&quot;* *&quot;reclassify&quot;* *&quot;rescale&quot;* *&quot;recolor&quot;* }
+</code></pre><p>Resymbolize interaction. Allows the user to manipulate the classification scheme via the legend. If included, users will be able to change the classification parameters of graduated maps (choropleth or proportional symbol), change the symbol scale or interval (proportional symbol, dot, isarithm, or heat), and/or change the symbol color (choropleth or proportional symbol). If <code>reclassify</code>, <code>rescale</code>, or <code>recolor</code> are omitted, their functionality will be included by default.</p>
+<h4 id="map-pages-page-interactions-resymbolize-reclassify">map.pages[page].interactions.resymbolize.reclassify</h4>
+<pre><code>*&quot;reclassify&quot;*: *true* *false*
+</code></pre><p>Change the classification scheme, the number of classes, and the class breakpoints.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;true&quot;*</code></td>
+<td style="text-align:left">Allows the user to change the classification scheme, the number of classes, and the class breakpoints. Only available for choropleth and proportional symbol maps.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;false&quot;*</code></td>
+<td style="text-align:left">Doesn&#39;t allow the user to change the classification scheme, the number of classes, and the class breakpoints. Only available for choropleth and proportional symbol maps.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-interactions-resymbolize-rescale">map.pages[page].interactions.resymbolize.rescale</h4>
+<pre><code>*&quot;rescale&quot;*: *true* *false*
+</code></pre><p>Changing the symbol scaling if a proportional symbol map, or the interval if a dot or isarithm map.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;true&quot;*</code></td>
+<td style="text-align:left">Allows the user to change the symbol scaling if a proportional symbol map, or the interval if a dot or isarithm map.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;false&quot;*</code></td>
+<td style="text-align:left">Doesn&#39;t allow the user to change the symbol scaling if a proportional symbol map, or the interval if a dot or isarithm map.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-interactions-resymbolize-recolor">map.pages[page].interactions.resymbolize.recolor</h4>
+<pre><code>*&quot;recolor&quot;*: *true* *false*
+</code></pre><p> Changing the symbol color.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;true&quot;*</code></td>
+<td style="text-align:left">Allows the user to change the symbol color. For a choropleth map, the user may choose from any sequential ColorBrewer scale. For proportional symbol map, the user may enter any HEX value or choose from a palette the fill color of the symbols.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;false&quot;*</code></td>
+<td style="text-align:left">Doesn&#39;t allow the user to change the symbol color.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-interactions-reproject">map.pages[page].interactions.reproject</h4>
+<pre><code>    *&quot;reproject&quot;*: { *&quot;logging&quot;* *&quot;toggle&quot;* &quot;projections&quot; }
+</code></pre><p>Allows the user to change the map projection. Only available with the D3 library.</p>
+<h4 id="map-pages-page-interactions-reproject-projections">map.pages[page].interactions.reproject.projections</h4>
+<pre><code>        &quot;projections&quot;:[]
+</code></pre><p>An array of <code>projection</code> objects with the projection name and D3-style projection parameters for each alternative projection to include. Must have at least one projection object to enable reprojection.</p>
+<h4 id="map-pages-page-interactions-reset">map.pages[page].interactions.reset</h4>
+<pre><code>    *&quot;reset&quot;*: { *&quot;logging&quot;* &quot;toggle&quot; }
+</code></pre><p>Allows the user to reset the map to its original state. The same reset button can also be added through <code>map.pages[page].mapOptions.resetButton</code>, but including it as an interaction allows for the <code>reset</code> interaction to be logged. If only included in the <code>interactions</code> object, <code>&quot;toggle&quot;</code> <strong>must</strong> be set to <code>true</code> or the button will not appear.</p>
+<h4 id="map-pages-page-mapoptions">map.pages[page].mapOptions</h4>
+<pre><code>*&quot;mapOptions&quot;*: { *library options* *legend* *resetButton* }
+</code></pre><p>An object to hold any map options applied on the instantiation of a Leaflet, Mapbox-GL, or REST map. Not available for any other <code>library options</code>. If no <code>mapOptions</code> are included, library defaults will be applied. Refer to the <a href="http://leafletjs.com/reference.html#map-options">Leaflet</a> or <a href="https://www.mapbox.com/mapbox-gl-js/api/#Map">Mapbox-GL</a> documentation for lists of possible options for those libraries. REST <code>mapOptions</code> will be added as parameters to the map URL, and are thus dependent on the map server configuration. The <code>legend</code> option is a special option, described below.</p>
+<h4 id="map-pages-page-mapoptions-legend">map.pages[page].mapOptions.legend</h4>
+<pre><code>*&quot;legend&quot;*: *true* *false*
+</code></pre><p>Including a legend on the map.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;true&quot;*</code></td>
+<td style="text-align:left">A legend is added to the map showing symbols for all <code>dataLayers</code>.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;false&quot;*</code></td>
+<td style="text-align:left">A legend is not added to the map.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-mapoptions-resetbutton">map.pages[page].mapOptions.resetButton</h4>
+<pre><code>*&quot;resetButton&quot;*: *true* *false*
+</code></pre><p>Whether to include a button allowing the participant to reset the map to its original state. The button appears as an interaction toggle switch and can also be added through <code>map.pages[page].interactions.reset</code> (in which case <code>toggle</code> for the interaction must be set to <code>true</code>).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*false*</code></td>
+<td style="text-align:left">If <code>true</code>, reset button will be included</td>
+<td style="text-align:left"><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-projection">map.pages[page].projection</h4>
+<pre><code>*&quot;projection&quot;*: { &quot;name&quot; *&quot;options&quot;* }
+</code></pre><p>An object containing the projection name and parameters for a D3 projection. Only available with the D3 <code>library options</code>. Must be included to instantiate a D3 map.</p>
+<h4 id="map-pages-page-projection-name">map.pages[page].projection.name</h4>
+<pre><code>    &quot;name&quot;: &quot;projection name&quot;
+</code></pre><p>The name of the D3 projection, a string. Required if using D3. All <a href="https://github.com/mbostock/d3/wiki/Geo-Projections#standard-projections">standard projections</a> and <a href="https://github.com/d3/d3-geo-projection/#extended-geographic-projections">extended projections</a> are supported. The <code>name</code> is lowercase and does not include a reference to the <code>d3.geo</code> library object or parentheses (e.g. <code>&quot;albers&quot;</code>, not <code>&quot;d3.geo.albers()&quot;</code>).</p>
+<h4 id="map-pages-page-projection-options">map.pages[page].projection.options</h4>
+<pre><code>    *&quot;options&quot;*: {}
+</code></pre><p>An object containing the <a href="https://github.com/mbostock/d3/wiki/Geo-Projections">projection parameters</a> for the chosen projection. If not included, options will be projection defaults. Refer to the example block for your chosen projection to see which parameters are used. While in writing D3 code, each projection parameter is implemented as a selection operator method with the values as method parameters, here you give the parameter as an object key string followed by the parameter values. For example:</p>
+<pre><code>//D3 projection block in JavaScript
+projection = d3.geo.albers()
+    .center([0, 55.4])
+    .rotate([4.4, 0])
+    .parallels([50, 60])
+    .scale(6000)
+    .translate([width / 2, height / 2]);
+</code></pre><p>in <em>map.json</em> becomes</p>
+<pre><code>&quot;projection&quot;: {
+    &quot;name&quot;: &quot;albers&quot;,
+    &quot;options&quot;: {
+        &quot;center&quot;: [0, 55.4],
+        &quot;rotate&quot;: [4.4, 0],
+        &quot;parallels&quot;: [50, 60],
+        &quot;scale&quot;: 6000,
+        &quot;translate&quot;: [&quot;width / 2&quot;, &quot;height / 2&quot;]
+    }
+}
+</code></pre><p>Make sure that any value that is either a string or a mix of numbers and strings is represented as a string with double-quotes. The variables <code>&quot;width&quot;</code> and <code>&quot;height&quot;</code> will be recognized as the map width and the map height. You may wish to adjust these after you see the instantiated map.</p>
+<h4 id="map-pages-page-baselayers">map.pages[page].baseLayers</h4>
+<pre><code>*&quot;baseLayers&quot;*: [{
+    &quot;name&quot;
+    &quot;source&quot;
+    &quot;layerOptions&quot;
+}]
+</code></pre><p>An array of objects containing the information needed to add a basemap layer for any <code>library options</code>. Only the first base layer object will be rendered on the map on load. All <code>baseLayers</code> will be included as base layer options in the layers control if <code>underlay</code> is an included interaction.</p>
+<h4 id="map-pages-page-baselayers-i-name">map.pages[page].baseLayers[i].name</h4>
+<pre><code>    &quot;name&quot;: layer name
+</code></pre><p>The name of the base layer; a string. If <code>overlay</code> is included in the <code>interactions</code>, this name will appear in the layers control on the map.</p>
+<h4 id="map-pages-page-baselayers-i-source">map.pages[page].baseLayers[i].source</h4>
+<pre><code>    &quot;source&quot;: *base layer URL* *provider name* *&quot;postgis:&quot;+tablename*
+</code></pre><p>The URL of a <a href="http://leafletjs.com/reference.html#tilelayer">raster tile layer</a> for a Leaflet map, a TopoJSON or GeoJSON file or Postgis table containing the basemap geometry for a Mapbox-GL or D3 map, a RESTful web map service, an iframe embed link, or a static image in <em>.png</em>, <em>.jpg</em>, or <em>.tif</em> format. A string. Required to add the layer to the map for all libraries except Mapbox-GL.</p>
+<p>For a Leaflet map, the standard URL format is <code>&quot;http://{s}.domain.com/tiles/{z}/{x}/{y}.png&quot;</code> where <code>{s}</code> is a variable standing for the server instance, <code>{z}</code> stands for the zoom level, <code>{x}</code> stands for the left-to-right horizontal tile coordinate, and <code>{y}</code> stands for the top-to-bottom vertical tile coordinate. Check for specifics of the tileset you want to use by viewing a single tile as an image in a browser and noting the contents of the URL bar.</p>
+<p>For a D3 map, the <code>source</code> URL should point to a TopoJSON or GeoJSON file containing the geometry to be mapped. Alternatively, the value of <code>source</code> can be a string containing <code>&quot;postgis:&quot;</code> and the name of the table in a PostGIS database (with no space after the colon). In the latter case, PostgreSQL database connection parameters must be added to the <em>params.php</em> config file. The geometry will be added to the map as <a href="https://github.com/mbostock/d3/wiki/Selections#data">data</a> to allow for individualized feature styles, and drawn as SVG paths.</p>
+<p>For a Mapbox-GL map, <code>source</code> is optional and may be a raster tileset URL, a vector tileset URL, a TopoJSON or GeoJSON file, or a PostGIS table. If included, it will be used to add a <a href="https://www.mapbox.com/mapbox-gl-style-spec/#sources">data source</a> to the styles object.</p>
+<p>For an iframe, the <code>source</code> should be the iframe <code>src</code> URL given in the embed HTML provided by the map service. Only include the URL; do not include the rest of the markup.</p>
+<p>For a REST service, the <code>source</code> should be the base URL with or without option parameters. For a static map image, the <code>source</code> should be a URL pointing to the image.</p>
+<h4 id="map-pages-page-baselayers-i-layeroptions">map.pages[page].baseLayers[i].layerOptions</h4>
+<pre><code>    &quot;layerOptions&quot;: *{}* *URL*
+</code></pre><p>Typically, an object containing <a href="http://leafletjs.com/reference.html#tilelayer-options">Leaflet TileLayer options</a>, <a href="http://www.w3.org/TR/SVG/styling.html#SVGStylingProperties">SVG styles</a> for all layer paths drawn by D3, <a href="https://www.mapbox.com/mapbox-gl-style-spec">Mapbox-GL styles</a>, or REST parameters. May also be a URL string pointing to a JSON file that contains this information.</p>
+<p>For a D3 map, SVG styles added to each GeoJSON feature&#39;s <code>properties</code> object will also be applied to the features on an individual basis. This is useful for making, say, a political map of the world with each country given a unique fill color.</p>
+<p>For a Mapbox-GL map, <code>layerOptions</code> is required and should contain or point to a JSON-formatted object that conforms to the Mapbox-GL <a href="https://www.mapbox.com/mapbox-gl-style-spec">style reference</a>, including at least <code>version</code> and <code>layers</code> properties, as well as <code>sources</code> if <code>baseLayer.source</code> is omitted.</p>
+<p>For REST services, each option will be translated into a URL parameter key-value pair. For example:</p>
+<pre><code>&quot;baseLayers&quot;: [{
+    &quot;name&quot;: &quot;MassGIS&quot;,
+    &quot;source&quot;: &quot;http://giswebservices.massgis.state.ma.us/geoserver/wms&quot;,
+    &quot;layerOptions&quot;: {
+        &quot;VERSION&quot;: &quot;1.1.1&quot;,
+        &quot;REQUEST&quot;: &quot;GetMap&quot;,
+        &quot;SERVICE&quot;: &quot;WMS&quot;,
+        &quot;LAYERS&quot;: &quot;massgis:GISDATA.TOWNS_POLYM,massgis:GISDATA.NAVTEQRDS_ARC&quot;,
+        &quot;STYLES&quot;: &quot;Black_Lines&quot;
+    }
+}]
+</code></pre><p>When sent to the server will translate as:</p>
+<pre><code>http://giswebservices.massgis.state.ma.us/geoserver/wms?VERSION=1.1.1&amp;REQUEST=GetMap&amp;SERVICE=WMS&amp;LAYERS=massgis:GISDATA.TOWNS_POLYM,massgis:GISDATA.NAVTEQRDS_ARC&amp;STYLES=Black_Lines
+</code></pre><p>The REST parameters may also be added in the above format to <code>baseLayer.source</code> with <code>layerOptions</code> omitted.</p>
+<h4 id="map-pages-page-datalayers">map.pages[page].dataLayers</h4>
+<pre><code>*&quot;dataLayers&quot;*: [{
+    &quot;name&quot;
+    &quot;source&quot;
+    &quot;expressedAttribute&quot;
+    *&quot;displayAttributes&quot;*
+    *&quot;renderOnLoad&quot;*
+    *&quot;layerOptions&quot;*
+    &quot;techniques&quot;
+}]
+</code></pre><p>An array of objects containing information about the data to be visualized on the map, if any. Only available for Leaflet, Mapbox-GL, and D3 maps. Layers will be rendered on the map from bottom to top in the order in which they are listed in the array.</p>
+<h4 id="map-pages-page-datalayers-i-name">map.pages[page].dataLayers[i].name</h4>
+<pre><code>    &quot;name&quot;: layer name
+</code></pre><p>The name of the data layer; a string. If <code>overlay</code> is included in the <code>interactions</code>, this name will appear in the layers control on the map.</p>
+<h4 id="map-pages-page-datalayers-i-source">map.pages[page].dataLayers[i].source</h4>
+<pre><code>    &quot;source&quot;: *layer data URL* *&quot;postgis:&quot;+table name*
+</code></pre><p>A URL string pointing to a TopoJSON or GeoJSON file containing the data to be mapped, or the string &quot;postgis:&quot; followed by the name of a PostGIS table from which to retrieve the data (with no space after the colon). In the latter case, PostgreSQL database connection parameters must be added to the <em>params.php</em> config file.</p>
+<p>The data should include feature geometries with <em>unprojected</em> WGS-84 coordinates. Feature geometries must be polygons unless creating a proportional symbol or isarithmic layer, and must be points if creating an isarithmic layer. The data must include at least one numerical attribute in each feature&#39;s <code>properties</code> object. Including feature names and IDs in the <code>properties</code> is encouraged, as these will generally be useful to show in pop-ups if the <code>retrieve</code> interaction is included.</p>
+<p>For a Mapbox-GL map, the <code>source</code> may also be a vector tileset. The data retrieved by <code>source</code> will be added as a <a href="https://www.mapbox.com/mapbox-gl-style-spec/#sources">data source</a> to the styles object.</p>
+<h4 id="map-pages-page-datalayers-i-expressedattribute">map.pages[page].dataLayers[i].expressedAttribute</h4>
+<pre><code>    &quot;expressedAttribute&quot;: attribute name
+</code></pre><p>The name of the numerical attribute that will be visually expressed on the map; a string. Must correspond to a key within each feature&#39;s <code>properties</code> object that references a numerical value (or no value or <code>null</code> if null for that feature).</p>
+<h4 id="map-pages-page-datalayers-i-displayattributes">map.pages[page].dataLayers[i].displayAttributes</h4>
+<pre><code>    *&quot;displayAttributes&quot;*: []
+</code></pre><p>An array of one or more attributes to include in that layer&#39;s pop-ups if the <code>retrieve</code> interaction is included, in the search tool if the <code>search</code> interaction is included, and in the filter tool if the <code>filter</code> interaction is included. Only categorical attributes with string values will be searchable (e.g., &quot;name&quot; but not &quot;population&quot;). Only numerical attributes will be added to the filter tool (e.g., &quot;population&quot; but not &quot;name&quot;), and will be accessible via a drop-down menu in the data layer&#39;s line in the filter tool. If <code>retrieve</code>, <code>search</code>, or <code>filter</code> are included but no <code>displayAttributes</code> are given, pop-ups and tools will be implemented using only the layer&#39;s <code>expressedAttribute</code>.</p>
+<h4 id="map-pages-page-datalayers-i-renderonload">map.pages[page].dataLayers[i].renderOnLoad</h4>
+<pre><code>    *&quot;renderOnLoad&quot;*: *true* *false*
+</code></pre><p>Whether to render the layer when the map loads.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*true*</code></td>
+<td style="text-align:left">The layer will be rendered when the map loads.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*false*</code></td>
+<td style="text-align:left">If multiple <code>dataLayers</code> are included with some having <code>renderOnLoad</code> set to <code>false</code>, the only way those layers will be visible is by including an <code>overlay</code> interaction that includes those layers. In this case, those layers will be unchecked in the layers control until selected by the user.</td>
+<td style="text-align:left"><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-datalayers-i-layeroptions">map.pages[page].dataLayers[i].layerOptions</h4>
+<pre><code>    *&quot;layerOptions&quot;*: *{}* *URL*
+</code></pre><p>An object or URL string pointing to a JSON file containing <a href="http://leafletjs.com/reference.html#path-options">Leaflet Path options</a>, <a href="http://www.w3.org/TR/SVG/styling.html#SVGStylingProperties">SVG styles</a> for all layer paths drawn by D3, or <a href="https://www.mapbox.com/mapbox-gl-style-spec/#layers">Mapbox-GL style layers</a>. Properties added here that conflict with the <code>techniques</code> classification will be overridden for each feature to which the classification is applied (i.e., any not null values).</p>
+<h4 id="map-pages-page-datalayers-i-techniques">map.pages[page].dataLayers[i].techniques</h4>
+<pre><code>    &quot;techniques&quot;: [{
+        &quot;type&quot;
+        *&quot;classification&quot;*
+        *&quot;classes&quot;*
+        *&quot;symbol&quot;*
+        *&quot;interval&quot;*
+        *&quot;size&quot;*
+    }]
+</code></pre><p>An array of objects containing the thematic mapping techniques, including the map type and classification parameters for the data layer. At least one technique object is required. The first technique object in the array will be used for the layer&#39;s initial expression; all other techniques for the layer will only be available to the user if <code>map.pages[page].interactions.reexpress</code> is included.</p>
+<h4 id="map-pages-page-datalayers-i-techniques-ii-type">map.pages[page].dataLayers[i].techniques[ii].type</h4>
+<pre><code>        &quot;type&quot;: *&quot;choropleth&quot;* *&quot;proportional symbol&quot;* *&quot;dot&quot;* *&quot;isarithmic&quot;* *&quot;heat&quot;*
+</code></pre><p>The <a href="https://en.wikipedia.org/wiki/Thematic_map">thematic map type</a>. Note that only a data layer with a <code>proportional symbol</code>, <code>isarithmic</code>, or <code>heat</code> technique type can use point feature data, but all technique types can use polygon data. The <code>retrieve</code> and <code>search</code> interactions are not available for <code>heat</code> map layers, and <code>search</code> is not available for <code>isarithmic</code> layers.</p>
+<h4 id="map-pages-page-datalayers-i-techniques-ii-classification">map.pages[page].dataLayers[i].techniques[ii].classification</h4>
+<pre><code>        &quot;classification&quot;: *&quot;quantile&quot;* *&quot;equal interval&quot;* *&quot;natural breaks&quot;* *&quot;unclassed&quot;*
+</code></pre><p>The classification technique for a choropleth or proportional symbol map. Which technique is chosen determines how the data values of the <code>expressedAttribute</code> are grouped for display on the map. Required for <code>choropleth</code> and <code>proportional symbol</code> types, and unavailable for <code>isarithmic</code>, <code>heat</code>, and <code>dot</code> type.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*quantile*</code></td>
+<td style="text-align:left">A <code>quantile</code> classification groups the data into classes with an equal <em>number of</em> data values in each class. This works best when you want to create a map with the same number of features in each class but don&#39;t care about how wide the class ranges are.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*equal interval*</code></td>
+<td style="text-align:left">An <code>equal interval</code> classification groups the data into classes each with an <em>equal range</em> of values (e.g., 0-10, 10-20, 20-30, etc.). This works best for data that are spread evenly across the entire data range, and usually turns out poorly if there is a small number of mapped features. It must be used if <code>type</code> is <code>isarithmic</code> and <code>classification</code> is included.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*natural breaks*</code></td>
+<td style="text-align:left">A <code>natural breaks</code> classification uses the <a href="http://www.cs.toronto.edu/~norouzi/research/papers/ckmeans.pdf">Cartesian k-means</a> algorithm to minimize the statistical distances between data points within each class. This classification is generally considered optimal for identifying groups of data values.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*unclassed*</code></td>
+<td style="text-align:left">An <code>unclassed</code> classification creates a <a href="https://github.com/mbostock/d3/wiki/Quantitative-Scales#linear-scales">linear scale</a> to map each input data value to an output value interpolated between the first two values given in the <code>classes</code> array. Thus, it results in a map with no defined classes. This is the most common classification for proportional symbol maps and the least common for choropleth maps.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-pages-page-datalayers-i-techniques-ii-classes">map.pages[page].dataLayers[i].techniques[ii].classes</h4>
+<pre><code>        *&quot;classes&quot;*: *[]* *colorbrewer code.number of classes*
+</code></pre><p>An array containing the output values for each class or the name of a <a href="http://colorbrewer2.org/">ColorBrewer</a> classification scheme. Required if <code>classification</code> is used. Array values should be numerical for proportional symbol maps&mdash;representing the diameter or width of each feature&#39;s symbol&mdash;and hexadecimal color strings for a choropleth map (e.g., <code>&quot;#FFFFFF&quot;</code>). The number of values in the array will correspond with the number of classes created. For choropleth maps only, if a ColorBrewer scheme is used, the value should be a string in the format <code>&quot;code.number&quot;</code>; for example, <code>&quot;BuGn.5&quot;</code> will create a five-class, blue-green color scheme. Scheme codes are shown at the top of the EXPORT panel on the lower-right of the ColorBrewer interface. Unless testing various color schemes, it is recommended you choose a colorblind-safe, sequential color scheme. If the <code>resymbolize</code> interaction is included, it is recommended to use a ColorBrewer code instead of an array of hex values, as reclassification by the user may result in an interpolated color scheme that differs spectrally from the original array of colors.</p>
+<h4 id="map-pages-page-datalayers-i-techniques-ii-symbol">map.pages[page].dataLayers[i].techniques[ii].symbol</h4>
+<pre><code>        *&quot;symbol&quot;*: *&quot;circle&quot;* *image url*
+</code></pre><p>Symbol to use for proportional symbol map. Optional; default is <code>circle</code>. Not available to choropleth or isarithmic maps. For proportional symbol maps, if the dataset consists of point features, symbols will be placed on point coordinates; otherwise, symbols will be placed on the centroids of polygon features.</p>
+<h4 id="map-pages-page-datalayers-i-techniques-ii-interval">map.pages[page].dataLayers[i].techniques[ii].interval</h4>
+<pre><code>        *&quot;interval&quot;*: *value interval*
+</code></pre><p>The data interval by which to separate isarithms on an isarithmic map, or the ratio of data value to one dot for a dot map. Optional. Unavailable for choropleth or proportional symbol maps.</p>
+<p>For an isarithmic map, <code>interval</code> is the value by which each line will be separated on the map. If  omitted, the default line separation will be 10.</p>
+<p>For a dot map, the value of <code>interval</code> is the denominator by which the feature&#39;s expressed attribute value will be divided to determine the number of dots to add within the boundaries of a feature. Omitting <code>interval</code> will result in a default of one dot for every 10 units. For example, if the expressed attribute value for a feature is <code>15,607</code>, by default there will be 1,561 dots scattered within that feature&#39;s boundaries. Designating <code>interval</code> as <code>1</code> will result in a dot being added for each whole number increase in the expressed attribute value, resulting in a true dot (as opposed to dot density) map. The larger the <code>interval</code>, the fewer dots will be created, and vice-versa. Note that the more dots are created, <em>and the more irregular the polygons in the dataset</em>, the longer the map will take to render. It is not recommended to use an <code>interval</code> that will create more than 10,000 dots total.</p>
+<h4 id="map-pages-page-datalayers-i-techniques-ii-size">map.pages[page].dataLayers[i].techniques[ii].size</h4>
+<pre><code>        *&quot;size&quot;*: *size*
+</code></pre><p>The size of dots on a dot map or isarithms on an isarithmic map; a number.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*size*</code></td>
+<td style="text-align:left">Not available for other technique types. For a dot map, <code>size</code> is the dot radius. For an isarithmic map, <code>size</code> is the line width of each isarithm.</td>
+<td style="text-align:left">1 pixel</td>
+</tr>
+</tbody>
+</table>
+<h2 id="questions">Questions</h2>
+<h3 id="filename-questions-json">Filename: questions.json</h3>
+<p>This config file holds the configuration options necessary to create the survey questions and other content. In the descriptions below, <code>questions</code> refers to each object in the questions.json <code>pages</code> array. The questions.json file should be structured thus:</p>
+<pre><code>{
+    &quot;pages&quot;: [
+        {
+            //questions for page 1
+        },
+        {
+            //questions for page 2
+        },
+        ...
+    ]
+}
+</code></pre><h4 id="questions-pages-page-fullpage">questions.pages[page].fullpage</h4>
+<pre><code>*&quot;fullpage&quot;*: *true* *false*
+</code></pre><p>Used to set page width.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*true*</code></td>
+<td style="text-align:left">Page takes up entire width of the content window in a one-column layout. Useful for informed consent pages, tutorial pages, and other pages that do not need to be accompanied by a map.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*false*</code></td>
+<td style="text-align:left">Page does not take up entire with of the content window.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-timer">questions.pages[page].timer</h4>
+<pre><code>*&quot;timer&quot;*: {
+    *&quot;direction&quot;*,
+    *&quot;starttime&quot;*,
+    *&quot;persist&quot;*,
+    *&quot;remove&quot;*
+}
+</code></pre><p>Whether to include a timer for the page and timer options. If <code>&quot;timer&quot;</code> is included, a timer will appear in the page header and count up or down until the next page or until replaced by another timer.</p>
+<h4 id="questions-pages-page-timer-direction">questions.pages[page].timer.direction</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*up*</code></td>
+<td style="text-align:left">Default value. Timer will count up.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*down*</code></td>
+<td style="text-align:left">Timer will count down. Once countdown reaches zero, the next page will be triggered.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-timer-starttime">questions.pages[page].timer.starttime</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*00:00:00*</code></td>
+<td style="text-align:left">Start time in H:M:S format.</td>
+<td style="text-align:left">00:00:00</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-timer-persist">questions.pages[page].timer.persist</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*true*</code></td>
+<td style="text-align:left">Timer will continue to be visible and count even after the page has been changed, until another timer is set or the end of the application is reached.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*false*</code></td>
+<td style="text-align:left">Default value. Timer will reset and disappear when page changes.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-timer-remove">questions.pages[page].timer.remove</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*true*</code></td>
+<td style="text-align:left">Removes a persistent page timer without replacing it. If included, no other timer options will be applied.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-sets">questions.pages[page].sets</h4>
+<pre><code>&quot;sets&quot;: [
+    {
+        &quot;blocks&quot;: [],
+        &quot;buttons&quot;: [],
+        &quot;timer: {}&quot;
+    }
+]
+</code></pre><p>The sets of questions (blocks) and buttons that are viewable to the user at one time.</p>
+<h4 id="questions-pages-page-sets-i-blocks">questions.pages[page].sets[i].blocks</h4>
+<pre><code>&quot;blocks&quot;: [
+    {
+        *&quot;label&quot;: text string*
+        *&quot;title&quot;: text string*
+        &quot;ask&quot;: HTML string
+        *&quot;description&quot;: HTML string*
+        *&quot;input&quot;*: {
+            *&quot;required&quot;* &quot;type&quot; *&quot;options&quot;: []* *&quot;items&quot;: []*
+        }
+    }
+]
+</code></pre><p>A single question along with accompanying content and answer input(s). Each question block appears on the page as a unit, vertically separated from other question blocks.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;label&quot;: text string*</code></td>
+<td style="text-align:left">Label for the question in the CSV or database table of responses, text string (&lt;=20 characters).</td>
+<td style="text-align:left">A label will be automatically generated consisting of the page, set, block, and input indexes (for example, &quot;p1s3b1&quot;).</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;title&quot;: text string*</code></td>
+<td style="text-align:left">Title for the question. If included, the question title will appear in bold at the top of the question block.</td>
+<td style="text-align:left">Example text</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&quot;ask&quot;: HTML string</code></td>
+<td style="text-align:left">The question asked. Required. The question asked will appear in normal font below the title (if included) and above the other elements of the block (if included). It need not be a literal question; any text or html (such as image elements) may be included.</td>
+<td style="text-align:left">Example questions</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;description&quot;: HTML string*</code></td>
+<td style="text-align:left">Further description tied to the question asked. Description text will appear in italicized font below the ask and above the other elements of the block (if included). Any text or html (such as image elements) may be included.</td>
+<td style="text-align:left">Example description</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;input&quot;*: see below for options</code></td>
+<td style="text-align:left">The answer input associated with the question. Appears below the ask and description (if included).</td>
+<td style="text-align:left">Example answers</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-sets-i-blocks-ii-input">questions.pages[page].sets[i].blocks[ii].input</h4>
+<pre><code>*&quot;input&quot;*: {
+    *&quot;required&quot;*,
+    *&quot;autoadvance&quot;*,
+    &quot;type&quot;
+    *&quot;options&quot;*: []
+    *&quot;items&quot;*: []
+}
+</code></pre><h4 id="questions-pages-page-sets-i-blocks-ii-input-required">questions.pages[page].sets[i].blocks[ii].input.required</h4>
+<pre><code>*&quot;required&quot;*: *true* *false*
+</code></pre><p>Whether the participant must provide input before moving to the next set.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*true*</code></td>
+<td style="text-align:left">Participant must provide input to move to next set.</td>
+<td style="text-align:left"><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-sets-i-blocks-ii-input-autoadvance">questions.pages[page].sets[i].blocks[ii].input.autoadvance</h4>
+<pre><code>*&quot;autoadvance&quot;*: *true* *false*
+</code></pre><p>Whether to advance to the next set when the user makes an input choice. Only available for <code>radios</code>, <code>dropdown</code>, and <code>matrix</code> input types. <em>This option should only be used on the last input in a set, and renders a <code>next</code> button superfluous.</em></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*true*</code></td>
+<td style="text-align:left">Advance to next set when user makes a choice. Overrides and sets <code>required</code> to <code>true</code>.</td>
+<td style="text-align:left"><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-sets-i-blocks-ii-input-type">questions.pages[page].sets[i].blocks[ii].input.type</h4>
+<pre><code>&quot;type&quot;: *&quot;text&quot;* *&quot;paragraph&quot;* *&quot;checkboxes&quot;* *&quot;radios&quot;* *&quot;dropdown&quot;* *&quot;matrix&quot;* *&quot;rank&quot;*
+</code></pre><p>The type of answer input. Required if <code>input</code> is included with the block.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;text&quot;*</code></td>
+<td style="text-align:left">A one-line text box.</td>
+<td style="text-align:left">Example text</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;paragraph&quot;*</code></td>
+<td style="text-align:left">A multi-line text box that may be expanded by the participant.</td>
+<td style="text-align:left">Example paragraph</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;checkboxes&quot;*</code></td>
+<td style="text-align:left">A set of checkboxes allowing the participant to select more than one answer from a list of potential answers. Requires <code>items</code> array.</td>
+<td style="text-align:left">Example checkboxes</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;radios&quot;*</code></td>
+<td style="text-align:left">A set of radio buttons allowing the participant to select only one answer from a list of potential answers. Requires <code>options</code> array.</td>
+<td style="text-align:left">Example radios</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;dropdown&quot;*</code></td>
+<td style="text-align:left">A dropdown menu allowing the participant to select only one answer from a list of potential answers. Requires <code>options</code> array.</td>
+<td style="text-align:left">Example dropdown</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;matrix&quot;*</code></td>
+<td style="text-align:left">A table of radio buttons allowing the participant to select one answer from a list of potential answers for each item in a list of items. This is useful for Likert scale questions. Requires both <code>options</code> array and <code>items</code> array.</td>
+<td style="text-align:left">Example matrix</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;rank&quot;*</code></td>
+<td style="text-align:left">A list of items allowing the user to reorder the items. Requires <code>items</code> array.</td>
+<td style="text-align:left">Example rank</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-sets-i-blocks-ii-input-options">questions.pages[page].sets[i].blocks[ii].input.options</h4>
+<pre><code>*&quot;options&quot;*: [
+    {
+        &quot;text&quot;: text string
+        *&quot;value&quot;: text string*
+    }
+]
+</code></pre><p>An array of input options. Required by <code>radios</code>, <code>dropdown</code>, and <code>matrix</code> input types; ignored otherwise.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>&quot;text&quot;: text string</code></td>
+<td style="text-align:left">The text to display to the participant for the option. Required if <code>options</code> is included.</td>
+<td style="text-align:left">Example text</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;value&quot;: text string*</code></td>
+<td style="text-align:left">The value to display in the resulting data cell for the question block or item if the option is selected.</td>
+<td style="text-align:left">If omitted, the option <code>&quot;text&quot;</code> will be recorded as the value.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-sets-i-blocks-ii-input-items">questions.pages[page].sets[i].blocks[ii].input.items</h4>
+<pre><code>*&quot;items&quot;*: [
+    {
+        &quot;text&quot;: text string
+        *&quot;label&quot;: text string*
+    }
+]
+</code></pre><p>An array of input items. Required by <code>checkboxes</code>, <code>matrix</code>, and <code>rank</code> input types; ignored otherwise.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>&quot;text&quot;: text string</code></td>
+<td style="text-align:left">The text to display to the participant for the item. Required if <code>items</code> is included.</td>
+<td style="text-align:left">Example text</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;label&quot;: text string*</code></td>
+<td style="text-align:left">(&lt;= 20 characters) What to label the column for the item in the resulting data. Each item will be given its own column in the data table. For each item column, if the input type is <code>checkboxes</code>, each item&#39;s cell value will be recorded as <code>1</code> if the box is checked and no data if not checked. If the type is <code>matrix</code>, each item&#39;s cell value will correspond to the value of the selected option. If the type is <code>rank</code>, the cell value will be given the item&#39;s rank, starting at 1 for the top item.</td>
+<td style="text-align:left">If no <code>label</code> is provided for the item, a label will be automatically generated consisting of the block label and item indexes (for example, &quot;p1s3b1i1&quot;)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-sets-i-buttons">questions.pages[page].sets[i].buttons</h4>
+<pre><code>&quot;buttons&quot;: [
+    *&quot;next&quot;*
+    *&quot;back&quot;*
+    *&quot;save&quot;*
+    *&quot;submit&quot;*
+]
+</code></pre><p>Buttons that should be included at the bottom of the question set, below all of the blocks.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*&quot;next&quot;*</code></td>
+<td style="text-align:left">Takes the user to the next question set, or to the next page if the end of the <code>sets</code> array has been reached.</td>
+<td style="text-align:left">Example next</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;back&quot;*</code></td>
+<td style="text-align:left">Takes the user to the previous question set, or to the previous page if the beginning of the <code>sets</code> array has been reached.</td>
+<td style="text-align:left">Example back</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;save&quot;*</code></td>
+<td style="text-align:left">Saves the participant&#39;s answers and position in the survey, enabling them to complete the survey at a later time; for this button to work, a database must be set up and working database parameters included in the <em>params.php</em> config file.</td>
+<td style="text-align:left">Example save</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*&quot;submit&quot;*</code></td>
+<td style="text-align:left">Submits the participant&#39;s answers, either via e-mail or to the database depending on the content of <em>params.php</em>, <strong>and</strong> takes the participant to the next page (which may or may not be the final page of the survey).</td>
+<td style="text-align:left">Example submit</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-sets-i-timer">questions.pages[page].sets[i].timer</h4>
+<pre><code>*&quot;timer&quot;*: {
+    *&quot;direction&quot;*,
+    *&quot;starttime&quot;,
+    *&quot;persist&quot;*,
+    *&quot;remove&quot;*
+}
+</code></pre><p>Whether to include a timer for the set and timer options. If <code>&quot;timer&quot;</code> is included, a timer will appear in the page header and count up or down until the next set or until replaced by another timer.</p>
+<h4 id="questions-pages-page-sets-i-timer-direction">questions.pages[page].sets[i].timer.direction</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*up*</code></td>
+<td style="text-align:left">Default value. Timer will count up.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*down*</code></td>
+<td style="text-align:left">Timer will count down. Once the countdown reaches zero, the next set will be triggered.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-sets-i-timer-starttime">questions.pages[page].sets[i].timer.starttime</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*00:00:00*</code></td>
+<td style="text-align:left">Start time in H:M:S format.</td>
+<td style="text-align:left">00:00:00</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-sets-i-timer-persist">questions.pages[page].sets[i].timer.persist</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*true*</code></td>
+<td style="text-align:left">Timer will continue to be visible and count even after the set has been changed, until another timer is set or the end of the application is reached.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>*false*</code></td>
+<td style="text-align:left">Default value. Timer will reset and disappear when set changes.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-pages-page-sets-i-timer-remove">questions.pages[page].sets[i].timer.remove</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*true*</code></td>
+<td style="text-align:left">Removes a persistent set timer without replacing it. If included, no other timer options will be applied.</td>
+<td style="text-align:left">N/A</td>
+</tr>
+</tbody>
+</table>
+<h2 id="conditions">Conditions</h2>
+<h3 id="filename-conditions-json">Filename: conditions.json</h3>
+<p>This config file holds the options necessary to create different test conditions using the application pages. This is useful for creating a randomized or factorial study design. If this file is absent, all participants will see every page in the order in which they are listed in map.json and questions.json. Unlike the previous two config files, the outer level of conditions.json is an array rather than an object. The array contains an object for each condition that a participant could be assigned. Thus, the structure looks like this:</p>
+<pre><code>[
+    {
+        // Condition 1
+    },
+    {
+        // Condition 2
+    },
+    {
+        // Condition 3
+    },
+    ...
+]
+</code></pre><p>Every participant will be assigned one and only one condition for the duration of their experience with the application. The options available for each condition are as follows:</p>
+<h4 id="conditions-i-pages">conditions[i].pages</h4>
+<pre><code>&quot;pages&quot;: *[]* *[[]]*
+</code></pre><p>An array or nested array of the page numbers to be included in the condition, in the order in which they will be shown to participants assigned this condition. Required. The first page of the application is designated <code>1</code>, the second <code>2</code>, etc. If given an empty array (<code>[]</code>), all pages of the application will be presented to participants assigned the condition. If given a nested array, only pages within inner array(s) will be randomized. For example, given:</p>
+<pre><code>&quot;pages&quot;: [1, 2, [3, 4, 5], [6, 7], 8]
+</code></pre><p>...all participants will be shown pages 1 and 2 in sequential order, then pages 3-5 in a random order, then pages 6-7 in a random order, then page 8. To randomize the order of all pages, place all pages within a double array; for example:</p>
+<pre><code>&quot;pages&quot;: [[1, 2, 3, 4, 5, 6, 7, 8]]
+</code></pre><h4 id="conditions-i-weight">conditions[i].weight</h4>
+<pre><code>*&quot;weight&quot;*: number between 0 and 1
+</code></pre><p>A weight that determines the frequency with which the condition is assigned.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>number between 0 and 1</code></td>
+<td style="text-align:left">All condition weights must sum to 1.</td>
+<td style="text-align:left">If weights are not included, the conditions will be randomly assigned with equal frequency for each.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="param">Param</h2>
+<h3 id="filename-param-php">Filename: param.php</h3>
+<p>This config file holds the configuration options necessary to access the database in which the form data and interaction logs are to be stored and/or e-mail the data from each participant as spreadsheet files.</p>
+<h4 id="configuring-the-database">Configuring the database</h4>
+<p>A database is the recommended way to store the form and interaction data created by the MapStudy application. The framework supports database connections through the PHP PDO (PHP Data Objects) interface. Cubrid, FreeTDS (SyBase and Microsoft SQL Server), Firebird, IBM DB2, IBM Informix Dynamic Server, MySQL, Oracle Call Interface, ODBC v3, PostgreSQL, SQLite, Microsoft Azure SQL Database, and 4D databases are supported. The application will automatically generate the following tables:</p>
+<ul>
+<li><p><strong>Participant Data</strong>: One data table will be generated per participant to hold that participant&#39;s answers, named using the convention <code>p012345678_data</code> where <code>012345678</code> is the participant ID. Each row will correspond to a question block. The first column will be the question labels as defined in questions.json or automatically generated for the question if no label is provided (see label generation for <a href="#questionssetsiblocksiilabel">blocks</a> and <a href="#questionssetsiblocksiiinputoptionsiiilabel">items</a>), the second column will be the text of each question, and the third column will be the answers provided by the participant.</p>
+</li>
+<li><p><strong>Participant Interactions</strong>: One interactions table will be generated per participant, named using the convention <code>p012345678_interactions</code> where <code>012345678</code> is a randomly-generated participant ID. The table will be formatted as follows:</p>
+</li>
+</ul>
+<p><table>
+    <tbody>
+        <tr><th>timestamp</th><th>interaction</th><th>page</th><th>set</th></tr>
+        <tr><td>1460400580071</td><td>zoom</td><td>1</td><td>1</td>
+        <tr><td>1460400852625</td><td>pan</td><td>1</td><td>1</td>
+        <tr><td>1460400860265</td><td>retrieve</td><td>1</td><td>2</td>
+        <tr><td>etc...</td><td></td><td></td><td></td>
+    </tbody></p>
+<table>
+
+<ul>
+<li><p><strong>Master Data</strong>: One master data table will be generated to display all participants&#39; answers, named <code>data_master</code>. The table will include columns for the participant ID (<code>pid</code>), time last updated (<code>last_updated</code>; in standard UTC format), each question block and item (labeled as above), and a timestamp (in milliseconds) for each submission point labeled as <code>p1s1_submit</code>, where <code>p1s1</code> represents the page number and set number of any question set that includes a submit button.</p>
+</li>
+<li><p><strong>Master Interactions</strong>: One master interactions table will be generated to display all participants&#39; interactions, named <code>interactions_master</code>. The table will include columns for the participant ID (<code>pid</code>), one column for each interaction included in map.json (<code>zoom</code>, <code>pan</code>, etc.) showing total hit counts for that interaction, and an <code>int_string</code> column showing a comma-separated list of all interactions in the order in which they occurred.</p>
+</li>
+<li><p><strong>Data By Page</strong>: One table for each page of the application, labeled <code>data_page1</code>, <code>data_page2</code>, etc., to display the answers of all participants who submitted answers for that page. The table will include the columns from the <code>data_master</code> table that are relevant to the given page. This feature accommodates very long surveys and those for which at least some participants will see only certain pages.</p>
+</li>
+<li><p><strong>Interactions By Page</strong>: One table for each page of the application, labeled <code>interactions_page1</code>, <code>interactions_page2</code>, etc., to display the interactions of all participants who submitted answers for that page. The table will include columns for the participant ID (<code>pid</code>), one column for each interaction included for that page in map.json (<code>zoom</code>, <code>pan</code>, etc.), and an <code>int_string</code> column showing a comma-separated list of all interactions in the order in which they occurred.</p>
+</li>
+</ul>
+<p>To interact with a database, the following variables must be included in param.php:</p>
+<h4 id="-dbtype">$dbtype</h4>
+<pre><code>$dbtype = *&#39;cubrid&#39;* *&#39;dblib&#39;* *&#39;firebird&#39;* *&#39;ibm&#39;* *&#39;informix&#39;* *&#39;mysql&#39;* *&#39;oci&#39;* *&#39;odbc&#39;* *&#39;pgsql&#39;* *&#39;sqlite&#39;* *&#39;sqlsrv&#39;* *&#39;4d&#39;*;
+</code></pre><p>The type of database. The database types listed above are supported. See <a href="http://php.net/manual/en/pdo.drivers.php">this page</a> for more information on PHP database drivers.</p>
+<h4 id="-dbhost">$dbhost</h4>
+<pre><code>$dbhost = &#39;hostname&#39;;
+</code></pre><p>The host name of the database server. Typically an IP or DNS address.</p>
+<h4 id="-dbport">$dbport</h4>
+<pre><code>$dbport = &#39;5432&#39;;
+</code></pre><p>The port number for the database server.</p>
+<h4 id="-dbname">$dbname</h4>
+<pre><code>$dbname = &#39;database name&#39;;
+</code></pre><p>The database name.</p>
+<h4 id="-dbuser">$dbuser</h4>
+<pre><code>$dbuser = &#39;user&#39;;
+</code></pre><p>The database user name. The user provided should have create, read, and update privileges for the database.</p>
+<h4 id="-dbpassword">$dbpassword</h4>
+<pre><code>$dbpassword = &#39;password&#39;;
+</code></pre><p>The password for the database user provided for $dbuser.</p>
+<p>Alternately, or in addition to the database, the application may be configured to send the collected data and interactions to an e-mail address when they are submitted. Only the two participant tables will be e-mailed. The tables will be sent as e-mail attachments in CSV format, and will also be stored as CSV files in an auto-generated <em>participants</em> folder on the server. The server hosting the application must have SMTP enabled. To configure e-mail, include the <em>all</em> of the following variables in param.php:</p>
+<h4 id="-smtphost">$smtphost</h4>
+<pre><code>$smtphost = &#39;smtp.domain.com&#39;;
+</code></pre><p>The SMTP host address.</p>
+<h4 id="-smtpport">$smtpport</h4>
+<pre><code>$smtpport = &#39;587&#39;;
+</code></pre><p>The SMTP port. Usually either 25 or 587.</p>
+<h4 id="-euser">$euser</h4>
+<pre><code>$euser = &#39;user&lt;span&gt;&lt;/span&gt;@domain.com&#39;;
+</code></pre><p>The outgoing e-mail address for the SMTP account.</p>
+<h4 id="-epass">$epass</h4>
+<pre><code>$epass = &#39;password&#39;;
+</code></pre><p>The password for the SMTP account.</p>
+<h4 id="-toaddr">$toaddr</h4>
+<pre><code>$toaddr = &#39;mail@domain.com&#39;;
+</code></pre><p>The e-mail address to which the data should be sent.</p>
+<h4 id="-subject">$subject</h4>
+<pre><code>$subject = &#39;Subject&#39;;
+</code></pre><p>The subject line of the e-mail.</p>
+<h4 id="-message">$message</h4>
+<pre><code>$message = &#39;Message&#39;;
+</code></pre><p>The content of the e-mail message. CSV files holding the participant data will be attached automatically.</p>
+<h2 id="framework-architecture">Framework Architecture</h2>
+<p>MapStudy is constructed with a modular architecture designed to allow for tremendous customization. The figure below shows an <em>approximate</em> graphical representation of the framework modules provided to explain the gist of how the framework is organized. The module stacking order based on the nested structure of module options in the config files (i.e., those modules on &quot;top&quot; are contained within the module immediately below them, which is contained within the module below that, etc.). With the exception of the Server module Note that this representation is approximate, and the structure it represents is subject to change; therefore it does not represent the full framework with complete precision or accuracy.</p>
+<p><img src="img/architecture.png"></p>

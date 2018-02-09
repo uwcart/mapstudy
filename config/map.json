@@ -1,625 +1,1700 @@
 {
 	"pages": [
-		{},
 		{
-			"page": 2,
-			"library": "Leaflet",
-			"interactions": {
-				"retrieve": {
-					"logging": true,
-					"interface": {
-						"window": false
-					}
-				},
-				"pan": {
-					"logging": true,
-					"interface": {
-						"widget": false
-					}
-				},
-				"zoom": {
-					"logging": true
-				},
-				"overlay": {
-					"logging": true,
-					"toggle": true,
-					"dataLayers": [
-						"Cities Layer"
-					]
-				},
-				"underlay": {
-					"logging": true,
-					"toggle": true
-				},
-				"search": {
-					"dataLayers": [
-						"US States"
-					],
-					"logging": true,
-					"toggle": true
-				},
-				"filter": {
-					"dataLayers": [
-						"US States",
-						"Cities Layer"
-					],
-					"tool": "slider",
-					"logging": true,
-					"toggle": true
-				},
-				"reexpress": {
-					"logging": true,
-					"toggle": true
-				},
-				"resymbolize": {
-					"logging": true,
-					"toggle": true
-				}
-			},
-			"mapOptions": {
-				"resetButton": false,
-				"center": [39.83,-98.583],
-				"zoom": 3,
-				"minZoom": 3,
-				"maxZoom": 13
-			},
-			"baseLayers": [{
-				"name": "Stamen Toner Lite",
-				"source": "Stamen.TonerLite",
-				"layerOptions": {
-					"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
-					}
-				},
-				{
-				"name": "Stamen Toner",
-				"source": "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
-				"layerOptions": {
-					"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
-					}
-			}],
-			"dataLayers": [{
-				"name": "US States",
-				"source": "data/us-states.geojson",
-				"renderOnLoad": true,
-				"expressedAttribute": "Density (ppl/sq. mile)",
-				"displayAttributes": [
-					"name",
-					"Density (ppl/sq. mile)"
-				],
-				"roundTo": 1,
-				"layerOptions": {
-					"fillOpacity": 0.8,
-					"color": "black",
-					"weight": 1,
-					"opacity": 1,
-					"fillColor": "#FD8D3C"
-				},
-				"techniques": [{
-					"type": "choropleth",
-					"classification": "quantile",
-					"classes": "Oranges.5"
-				},{
-					"type": "proportional symbol",
-					"classification": "unclassed",
-					"symbol": "img/grail.jpg",
-					"classes": [
-						5,
-						20
-					]
-				}]
-			},
-			{
-				"name": "Cities Layer",
-				"source": "data/city-data.geojson",
-				"renderOnLoad": false,
-				"expressedAttribute": "2011",
-				"displayAttributes": [
-					"name",
-					"2005",
-					"2006",
-					"2007",
-					"2008",
-					"2009",
-					"2010",
-					"2011"
-				],
-				"layerOptions": {
-					"fillOpacity": 0.8,
-					"color": "white",
-					"fillColor": "blue",
-					"opacity": 1,
-					"weight": 1
-				},
-				"techniques": [{
-					"type": "proportional symbol",
-					"classification": "unclassed",
-					"classes": [
-						5,
-						20
-					]
-				}]
-			},
-			{
-				"name": "US States Labels",
-				"source": "data/us-states.geojson",
-				"renderOnLoad": true,
-				"expressedAttribute": "Density (ppl/sq. mile)",
-				"displayAttributes": ["name"],
-				"layerOptions": {
-					"fillColor": "#555",
-					"minZoom": 5
-				},
-				"techniques": [{
-					"type": "label",
-					"size": 14
-				}]
-			}]
+			"page": 1
+		},
+		{
+			"page": 2
 		},
 		{
 			"page": 3,
 			"library": "Leaflet",
-			"interactions": {
-				"retrieve": {
-					"logging": true,
-					"toggle": true,
-					"interface": {
-						"popup": false
-					}
-				},
-				"pan": {
-					"logging": true,
-					"toggle": true,
-					"interface": {}
-				},
-				"zoom": {
-					"logging": true,
-					"toggle": true,
-					"interface": {}
-				},
-				"overlay": {
-					"logging": true,
-					"toggle": true,
-					"dataLayers": [
-						"Population Density"
-					]
-				},
-				"underlay": {
-					"logging": true,
-					"toggle": true
-				},
-				"search": {
-					"attributes": ["name", "density"],
-					"logging": true,
-					"toggle": true
-				},
-				"filter": {
-					"dataLayers": [
-						"Population Density"
-					],
-					"tool": "slider",
-					"logging": true,
-					"toggle": true
-				},
-				"reexpress": {
-					"logging": true,
-					"toggle": true
-				},
-				"resymbolize": {
-					"logging": true,
-					"toggle": true
-				}
-			},
 			"mapOptions": {
-				"resetButton": true,
-				"center": [45,-90],
-				"zoom": 7,
-				"minZoom": 3,
-				"maxZoom": 13
-			},
-			"baseLayers": [{
-				"name": "Stamen Toner Lite",
-				"source": "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
-				"layerOptions": {
-					"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
-					}
-				},
-				{
-				"name": "Stamen Toner",
-				"source": "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
-				"layerOptions": {
-					"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
-					}
-			}],
-			"dataLayers": [{
-				"name": "Population Density",
-				"source": "data/wi-tracts-poly.topojson",
-				"expressedAttribute": "density",
-				"layerOptions": {
-					"color": "black",
-					"weight": 1,
-					"opacity": 0.8,
-					"fillOpacity": 0.8,
-					"fillColor": "#FD8D3C"
-				},
-				"techniques": [{
-					"type": "heat",
-					"size": 0.5
-				},
-				{
-					"type": "proportional symbol",
-					"classification": "unclassed",
-					"classes": [
-						5,
-						20
-					]
-				},
-				{
-					"type": "choropleth",
-					"classification": "quantile",
-					"classes": "Oranges.5"
-				}]
-			}]
-		},
-		{
-			"page": 4,
-			"library": "Leaflet",
-			"interactions": {
-				"retrieve": {
-					"logging": true,
-					"toggle": true,
-					"interface": {
-						"popup": false
-					}
-				},
-				"pan": {
-					"logging": true,
-					"toggle": true,
-					"interface": {}
-				},
-				"zoom": {
-					"logging": true,
-					"toggle": true,
-					"interface": {}
-				},
-				"overlay": {
-					"logging": true,
-					"toggle": true,
-					"dataLayers": [
-						"Population Density"
-					]
-				},
-				"underlay": {
-					"logging": true,
-					"toggle": true
-				},
-				"search": {
-					"attributes": ["name", "density"],
-					"logging": true,
-					"toggle": true
-				},
-				"filter": {
-					"dataLayers": [
-						"Population Density"
+				"legend": false,
+				"resetButton": false,
+				"center": [
+					37,
+					-120
+				],
+				"zoom": 5,
+				"minZoom": 5,
+				"maxZoom": 8,
+				"maxBounds": [
+					[
+						25,
+						-130
 					],
-					"tool": "slider",
-					"logging": true,
-					"toggle": true
-				},
-				"reexpress": {
-					"logging": true,
-					"toggle": true
-				},
-				"resymbolize": {
-					"logging": true,
-					"toggle": true
-				}
-			},
-			"mapOptions": {
-				"resetButton": true,
-				"center": [39.83,-98.583],
-				"zoom": 3,
-				"minZoom": 3,
-				"maxZoom": 13
-			},
-			"baseLayers": [{
-				"name": "Stamen Toner Lite",
-				"source": "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
-				"layerOptions": {
-					"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
-					}
-				},
-				{
-				"name": "Stamen Toner",
-				"source": "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
-				"layerOptions": {
-					"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
-					}
-			}],
-			"dataLayers": [{
-				"name": "Population Density",
-				"source": "data/us-states.geojson",
-				"expressedAttribute": "Density (ppl/sq. mile)",
-				"layerOptions": {
-					"color": "black",
-					"weight": 1,
-					"opacity": 0.8,
-					"fillOpacity": 0.8,
-					"fillColor": "#FD8D3C"
-				},
-				"techniques": [{
-					"type": "heat",
-					"size": 5
-				},
-				{
-					"type": "proportional symbol",
-					"classification": "unclassed",
-					"classes": [
-						5,
-						20
+					[
+						50,
+						-100
 					]
+				]
+			},
+			"baseLayers": [
+					{
+						"name": "Basemap",
+						"source": "https://api.mapbox.com/styles/v1/vinckl/cis98z43a002u2xoa5i3qu52n/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidmluY2tsIiwiYSI6InBxek03N1UifQ.U-SETItEW23RpzOykJX5Jw"
+					}
+				],
+				"dataLayers": [
+					{
+						"roundTo": 0,
+						"name": "Example Map",
+						"source": "data/ExampleMapData.geojson",
+						"expressedAttribute": "Kilograms",
+						"displayAttributes": [
+							"Company", "Kilograms ", "Air Quality Watches "
+						],
+						"layerOptions": {
+					"fillOpacity": 0.7,
+					"color": "black",
+					"weight": 0.5,
+					"opacity": 0.5
 				},
-				{
-					"type": "choropleth",
-					"classification": "quantile",
-					"classes": "Oranges.5"
-				}]
+						"renderOnLoad": true,
+						"techniques": [
+							{
+								"type": "proportional symbol",
+									"classification": "equal interval",
+									"classes": [
+										7.8,
+										11.1,
+										15.7
+									]
+							}
+						]
+					}
+				],
+				"interactions": {
+					"zoom": {
+						"logging": true,
+						"toggle": false,
+						"interface": {
+							"touch": true,
+							"scrollWheel": true,
+							"doubleClick": true,
+							"box": true,
+							"keyboard": true,
+							"widget": true
+						}
+					},
+					"pan": {
+						"logging": true,
+						"toggle": false,
+						"interface": {
+							"drag": true,
+							"keyboard": true,
+							"widget": false
+						}
+					},
+					"retrieve": {
+						"logging": true,
+						"interface": {
+							"window": false
+				}
+			}
+				}
 			},
 			{
-				"name": "Cities Layer",
-				"source": "data/city-data.geojson",
-				"expressedAttribute": "2011",
+				"page": 4,
+				"library": "Leaflet",
+				"mapOptions": {
+					"legend": false,
+					"resetButton": false,
+					"center": [
+						36,
+						-120.5
+					],
+					"zoom": 5,
+					"minZoom": 5,
+					"maxZoom": 8,
+					"maxBounds": [
+						[
+							22,
+							-140
+						],
+						[
+							50,
+							-100
+						]
+					]
+				},
+				"baseLayers": [
+						{
+							"name": "Basemap",
+							"source": "https://api.mapbox.com/styles/v1/vinckl/cis98z43a002u2xoa5i3qu52n/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidmluY2tsIiwiYSI6InBxek03N1UifQ.U-SETItEW23RpzOykJX5Jw"
+						}
+					],
+					"dataLayers": [
+						{
+							"name": "None",
+							"source": "data/none.geojson",
+							"roundTo": 0,
+							"displayAttributes": [
+								"None"
+							],
+							"layerOptions": {
+						"fillOpacity": 0.7,
+						"color": "black",
+						"weight": 0.5,
+						"opacity": 0.5
+						},
+							"renderOnLoad": true,
+											"techniques": [
+												{
+													"type": "proportional symbol",
+														"classification": "equal interval",
+														"classes": [
+															0.001
+														]
+												}
+											]},
+						{
+				"roundTo": 0,
+				"name": "Air Quality Watches Per Capita",
+				"source": "data/exampleair.geojson",
+				"expressedAttribute": "Air Quality Watches",
 				"displayAttributes": [
-					"name",
-					"2005",
-					"2006",
-					"2007",
-					"2008",
-					"2009",
-					"2010",
-					"2011"
+					"Air Quality Watches"
 				],
 				"layerOptions": {
+			"fillOpacity": 0.8,
+			"color": "black",
+			"weight": 0.5,
+			"opacity": 1,
+			"minZoom": 5,
+			"maxZoom": 10
+			},
+				"renderOnLoad": false,
+				"techniques": [
+					{
+						"type": "choropleth",
+						"classification": "equal interval",
+						"classes": "BuGn.3"
+					}
+				]},
+						{
+							"roundTo": 0,
+							"name": "Kilogram Data",
+							"source": "data/ExampleMapData.geojson",
+							"expressedAttribute": "Kilograms",
+							"displayAttributes": [
+								"Company", "Kilograms ", "None", "Air Quality Watches"
+							],
+							"renderOnLoad": true,
+							"layerOptions": {
+						"fillOpacity": 0.7,
+						"color": "black",
+						"weight": 0.5,
+						"opacity": 0.5
+					},
+								"techniques": [
+									{
+										"type": "proportional symbol",
+											"classification": "equal interval",
+											"classes": [
+										7.8,
+										11.1,
+										15.7
+											]
+								}
+							]
+						},
+						{
+							"roundTo": 0,
+							"name": "Kilogram Data2",
+							"source": "data/ExampleMapData.geojson",
+							"expressedAttribute": "Kilograms",
+							"displayAttributes": [
+								"Kilograms"
+							],
+							"renderOnLoad": true,
+							"layerOptions": {
+						"fillOpacity": 0.7,
+						"color": "black",
+						"weight": 0.5,
+						"opacity": 0.5
+					},
+								"techniques": [
+									{
+										"type": "proportional symbol",
+											"classification": "equal interval",
+											"classes": [
+										0.01
+											]
+								}
+							]
+						},
+						{
+						"roundTo": 0,
+						"name": "Company Labels",
+						"source": "data/ExampleMapData.geojson",
+						"expressedAttribute": "Kilograms",
+						"displayAttributes": [
+							"Company"
+						],
+						"renderOnLoad": false,
+						"layerOptions": {
 					"fillOpacity": 0.8,
-					"color": "white",
-					"fillColor": "blue",
+					"color": "black",
+					"weight": 0.5,
 					"opacity": 1,
-					"weight": 1
+					"minZoom": 0,
+					"maxZoom": 11
 				},
-				"techniques": [{
-					"type": "proportional symbol",
-					"classification": "unclassed",
-					"classes": [
-						5,
-						20
-					]
-				}]
-			}]
-		},
-		{
-			"page": 5,
-			"library": "Leaflet",
-			"interactions": {
-				"retrieve": {
-					"logging": true,
-					"toggle": true,
-					"interface": {
-						"popup": false
+						"techniques": [
+							{
+								"type": "label",
+								"showOnLegend": false,
+								"size": "9"
+							}
+						]
 					}
-				},
-				"pan": {
-					"logging": true,
-					"toggle": true,
-					"interface": {}
-				},
-				"zoom": {
-					"logging": true,
-					"toggle": true,
-					"interface": {}
-				},
-				"overlay": {
-					"logging": true,
-					"toggle": true,
-					"dataLayers": [
-						"Population Density"
-					]
-				},
-				"underlay": {
-					"logging": true,
-					"toggle": true
-				},
-				"search": {
-					"attributes": ["name", "density"],
-					"logging": true,
-					"toggle": true
-				},
-				"filter": {
-					"dataLayers": [
-						"Population Density"
 					],
-					"tool": "slider",
-					"logging": true,
-					"toggle": true
+					"interactions": {
+						"pan": {
+							"logging": true,
+							"toggle": false,
+							"interface": {
+								"drag": true,
+								"keyboard": true,
+								"widget": false
+							}
+						},
+						"filter": {
+							"dataLayers": [
+									"Kilogram Data", "Kilogram Data2"
+								],
+								"tool": "slider",
+								"logging": true,
+								"toggle": false
 				},
-				"reexpress": {
-					"logging": true,
-					"toggle": true
-				},
-				"resymbolize": {
-					"logging": true,
-					"toggle": true
+						"overlay": {
+							"logging": true,
+							"toggle": false,
+							"dataLayers": [
+								"None", "Air Quality Watches Per Capita", "Company Labels"
+							]
+						},
+						"zoom": {
+							"logging": true,
+							"toggle": false,
+							"interface": {
+								"touch": true,
+								"scrollWheel": true,
+								"doubleClick": true,
+								"box": true,
+								"keyboard": true,
+								"widget": true
+							}
+						},
+						"retrieve": {
+							"logging": true,
+							"interface": {
+								"window": false
+					}
 				}
-			},
-			"mapOptions": {
-				"resetButton": true,
-				"center": [39.83,-98.583],
-				"zoom": 3,
-				"minZoom": 3,
-				"maxZoom": 13
-			},
-			"baseLayers": [{
-				"name": "Stamen Toner Lite",
-				"source": "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
-				"layerOptions": {
-					"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
 					}
 				},
-				{
-				"name": "Stamen Toner",
-				"source": "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
-				"layerOptions": {
-					"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
-					}
-			}],
-			"dataLayers": [{
-				"name": "US Population",
-				"source": "data/us-states-pop.geojson",
-				"expressedAttribute": "population",
-				"displayAttributes": [
-					"name",
-					"population",
-					"density"
-				],
-				"techniques": [{
-					"type": "dot",
-					"interval": 1000000
-				}]
-			},
 			{
-				"name": "Population Density",
-				"source": "data/us-states.geojson",
-				"expressedAttribute": "Density (ppl/sq. mile)",
-				"displayAttributes": [
-					"name",
-					"Density (ppl/sq. mile)"
-				],
-				"layerOptions": {
-					"color": "black",
-					"weight": 1,
-					"opacity": 0.8,
-					"fillOpacity": 0.8,
-					"fillColor": "#FD8D3C"
+				"page": 5
 				},
-				"techniques": [{
-					"type": "proportional symbol",
-					"classification": "unclassed",
-					"classes": [
-						5,
-						20
-					]
-				},
-				{
-					"type": "choropleth",
-					"classification": "quantile",
-					"classes": "Oranges.5"
-				}]
-			}]
-		},
-		{},
-		{
-			"page": 7,
-			"library": "Leaflet",
-			"interactions": {
-				"retrieve": {
-					"logging": true,
-					"toggle": true,
-					"interface": {
-						"popup": false
-					}
-				},
-				"pan": {
-					"logging": true,
-					"toggle": true,
-					"interface": {}
-				},
-				"zoom": {
-					"logging": true,
-					"toggle": true,
-					"interface": {}
-				},
-				"overlay": {
-					"logging": true,
-					"toggle": true,
-					"dataLayers": [
-						"Population Density"
-					]
-				},
-				"underlay": {
-					"logging": true,
-					"toggle": true
-				},
-				"search": {
-					"attributes": ["name", "density"],
-					"logging": true,
-					"toggle": true
-				},
-				"filter": {
-					"dataLayers": [
-						"Population Density"
-					],
-					"tool": "slider",
-					"logging": true,
-					"toggle": true
-				},
-				"reexpress": {
-					"logging": true,
-					"toggle": true
-				},
-				"resymbolize": {
-					"logging": true,
-					"toggle": true
-				}
-			},
-			"mapOptions": {
-				"resetButton": true,
-				"center": [45,-90],
-				"zoom": 7,
-				"minZoom": 3,
-				"maxZoom": 13
-			},
-			"baseLayers": [{
-				"name": "Stamen Toner Lite",
-				"source": "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
-				"layerOptions": {
-					"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
-					}
-				},
-				{
-				"name": "Stamen Toner",
-				"source": "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
-				"layerOptions": {
-					"attribution": "Map by <a href='http://stamen.com'>Stamen</a>, data by <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
-					}
-			}],
-			"dataLayers": [{
-				"name": "Population Density",
-				"source": "data/wi-tracts-poly.topojson",
-				"expressedAttribute": "density",
-				"layerOptions": {
-					"color": "black",
-					"weight": 1,
-					"opacity": 0.8,
-					"fillOpacity": 0.8,
-					"fillColor": "#FD8D3C"
-				},
-				"techniques": [{
-					"type": "isarithmic",
-					"interval": 20,
-					"size": 1
-				},
-				{
-					"type": "proportional symbol",
-					"classification": "unclassed",
-					"classes": [
-						5,
-						20
-					]
-				},
-				{
-					"type": "choropleth",
-					"classification": "quantile",
-					"classes": "Oranges.5"
-				}]
-			}]
-		}
+					{
+						"page": 6,
+						"library": "Leaflet",
+						"mapOptions": {
+							"legend": false,
+							"resetButton": false,
+							"center": [
+								40,
+								-82.9
+							],
+							"zoom": 7,
+							"minZoom": 7,
+							"maxZoom": 10,
+							"maxBounds": [
+								[
+									35,
+									-70
+								],
+								[
+									45,
+									-95
+								]
+							]
+						},
+						"baseLayers": [
+								{
+									"name": "Basemap",
+									"source": "https://api.mapbox.com/styles/v1/vinckl/cis98z43a002u2xoa5i3qu52n/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidmluY2tsIiwiYSI6InBxek03N1UifQ.U-SETItEW23RpzOykJX5Jw"
+								}
+							],
+							"dataLayers": [
+								{
+									"name": "Kilograms",
+									"renderOnLoad": true,
+									"roundTo": 0,
+									"source": "data/Ohio.geojson",
+									"expressedAttribute": "Kilograms",
+									"displayAttributes": [
+										"Company", "Kilograms ", "Non-white (%)", "Air Quality Watches"
+									],
+									"layerOptions": {
+								"fillOpacity": 0.7,
+								"color": "black",
+								"weight": 0.5,
+								"opacity": 0.5
+							},
+											"techniques": [
+												{
+
+													"type": "proportional symbol",
+														"classification": "equal interval",
+														"classes": [
+															7.8,
+															11.1,
+															15.7
+														]
+												}
+											]}
+										],
+							"interactions": {
+								"zoom": {
+									"logging": true,
+									"toggle": false,
+									"interface": {
+										"touch": true,
+										"scrollWheel": true,
+										"doubleClick": true,
+										"box": true,
+										"keyboard": true,
+										"widget": true
+									}
+								},
+									"retrieve": {
+									"logging": true,
+									"toggle": false,
+									"interface": {
+									"popup": true,
+									"window": false
+										}
+									},
+								"pan": {
+									"logging": true,
+									"toggle": false,
+									"interface": {
+										"drag": true,
+										"keyboard": true,
+										"widget": false
+									}
+								}
+							}},
+							{
+								"page": 7,
+								"library": "Leaflet",
+								"mapOptions": {
+									"legend": false,
+									"resetButton": false,
+									"center": [
+										32,
+										-99.5
+									],
+									"zoom": 6,
+									"minZoom": 6,
+									"maxZoom": 10,
+									"maxBounds": [
+										[
+											10,
+											-80
+										],
+										[
+											40,
+											-120
+										]
+									]
+								},
+								"baseLayers": [
+										{
+											"name": "Basemap",
+											"source": "https://api.mapbox.com/styles/v1/vinckl/cis98z43a002u2xoa5i3qu52n/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidmluY2tsIiwiYSI6InBxek03N1UifQ.U-SETItEW23RpzOykJX5Jw"
+										}
+									],
+									"dataLayers": [
+										{
+											"name": "Kilograms",
+											"source": "data/Texas.geojson",
+											"roundTo": 0,
+											"expressedAttribute": "Kilograms",
+											"displayAttributes": [
+												"Company", "Kilograms ", "Non-white (%)", "Poverty (%)", "Air Quality Watches", "Soil Penetration (in/hr)"
+											],
+											"layerOptions": {
+										"fillOpacity": 0.7,
+										"color": "black",
+										"weight": 0.5,
+										"opacity": 0.5
+									},
+											"renderOnLoad": true,
+															"techniques": [
+																{
+																	"type": "proportional symbol",
+																		"classification": "equal interval",
+																		"classes": [
+																			7.8,
+																			11.1,
+																			15.7
+																		]
+																}
+															]}],
+									"interactions": {
+										"zoom": {
+											"logging": true,
+											"toggle": false,
+											"interface": {
+												"touch": true,
+												"scrollWheel": true,
+												"doubleClick": true,
+												"box": true,
+												"keyboard": true,
+												"widget": true
+											}
+										},
+										"pan": {
+											"logging": true,
+											"toggle": false,
+											"interface": {
+												"drag": true,
+												"keyboard": true,
+												"widget": false
+											}
+										},
+										"retrieve": {
+										"logging": true,
+										"toggle": false,
+										"interface": {
+										"popup": true,
+										"window": false
+											}
+										}
+									}
+								},
+							{
+								"page": 8,
+								"library": "Leaflet",
+								"mapOptions": {
+									"legend": false,
+									"resetButton": false,
+									"center": [
+										32,
+										-99.5
+									],
+									"zoom": 6,
+									"minZoom": 6,
+									"maxZoom": 10,
+									"maxBounds": [
+										[
+											10,
+											-80
+										],
+										[
+											40,
+											-120
+										]
+									]
+								},
+								"baseLayers": [
+										{
+											"name": "Basemap",
+											"source": "https://api.mapbox.com/styles/v1/vinckl/cis98z43a002u2xoa5i3qu52n/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidmluY2tsIiwiYSI6InBxek03N1UifQ.U-SETItEW23RpzOykJX5Jw"
+										}
+									],
+									"dataLayers": [
+										{
+											"name": "Kilograms",
+											"source": "data/Texas2.geojson",
+											"roundTo": 0,
+											"expressedAttribute": "Kilograms",
+											"displayAttributes": [
+												"Company", "Kilograms ", "Non-white (%)", "Air Quality Watches"
+											],
+											"layerOptions": {
+										"fillOpacity": 0.7,
+										"color": "black",
+										"weight": 0.5,
+										"opacity": 0.5
+									},
+											"renderOnLoad": true,
+															"techniques": [
+																{
+																	"type": "proportional symbol",
+																		"classification": "equal interval",
+																		"classes": [
+																			7.8,
+																			11.1,
+																			15.7
+																		]
+																}
+															]}],
+									"interactions": {
+										"zoom": {
+											"logging": true,
+											"toggle": false,
+											"interface": {
+												"touch": true,
+												"scrollWheel": true,
+												"doubleClick": true,
+												"box": true,
+												"keyboard": true,
+												"widget": true
+											}
+										},
+										"pan": {
+											"logging": true,
+											"toggle": false,
+											"interface": {
+												"drag": true,
+												"keyboard": true,
+												"widget": false
+											}
+										},
+										"retrieve": {
+										"logging": true,
+										"toggle": false,
+										"interface": {
+										"popup": true,
+										"window": false
+											}
+										}
+									}
+								},
+								{
+									"page": 9,
+									"library": "Leaflet",
+									"mapOptions": {
+										"legend": false,
+										"resetButton": false,
+										"center": [
+											40,
+											-82.9
+										],
+										"zoom": 7,
+										"minZoom": 7,
+										"maxZoom": 10,
+										"maxBounds": [
+											[
+												35,
+												-70
+											],
+											[
+												45,
+												-95
+											]
+										]
+									},
+									"baseLayers": [
+											{
+												"name": "Basemap",
+												"source": "https://api.mapbox.com/styles/v1/vinckl/cis98z43a002u2xoa5i3qu52n/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidmluY2tsIiwiYSI6InBxek03N1UifQ.U-SETItEW23RpzOykJX5Jw"
+											}
+										],
+										"dataLayers": [
+											{
+												"name": "Kilograms",
+												"renderOnLoad": true,
+												"roundTo": 0,
+												"source": "data/Ohio2.geojson",
+												"expressedAttribute": "Kilograms",
+												"displayAttributes": [
+													"Company", "Kilograms ", "Non-white (%)", "Poverty (%)", "Air Quality Watches", "Soil Penetration (in/hr)"
+												],
+												"layerOptions": {
+											"fillOpacity": 0.7,
+											"color": "black",
+											"weight": 0.5,
+											"opacity": 0.5
+										},
+														"techniques": [
+															{
+																"type": "proportional symbol",
+																	"classification": "equal interval",
+																	"classes": [
+																		7.8,
+																		11.1,
+																		15.7
+																	]
+															}
+														]}],
+										"interactions": {
+											"zoom": {
+												"logging": true,
+												"toggle": false,
+												"interface": {
+													"touch": true,
+													"scrollWheel": true,
+													"doubleClick": true,
+													"box": true,
+													"keyboard": true,
+													"widget": true
+												}
+											},
+												"retrieve": {
+												"logging": true,
+												"toggle": false,
+												"interface": {
+												"popup": true,
+												"window": false
+													}
+												},
+											"pan": {
+												"logging": true,
+												"toggle": false,
+												"interface": {
+													"drag": true,
+													"keyboard": true,
+													"widget": false
+												}
+											}
+										}},
+								{
+									"page": 10,
+									"library": "Leaflet",
+									"mapOptions": {
+										"legend": false,
+										"resetButton": false,
+										"center": [
+											40,
+											-84
+										],
+										"zoom": 7,
+										"minZoom": 7,
+										"maxZoom": 10,
+										"maxBounds": [
+											[
+												35,
+												-70
+											],
+											[
+												45,
+												-95
+											]
+										]
+									},
+									"baseLayers": [
+											{
+												"name": "Basemap",
+												"source": "https://api.mapbox.com/styles/v1/vinckl/cis98z43a002u2xoa5i3qu52n/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidmluY2tsIiwiYSI6InBxek03N1UifQ.U-SETItEW23RpzOykJX5Jw"
+											}
+										],
+										"dataLayers": [
+											{
+												"name": "None",
+												"source": "data/none.geojson",
+												"roundTo": 0,
+												"displayAttributes": [
+													"None"
+												],
+												"layerOptions": {
+											"fillOpacity": 0.7,
+											"color": "black",
+											"weight": 0.5,
+											"opacity": 0.5
+										},
+												"renderOnLoad": true,
+																"techniques": [
+																	{
+																		"type": "proportional symbol",
+																			"classification": "equal interval",
+																			"classes": [
+																				0.001
+																			]
+																	}
+																]},
+											{
+												"name": "Non-white Percent",
+												"source": "data/violationsoh.geojson",
+												"roundTo": 0,
+												"expressedAttribute": "Non-white (%)",
+												"displayAttributes": [
+													"Non-white (%)"
+												],
+												"layerOptions": {
+											"fillOpacity": 0.8,
+											"color": "black",
+											"weight": 0.5,
+											"opacity": 1
+										},
+												"renderOnLoad": false,
+												"techniques": [
+													{
+														"type": "choropleth",
+														"classification": "equal interval",
+														"classes": "BuGn.3"
+													}
+												]},
+											{
+									"roundTo": 0,
+									"name": "Air Quality Watches Per Capita",
+									"source": "data/ohioair1.geojson",
+									"expressedAttribute": "Air Quality Watches",
+									"displayAttributes": [
+										"Air Quality Watches"
+									],
+									"layerOptions": {
+								"fillOpacity": 0.8,
+								"color": "black",
+								"weight": 0.5,
+								"opacity": 1
+								},
+									"renderOnLoad": false,
+									"techniques": [
+										{
+											"type": "choropleth",
+											"classification": "equal interval",
+											"classes": "BuGn.3"
+										}
+									]},
+											{
+												"name": "Kilograms",
+												"source": "data/Ohio.geojson",
+												"roundTo": 0,
+												"expressedAttribute": "Kilograms",
+												"displayAttributes": [
+													"Company", "Kilograms ", "None", "Non-white (%)", "Air Quality Watches"
+												],
+												"layerOptions": {
+											"fillOpacity": 0.7,
+											"color": "black",
+											"weight": 0.5,
+											"opacity": 0.5
+										},
+												"renderOnLoad": true,
+																"techniques": [
+																	{
+																		"type": "proportional symbol",
+																			"classification": "equal interval",
+																			"classes": [
+																				7.8,
+																				11.1,
+																				15.7
+																			]
+																	}
+																]},
+																{
+																	"name": "Kilograms2",
+																	"source": "data/Ohio.geojson",
+																	"roundTo": 0,
+																	"expressedAttribute": "Kilograms",
+																	"displayAttributes": [
+																		"Kilograms"
+																	],
+																	"layerOptions": {
+																"fillOpacity": 0.7,
+																"color": "black",
+																"weight": 0.5,
+																"opacity": 0.5
+															},
+																	"renderOnLoad": true,
+																					"techniques": [
+																						{
+																							"type": "proportional symbol",
+																								"classification": "equal interval",
+																								"classes": [
+																									0.001
+																								]
+																						}
+																					]},
+																{
+																"name": "Company Labels",
+																"source": "data/Ohio.geojson",
+																"expressedAttribute": "Kilograms",
+																"displayAttributes": [
+																	"Company"
+																],
+																"renderOnLoad": false,
+																"layerOptions": {
+															"fillOpacity": 0.8,
+															"color": "black",
+															"weight": 0.5,
+															"opacity": 1,
+															"minZoom": 0,
+															"maxZoom": 11
+														},
+																"techniques": [
+																	{
+																		"type": "label",
+																		"showOnLegend": false,
+																		"size": "9"
+																	}
+																]
+															}
+															],
+										"interactions": {
+											"pan": {
+												"logging": true,
+												"toggle": false,
+												"interface": {
+													"drag": true,
+													"keyboard": true,
+													"widget": false
+												}
+											},
+											"retrieve": {
+												"logging": true,
+												"toggle": false,
+												"interface": {
+													"popup": true,
+													"window": false
+												}
+											},
+											"filter": {
+												"dataLayers": [
+											"Kilograms", "Kilograms2"
+													],
+													"tool": "slider",
+													"logging": true,
+													"toggle": false
+												},
+											"overlay": {
+												"logging": true,
+												"toggle": false,
+												"dataLayers": [
+													"None", "Non-white Percent", "Air Quality Watches Per Capita", "Company Labels"
+												]
+											},
+											"zoom": {
+												"logging": true,
+												"toggle": false,
+												"interface": {
+													"touch": true,
+													"scrollWheel": true,
+													"doubleClick": true,
+													"box": true,
+													"keyboard": true,
+													"widget": true
+												}
+											}}},
+											{
+												"page": 11,
+												"library": "Leaflet",
+												"mapOptions": {
+													"legend": false,
+													"resetButton": false,
+													"center": [
+														29.5,
+														-99
+													],
+													"zoom": 6,
+													"minZoom": 6,
+													"maxZoom": 10,
+													"maxBounds": [
+														[
+															10,
+															-80
+														],
+														[
+															40,
+															-120
+														]
+													]
+												},
+												"baseLayers": [
+														{
+															"name": "Basemap",
+															"source": "https://api.mapbox.com/styles/v1/vinckl/cis98z43a002u2xoa5i3qu52n/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidmluY2tsIiwiYSI6InBxek03N1UifQ.U-SETItEW23RpzOykJX5Jw"
+														}
+													],
+													"dataLayers": [
+														{
+															"name": "None",
+															"source": "data/none.geojson",
+															"roundTo": 0,
+															"displayAttributes": [
+																"None"
+															],
+															"layerOptions": {
+														"fillOpacity": 0.7,
+														"color": "black",
+														"weight": 0.5,
+														"opacity": 0.5
+													},
+															"renderOnLoad": true,
+																			"techniques": [
+																				{
+																					"type": "proportional symbol",
+																						"classification": "equal interval",
+																						"classes": [
+																							0.001
+																						]
+																				}
+																			]},
+														{
+															"name": "Non-white Percent",
+															"source": "data/violationstx2.geojson",
+															"roundTo": 0,
+															"expressedAttribute": "Non-white (%)",
+															"displayAttributes": [
+																"Non-white (%)"
+															],
+															"layerOptions": {
+														"fillOpacity": 0.8,
+														"color": "black",
+														"weight": 0.5,
+														"opacity": 1
+													},
+															"renderOnLoad": false,
+															"techniques": [
+																{
+																	"type": "choropleth",
+																	"classification": "equal interval",
+																	"classes": "BuGn.3"
+																}
+															]},
+														{
+												"roundTo": 0,
+												"name": "Percent in Poverty",
+												"source": "data/texascounties.geojson",
+												"expressedAttribute": "Poverty (%)",
+												"displayAttributes": [
+													"Poverty (%)"
+												],
+												"layerOptions": {
+											"fillOpacity": 0.8,
+											"color": "black",
+											"weight": 0.5,
+											"opacity": 1,
+											"minZoom": 5,
+											"maxZoom": 10
+											},
+												"renderOnLoad": false,
+												"techniques": [
+													{
+														"type": "choropleth",
+														"classification": "equal interval",
+														"classes": "BuGn.3"
+													}
+												]},
+												{
+										"roundTo": 0,
+										"name": "Air Quality Watches Per Capita",
+										"source": "data/texascounties2.geojson",
+										"expressedAttribute": "Air Quality Watches",
+										"displayAttributes": [
+											"Air Quality Watches"
+										],
+										"layerOptions": {
+									"fillOpacity": 0.8,
+									"color": "black",
+									"weight": 0.5,
+									"opacity": 1,
+									"minZoom": 5,
+									"maxZoom": 10
+									},
+										"renderOnLoad": false,
+										"techniques": [
+											{
+												"type": "choropleth",
+												"classification": "equal interval",
+												"classes": "BuGn.3"
+											}
+										]},
+														{
+												"roundTo": 0,
+												"name": "Soil Penetration",
+												"source": "data/txsoil.geojson",
+												"expressedAttribute": "Soil Penetration (in/hr)",
+												"displayAttributes": [
+													"Soil Penetration (in/hr)"
+												],
+												"layerOptions": {
+											"fillOpacity": 0.8,
+											"color": "black",
+											"weight": 0.5,
+											"opacity": 1,
+											"minZoom": 5,
+											"maxZoom": 10
+											},
+												"renderOnLoad": false,
+												"techniques": [
+													{
+														"type": "choropleth",
+														"classification": "equal interval",
+														"classes": "BuGn.3"
+													}
+												]},
+														{
+															"name": "Kilograms",
+															"source": "data/Texas.geojson",
+															"roundTo": 0,
+															"expressedAttribute": "Kilograms",
+															"displayAttributes": [
+																"Company", "Kilograms ", "None", "Non-white (%)", "Poverty (%)", "Air Quality Watches", "Soil Penetration (in/hr)"
+															],
+															"layerOptions": {
+														"fillOpacity": 0.7,
+														"color": "black",
+														"weight": 0.5,
+														"opacity": 0.5
+													},
+															"renderOnLoad": true,
+																			"techniques": [
+																				{
+																					"type": "proportional symbol",
+																						"classification": "equal interval",
+																						"classes": [
+																							7.8,
+																							11.1,
+																							15.7
+																						]
+																				}
+																			]},
+																			{
+																				"name": "Kilograms2",
+																				"source": "data/Texas.geojson",
+																				"roundTo": 0,
+																				"expressedAttribute": "Kilograms",
+																				"displayAttributes": [
+																					"Kilograms"
+																				],
+																				"layerOptions": {
+																			"fillOpacity": 0.7,
+																			"color": "black",
+																			"weight": 0.5,
+																			"opacity": 0.5
+																		},
+																				"renderOnLoad": true,
+																								"techniques": [
+																									{
+																										"type": "proportional symbol",
+																											"classification": "equal interval",
+																											"classes": [
+																												0.001
+																											]
+																									}
+																								]},
+																			{
+																			"name": "Company Labels",
+																			"source": "data/Texas.geojson",
+																			"expressedAttribute": "Kilograms",
+																			"displayAttributes": [
+																				"Company"
+																			],
+																			"renderOnLoad": false,
+																			"layerOptions": {
+																		"fillOpacity": 0.8,
+																		"color": "black",
+																		"weight": 0.5,
+																		"opacity": 1,
+																		"minZoom": 0,
+																		"maxZoom": 11
+																	},
+																			"techniques": [
+																				{
+																					"type": "label",
+																					"showOnLegend": false,
+																					"size": "9"
+																				}
+																			]
+																		}
+																		],
+													"interactions": {
+														"pan": {
+															"logging": true,
+															"toggle": false,
+															"interface": {
+																"drag": true,
+																"keyboard": true,
+																"widget": false
+															}
+														},
+														"retrieve": {
+															"logging": true,
+															"toggle": false,
+															"interface": {
+																"popup": true,
+																"window": false
+															}
+														},
+														"filter": {
+															"dataLayers": [
+																	"Kilograms", "Kilograms2"
+																],
+																"tool": "slider",
+																"logging": true,
+																"toggle": false
+															},
+														"overlay": {
+															"logging": true,
+															"toggle": false,
+															"dataLayers": [
+																"None", "Non-white Percent", "Percent in Poverty", "Air Quality Watches Per Capita", "Soil Penetration", "Company Labels"
+															]
+														},
+														"zoom": {
+															"logging": true,
+															"toggle": false,
+															"interface": {
+																"touch": true,
+																"scrollWheel": true,
+																"doubleClick": true,
+																"box": true,
+																"keyboard": true,
+																"widget": true
+															}
+														}}},
+										{
+											"page": 12,
+											"library": "Leaflet",
+											"mapOptions": {
+												"legend": false,
+												"resetButton": false,
+												"center": [
+													29.5,
+													-99.5
+												],
+												"zoom": 6,
+												"minZoom": 6,
+												"maxZoom": 10,
+												"maxBounds": [
+													[
+														10,
+														-80
+													],
+													[
+														40,
+														-120
+													]
+												]
+											},
+											"baseLayers": [
+													{
+														"name": "Basemap",
+														"source": "https://api.mapbox.com/styles/v1/vinckl/cis98z43a002u2xoa5i3qu52n/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidmluY2tsIiwiYSI6InBxek03N1UifQ.U-SETItEW23RpzOykJX5Jw"
+													}
+												],
+												"dataLayers": [
+													{
+														"name": "None",
+														"source": "data/none.geojson",
+														"roundTo": 0,
+														"displayAttributes": [
+															"None"
+														],
+														"layerOptions": {
+													"fillOpacity": 0.7,
+													"color": "black",
+													"weight": 0.5,
+													"opacity": 0.5
+												},
+														"renderOnLoad": true,
+																		"techniques": [
+																			{
+																				"type": "proportional symbol",
+																					"classification": "equal interval",
+																					"classes": [
+																						0.001
+																					]
+																			}
+																		]},
+													{
+														"name": "Non-white Percent",
+														"source": "data/violationstx.geojson",
+														"roundTo": 0,
+														"expressedAttribute": "Non-white (%)",
+														"displayAttributes": [
+															"Non-white (%)"
+														],
+														"layerOptions": {
+													"fillOpacity": 0.8,
+													"color": "black",
+													"weight": 0.5,
+													"opacity": 1
+												},
+														"renderOnLoad": false,
+														"techniques": [
+															{
+																"type": "choropleth",
+																"classification": "equal interval",
+																"classes": "BuGn.3"
+															}
+														]},
+													{
+											"roundTo": 0,
+											"name": "Air Quality Watches Per Capita",
+											"source": "data/texascounties1.geojson",
+											"expressedAttribute": "Air Quality Watches",
+											"displayAttributes": [
+												"Air Quality Watches"
+											],
+											"layerOptions": {
+										"fillOpacity": 0.8,
+										"color": "black",
+										"weight": 0.5,
+										"opacity": 1,
+										"minZoom": 5,
+										"maxZoom": 10
+										},
+											"renderOnLoad": false,
+											"techniques": [
+												{
+													"type": "choropleth",
+													"classification": "equal interval",
+													"classes": "BuGn.3"
+												}
+											]},
+													{
+														"name": "Kilograms",
+														"source": "data/Texas2.geojson",
+														"roundTo": 0,
+														"expressedAttribute": "Kilograms",
+														"displayAttributes": [
+															"Company", "Kilograms ", "None", "Non-white (%)", "Air Quality Watches"
+														],
+														"layerOptions": {
+													"fillOpacity": 0.7,
+													"color": "black",
+													"weight": 0.5,
+													"opacity": 0.5
+												},
+														"renderOnLoad": true,
+																		"techniques": [
+																			{
+																				"type": "proportional symbol",
+																					"classification": "equal interval",
+																					"classes": [
+																						7.8,
+																						11.1,
+																						15.7
+																					]
+																			}
+																		]},
+																		{
+																			"name": "Kilograms2",
+																			"source": "data/Texas2.geojson",
+																			"roundTo": 0,
+																			"expressedAttribute": "Kilograms",
+																			"displayAttributes": [
+																				"Kilograms"
+																			],
+																			"layerOptions": {
+																		"fillOpacity": 0.7,
+																		"color": "black",
+																		"weight": 0.5,
+																		"opacity": 0.5
+																	},
+																			"renderOnLoad": true,
+																							"techniques": [
+																								{
+																									"type": "proportional symbol",
+																										"classification": "equal interval",
+																										"classes": [
+																											0.001
+																										]
+																								}
+																							]},
+																		{
+																		"name": "Company Labels",
+																		"source": "data/Texas.geojson",
+																		"expressedAttribute": "Kilograms",
+																		"displayAttributes": [
+																			"Company"
+																		],
+																		"renderOnLoad": false,
+																		"layerOptions": {
+																	"fillOpacity": 0.8,
+																	"color": "black",
+																	"weight": 0.5,
+																	"opacity": 1,
+																	"minZoom": 0,
+																	"maxZoom": 11
+																},
+																		"techniques": [
+																			{
+																				"type": "label",
+																				"showOnLegend": false,
+																				"size": "9"
+																			}
+																		]
+																	}
+																	],
+												"interactions": {
+													"pan": {
+														"logging": true,
+														"toggle": false,
+														"interface": {
+															"drag": true,
+															"keyboard": true,
+															"widget": false
+														}
+													},
+													"retrieve": {
+														"logging": true,
+														"toggle": false,
+														"interface": {
+															"popup": true,
+															"window": false
+														}
+													},
+													"filter": {
+														"dataLayers": [
+																"Kilograms", "Kilograms2"
+															],
+															"tool": "slider",
+															"logging": true,
+															"toggle": false
+														},
+													"overlay": {
+														"logging": true,
+														"toggle": false,
+														"dataLayers": [
+															"None", "Non-white Percent", "Air Quality Watches Per Capita", "Company Labels"
+														]
+													},
+													"zoom": {
+														"logging": true,
+														"toggle": false,
+														"interface": {
+															"touch": true,
+															"scrollWheel": true,
+															"doubleClick": true,
+															"box": true,
+															"keyboard": true,
+															"widget": true
+														}
+													}}},
+													{
+														"page": 13,
+														"library": "Leaflet",
+														"mapOptions": {
+															"legend": false,
+															"resetButton": false,
+															"center": [
+																40,
+																-84
+															],
+															"zoom": 7,
+															"minZoom": 7,
+															"maxZoom": 10,
+															"maxBounds": [
+																[
+																	35,
+																	-70
+																],
+																[
+																	45,
+																	-95
+																]
+															]
+														},
+														"baseLayers": [
+																{
+																	"name": "Basemap",
+																	"source": "https://api.mapbox.com/styles/v1/vinckl/cis98z43a002u2xoa5i3qu52n/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidmluY2tsIiwiYSI6InBxek03N1UifQ.U-SETItEW23RpzOykJX5Jw"
+																}
+															],
+															"dataLayers": [
+																{
+																	"name": "None",
+																	"source": "data/none.geojson",
+																	"roundTo": 0,
+																	"displayAttributes": [
+																		"None"
+																	],
+																	"layerOptions": {
+																"fillOpacity": 0.7,
+																"color": "black",
+																"weight": 0.5,
+																"opacity": 0.5
+															},
+																	"renderOnLoad": true,
+																					"techniques": [
+																						{
+																							"type": "proportional symbol",
+																								"classification": "equal interval",
+																								"classes": [
+																									0.001
+																								]
+																						}
+																					]},
+																{
+																	"name": "Non-white Percent",
+																	"source": "data/violationsoh2.geojson",
+																	"roundTo": 0,
+																	"expressedAttribute": "Non-white (%)",
+																	"displayAttributes": [
+																		"Non-white (%)"
+																	],
+																	"layerOptions": {
+																"fillOpacity": 0.8,
+																"color": "black",
+																"weight": 0.5,
+																"opacity": 1
+															},
+																	"renderOnLoad": false,
+																	"techniques": [
+																		{
+																			"type": "choropleth",
+																			"classification": "equal interval",
+																			"classes": "BuGn.3"
+																		}
+																	]},
+																{
+														"roundTo": 0,
+														"name": "Percent in Poverty",
+														"source": "data/goodohio.geojson",
+														"expressedAttribute": "Poverty (%)",
+														"displayAttributes": [
+															"Poverty (%)"
+														],
+														"layerOptions": {
+													"fillOpacity": 0.8,
+													"color": "black",
+													"weight": 0.5,
+													"opacity": 1,
+													"minZoom": 6,
+													"maxZoom": 10
+													},
+														"renderOnLoad": false,
+														"techniques": [
+															{
+																"type": "choropleth",
+																"classification": "equal interval",
+																"classes": "BuGn.3"
+															}
+														]},
+														{
+												"roundTo": 0,
+												"name": "Air Quality Watches Per Capita",
+												"source": "data/ohioair2.geojson",
+												"expressedAttribute": "Air Quality Watches",
+												"displayAttributes": [
+													"Air Quality Watches"
+												],
+												"layerOptions": {
+											"fillOpacity": 0.8,
+											"color": "black",
+											"weight": 0.5,
+											"opacity": 1,
+											"minZoom": 6,
+											"maxZoom": 10
+											},
+												"renderOnLoad": false,
+												"techniques": [
+													{
+														"type": "choropleth",
+														"classification": "equal interval",
+														"classes": "BuGn.3"
+													}
+												]},
+																{
+														"roundTo": 0,
+														"name": "Soil Penetration",
+														"source": "data/ohiosoil1.geojson",
+														"expressedAttribute": "Soil Penetration (in/hr)",
+														"displayAttributes": [
+															"Soil Penetration (in/hr)"
+														],
+														"layerOptions": {
+													"fillOpacity": 0.8,
+													"color": "black",
+													"weight": 0.5,
+													"opacity": 1,
+													"minZoom": 6,
+													"maxZoom": 10
+													},
+														"renderOnLoad": false,
+														"techniques": [
+															{
+																"type": "choropleth",
+																"classification": "equal interval",
+																"classes": "BuGn.3"
+															}
+														]},
+																{
+																	"name": "Kilograms",
+																	"source": "data/Ohio2.geojson",
+																	"roundTo": 0,
+																	"expressedAttribute": "Kilograms",
+																	"displayAttributes": [
+																		"Company", "Kilograms ", "None", "Non-white (%)", "Poverty (%)", "Air Quality Watches", "Soil Penetration (in/hr)"
+																	],
+																	"layerOptions": {
+																"fillOpacity": 0.7,
+																"color": "black",
+																"weight": 0.5,
+																"opacity": 0.5
+															},
+																	"renderOnLoad": true,
+																					"techniques": [
+																						{
+																							"type": "proportional symbol",
+																								"classification": "equal interval",
+																								"classes": [
+																									7.8,
+																									11.1,
+																									15.7
+																								]
+																						}
+																					]},
+																					{
+																						"name": "Kilograms2",
+																						"source": "data/Ohio2.geojson",
+																						"roundTo": 0,
+																						"expressedAttribute": "Kilograms",
+																						"displayAttributes": [
+																							"Kilograms"
+																						],
+																						"layerOptions": {
+																					"fillOpacity": 0.7,
+																					"color": "black",
+																					"weight": 0.5,
+																					"opacity": 0.5
+																				},
+																						"renderOnLoad": true,
+																										"techniques": [
+																											{
+																												"type": "proportional symbol",
+																													"classification": "equal interval",
+																													"classes": [
+																													0.001
+																													]
+																											}
+																										]},
+																					{
+																					"name": "Company Labels",
+																					"source": "data/Ohio.geojson",
+																					"expressedAttribute": "Kilograms",
+																					"displayAttributes": [
+																						"Company"
+																					],
+																					"renderOnLoad": false,
+																					"layerOptions": {
+																				"fillOpacity": 0.8,
+																				"color": "black",
+																				"weight": 0.5,
+																				"opacity": 1,
+																				"minZoom": 0,
+																				"maxZoom": 11
+																			},
+																					"techniques": [
+																						{
+																							"type": "label",
+																							"showOnLegend": false,
+																							"size": "9"
+																						}
+																					]
+																				}
+																				],
+															"interactions": {
+																"pan": {
+																	"logging": true,
+																	"toggle": false,
+																	"interface": {
+																		"drag": true,
+																		"keyboard": true,
+																		"widget": false
+																	}
+																},
+																"retrieve": {
+																	"logging": true,
+																	"toggle": false,
+																	"interface": {
+																		"popup": true,
+																		"window": false
+																	}
+																},
+																"filter": {
+																	"dataLayers": [
+																		"Kilograms", "Kilograms2"
+																		],
+																		"tool": "slider",
+																		"logging": true,
+																		"toggle": false
+																	},
+																"overlay": {
+																	"logging": true,
+																	"toggle": false,
+																	"dataLayers": [
+																		"None", "Non-white Percent", "Percent in Poverty", "Air Quality Watches Per Capita", "Soil Penetration", "Company Labels"
+																	]
+																},
+																"zoom": {
+																	"logging": true,
+																	"toggle": false,
+																	"interface": {
+																		"touch": true,
+																		"scrollWheel": true,
+																		"doubleClick": true,
+																		"box": true,
+																		"keyboard": true,
+																		"widget": true
+																	}
+																}
+																}},
+											{
+												"page": 14
+												},
+												{
+													"page": 15
+													},
+													{
+														"page": 16
+														},
+														{
+															"page": 17
+														},
+														{
+															"page": 18
+														},
+														{
+															"page": 19
+														},
+														{
+															"page": 20
+														},
+														{
+															"page": 21
+														},
+														{
+															"page": 22
+														},
+														{
+															"page": 23
+														},
+														{
+															"page": 24
+														},
+														{
+															"page": 25
+														},
+														{
+															"page": 26
+														},
+														{
+															"page": 27
+														},
+														{
+															"page": 28
+														},
+														{
+															"page": 29
+														},
+														{
+															"page": 30
+														},
+														{
+															"page": 31
+														},
+														{
+															"page": 32
+														},
+														{
+															"page": 33
+														},
+														{
+															"page": 34
+														},
+														{
+															"page": 35
+															}
 	]
 }

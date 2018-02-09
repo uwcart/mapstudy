@@ -7,15 +7,8 @@
 				{
 					"blocks": [
 						{
-							"title": "Page 1",
-							"ask": "This is what a page without a map looks like. It consists of a single set with two blocks. This text is the \"ask\" for a block without an input. You can use this formatting to create an information page or consent form."
-						},
-						{
-							"ask": "This is the second block in the single set on this page. Notice that you can create a new block for each new paragraph of text. In addition to text, this block contains a text input. You could use this kind of formatting to request information or consent from a participant.",
-							"description": "Unlike the first block, this block has no title, but does have a description. This is the description; it is shown in italics. In addition to the two blocks, this set has a single \"next\" button.",
-							"input": {
-								"type": "text"
-							}
+							"title": "Research Participant Information and Consent Form <i>(scroll down to review and agree to participate)</i></br></br>",
+							"ask": "<strong>Title of this Study: </strong>Interactive Maps and Decision Making: A Case Study in the North American Hazardous Waste Trade</br></br> <strong>Principal Investigator:</strong></br> Robert E. Roth, PhD </br> 375 Science Hall </br>N. Park Street </br> Madison, WI 53706 </br> Email: reroth@wisc.edu </br></br> <strong>Student Researcher:</strong></br>Kristen Vincent</br>Email: kvincent2@wisc.edu</br></br><strong><u>DESCRIPTION OF RESEARCH:</u></strong></br> You are invited to participate in a study researching the design and use of interactive, web-based maps. Specifically, this project investigates the application of these maps for spatial decision-making, and uses a case study about the North American hazardous waste trade. </br></br> <strong><u>WHAT WILL MY PARTICIPATION INVOLVE?</u></strong></br>If you choose to participate, you will be asked to complete an online survey using interactive maps. The survey should take approximately 30 minutes.</br></br> <strong><u>ARE THERE ANY RISKS TO ME?</u></strong></br>Risks of participation are minimal. You will be asked to provide background information, but no personally identifying information will be requested.</br></br><strong><u>ARE THERE ANY BENEFITS TO ME?</u></strong></br>There are no direct benefits for participating.</br></br> <strong><u>WILL I BE COMPENSATED FOR MY TIME?</u></strong></br>You will receive $5 upon completion of the map survey.</br></br><strong><u>HOW WILL MY CONFIDENTIALITY BE PROTECTED?</u></strong></br>If you agree to participate, no individual or confidential information will be used in publications of this work. All responses will be stored on a secure computer. </br></br><strong><u>WHOM SHOULD I CONTACT IF I HAVE QUESTIONS?</u></strong></br>You may ask questions about the research at any time. Please contact Robert Roth (reroth@wisc.edu) or Kristen Vincent (kvincent2@wisc.edu) with any questions. </br></br> If you are not satisfied with the response of the research team, have more questions, or want to talk with someone about your rights as a research participant, you should contact the University of Wisconsin-Madison Education Research and Social & Behavioral Science IRB Office at 608-263-2320. </br><br> Your participation is completely voluntary. If you decide not to participate or to withdraw from the study, it will have no effect on you.</br></br><strong>By selecting 'Next' below, you indicate that you have read through this consent form, had the opportunity to ask questions about your participation, and you agree to participate. <br><br> If you agree to participate in this research study, select the 'Next' button below, otherwise, close your browser to exit:</strong>"
 						}
 					],
 					"buttons": [
@@ -26,261 +19,3584 @@
 		},
 		{
 			"page": 2,
+			"fullpage": true,
 			"sets": [
 				{
-					"set": 1,
 					"blocks": [
 						{
-							"title": "This is the first set of Page 2.",
-							"ask": "All of the questions you can see and the buttons belong to the same set. These blocks are designed give you an idea of what kinds of inputs you can create."
-						},
-						{
-							"ask": "What is thy name?",
-							"description": "Gimme a name!",
-							"input": {
-								"type": "text",
-								"required": true
-							}
-						},
-						{
-							"title": "Quest",
-							"ask": "What is thy quest?",
-							"description": "",
-							"input": {
-								"type": "paragraph"
-							}
-						},
-						{
-							"title": "Color",
-							"ask": "What is thy favorite color?",
-							"input": {
-								"type": "checkboxes",
-								"items": [
-									{
-										"text": "Green."
-									},
-									{
-										"text": "No, no--blue!"
-									}
-								]
-							}
-						},
-						{
-							"title": "Airspeed Velocity",
-							"ask": "What is the airspeed velocity of an unladen swallow?",
-							"input": {
-								"type": "matrix",
-								"items": [
-									{
-										"text": "African",
-										"label": "african"
-									},
-									{
-										"text": "European",
-										"label": "european"
-									}
-								],
-								"options": [
-									{
-										"text": "10 kph"
-									},
-									{
-										"text": "20 kph"
-									},
-									{
-										"text": "30 kph"
-									},
-									{
-										"text": "I don't know!",
-										"value": "dunno"
-									}
-								]
-							}
-						},
-						{
-							"title": "Swallow Type",
-							"ask": "African or European?",
-							"description": "Select an answer to move to the next set...",
-							"input": {
-								"type": "radios",
-								"autoadvance": true,
-								"options": [
-									{
-										"text": "African"
-									},
-									{
-										"text": "European"
-									},
-									{
-										"text": "Other",
-										"value": "get from participant"
-									},
-									{
-										"text": "I don't know that!",
-										"value": "aaaaaaaaaaaaaaaah!"
-									}
-								]
-							}
+							"ask": "<strong>Thank you for agreeing to participate!</strong></br></br>Digital interactive maps are now a part of our everyday lives. This research investigates how such interactive maps can or cannot help us make choices about the management and regulation of commodities in the landscape.</br></br> Specifically, the following survey uses the North American regulation and trade of hazardous waste as a case study. Tons of hazardous waste are traded among Canada, Mexico, and the United States daily, creating many management decisions that ensure safe disposal. Such choices about how to regulate hazardous waste are complex, requiring consideration of a number of potential solutions. In this study, you will be asked to make two different decisions about the hazardous waste trade using information provided in an interactive map.</br></br><strong><u>INSTRUCTIONS:</u></strong></br></br>The survey proceeds in four sections: <ol><li>First, you will be given an example map to familiarize yourself with the map symbols and map controls used in the study. You also will be given an example task to get a feel for the kinds of decisions you will need to make with the interactive maps. Use as much time as you wish to study the example map and learn how to use its controls, as these responses are not recorded.</li><li>You then will be presented with two different scenarios related to the regulation and trade of hazardous waste. Each scenario focuses on a different region in the United States and includes a different interactive map to support your decision. For each scenario, make use of the interactive map to arrive at a decision you feel is <strong>optimal</strong>. After each decision, you will be asked to assess your <strong>confidence</strong> in the decision solution and to rate your <strong>difficulty</strong> in making this choice. Please complete these questions using your <strong>complete focus</strong> (do not view other websites, split your attention, etc.).</li><li>Between the two scenarios, you will complete a set of map reading tasks with a static map showing the distribution of hazardous waste imports in the United States. Please complete these questions using your <strong>complete focus</strong>, as they are meant to refresh your train of thought from the prior decision.</li><li>After completing all map tasks, you will respond to a series of background questions about your interests and experiences. You will be compensated after you submit the background survey.</li></ol>Throughout the survey, <strong>DO NOT</strong> use the web browser “Back” or “Forward” buttons or close your browser, as this will require you to restart the survey. Only use the “Next” buttons found at the bottom of the pages to advance the survey.</br></br><strong><u>ELIGIBILITY:</u></strong></br></br>Before beginning, please once again review your eligibility for participating in the study. These restrictions greatly impact your responses:</br><ul><li>You must be 18 years of age or older.</li><li>English must be your first language.</li><li>You must currently be living in the United States, but not in the states of Ohio or Texas, the location of the pair of scenarios. </li><li>You must complete the survey on a laptop or desktop computer (i.e., <strong>NOT</strong> a mobile device such as a phone or tablet). </li></ul></br></br><strong>Select 'Next' to confirm that you have read the instructions and confirm that you are eligible and ready to view the example map.</strong>"
 						}
 					],
 					"buttons": [
-						"back",
-						"save"
-					]
-				},
-				{
-					"set": 2,
-					"blocks": [
-						{
-							"title": "This is the second set of Page 2. Note the countdown timer up top.",
-							"ask": "See the important image and video below.",
-							"image": "http://www1.pictures.zimbio.com/mp/RhtLxy-IdwQx.jpg",
-							"video": "https://www.youtube.com/embed/pWS8Mg-JWSg"
-						},
-						{
-							"ask": "How far were you catapulted?",
-							"description": "aaaaaaaaaaaaaaaah!",
-							"input": {
-								"type": "dropdown",
-								"options": [
-									{
-										"text": "1 km"
-									},
-									{
-										"text": "2 km"
-									},
-									{
-										"text": "to the moon!"
-									}
-								]
-							}
-						},
-						{
-							"ask": "Rank the importance of the following:",
-							"input": {
-								"type": "rank",
-								"items": [
-									{
-										"text": "bird"
-									},
-									{
-										"text": "fish"
-									},
-									{
-										"text": "monkeybrains"
-									},
-									{
-										"text": "your mom"
-									}
-								]
-							}
-						}
-					],
-					"buttons": [
-						"back",
 						"next"
-					],
-					"timer": {
-						"direction": "down",
-						"starttime": "00:01:00"
-					},
-					"resetMap": true
+					]
 				}
 			]
 		},
 		{
 			"page": 3,
+			"fullpage": false,
 			"sets": [
 				{
 					"blocks": [
 						{
-							"title": "A paragraph question for Page 3, Set 1",
-							"ask": "This is Page 3. The order of pages 3 and 4 has been randomized. This page has a page timer that counts up. It will count until the next page is triggered.",
-							"input": {
-								"type": "paragraph"
-							}
-						}
-					],
-					"buttons": [
-						"next",
-						"back",
-						"save"
-					]
-				},
-				{
-					"blocks": [
+
+							"title": "Example Map",
+							"image": "img/kglegend.png",
+							"ask": "The example map to the left has similar symbols and controls as the maps you will use in the survey. The map depicts the total amount of hazardous waste imported at different U.S. processing facilities in California as proportionately-sized circular symbols, with larger symbols indicating facilities that process relatively more imported waste. By viewing the legend on the page (see legend below), you will see an explanation of the values related to the symbols.<br><br>The maps are interactive, and allow you to complete the following changes to the map: <ol><li><strong>Zoom</strong> into and out of the map using your mouse wheel, double-clicking on the map, or using the zoom buttons to change the level of detail (zooming is constrained to only several scales).</li><li><strong>Pan</strong> by grabbing and dragging the map to recenter on an area of interest (panning is constrained to the study area).</li><li><strong>Retrieve details</strong> about a facility by clicking on a circular symbol.</li></ol><br><strong>Try each of these interactions now.</strong><br><br> Each map that you view will have a different set of processing facilities and a different decision, so read the provided scenario, decision questions, and interactive maps carefully! To get a feel for the study, use the example map to answer the following example question. Again, review the legend carefully. Please review the legend before completing the example question:"
+						},
 						{
-							"ask": "A text question for Page 3, Set 2",
+							"ask": "<strong>Question:</strong> Rank the facilities according to their potential environmental harm by dragging the names above and below each other <strong>(1=most harmful, 3=least harmful)</strong>.",
 							"input": {
-								"type": "text"
+								"required": true,
+								"autoadvance": false,
+								"type": "rank",
+								"items": [
+									{
+										"text": "Chemical Waste"
+									},
+									{
+										"text": "Veolia Inc."
+									},
+									{
+										"text": "World Resources"
+									}
+								]
 							}
+						},
+						{
+							"ask": "<strong>By selecting 'Next', you confirm that you understand the map symbols, map controls, and example question, and that you are ready to begin the study.<br> <u>Please note that a timer will begin after you click next</u>, so please make your decisions with your complete focus.<br><br>Please note that each page may take several seconds to load.</strong>"
 						}
 					],
 					"buttons": [
-						"next",
-						"back",
-						"save"
+						"next"
 					]
 				}
-			],
-			"timer": {}
+			]
 		},
 		{
 			"page": 4,
+			"fullpage": false,
 			"sets": [
 				{
 					"blocks": [
 						{
-							"title": "A text question for Page 4",
-							"ask": "This is Page 4. The order of pages 3 and 4 has been randomized.",
+							"image": "img/kglegend.png",
+							"image2": "img/legend.png",
+							"title": "Example Map",
+							"ask": "The example map to the left has similar symbols and controls as the maps you will use in the survey. The map depicts the total amount of hazardous waste imported at different U.S. processing facilities in California as proportionately-sized circular symbols, with larger symbols indicating facilities that process relatively more imported waste. By viewing the legends on the page (see legends below), you will see an explanation of the values related to the symbols.<br><br>The maps are interactive, and allow you to complete the following changes to the map: <ol><li><strong>Zoom</strong> into and out of the map using your mouse wheel, double-clicking on the map, trackpad, or using the zoom buttons on the map to change the level of detail (zooming is constrained to only several scales).</li><li><strong>Pan</strong> by grabbing and dragging the map to recenter on an area of interest (panning is constrained to the study area).</li><li><strong>Retrieve details</strong> about a facility by clicking on a circular symbol.</li><li><strong>Overlay</strong> labels and additional datasets (e.g., air quality watches per capita) using the radio buttons on the left side of the map. When an overlay is selected (not labels, however), details can also be retrieved by clicking on a colored region (e.g. clicking on a county when the air quality watches overlay is selected).</li><li><strong>Filter</strong> facilities from the map based on the volume of waste they process or other datasets about the facilities using the slider bars on the left side of the map.</li></ol><br><strong>Try each of these interactions now.</strong><br><br> Each map that you view will have a different set of processing facilities and a different decision, so read the provided scenario, decision questions, and interactive maps carefully! To get a feel for the study, use the example map to answer the following example question. Again, review the legends carefully. Note that the Risk Level legend only applies when an overlay layer is selected. Please review both legends before completing the example question:"
+						},
+						{
+							"ask": "<strong>Question:</strong> Rank the facilities according to their potential environmental harm by dragging the names above and below each other <strong>(1=most harmful, 3=least harmful)</strong>.",
 							"input": {
-								"type": "text"
+								"required": true,
+								"autoadvance": false,
+								"type": "rank",
+								"items": [
+									{
+										"text": "Chemical Waste"
+									},
+									{
+										"text": "Veolia Inc."
+									},
+									{
+										"text": "World Resources"
+									}
+								]
 							}
+						},
+						{
+							"ask": "<strong>By selecting 'Next', you confirm that you understand the map symbols, map controls, and example question, and that you are ready to begin the study.<br> <u>Please note that a timer will begin after you click next</u>, so please make your decisions with your complete focus.<br><br>Please note that each page may take several seconds to load.</strong>"
 						}
 					],
 					"buttons": [
-						"next",
-						"back",
-						"save"
+						"next"
 					]
 				}
 			]
 		},
 		{
 			"page": 5,
+			"fullpage": true,
+			"timer": {
+				"persist": true
+			},
 			"sets": [
 				{
 					"blocks": [
 						{
-							"title": "A text question for Page 5",
-							"ask": "This is Page 5.",
-							"description": "You should only include a submit button on the second-to-last page. That way, the user will see a final ending page. If the app is configured to e-mail data, an e-mail will be sent each time the submit button is clicked.",
+							"image": "img/benchmark1.png",
+							"title": "Map Reading Tasks",
+							"ask": "<strong>How much waste did Utah import?</strong>",
 							"input": {
-								"type": "text"
+								"required": true,
+								"autoadvance": false,
+								"type": "radios",
+								"options": [
+									{
+										"text": "High"
+									},
+									{
+										"text": "Medium"
+									},
+									{
+										"text": "Low"
+									},
+									{
+										"text": "Can't tell"
+									}
+								]
+							}
+						}],
+						"buttons": [
+								"next"
+							]
+						},
+							{
+							"resetMap": true,
+							"blocks":	[{
+							"image": "img/benchmark1.png",
+							"ask": "<strong>Which state imported more waste, Alabama or North Carolina?</strong>",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "radios",
+								"options": [
+									{
+										"text": "Alabama"
+									},
+									{
+										"text": "North Carolina"
+									},
+									{
+										"text": "They imported the same amount of waste."
+									},
+									{
+										"text": "Can't tell"
+									}
+								]
+							}
+							}],
+							"buttons": [
+									"next"
+								]},
+						{
+						"resetMap": true,
+						"blocks":	[{
+							"image": "img/benchmark1.png",
+							"ask": "<strong>Which state imported the most waste?</strong>",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "radios",
+								"options": [
+										{
+											"text": "Arkansas"
+										},
+										{
+											"text": "Nebraska"
+										},
+										{
+											"text": "Pennsylvania"
+										},
+										{
+											"text": "Can't tell"
+										}
+									],
+								"items": [
+									{
+
+									}
+								]
+							}
+							}],
+							"buttons": [
+									"next"
+								]}
+			]
+		},
+		{
+			"page": 6,
+			"fullpage": false,
+			"timer": {
+				"persist": true
+			},
+			"sets": [
+				{
+					"blocks": [
+						{
+							"title": "Map Task",
+							"image": "img/kglegend.png",
+							"ask": "You are the manager of a newly opened Canadian firm looking to ship your by-product hazardous waste to processing facilities in Ohio for disposal. The transnational shipment is due to waste volume needs that cannot be met in Canada and economic benefits of Ohio facilities. You are concerned about the impact on communities near the processing facilities, given recent news coverage over disproportionate risk to marginalized populations. Further, you want to send the hazardous waste to a processing facility that will handle it properly, otherwise your business could face scrutiny about negative environmental impacts. <br><br>Given these needs and concerns, <strong>rank your preference for doing business with</strong> the available Ohio processing facilities using information from the interactive map <strong>(1=most preferred, 7=least preferred)</strong>. Again, drag the company names (seen below) above and below each other to rank your preference.<br><br>The factors that you will be analyzing to come to your decision are (in all cases, <strong>low = good and high = bad</strong>):<br><ol><li><strong>Waste in Kilograms</strong>: An increased volume of hazardous waste at a processing site generally increases the potential risk to the local community and environment, all other things considered.</li><li><strong>Percent non-white population</strong>: Environmental justice research shows that non-white communities may be more more burdened by hazardous waste facilities than white communities.</li><li><strong>Air quality watches</strong>: Processing hazardous waste releases emissions that can negatively impact air quality. An air quality watch is issued whenever air quality reaches unsafe levels.</li></ol>",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "rank",
+								"items": [
+									{
+										"text": "AMG VANADIUM"
+									},
+									{
+										"text": "CLEAN HARBORS INC."
+									},
+									{
+										"text": "CLEVELAND CORP."
+									},
+									{
+										"text": "ENVIRITE INC."
+									},
+									{
+										"text": "ROSS INCINERATION INC."
+									},
+									{
+										"text": "SPRING GROVE INC."
+									},
+									{
+										"text": "SYSTECH CORP."
+									}
+								]
 							}
 						}
 					],
 					"buttons": [
-						"back",
+						"next"
+					]
+				}
+			]
+		},
+		{
+			"page": 7,
+			"fullpage": false,
+			"timer": {
+				"remove": true
+			},
+			"timer": {
+				"persist": true
+			},
+			"sets": [
+				{
+					"blocks": [
+						{
+							"title": "Map Task",
+							"image": "img/kglegend.png",
+							"ask": "You are a regulator at the EPA responsible for ensuring that hazardous waste imported from Mexico is processed at facilities in Texas following government regulations. New information suggests that the volume of imported hazardous waste has changed, and that you will need to plan site visits to review the processing facilities. Your job is to examine recent reports to assess each company’s potential for negative environmental impacts. Further, community members have come forward with concerns they are at risk of exposure to hazardous waste, and this risk disproportionately impacts marginalized populations. <br><br>Given these needs and concerns, use the interactive map to <strong>rank the urgency you need to follow-up with site visits</strong> to each facility <strong>(1=most urgent, 7=least urgent)</strong>. Again, drag the company names (seen below) above and below each other to rank the urgency.<br><br>The factors that you will be analyzing to come to your decision are (in all cases, <strong>low = good and high = bad</strong>):<br><ol><li><strong>Waste in Kilograms</strong>: An increased volume of hazardous waste at a processing site generally increases the potential risk to the local community and environment, all other things considered.</li><li><strong>Percent non-white population</strong>: Environmental justice research shows that non-white communities may be more more burdened by hazardous waste facilities than white communities.</li><li><strong>Percent in poverty</strong>: Environmental justice research shows that poor communities may be more more burdened by hazardous waste facilities than wealthy communities.</li><li><strong>Air quality watches</strong>: Processing hazardous waste releases emissions that can negatively impact air quality. An air quality watch is issued whenever air quality reaches unsafe levels.</li><li><strong>Soil permeability</strong>: Processing hazardous waste releases toxins that can permeate the soil. The rate at which toxins penetrate into the landscape vary by soil type.</li></ol>",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "rank",
+								"items": [
+									{
+										"text": "AMLON INC."
+									},
+									{
+										"text": "CLEAN HARBORS INC."
+									},
+									{
+										"text": "EURECAT INC."
+									},
+									{
+										"text": "SAFETY-KLEEN"
+									},
+									{
+										"text": "SET INC."
+									},
+									{
+										"text": "U.S. ECOLOGY"
+									},
+									{
+										"text": "VEOLIA ENVIRONMENTAL"
+									}
+								]
+							}
+						}
+					],
+
+					"buttons": [
+						"next"
+					]
+				}
+			]
+		},
+		{
+			"page": 8,
+			"fullpage": false,
+			"timer": {
+				"remove": true
+			},
+			"timer": {
+				"persist": true
+			},
+			"sets": [
+				{
+					"blocks": [
+						{
+							"title": "Map Task",
+							"image": "img/kglegend.png",
+							"ask": "You are the manager of a newly opened Mexican firm looking to ship your by-product hazardous waste to processing facilities in Texas for disposal. The transnational shipment is due to waste volume needs that cannot be met in Mexico and economic benefits of Texas facilities. You are concerned about the impact on communities near the processing facilities, given recent news coverage over disproportionate risk to marginalized populations. Further, you want to send the hazardous waste to a processing facility that will handle it properly, otherwise your business could face scrutiny about negative environmental impacts. <br><br>Given these needs and concerns, <strong>rank your preference for doing business with</strong> the available Texas processing facilities using information from the interactive map <strong>(1=most preferred, 7=least preferred)</strong>. Again, drag the company names (seen below) above and below each other to rank your preference.<br><br>The factors that you will be analyzing to come to your decision are (in all cases, <strong>low = good and high = bad</strong>):<br><ol><li><strong>Waste in Kilograms</strong>: An increased volume of hazardous waste at a processing site generally increases the potential risk to the local community and environment, all other things considered.</li><li><strong>Percent non-white population</strong>: Environmental justice research shows that non-white communities may be more more burdened by hazardous waste facilities than white communities.</li><li><strong>Air quality watches</strong>: Processing hazardous waste releases emissions that can negatively impact air quality. An air quality watch is issued whenever air quality reaches unsafe levels.</li></ol>",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "rank",
+								"items": [
+									{
+										"text": "AMLON INC."
+									},
+									{
+										"text": "CLEAN HARBORS INC."
+									},
+									{
+										"text": "EURECAT INC."
+									},
+									{
+										"text": "SAFETY-KLEEN"
+									},
+									{
+										"text": "SET INC."
+									},
+									{
+										"text": "U.S. ECOLOGY"
+									},
+									{
+										"text": "VEOLIA ENVIRONMENTAL"
+									}
+								]
+							}
+						}
+					],
+					"buttons": [
+						"next"
+					]
+				}
+			]
+		},
+		{
+			"page": 9,
+			"fullpage": false,
+			"timer": {
+				"remove": true
+			},
+			"timer": {
+				"persist": true
+			},
+			"sets": [
+				{
+					"blocks": [
+						{
+							"title": "Map Task",
+							"image": "img/kglegend.png",
+							"ask": "You are a regulator at the EPA responsible for ensuring that hazardous waste imported from Canada is processed at facilities in Ohio following government regulations. New information suggests that the volume of imported hazardous waste has changed, and that you will need to plan site visits to review the processing facilities. Your job is to examine recent reports to assess each company’s potential for negative environmental impacts. Further, community members have come forward with concerns they are at risk of exposure to hazardous waste, and this risk disproportionately impacts marginalized populations. <br><br>Given these needs and concerns, use the interactive map to <strong>rank the urgency you need to follow-up with site visits</strong> to each facility <strong>(1=most urgent, 7=least urgent)</strong>. Again, drag the company names (seen below) above and below each other to rank the urgency.<br><br>The factors that you will be analyzing to come to your decision are (in all cases, <strong>low = good and high = bad</strong>):<br><ol><li><strong>Waste in Kilograms</strong>: An increased volume of hazardous waste at a processing site generally increases the potential risk to the local community and environment, all other things considered.</li><li><strong>Percent non-white population</strong>: Environmental justice research shows that non-white communities may be more more burdened by hazardous waste facilities than white communities.</li><li><strong>Percent in poverty</strong>: Environmental justice research shows that poor communities may be more more burdened by hazardous waste facilities than wealthy communities.</li><li><strong>Air quality watches</strong>: Processing hazardous waste releases emissions that can negatively impact air quality. An air quality watch is issued whenever air quality reaches unsafe levels.</li><li><strong>Soil permeability</strong>: Processing hazardous waste releases toxins that can permeate the soil. The rate at which toxins penetrate into the landscape vary by soil type.</li></ol>",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "rank",
+								"items": [
+									{
+										"text": "AMG VANADIUM"
+									},
+									{
+										"text": "CLEAN HARBORS INC."
+									},
+									{
+										"text": "CLEVELAND CORP."
+									},
+									{
+										"text": "ENVIRITE INC."
+									},
+									{
+										"text": "ROSS INCINERATION INC."
+									},
+									{
+										"text": "SPRING GROVE INC."
+									},
+									{
+										"text": "SYSTECH CORP."
+									}
+								]
+							}
+						}
+					],
+					"buttons": [
+						"next"
+					]
+				}
+			]
+		},
+		{
+			"page": 10,
+			"fullpage": false,
+			"timer": {
+				"remove": true
+			},
+			"timer": {
+				"persist": true
+			},
+			"sets": [
+				{
+					"blocks": [
+						{
+							"image": "img/kglegend.png",
+							"image2": "img/legend.png",
+							"title": "Map Task",
+							"ask": "You are the manager of a newly opened Canadian firm looking to ship your by-product hazardous waste to processing facilities in Ohio for disposal. The transnational shipment is due to waste volume needs that cannot be met in Canada and economic benefits of Ohio facilities. You are concerned about the impact on communities near the processing facilities, given recent news coverage over disproportionate risk to marginalized populations. Further, you want to send the hazardous waste to a processing facility that will handle it properly, otherwise your business could face scrutiny about negative environmental impacts. <br><br>Given these needs and concerns, <strong>rank your preference for doing business with</strong> the available Ohio processing facilities using information from the interactive map <strong>(1=most preferred, 7=least preferred)</strong>. Again, drag the company names (seen below) above and below each other to rank your preference.<br><br>The factors that you will be analyzing to come to your decision are (in all cases, <strong>low = good and high = bad</strong>):<br><ol><li><strong>Waste in Kilograms</strong>: An increased volume of hazardous waste at a processing site generally increases the potential risk to the local community and environment, all other things considered.</li><li><strong>Percent non-white population</strong>: Environmental justice research shows that non-white communities may be more more burdened by hazardous waste facilities than white communities.</li><li><strong>Air quality watches</strong>: Processing hazardous waste releases emissions that can negatively impact air quality. An air quality watch is issued whenever air quality reaches unsafe levels.</li></ol>",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "rank",
+								"items": [
+									{
+										"text": "AMG VANADIUM"
+									},
+									{
+										"text": "CLEAN HARBORS INC."
+									},
+									{
+										"text": "CLEVELAND CORP."
+									},
+									{
+										"text": "ENVIRITE INC."
+									},
+									{
+										"text": "ROSS INCINERATION INC."
+									},
+									{
+										"text": "SPRING GROVE INC."
+									},
+									{
+										"text": "SYSTECH CORP."
+									}
+								]
+							}
+						}
+					],
+					"buttons": [
+						"next"
+					]
+				}
+			]
+		},
+		{
+			"page": 11,
+			"fullpage": false,
+			"timer": {
+				"remove": true
+			},
+			"timer": {
+				"persist": true
+			},
+			"sets": [
+				{
+					"blocks": [
+						{
+							"image": "img/kglegend.png",
+							"image2": "img/legend.png",
+							"title": "Map Task",
+							"ask": "You are a regulator at the EPA responsible for ensuring that hazardous waste imported from Mexico is processed at facilities in Texas following government regulations. New information suggests that the volume of imported hazardous waste has changed, and that you will need to plan site visits to review the processing facilities. Your job is to examine recent reports to assess each company’s potential for negative environmental impacts. Further, community members have come forward with concerns they are at risk of exposure to hazardous waste, and this risk disproportionately impacts marginalized populations. <br><br>Given these needs and concerns, use the interactive map to <strong>rank the urgency you need to follow-up with site visits</strong> to each facility <strong>(1=most urgent, 7=least urgent)</strong>. Again, drag the company names (seen below) above and below each other to rank the urgency.<br><br>The factors that you will be analyzing to come to your decision are (in all cases, <strong>low = good and high = bad</strong>):<br><ol><li><strong>Waste in Kilograms</strong>: An increased volume of hazardous waste at a processing site generally increases the potential risk to the local community and environment, all other things considered.</li><li><strong>Percent non-white population</strong>: Environmental justice research shows that non-white communities may be more more burdened by hazardous waste facilities than white communities.</li><li><strong>Percent in poverty</strong>: Environmental justice research shows that poor communities may be more more burdened by hazardous waste facilities than wealthy communities.</li><li><strong>Air quality watches</strong>: Processing hazardous waste releases emissions that can negatively impact air quality. An air quality watch is issued whenever air quality reaches unsafe levels.</li><li><strong>Soil permeability</strong>: Processing hazardous waste releases toxins that can permeate the soil. The rate at which toxins penetrate into the landscape vary by soil type.</li></ol>",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "rank",
+								"items": [
+									{
+										"text": "AMLON INC."
+									},
+									{
+										"text": "CLEAN HARBORS INC."
+									},
+									{
+										"text": "EURECAT INC."
+									},
+									{
+										"text": "SAFETY-KLEEN"
+									},
+									{
+										"text": "SET INC."
+									},
+									{
+										"text": "U.S. ECOLOGY"
+									},
+									{
+										"text": "VEOLIA ENVIRONMENTAL"
+									}
+								]
+							}
+						}
+						],
+					"buttons": [
+						"next"
+					]
+				}
+			]
+		},
+		{
+			"page": 12,
+			"fullpage": false,
+			"timer": {
+				"remove": true
+			},
+			"timer": {
+				"persist": true
+			},
+			"sets": [
+				{
+					"blocks": [
+						{
+							"image": "img/kglegend.png",
+							"image2": "img/legend.png",
+							"title": "Map Task",
+							"ask": "You are the manager of a newly opened Mexican firm looking to ship your by-product hazardous waste to processing facilities in Texas for disposal. The transnational shipment is due to waste volume needs that cannot be met in Mexico and economic benefits of Texas facilities. You are concerned about the impact on communities near the processing facilities, given recent news coverage over disproportionate risk to marginalized populations. Further, you want to send the hazardous waste to a processing facility that will handle it properly, otherwise your business could face scrutiny about negative environmental impacts. <br><br>Given these needs and concerns, <strong>rank your preference for doing business with</strong> the available Texas processing facilities using information from the interactive map <strong>(1=most preferred, 7=least preferred)</strong>. Again, drag the company names (seen below) above and below each other to rank your preference.<br><br>The factors that you will be analyzing to come to your decision are (in all cases, <strong>low = good and high = bad</strong>):<br><ol><li><strong>Waste in Kilograms</strong>: An increased volume of hazardous waste at a processing site generally increases the potential risk to the local community and environment, all other things considered.</li><li><strong>Percent non-white population</strong>: Environmental justice research shows that non-white communities may be more more burdened by hazardous waste facilities than white communities.</li><li><strong>Air quality watches</strong>: Processing hazardous waste releases emissions that can negatively impact air quality. An air quality watch is issued whenever air quality reaches unsafe levels.</li></ol>",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "rank",
+								"items": [
+									{
+										"text": "AMLON INC."
+									},
+									{
+										"text": "CLEAN HARBORS INC."
+									},
+									{
+										"text": "EURECAT INC."
+									},
+									{
+										"text": "SAFETY-KLEEN"
+									},
+									{
+										"text": "SET INC."
+									},
+									{
+										"text": "U.S. ECOLOGY"
+									},
+									{
+										"text": "VEOLIA ENVIRONMENTAL"
+									}
+								]
+							}
+						}
+					],
+					"buttons": [
+						"next"
+					]
+				}
+			]
+		},
+		{
+			"page": 13,
+			"fullpage": false,
+			"timer": {
+				"remove": true
+			},
+			"timer": {
+				"persist": true
+			},
+			"sets": [
+				{
+					"blocks": [
+						{
+							"image": "img/kglegend.png",
+							"image2": "img/legend.png",
+							"title": "Map Task",
+							"ask": "You are a regulator at the EPA responsible for ensuring that hazardous waste imported from Canada is processed at facilities in Ohio following government regulations. New information suggests that the volume of imported hazardous waste has changed, and that you will need to plan site visits to review the processing facilities. Your job is to examine recent reports to assess each company’s potential for negative environmental impacts. Further, community members have come forward with concerns they are at risk of exposure to hazardous waste, and this risk disproportionately impacts marginalized populations. <br><br>Given these needs and concerns, use the interactive map to <strong>rank the urgency you need to follow-up with site visits</strong> to each facility <strong>(1=most urgent, 7=least urgent)</strong>. Again, drag the company names (seen below) above and below each other to rank the urgency.<br><br>The factors that you will be analyzing to come to your decision are (in all cases, <strong>low = good and high = bad</strong>):<br><ol><li><strong>Waste in Kilograms</strong>: An increased volume of hazardous waste at a processing site generally increases the potential risk to the local community and environment, all other things considered.</li><li><strong>Percent non-white population</strong>: Environmental justice research shows that non-white communities may be more more burdened by hazardous waste facilities than white communities.</li><li><strong>Percent in poverty</strong>: Environmental justice research shows that poor communities may be more more burdened by hazardous waste facilities than wealthy communities.</li><li><strong>Air quality watches</strong>: Processing hazardous waste releases emissions that can negatively impact air quality. An air quality watch is issued whenever air quality reaches unsafe levels.</li><li><strong>Soil permeability</strong>: Processing hazardous waste releases toxins that can permeate the soil. The rate at which toxins penetrate into the landscape vary by soil type.</li></ol>",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "rank",
+								"items": [
+									{
+										"text": "AMG VANADIUM"
+									},
+									{
+										"text": "CLEAN HARBORS INC."
+									},
+									{
+										"text": "CLEVELAND CORP."
+									},
+									{
+										"text": "ENVIRITE INC."
+									},
+									{
+										"text": "ROSS INCINERATION INC."
+									},
+									{
+										"text": "SPRING GROVE INC."
+									},
+									{
+										"text": "SYSTECH CORP."
+									}
+								]
+							}
+						}
+					],
+					"buttons": [
+						"next"
+					]
+				}
+			]
+		},
+		{
+			"page": 14,
+			"fullpage": true,
+			"timer": {
+				"remove": true
+			},
+				"sets": [
+					{
+						"blocks": [
+							{
+								"title": "*The survey is no longer being timed. Thank you for completing the decision and map tasks. Before completing the survey, we would like you to answer a set of background questions to capture your interests and experiences. The following background survey is divided across 2 pages.<br><br> Page 1 of 2: Exit Survey-Decision-Making"
+							},
+							{
+								"ask": "Rate the degree to which you agree with the following statements <strong> (1=strongly disagree, 5=strongly agree)</strong>:",
+								"input": {
+									"required": true,
+									"type": "matrix",
+									"items": [
+										{
+											"text": "The U.S. should trade hazardous waste."
+										},
+										{
+											"text": "Hazardous waste poses a threat to the environment."
+										},
+										{
+											"text": "Hazardous waste poses a threat to marginalized communities."
+										},
+										{
+											"text": "Hazardous waste presents an economic opportunity."
+										}
+									],
+									"options": [
+										{
+											"text": "1=strongly disagree"
+										},
+										{
+											"text": "2"
+										},
+										{
+											"text": "3"
+										},
+										{
+											"text": "4"
+										},
+										{
+											"text": "5=strongly agree"
+										}
+									]
+								}
+							},
+							{
+								"ask": "Rate the degree to which you agree with the following statements <strong>(1=strongly disagree, 5=strongly agree)</strong>:",
+								"input": {
+									"required": true,
+									"type": "matrix",
+									"items": [
+										{
+											"text": "People who know me would describe me as someone who generally doesn’t take risks."
+										},
+										{
+											"text": "People who know me would describe me as someone who makes decisions using facts and information."
+										},
+										{
+											"text": "People who know me would describe me as someone who makes decisions using impressions and feelings."
+										}
+									],
+									"options": [
+										{
+											"text": "1=strongly disagree"
+										},
+										{
+											"text": "2"
+										},
+										{
+											"text": "3"
+										},
+										{
+											"text": "4"
+										},
+										{
+											"text": "5=strongly agree"
+										}
+									]
+								}
+							},
+							{
+								"ask": "Rate the degree to which you agree with the following statements <strong>(1=strongly disagree, 5=strongly agree)</strong>:",
+								"input": {
+									"required": true,
+									"type": "matrix",
+									"items": [
+										{
+											"text": "I understood the map symbols."
+										},
+										{
+											"text": "I understood the map controls."
+										},
+										{
+											"text": "I understood the scenarios."
+										},
+										{
+											"text": "I understood what hazardous waste meant in the scenarios."
+										},
+										{
+											"text": "I understood what the hazardous waste trade was."
+										}
+									],
+									"options": [
+										{
+											"text": "1=strongly disagree"
+										},
+										{
+											"text": "2"
+										},
+										{
+											"text": "3"
+										},
+										{
+											"text": "4"
+										},
+										{
+											"text": "5=strongly agree"
+										}
+									]
+								}
+							},
+							{"ask":"Was anything confusing about the survey (e.g., introduction/instructions, map symbols, map controls, scenarios, topic of hazardous waste trade, decision rankings)? Briefly describe any points of confusion.",
+								"input": {
+									"required": false,
+									"autoadvance": false,
+									"type": "paragraph"
+								}
+							}
+						],
+						"buttons": [
+							"next"
+						]
+					}
+				]
+			},
+		{
+			"page": 15,
+			"fullpage": true,
+			"sets": [
+				{
+					"blocks": [
+						{
+							"title": "Page 2 of 2: Exit Survey-Biographic Information",
+							"ask": "What is your age?",
+							"input": {
+								"required": true,
+								"type": "text"
+							}
+						},
+						{
+							"ask": "What is your gender?",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "radios",
+								"options": [
+									{
+										"text": "Male"
+									},
+									{
+										"text": "Female"
+									},
+									{
+										"text": "Other"
+									}
+								]
+							}
+						},
+						{
+							"ask": "What state do you currently live in?",
+							"input": {
+								"required": true,
+								"type": "text"
+							}
+						},
+						{
+							"ask": "Have you ever lived in Texas or Ohio?",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "radios",
+								"options": [
+									{
+										"text": "Lived in Texas"
+									},
+									{
+										"text": "Lived in Ohio"
+									},
+									{
+										"text": "Lived in Both"
+									},
+									{
+										"text": "Lived in Neither"
+									}
+								]
+							}
+						},
+						{
+							"ask": "What is the highest degree you have received?",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "radios",
+								"options": [
+									{
+										"text": "PhD"
+									},
+									{
+										"text": "Master Degree"
+									},
+									{
+										"text": "Post-Bachelor Certificate"
+									},
+									{
+										"text": "Bachelor Degree"
+									},
+									{
+										"text": "Associate Degree"
+									},
+									{
+										"text": "High School Diploma/Equivalent"
+									}
+								]
+							}
+						},
+						{
+							"ask": "What field is your degree(s) in?",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "text"
+							}
+						},
+						{
+							"ask": "How much <i>experience</i> do you have with <strong>(1=no experience, 5=use or think about everyday)</strong>:",
+							"input": {
+								"required": true,
+								"type": "matrix",
+								"items": [
+									{
+										"text": "maps"
+									},
+									{
+										"text": "geography"
+									},
+									{
+										"text": "the hazardous waste trade"
+									},
+									{
+										"text": "computers"
+									},
+									{
+										"text": "the Internet"
+									}
+								],
+								"options": [
+									{
+										"text": "1=no experience"
+									},
+									{
+										"text": "2"
+									},
+									{
+										"text": "3"
+									},
+									{
+										"text": "4"
+									},
+									{
+										"text": "5=use or think about everyday"
+									}
+								]
+							}
+						},
+						{
+							"ask": "How <i>familiar</i> are you with <strong>(1=not at all familiar, 5=extremely familiar)</strong>:",
+							"input": {
+								"required": true,
+								"type": "matrix",
+								"items": [
+									{
+										"text": "maps"
+									},
+									{
+										"text": "geography"
+									},
+									{
+										"text": "the hazardous waste trade"
+									},
+									{
+										"text": "computers"
+									},
+									{
+										"text": "the Internet"
+									}
+								],
+								"options": [
+									{
+										"text": "1=not at all familiar"
+									},
+									{
+										"text": "2"
+									},
+									{
+										"text": "3"
+									},
+									{
+										"text": "4"
+									},
+									{
+										"text": "5=extremely familiar"
+									}
+								]
+							}
+						},
+						{
+							"ask": "Which of these best describes you?",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "radios",
+								"options": [
+									{
+										"text": "Professional working in the hazardous waste industry"
+									},
+									{
+										"text": "Graduate student studying hazardous waste"
+									},
+									{
+										"text": "Someone with some current or prior work with hazardous waste, including data processing or industry work"
+									},
+									{
+										"text": "Someone with no current or prior work with hazardous waste"
+									},
+									{
+										"text": "Other",
+										"value": "get from participant"
+									}
+								]
+							}
+						},
+						{
+							"ask": "What device did you complete this survey on?",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "radios",
+								"options": [
+									{
+										"text": "Desktop Computer"
+									},
+									{
+										"text": "Laptop Computer"
+									},
+									{
+										"text": "Tablet or Touchscreen Device"
+									},
+									{
+										"text": "Smartphone"
+									},
+									{
+										"text": "Other",
+										"value": "get from participant"
+									}
+								]
+							}
+						},
+						{
+							"ask": "What best describes the manner you interacted with the map and submitted your survey responses? ",
+							"input": {
+								"required": true,
+								"type": "radios",
+								"options": [
+									{
+										"text": "Touch Screen"
+									},
+									{
+										"text": "Touch Pad"
+									},
+									{
+										"text": "Mouse"
+									},
+									{
+										"text": "Other",
+										"value": "get from participant"
+									}
+								]
+							}
+						}
+					],
+
+					"buttons": [
 						"submit"
 					]
 				}
 			]
 		},
 		{
-			"page": 6,
+			"page": 16,
 			"fullpage": true,
 			"sets": [
 				{
 					"blocks": [
 						{
-							"title": "Page 6",
-							"ask": "Thank you for taking this survey. You really rock.",
-							"description": "Because this set has no buttons, the participant will not be able to navigate to a different part of the survey."
+							"title": "Thank you!",
+							"ask": "Thank you for taking the time to complete this survey. Your response has been recorded. To receive your payment, please email the following code to kvincent2@wisc.edu. </br></br><strong>Confirmation Code: 4Pg12Cx!</strong></br></br>We will send your payment via Paypal. If you need an alternate payment method, please email that information along with the confirmation code.</br></br>Please close your browser to exit."
 						}
+
+					],
+					"buttons": [
+					]
+				},
+				{
+					"buttons": [
 					]
 				}
 			]
+		},
+		{
+			"page": 17,
+			"fullpage": true,
+			"timer": {
+				"remove": true
+			},
+			"sets": [
+				{
+					"blocks": [
+						{
+							"image": "img/benchmark1.png",
+							"title": "Map Reading Tasks: 1 of 2",
+							"ask": "The static map below shows the distribution of hazardous waste imports in the United States (states included in your decision scenarios are removed). Use this map to respond to the following series of questions. <u>Your responses are timed</u>, so please complete the map reading tasks with your complete focus.<br><br><strong>Click 'Next' to begin the map reading tasks.</strong>",
+							"input": {
+							}
+						}],
+							"buttons": [
+									"next"
+								]
+							}]},
+		{
+			"page": 18,
+			"fullpage": true,
+			"timer": {
+				"remove": true
+			},
+			"sets": [
+						{
+							"blocks": [
+								{
+
+									"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+									"input": {
+										"required": true,
+										"type": "matrix",
+										"options": [
+											{
+												"text": "1=very easy"
+											},
+											{
+												"text": "2"
+											},
+											{
+												"text": "3"
+											},
+											{
+												"text": "4"
+											},
+											{
+												"text": "5=very difficult"
+											}
+										],
+										"items": [{}]
+									}
+								},
+								{
+									"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+									"input": {
+										"required": true,
+										"autoadvance": false,
+										"type": "matrix",
+										"options": [
+											{
+												"text": "1=not confident"
+											},
+											{
+												"text": "2"
+											},
+											{
+												"text": "3"
+											},
+											{
+												"text": "4"
+											},
+											{
+												"text": "5=very confident"
+											}
+										],
+										"items": [{}]
+									}
+								},
+								{
+
+									"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+									"input": {
+										"required": true,
+										"type": "matrix",
+										"items": [
+											{
+												"text": "Volume of Waste"
+											},
+											{
+												"text": "Air Quality"
+											},
+											{
+												"text": "% Non-white"
+											}
+										],
+										"options": [
+											{
+												"text": "1=I did not consider this criterion"
+											},
+											{
+												"text": "2"
+											},
+											{
+												"text": "3"
+											},
+											{
+												"text": "4"
+											},
+											{
+												"text": "5=I only considered this criterion"
+											}
+										]
+									}
+								},
+								{
+									"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+									"input": {
+										"required": true,
+										"type": "matrix",
+										"items": [
+											{
+												"text": "Zooming into the map"
+											},
+											{
+												"text": "Panning around the map"
+											},
+											{
+												"text": "Retrieving details about map features"
+											}
+										],
+										"options": [
+											{
+												"text": "1=not helpful"
+											},
+											{
+												"text": "2"
+											},
+											{
+												"text": "3"
+											},
+											{
+												"text": "4"
+											},
+											{
+												"text": "5=very helpful"
+											}
+										]
+									}
+								},
+								{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+									"input": {
+										"required": true,
+										"autoadvance": false,
+										"type": "paragraph"
+									}
+								}
+							],
+							"buttons": [
+									"next"
+								]
+							}]},
+							{
+								"page": 19,
+								"fullpage": true,
+								"timer": {
+									"remove": true
+								},
+								"sets": [
+											{
+												"blocks": [
+													{
+
+														"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+														"input": {
+															"required": true,
+															"type": "matrix",
+															"options": [
+																{
+																	"text": "1=very easy"
+																},
+																{
+																	"text": "2"
+																},
+																{
+																	"text": "3"
+																},
+																{
+																	"text": "4"
+																},
+																{
+																	"text": "5=very difficult"
+																}
+															],
+															"items": [{}]
+														}
+													},
+													{
+														"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+														"input": {
+															"required": true,
+															"autoadvance": false,
+															"type": "matrix",
+															"options": [
+																{
+																	"text": "1=not confident"
+																},
+																{
+																	"text": "2"
+																},
+																{
+																	"text": "3"
+																},
+																{
+																	"text": "4"
+																},
+																{
+																	"text": "5=very confident"
+																}
+															],
+															"items": [{}]
+														}
+													},
+													{
+
+														"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+														"input": {
+															"required": true,
+															"type": "matrix",
+															"items": [
+																{
+																	"text": "Volume of Waste"
+																},
+																{
+																	"text": "Air Quality"
+																},
+																{
+																	"text": "Soil Permeability"
+																},
+																{
+																	"text": "% in Poverty"
+																},
+																{
+																	"text": "% Non-white"
+																}
+															],
+															"options": [
+																{
+																	"text": "1=I did not consider this criterion"
+																},
+																{
+																	"text": "2"
+																},
+																{
+																	"text": "3"
+																},
+																{
+																	"text": "4"
+																},
+																{
+																	"text": "5=I only considered this criterion"
+																}
+															]
+														}
+													},
+													{
+														"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+														"input": {
+															"required": true,
+															"type": "matrix",
+															"items": [
+																{
+																	"text": "Zooming into the map"
+																},
+																{
+																	"text": "Panning around the map"
+																},
+																{
+																	"text": "Retrieving details about map features"
+																}
+															],
+															"options": [
+																{
+																	"text": "1=not helpful"
+																},
+																{
+																	"text": "2"
+																},
+																{
+																	"text": "3"
+																},
+																{
+																	"text": "4"
+																},
+																{
+																	"text": "5=very helpful"
+																}
+															]
+														}
+													},
+													{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+														"input": {
+															"required": true,
+															"autoadvance": false,
+															"type": "paragraph"
+														}
+													}
+												],
+												"buttons": [
+														"next"
+													]
+												}]},
+												{
+													"page": 20,
+													"fullpage": true,
+													"timer": {
+														"remove": true
+													},
+													"sets": [
+														{
+															"blocks": [
+																{
+																	"image": "img/benchmark2.png",
+																	"title": "Map Reading Tasks: 2 of 2",
+																	"ask": "The static map below shows the relative hazardous waste risks for the United States (states included in your decision scenarios are removed). Use this map to respond to the following series of questions. <u>Your responses are timed</u>, so please complete the map reading tasks with your complete focus.<br><br><strong>Click 'Next' below to begin the map reading tasks.</strong>",
+																	"input": {
+																	}
+																}],
+																	"buttons": [
+																			"next"
+																		]
+																	}]},
+																	{
+																		"page": 21,
+																		"fullpage": true,
+																		"timer": {
+																			"persist": true
+																		},
+																		"sets": [
+																							{
+																							"resetMap": true,
+																							"blocks":	[{
+																							"image": "img/benchmark2.png",
+																							"ask": "<strong>What is Arizona’s hazardous waste risk?</strong>",
+																							"input": {
+																								"required": true,
+																								"autoadvance": false,
+																								"type": "radios",
+																								"options": [
+																									{
+																										"text": "High"
+																									},
+																									{
+																										"text": "Medium"
+																									},
+																									{
+																										"text": "Low"
+																									},
+																									{
+																										"text": "Can't tell"
+																									}
+																								]
+																							}
+																							}],
+																							"buttons": [
+																									"next"
+																								]},
+																						{
+																						"resetMap": true,
+																						"blocks":	[{
+																						"image": "img/benchmark2.png",
+																						"ask": "<strong>Which state is at greater risk?</strong>",
+																						"input": {
+																							"required": true,
+																							"autoadvance": false,
+																							"type": "radios",
+																							"options": [
+																								{
+																									"text": "Michigan"
+																								},
+																								{
+																									"text": "Nebraska"
+																								},
+																								{
+																									"text": "They have equal risk levels."
+																								},
+																								{
+																									"text": "Can't tell"
+																								}
+																							]
+																						}
+																						}],
+																						"buttons": [
+																								"next"
+																							]},
+																						{
+																							"resetMap": true,
+																						"blocks":	[{
+																						"image": "img/benchmark2.png",
+																						"ask": "<strong>Which state has the greatest hazardous waste risk?</strong>",
+																						"input": {
+																							"required": true,
+																							"autoadvance": false,
+																							"autoadvance": false,
+																							"type": "radios",
+																							"options": [
+																									{
+																										"text": "Alabama"
+																									},
+																									{
+																										"text": "Michigan"
+																									},
+																									{
+																										"text": "Oregon"
+																									},
+																									{
+																										"text": "Can't tell"
+																									}
+																								],
+																							"items": [
+																								{
+
+																								}
+																							]
+																						}
+																					}
+																				],
+																				"buttons": [
+																						"next"
+																					]
+																			}
+																		]
+																	},
+																	{
+																		"page": 22,
+																		"fullpage": true,
+																		"timer": {
+																			"remove": true
+																		},
+																		"sets": [
+																					{
+																						"blocks": [
+																							{
+
+																								"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+																								"input": {
+																									"required": true,
+																									"type": "matrix",
+																									"options": [
+																										{
+																											"text": "1=very easy"
+																										},
+																										{
+																											"text": "2"
+																										},
+																										{
+																											"text": "3"
+																										},
+																										{
+																											"text": "4"
+																										},
+																										{
+																											"text": "5=very difficult"
+																										}
+																									],
+																									"items": [{}]
+																								}
+																							},
+																							{
+																								"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+																								"input": {
+																									"required": true,
+																									"autoadvance": false,
+																									"type": "matrix",
+																									"options": [
+																										{
+																											"text": "1=not confident"
+																										},
+																										{
+																											"text": "2"
+																										},
+																										{
+																											"text": "3"
+																										},
+																										{
+																											"text": "4"
+																										},
+																										{
+																											"text": "5=very confident"
+																										}
+																									],
+																									"items": [{}]
+																								}
+																							},
+																							{
+
+																								"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+																								"input": {
+																									"required": true,
+																									"type": "matrix",
+																									"items": [
+																										{
+																											"text": "Volume of Waste"
+																										},
+																										{
+																											"text": "Air Quality"
+																										},
+																										{
+																											"text": "Soil Permeability"
+																										},
+																										{
+																											"text": "% in Poverty"
+																										},
+																										{
+																											"text": "% Non-white"
+																										}
+																									],
+																									"options": [
+																										{
+																											"text": "1=I did not consider this criterion"
+																										},
+																										{
+																											"text": "2"
+																										},
+																										{
+																											"text": "3"
+																										},
+																										{
+																											"text": "4"
+																										},
+																										{
+																											"text": "5=I only considered this criterion"
+																										}
+																									]
+																								}
+																							},
+																							{
+																								"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+																								"input": {
+																									"required": true,
+																									"type": "matrix",
+																									"items": [
+																										{
+																											"text": "Zooming into the map"
+																										},
+																										{
+																											"text": "Panning around the map"
+																										},
+																										{
+																											"text": "Retrieving details about map features"
+																										}
+																									],
+																									"options": [
+																										{
+																											"text": "1=not helpful"
+																										},
+																										{
+																											"text": "2"
+																										},
+																										{
+																											"text": "3"
+																										},
+																										{
+																											"text": "4"
+																										},
+																										{
+																											"text": "5=very helpful"
+																										}
+																									]
+																								}
+																							},
+																							{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+																								"input": {
+																									"required": true,
+																									"autoadvance": false,
+																									"type": "paragraph"
+																								}
+																							}
+																						],
+																						"buttons": [
+																								"next"
+																							]
+																						}]},
+																						{
+																							"page": 23,
+																							"fullpage": true,
+																							"timer": {
+																								"remove": true
+																							},
+																							"sets": [
+																										{
+																											"blocks": [
+																												{
+
+																													"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+																													"input": {
+																														"required": true,
+																														"type": "matrix",
+																														"options": [
+																															{
+																																"text": "1=very easy"
+																															},
+																															{
+																																"text": "2"
+																															},
+																															{
+																																"text": "3"
+																															},
+																															{
+																																"text": "4"
+																															},
+																															{
+																																"text": "5=very difficult"
+																															}
+																														],
+																														"items": [{}]
+																													}
+																												},
+																												{
+																													"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+																													"input": {
+																														"required": true,
+																														"autoadvance": false,
+																														"type": "matrix",
+																														"options": [
+																															{
+																																"text": "1=not confident"
+																															},
+																															{
+																																"text": "2"
+																															},
+																															{
+																																"text": "3"
+																															},
+																															{
+																																"text": "4"
+																															},
+																															{
+																																"text": "5=very confident"
+																															}
+																														],
+																														"items": [{}]
+																													}
+																												},
+																												{
+
+																													"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+																													"input": {
+																														"required": true,
+																														"type": "matrix",
+																														"items": [
+																															{
+																																"text": "Volume of Waste"
+																															},
+																															{
+																																"text": "Air Quality"
+																															},
+																															{
+																																"text": "% Non-white"
+																															}
+																														],
+																														"options": [
+																															{
+																																"text": "1=I did not consider this criterion"
+																															},
+																															{
+																																"text": "2"
+																															},
+																															{
+																																"text": "3"
+																															},
+																															{
+																																"text": "4"
+																															},
+																															{
+																																"text": "5=I only considered this criterion"
+																															}
+																														]
+																													}
+																												},
+																												{
+																													"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+																													"input": {
+																														"required": true,
+																														"type": "matrix",
+																														"items": [
+																															{
+																																"text": "Zooming into the map"
+																															},
+																															{
+																																"text": "Panning around the map"
+																															},
+																															{
+																																"text": "Retrieving details about map features"
+																															}
+																														],
+																														"options": [
+																															{
+																																"text": "1=not helpful"
+																															},
+																															{
+																																"text": "2"
+																															},
+																															{
+																																"text": "3"
+																															},
+																															{
+																																"text": "4"
+																															},
+																															{
+																																"text": "5=very helpful"
+																															}
+																														]
+																													}
+																												},
+																												{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+																													"input": {
+																														"required": true,
+																														"autoadvance": false,
+																														"type": "paragraph"
+																													}
+																												}
+																											],
+																											"buttons": [
+																													"next"
+																												]
+																											}]},
+																											{
+																												"page": 24,
+																												"fullpage": true,
+																												"timer": {
+																													"remove": true
+																												},
+																												"sets": [
+																															{
+																																"blocks": [
+																																	{
+
+																																		"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+																																		"input": {
+																																			"required": true,
+																																			"type": "matrix",
+																																			"options": [
+																																				{
+																																					"text": "1=very easy"
+																																				},
+																																				{
+																																					"text": "2"
+																																				},
+																																				{
+																																					"text": "3"
+																																				},
+																																				{
+																																					"text": "4"
+																																				},
+																																				{
+																																					"text": "5=very difficult"
+																																				}
+																																			],
+																																			"items": [{}]
+																																		}
+																																	},
+																																	{
+																																		"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+																																		"input": {
+																																			"required": true,
+																																			"autoadvance": false,
+																																			"type": "matrix",
+																																			"options": [
+																																				{
+																																					"text": "1=not confident"
+																																				},
+																																				{
+																																					"text": "2"
+																																				},
+																																				{
+																																					"text": "3"
+																																				},
+																																				{
+																																					"text": "4"
+																																				},
+																																				{
+																																					"text": "5=very confident"
+																																				}
+																																			],
+																																			"items": [{}]
+																																		}
+																																	},
+																																	{
+
+																																		"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+																																		"input": {
+																																			"required": true,
+																																			"type": "matrix",
+																																			"items": [
+																																				{
+																																					"text": "Volume of Waste"
+																																				},
+																																				{
+																																					"text": "Air Quality"
+																																				},
+																																				{
+																																					"text": "% Non-white"
+																																				}
+																																			],
+																																			"options": [
+																																				{
+																																					"text": "1=I did not consider this criterion"
+																																				},
+																																				{
+																																					"text": "2"
+																																				},
+																																				{
+																																					"text": "3"
+																																				},
+																																				{
+																																					"text": "4"
+																																				},
+																																				{
+																																					"text": "5=I only considered this criterion"
+																																				}
+																																			]
+																																		}
+																																	},
+																																	{
+																																		"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+																																		"input": {
+																																			"required": true,
+																																			"type": "matrix",
+																																			"items": [
+																																				{
+																																					"text": "Zooming into the map"
+																																				},
+																																				{
+																																					"text": "Panning around the map"
+																																				},
+																																				{
+																																					"text": "Retrieving details about map features"
+																																				}
+																																			],
+																																			"options": [
+																																				{
+																																					"text": "1=not helpful"
+																																				},
+																																				{
+																																					"text": "2"
+																																				},
+																																				{
+																																					"text": "3"
+																																				},
+																																				{
+																																					"text": "4"
+																																				},
+																																				{
+																																					"text": "5=very helpful"
+																																				}
+																																			]
+																																		}
+																																	},
+																																	{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+																																		"input": {
+																																			"required": true,
+																																			"autoadvance": false,
+																																			"type": "paragraph"
+																																		}
+																																	}
+																																],
+																																"buttons": [
+																																		"next"
+																																	]
+																																}]},
+																																{
+																																	"page": 25,
+																																	"fullpage": true,
+																																	"timer": {
+																																		"remove": true
+																																	},
+																																	"sets": [
+																																				{
+																																					"blocks": [
+																																						{
+
+																																							"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+																																							"input": {
+																																								"required": true,
+																																								"type": "matrix",
+																																								"options": [
+																																									{
+																																										"text": "1=very easy"
+																																									},
+																																									{
+																																										"text": "2"
+																																									},
+																																									{
+																																										"text": "3"
+																																									},
+																																									{
+																																										"text": "4"
+																																									},
+																																									{
+																																										"text": "5=very difficult"
+																																									}
+																																								],
+																																								"items": [{}]
+																																							}
+																																						},
+																																						{
+																																							"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+																																							"input": {
+																																								"required": true,
+																																								"autoadvance": false,
+																																								"type": "matrix",
+																																								"options": [
+																																									{
+																																										"text": "1=not confident"
+																																									},
+																																									{
+																																										"text": "2"
+																																									},
+																																									{
+																																										"text": "3"
+																																									},
+																																									{
+																																										"text": "4"
+																																									},
+																																									{
+																																										"text": "5=very confident"
+																																									}
+																																								],
+																																								"items": [{}]
+																																							}
+																																						},
+																																						{
+
+																																							"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+																																							"input": {
+																																								"required": true,
+																																								"type": "matrix",
+																																								"items": [
+																																									{
+																																										"text": "Volume of Waste"
+																																									},
+																																									{
+																																										"text": "Air Quality"
+																																									},
+																																									{
+																																										"text": "Soil Permeability"
+																																									},
+																																									{
+																																										"text": "% in Poverty"
+																																									},
+																																									{
+																																										"text": "% Non-white"
+																																									}
+																																								],
+																																								"options": [
+																																									{
+																																										"text": "1=I did not consider this criterion"
+																																									},
+																																									{
+																																										"text": "2"
+																																									},
+																																									{
+																																										"text": "3"
+																																									},
+																																									{
+																																										"text": "4"
+																																									},
+																																									{
+																																										"text": "5=I only considered this criterion"
+																																									}
+																																								]
+																																							}
+																																						},
+																	{
+																		"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+																		"input": {
+																			"required": true,
+																			"type": "matrix",
+																			"items": [
+																				{
+																					"text": "Zooming into the map"
+																				},
+																			{
+																				"text": "Panning around the map"
+																			},
+																			{
+																				"text": "Retrieving details about map features"
+																			}
+																		],
+																		"options": [
+																			{
+																				"text": "1=not helpful"
+																			},
+																			{
+																				"text": "2"
+																			},
+																			{
+																				"text": "3"
+																			},
+																			{
+																				"text": "4"
+																			},
+																			{
+																				"text": "5=very helpful"
+																			}
+																		]
+																	}
+																},
+																{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+																	"input": {
+																		"required": true,
+																		"autoadvance": false,
+																		"type": "paragraph"
+																	}
+																}
+															],
+															"buttons": [
+																	"next"
+																]
+															}]},
+															{
+																"page": 26,
+																"fullpage": true,
+																"timer": {
+																	"remove": true
+																},
+																"sets": [
+																			{
+																				"blocks": [
+																					{
+
+																						"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+																						"input": {
+																							"required": true,
+																							"type": "matrix",
+																							"options": [
+																								{
+																									"text": "1=very easy"
+																								},
+																								{
+																									"text": "2"
+																								},
+																								{
+																									"text": "3"
+																								},
+																								{
+																									"text": "4"
+																								},
+																								{
+																									"text": "5=very difficult"
+																								}
+																							],
+																							"items": [{}]
+																						}
+																					},
+																					{
+																						"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+																						"input": {
+																							"required": true,
+																							"autoadvance": false,
+																							"type": "matrix",
+																							"options": [
+																								{
+																									"text": "1=not confident"
+																								},
+																								{
+																									"text": "2"
+																								},
+																								{
+																									"text": "3"
+																								},
+																								{
+																									"text": "4"
+																								},
+																								{
+																									"text": "5=very confident"
+																								}
+																							],
+																							"items": [{}]
+																						}
+																					},
+																					{
+
+																						"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+																						"input": {
+																							"required": true,
+																							"type": "matrix",
+																							"items": [
+																								{
+																									"text": "Volume of Waste"
+																								},
+																								{
+																									"text": "Air Quality"
+																								},
+																								{
+																									"text": "Soil Permeability"
+																								},
+																								{
+																									"text": "% in Poverty"
+																								},
+																								{
+																									"text": "% Non-white"
+																								}
+																							],
+																							"options": [
+																								{
+																									"text": "1=I did not consider this criterion"
+																								},
+																								{
+																									"text": "2"
+																								},
+																								{
+																									"text": "3"
+																								},
+																								{
+																									"text": "4"
+																								},
+																								{
+																									"text": "5=I only considered this criterion"
+																								}
+																							]
+																						}
+																					},
+{
+	"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+	"input": {
+		"required": true,
+		"type": "matrix",
+		"items": [
+			{
+				"text": "Zooming into the map"
+			},
+		{
+			"text": "Panning around the map"
+		},
+		{
+			"text": "Retrieving details about map features"
 		}
+	],
+	"options": [
+		{
+			"text": "1=not helpful"
+		},
+		{
+			"text": "2"
+		},
+		{
+			"text": "3"
+		},
+		{
+			"text": "4"
+		},
+		{
+			"text": "5=very helpful"
+		}
+	]
+}
+},
+{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+"input": {
+	"required": true,
+	"autoadvance": false,
+	"type": "paragraph"
+}
+}
+],
+"buttons": [
+"next"
+]
+}]},
+{
+	"page": 27,
+	"fullpage": true,
+	"timer": {
+		"remove": true
+	},
+	"sets": [
+				{
+					"blocks": [
+						{
+
+							"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+							"input": {
+								"required": true,
+								"type": "matrix",
+								"options": [
+									{
+										"text": "1=very easy"
+									},
+									{
+										"text": "2"
+									},
+									{
+										"text": "3"
+									},
+									{
+										"text": "4"
+									},
+									{
+										"text": "5=very difficult"
+									}
+								],
+								"items": [{}]
+							}
+						},
+						{
+							"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+							"input": {
+								"required": true,
+								"autoadvance": false,
+								"type": "matrix",
+								"options": [
+									{
+										"text": "1=not confident"
+									},
+									{
+										"text": "2"
+									},
+									{
+										"text": "3"
+									},
+									{
+										"text": "4"
+									},
+									{
+										"text": "5=very confident"
+									}
+								],
+								"items": [{}]
+							}
+						},
+						{
+
+							"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+							"input": {
+								"required": true,
+								"type": "matrix",
+								"items": [
+									{
+										"text": "Volume of Waste"
+									},
+									{
+										"text": "Air Quality"
+									},
+									{
+										"text": "% Non-white"
+									}
+								],
+								"options": [
+									{
+										"text": "1=I did not consider this criterion"
+									},
+									{
+										"text": "2"
+									},
+									{
+										"text": "3"
+									},
+									{
+										"text": "4"
+									},
+									{
+										"text": "5=I only considered this criterion"
+									}
+								]
+							}
+						},
+							{
+							"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+							"input": {
+							"required": true,
+							"type": "matrix",
+							"items": [
+							{
+							"text": "Zooming into the map"
+							},
+							{
+							"text": "Panning around the map"
+							},
+							{
+							"text": "Retrieving details about map features"
+							}
+							],
+							"options": [
+							{
+							"text": "1=not helpful"
+							},
+							{
+							"text": "2"
+							},
+							{
+							"text": "3"
+							},
+							{
+							"text": "4"
+							},
+							{
+							"text": "5=very helpful"
+							}
+							]
+							}
+							},
+							{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+							"input": {
+							"required": true,
+							"autoadvance": false,
+							"type": "paragraph"
+							}
+							}
+							],
+							"buttons": [
+							"next"
+							]
+							}]},
+							{
+								"page": 28,
+								"fullpage": true,
+								"timer": {
+									"remove": true
+								},
+								"sets": [
+											{
+												"blocks": [
+													{
+
+														"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+														"input": {
+															"required": true,
+															"type": "matrix",
+															"options": [
+																{
+																	"text": "1=very easy"
+																},
+																{
+																	"text": "2"
+																},
+																{
+																	"text": "3"
+																},
+																{
+																	"text": "4"
+																},
+																{
+																	"text": "5=very difficult"
+																}
+															],
+															"items": [{}]
+														}
+													},
+													{
+														"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+														"input": {
+															"required": true,
+															"autoadvance": false,
+															"type": "matrix",
+															"options": [
+																{
+																	"text": "1=not confident"
+																},
+																{
+																	"text": "2"
+																},
+																{
+																	"text": "3"
+																},
+																{
+																	"text": "4"
+																},
+																{
+																	"text": "5=very confident"
+																}
+															],
+															"items": [{}]
+														}
+													},
+													{
+
+														"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+														"input": {
+															"required": true,
+															"type": "matrix",
+															"items": [
+																{
+																	"text": "Volume of Waste"
+																},
+																{
+																	"text": "Air Quality"
+																},
+																{
+																	"text": "% Non-white"
+																}
+															],
+															"options": [
+																{
+																	"text": "1=I did not consider this criterion"
+																},
+																{
+																	"text": "2"
+																},
+																{
+																	"text": "3"
+																},
+																{
+																	"text": "4"
+																},
+																{
+																	"text": "5=I only considered this criterion"
+																}
+															]
+														}
+													},
+														{
+														"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+														"input": {
+														"required": true,
+														"type": "matrix",
+														"items": [
+														{
+														"text": "Zooming into the map"
+														},
+														{
+														"text": "Panning around the map"
+														},
+														{
+														"text": "Retrieving details about map features"
+													},
+													{
+													"text": "Overlaying additional map information"
+												},
+												{
+												"text": "Filtering map information"
+												}
+														],
+														"options": [
+														{
+														"text": "1=not helpful"
+														},
+														{
+														"text": "2"
+														},
+														{
+														"text": "3"
+														},
+														{
+														"text": "4"
+														},
+														{
+														"text": "5=very helpful"
+														}
+														]
+														}
+														},
+														{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+														"input": {
+														"required": true,
+														"autoadvance": false,
+														"type": "paragraph"
+														}
+														}
+														],
+														"buttons": [
+														"next"
+														]
+														}]},
+														{
+															"page": 29,
+															"fullpage": true,
+															"timer": {
+																"remove": true
+															},
+															"sets": [
+																		{
+																			"blocks": [
+																				{
+
+																					"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+																					"input": {
+																						"required": true,
+																						"type": "matrix",
+																						"options": [
+																							{
+																								"text": "1=very easy"
+																							},
+																							{
+																								"text": "2"
+																							},
+																							{
+																								"text": "3"
+																							},
+																							{
+																								"text": "4"
+																							},
+																							{
+																								"text": "5=very difficult"
+																							}
+																						],
+																						"items": [{}]
+																					}
+																				},
+																				{
+																					"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+																					"input": {
+																						"required": true,
+																						"autoadvance": false,
+																						"type": "matrix",
+																						"options": [
+																							{
+																								"text": "1=not confident"
+																							},
+																							{
+																								"text": "2"
+																							},
+																							{
+																								"text": "3"
+																							},
+																							{
+																								"text": "4"
+																							},
+																							{
+																								"text": "5=very confident"
+																							}
+																						],
+																						"items": [{}]
+																					}
+																				},
+																				{
+
+																					"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+																					"input": {
+																						"required": true,
+																						"type": "matrix",
+																						"items": [
+																							{
+																								"text": "Volume of Waste"
+																							},
+																							{
+																								"text": "Air Quality"
+																							},
+																							{
+																								"text": "Soil Permeability"
+																							},
+																							{
+																								"text": "% in Poverty"
+																							},
+																							{
+																								"text": "% Non-white"
+																							}
+																						],
+																						"options": [
+																							{
+																								"text": "1=I did not consider this criterion"
+																							},
+																							{
+																								"text": "2"
+																							},
+																							{
+																								"text": "3"
+																							},
+																							{
+																								"text": "4"
+																							},
+																							{
+																								"text": "5=I only considered this criterion"
+																							}
+																						]
+																					}
+																				},
+																					{
+																					"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+																					"input": {
+																					"required": true,
+																					"type": "matrix",
+																					"items": [
+																					{
+																					"text": "Zooming into the map"
+																					},
+																					{
+																					"text": "Panning around the map"
+																					},
+																					{
+																					"text": "Retrieving details about map features"
+																				},
+																				{
+																				"text": "Overlaying additional map information"
+																			},
+																			{
+																			"text": "Filtering map information"
+																		}
+																					],
+																					"options": [
+																					{
+																					"text": "1=not helpful"
+																					},
+																					{
+																					"text": "2"
+																					},
+																					{
+																					"text": "3"
+																					},
+																					{
+																					"text": "4"
+																					},
+																					{
+																					"text": "5=very helpful"
+																					}
+																					]
+																					}
+																					},
+																					{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+																					"input": {
+																					"required": true,
+																					"autoadvance": false,
+																					"type": "paragraph"
+																					}
+																					}
+																					],
+																					"buttons": [
+																					"next"
+																					]
+																					}]},
+																					{
+																						"page": 30,
+																						"fullpage": true,
+																						"timer": {
+																							"remove": true
+																						},
+																						"sets": [
+																									{
+																										"blocks": [
+																											{
+
+																												"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+																												"input": {
+																													"required": true,
+																													"type": "matrix",
+																													"options": [
+																														{
+																															"text": "1=very easy"
+																														},
+																														{
+																															"text": "2"
+																														},
+																														{
+																															"text": "3"
+																														},
+																														{
+																															"text": "4"
+																														},
+																														{
+																															"text": "5=very difficult"
+																														}
+																													],
+																													"items": [{}]
+																												}
+																											},
+																											{
+																												"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+																												"input": {
+																													"required": true,
+																													"autoadvance": false,
+																													"type": "matrix",
+																													"options": [
+																														{
+																															"text": "1=not confident"
+																														},
+																														{
+																															"text": "2"
+																														},
+																														{
+																															"text": "3"
+																														},
+																														{
+																															"text": "4"
+																														},
+																														{
+																															"text": "5=very confident"
+																														}
+																													],
+																													"items": [{}]
+																												}
+																											},
+																											{
+
+																												"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+																												"input": {
+																													"required": true,
+																													"type": "matrix",
+																													"items": [
+																														{
+																															"text": "Volume of Waste"
+																														},
+																														{
+																															"text": "Air Quality"
+																														},
+																														{
+																															"text": "Soil Permeability"
+																														},
+																														{
+																															"text": "% in Poverty"
+																														},
+																														{
+																															"text": "% Non-white"
+																														}
+																													],
+																													"options": [
+																														{
+																															"text": "1=I did not consider this criterion"
+																														},
+																														{
+																															"text": "2"
+																														},
+																														{
+																															"text": "3"
+																														},
+																														{
+																															"text": "4"
+																														},
+																														{
+																															"text": "5=I only considered this criterion"
+																														}
+																													]
+																												}
+																											},
+																												{
+																												"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+																												"input": {
+																												"required": true,
+																												"type": "matrix",
+																												"items": [
+																												{
+																												"text": "Zooming into the map"
+																												},
+																												{
+																												"text": "Panning around the map"
+																												},
+																												{
+																												"text": "Retrieving details about map features"
+																											},
+																											{
+																											"text": "Overlaying additional map information"
+																										},
+																										{
+																										"text": "Filtering map information"
+																									}
+																												],
+																												"options": [
+																												{
+																												"text": "1=not helpful"
+																												},
+																												{
+																												"text": "2"
+																												},
+																												{
+																												"text": "3"
+																												},
+																												{
+																												"text": "4"
+																												},
+																												{
+																												"text": "5=very helpful"
+																												}
+																												]
+																												}
+																												},
+																												{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+																												"input": {
+																												"required": true,
+																												"autoadvance": false,
+																												"type": "paragraph"
+																												}
+																												}
+																												],
+																												"buttons": [
+																												"next"
+																												]
+																												}]},
+																												{
+																													"page": 31,
+																													"fullpage": true,
+																													"timer": {
+																														"remove": true
+																													},
+																													"sets": [
+																																{
+																																	"blocks": [
+																																		{
+
+																																			"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+																																			"input": {
+																																				"required": true,
+																																				"type": "matrix",
+																																				"options": [
+																																					{
+																																						"text": "1=very easy"
+																																					},
+																																					{
+																																						"text": "2"
+																																					},
+																																					{
+																																						"text": "3"
+																																					},
+																																					{
+																																						"text": "4"
+																																					},
+																																					{
+																																						"text": "5=very difficult"
+																																					}
+																																				],
+																																				"items": [{}]
+																																			}
+																																		},
+																																		{
+																																			"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+																																			"input": {
+																																				"required": true,
+																																				"autoadvance": false,
+																																				"type": "matrix",
+																																				"options": [
+																																					{
+																																						"text": "1=not confident"
+																																					},
+																																					{
+																																						"text": "2"
+																																					},
+																																					{
+																																						"text": "3"
+																																					},
+																																					{
+																																						"text": "4"
+																																					},
+																																					{
+																																						"text": "5=very confident"
+																																					}
+																																				],
+																																				"items": [{}]
+																																			}
+																																		},
+																																		{
+
+																																			"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+																																			"input": {
+																																				"required": true,
+																																				"type": "matrix",
+																																				"items": [
+																																					{
+																																						"text": "Volume of Waste"
+																																					},
+																																					{
+																																						"text": "Air Quality"
+																																					},
+																																					{
+																																						"text": "% Non-white"
+																																					}
+																																				],
+																																				"options": [
+																																					{
+																																						"text": "1=I did not consider this criterion"
+																																					},
+																																					{
+																																						"text": "2"
+																																					},
+																																					{
+																																						"text": "3"
+																																					},
+																																					{
+																																						"text": "4"
+																																					},
+																																					{
+																																						"text": "5=I only considered this criterion"
+																																					}
+																																				]
+																																			}
+																																		},
+																																			{
+																																			"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+																																			"input": {
+																																			"required": true,
+																																			"type": "matrix",
+																																			"items": [
+																																			{
+																																			"text": "Zooming into the map"
+																																			},
+																																			{
+																																			"text": "Panning around the map"
+																																			},
+																																			{
+																																			"text": "Retrieving details about map features"
+																																		},
+																																		{
+																																		"text": "Overlaying additional map information"
+																																	},
+																																	{
+																																	"text": "Filtering map information"
+																																}
+																																			],
+																																			"options": [
+																																			{
+																																			"text": "1=not helpful"
+																																			},
+																																			{
+																																			"text": "2"
+																																			},
+																																			{
+																																			"text": "3"
+																																			},
+																																			{
+																																			"text": "4"
+																																			},
+																																			{
+																																			"text": "5=very helpful"
+																																			}
+																																			]
+																																			}
+																																			},
+																																			{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+																																			"input": {
+																																			"required": true,
+																																			"autoadvance": false,
+																																			"type": "paragraph"
+																																			}
+																																			}
+																																			],
+																																			"buttons": [
+																																			"next"
+																																			]
+																																			}]},
+						{
+							"page": 32,
+							"fullpage": true,
+							"timer": {
+								"remove": true
+							},
+							"sets": [
+										{
+											"blocks": [
+												{
+
+													"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+													"input": {
+														"required": true,
+														"type": "matrix",
+														"options": [
+															{
+																"text": "1=very easy"
+															},
+															{
+																"text": "2"
+															},
+															{
+																"text": "3"
+															},
+															{
+																"text": "4"
+															},
+															{
+																"text": "5=very difficult"
+															}
+														],
+														"items": [{}]
+													}
+												},
+												{
+													"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+													"input": {
+														"required": true,
+														"autoadvance": false,
+														"type": "matrix",
+														"options": [
+															{
+																"text": "1=not confident"
+															},
+															{
+																"text": "2"
+															},
+															{
+																"text": "3"
+															},
+															{
+																"text": "4"
+															},
+															{
+																"text": "5=very confident"
+															}
+														],
+														"items": [{}]
+													}
+												},
+												{
+
+													"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+													"input": {
+														"required": true,
+														"type": "matrix",
+														"items": [
+															{
+																"text": "Volume of Waste"
+															},
+															{
+																"text": "Air Quality"
+															},
+															{
+																"text": "% Non-white"
+															}
+														],
+														"options": [
+															{
+																"text": "1=I did not consider this criterion"
+															},
+															{
+																"text": "2"
+															},
+															{
+																"text": "3"
+															},
+															{
+																"text": "4"
+															},
+															{
+																"text": "5=I only considered this criterion"
+															}
+														]
+													}
+												},
+													{
+													"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+													"input": {
+													"required": true,
+													"type": "matrix",
+													"items": [
+													{
+													"text": "Zooming into the map"
+													},
+													{
+													"text": "Panning around the map"
+													},
+													{
+													"text": "Retrieving details about map features"
+												},
+												{
+												"text": "Overlaying additional map information"
+											},
+											{
+											"text": "Filtering map information"
+										}
+													],
+													"options": [
+													{
+													"text": "1=not helpful"
+													},
+													{
+													"text": "2"
+													},
+													{
+													"text": "3"
+													},
+													{
+													"text": "4"
+													},
+													{
+													"text": "5=very helpful"
+													}
+													]
+													}
+													},
+													{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+													"input": {
+													"required": true,
+													"autoadvance": false,
+													"type": "paragraph"
+													}
+													}
+													],
+													"buttons": [
+													"next"
+													]
+													}]},
+													{
+														"page": 33,
+														"fullpage": true,
+														"timer": {
+															"remove": true
+														},
+														"sets": [
+																	{
+																		"blocks": [
+																			{
+
+																				"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+																				"input": {
+																					"required": true,
+																					"type": "matrix",
+																					"options": [
+																						{
+																																																				"text": "1=very easy"
+																																																			},
+																																																			{
+																																																				"text": "2"
+																																																			},
+																																																			{
+																																																				"text": "3"
+																																																			},
+																																																			{
+																																																				"text": "4"
+																																																			},
+																																																			{
+																																																				"text": "5=very difficult"
+																																																			}
+					],
+					"items": [{}]
+				}
+			},
+			{
+				"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+				"input": {
+					"required": true,
+					"autoadvance": false,
+					"type": "matrix",
+					"options": [
+																																																			{
+																																																				"text": "1=not confident"
+																																																			},
+																																																			{
+																																																				"text": "2"
+																																																			},
+																																																			{
+																																																				"text": "3"
+																																																			},
+																																																			{
+																																																				"text": "4"
+																																																			},
+																																																			{
+																																																				"text": "5=very confident"
+																																																			}
+		],
+		"items": [{}]
+	}
+},
+{
+
+	"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+	"input": {
+		"required": true,
+		"type": "matrix",
+		"items": [
+			{
+				"text": "Volume of Waste"
+			},
+			{
+				"text": "Air Quality"
+			},
+			{
+				"text": "Soil Permeability"
+			},
+			{
+				"text": "% in Poverty"
+			},
+			{
+				"text": "% Non-white"
+			}
+	],
+	"options": [
+																																																			{
+																																																				"text": "1=I did not consider this criterion"
+																																																			},
+																																																			{
+																																																				"text": "2"
+																																																			},
+																																																			{
+																																																				"text": "3"
+																																																			},
+																																																			{
+																																																				"text": "4"
+																																																			},
+																																																			{
+																																																				"text": "5=I only considered this criterion"
+																																																			}
+]
+}
+},
+{
+"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+"input": {
+"required": true,
+"type": "matrix",
+"items": [
+{
+"text": "Zooming into the map"
+},
+{
+"text": "Panning around the map"
+},
+{
+"text": "Retrieving details about map features"
+},
+{
+"text": "Overlaying additional map information"
+},
+{
+"text": "Filtering map information"
+}
+],
+"options": [
+{
+"text": "1=not helpful"
+},
+{
+"text": "2"
+},
+{
+"text": "3"
+},
+{
+"text": "4"
+},
+{
+"text": "5=very helpful"
+}
+]
+}
+},
+{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+"input": {
+"required": true,
+"autoadvance": false,
+"type": "paragraph"
+}
+}
+],
+"buttons": [
+"next"
+]
+}]},
+{
+	"page": 34,
+	"fullpage": true,
+	"timer": {
+		"remove": true
+	},
+	"sets": [
+				{
+					"blocks": [
+						{
+
+							"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+							"input": {
+								"required": true,
+								"type": "matrix",
+								"options": [
+									{
+																																							"text": "1=very easy"
+																																						},
+																																						{
+																																							"text": "2"
+																																						},
+																																						{
+																																							"text": "3"
+																																						},
+																																						{
+																																							"text": "4"
+																																						},
+																																						{
+																																							"text": "5=very difficult"
+																																						}
+],
+"items": [{}]
+}
+},
+{
+"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+"input": {
+"required": true,
+"autoadvance": false,
+"type": "matrix",
+"options": [
+																																						{
+																																							"text": "1=not confident"
+																																						},
+																																						{
+																																							"text": "2"
+																																						},
+																																						{
+																																							"text": "3"
+																																						},
+																																						{
+																																							"text": "4"
+																																						},
+																																						{
+																																							"text": "5=very confident"
+																																						}
+],
+"items": [{}]
+}
+},
+{
+
+"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+"input": {
+"required": true,
+"type": "matrix",
+"items": [
+{
+"text": "Volume of Waste"
+},
+{
+"text": "Air Quality"
+},
+{
+"text": "Soil Permeability"
+},
+{
+"text": "% in Poverty"
+},
+{
+"text": "% Non-white"
+}
+],
+"options": [
+																																						{
+																																							"text": "1=I did not consider this criterion"
+																																						},
+																																						{
+																																							"text": "2"
+																																						},
+																																						{
+																																							"text": "3"
+																																						},
+																																						{
+																																							"text": "4"
+																																						},
+																																						{
+																																							"text": "5=I only considered this criterion"
+																																						}
+]
+}
+},
+{
+"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+"input": {
+"required": true,
+"type": "matrix",
+"items": [
+{
+"text": "Zooming into the map"
+},
+{
+"text": "Panning around the map"
+},
+{
+"text": "Retrieving details about map features"
+},
+{
+"text": "Overlaying additional map information"
+},
+{
+"text": "Filtering map information"
+}
+],
+"options": [
+{
+"text": "1=not helpful"
+},
+{
+"text": "2"
+},
+{
+"text": "3"
+},
+{
+"text": "4"
+},
+{
+"text": "5=very helpful"
+}
+]
+}
+},
+{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+"input": {
+"required": true,
+"autoadvance": false,
+"type": "paragraph"
+}
+}
+],
+"buttons": [
+"next"
+]
+}]},
+{
+	"page": 35,
+	"fullpage": true,
+	"timer": {
+		"remove": true
+	},
+	"sets": [
+				{
+					"blocks": [
+						{
+
+							"ask": "1. On a scale of 1-5, how <strong><u>difficult</u></strong> was it for you to complete the ranking <strong>(1=very easy, 5=very difficult)</strong>?",
+							"input": {
+								"required": true,
+								"type": "matrix",
+								"options": [
+									{
+																																							"text": "1=very easy"
+																																						},
+																																						{
+																																							"text": "2"
+																																						},
+																																						{
+																																							"text": "3"
+																																						},
+																																						{
+																																							"text": "4"
+																																						},
+																																						{
+																																							"text": "5=very difficult"
+																																						}
+],
+"items": [{}]
+}
+},
+{
+"ask": "2. On a scale of 1-5, how <strong><u>confident</u></strong> are you that your ranking is correct <strong>(1=not confident, 5=very confident)</strong>?",
+"input": {
+"required": true,
+"autoadvance": false,
+"type": "matrix",
+"options": [
+																																						{
+																																							"text": "1=not confident"
+																																						},
+																																						{
+																																							"text": "2"
+																																						},
+																																						{
+																																							"text": "3"
+																																						},
+																																						{
+																																							"text": "4"
+																																						},
+																																						{
+																																							"text": "5=very confident"
+																																						}
+],
+"items": [{}]
+}
+},
+{
+
+"ask": "3. Please rate how important the following criteria were when making your ranking decision <strong>(1=I did not consider this criterion, 5=I only considered this criterion)</strong>:",
+"input": {
+"required": true,
+"type": "matrix",
+"items": [
+{
+"text": "Volume of Waste"
+},
+{
+"text": "Air Quality"
+},
+{
+"text": "% Non-white"
+}
+],
+"options": [
+																																						{
+																																							"text": "1=I did not consider this criterion"
+																																						},
+																																						{
+																																							"text": "2"
+																																						},
+																																						{
+																																							"text": "3"
+																																						},
+																																						{
+																																							"text": "4"
+																																						},
+																																						{
+																																							"text": "5=I only considered this criterion"
+																																						}
+]
+}
+},
+{
+"ask": "4. How helpful did you find the following interactive controls when completing your ranking decision <strong>(1=not helpful, 5=very helpful)</strong>?",
+"input": {
+"required": true,
+"type": "matrix",
+"items": [
+{
+"text": "Zooming into the map"
+},
+{
+"text": "Panning around the map"
+},
+{
+"text": "Retrieving details about map features"
+},
+{
+"text": "Overlaying additional map information"
+},
+{
+"text": "Filtering map information"
+}
+],
+"options": [
+{
+"text": "1=not helpful"
+},
+{
+"text": "2"
+},
+{
+"text": "3"
+},
+{
+"text": "4"
+},
+{
+"text": "5=very helpful"
+}
+]
+}
+},
+{"ask":"5. Briefly describe your decision-making process, including details on how you used the map to support your ranking.",
+"input": {
+"required": true,
+"autoadvance": false,
+"type": "paragraph"
+}
+}
+],
+"buttons": [
+"next"
+]
+}]}
+
 	]
 }
