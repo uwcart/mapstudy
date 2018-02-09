@@ -73,8 +73,8 @@
         </script>
 
         <script type="text/template" id="overlay-control-template">
-            <div class="overlay-control-layer <%= techniqueType %>-layer layer-<%= layerId %>" id="overlay-layer-<%= layerId %>" style="text-align:left;">
-                <input type="radio" name="overlay-input" value="<%= layerId %>" >
+            <div class="overlay-control-layer <%= techniqueType %>-layer layer-<%= layerId %>" id="overlay-layer-<%= layerId %>">
+                <input type="checkbox" name="overlay-input" value="<%= layerId %>">
                 <label for="<%= layerId %>"><%= layerName %></label>
             </div>
         </script>
@@ -102,7 +102,7 @@
 
         <script type="text/template" id="slider-template">
             <div id="<%= className %>-slider-div" class="filter-row">
-                <p class="layer-name"><span class="filtLabel"></span>&nbsp;<select name="<%= className %>"></select></p>
+                <p class="layer-name"><%= layerName %>&nbsp;<select name="<%= className %>"></select></p>
                 <div id="<%= className %>-labels" class="slider-labels">
                 <span class="left"></span><span class="right"></span>
                 </div>
@@ -330,6 +330,18 @@
 
         <script type="text/template" id="iframe-template">
             <iframe width="<%= width %>" height="<%= height %>" frameborder="0" src="<%= source %>" allowfullscreen></iframe>
+        </script>
+
+        <script type="text/template" id="image-map-template">
+            <div id='map' style="border: none;">
+                <img src="<%= source %>" alt="map image">
+            </div>
+        </script>
+
+        <script type="text/template" id="iframe-map-template">
+            <div id='map' style="border: none;">
+                <iframe frameborder="0" src="<%= source %>" alt="map iframe"></iframe>
+            </div>
         </script>
 
         <!-- Supported libraries -->
