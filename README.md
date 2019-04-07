@@ -56,7 +56,7 @@ This documentation assumes a basic working knowledge of JSON formatting, geograp
 
 5. If you plan to embed a static map image or pre-rendered web map from a service such as [CartoDB](https://cartodb.com/), prepare that map separately. *Note that if you do this, you lose the benefit of the embedded user interaction logging.*
 
-6. Set up a PostgreSQL, MySQL, or Microsoft Access database to store question answers and interaction logs. The MapStudy application will need administrator-level access to that database.
+6. Set up a PostgreSQL, MySQL, or Microsoft Access database to store question answers and interaction logs. The MapStudy application will need administrator-level access to that database, as well as several necessary PHP extensions. For more info on database setup and troubleshooting, see the "Param" section of the documentation.
 
 7. Edit and extend each *.json* file in the *config* directory using the options below. Your edits should be reflected immediately in the browser upon loading or reloading *index.html*.
 
@@ -938,7 +938,17 @@ This config file holds the configuration options necessary to access the databas
 
 #### Configuring the database
 
-A database is the recommended way to store the form and interaction data created by the MapStudy application. The framework supports database connections through the PHP PDO (PHP Data Objects) interface. Cubrid, FreeTDS (SyBase and Microsoft SQL Server), Firebird, IBM DB2, IBM Informix Dynamic Server, MySQL, Oracle Call Interface, ODBC v3, PostgreSQL, SQLite, Microsoft Azure SQL Database, and 4D databases are supported. The application will automatically generate the following tables:
+A database is the recommended way to store the form and interaction data created by the MapStudy application. The framework supports database connections through the PHP PDO (PHP Data Objects) interface. Cubrid, FreeTDS (SyBase and Microsoft SQL Server), Firebird, IBM DB2, IBM Informix Dynamic Server, MySQL, Oracle Call Interface, ODBC v3, PostgreSQL, SQLite, Microsoft Azure SQL Database, and 4D databases are supported. 
+
+When troubleshooting database issues, ensure your version of PHP is up to date and the following PHP extensions are enabled in the php.ini file:
+
+-extension=php_curl.dll
+-extension=php_mbstring.dll
+-extension=php_exif.dll
+-extension=php_pdo_pgsql.dll
+-extension=php_pgsql.dll
+
+The application will automatically generate the following tables:
 
 - **Participant Data**: One data table will be generated per participant to hold that participant's answers, named using the convention `p012345678_data` where `012345678` is the participant ID. Each row will correspond to a question block. The first column will be the question labels as defined in questions.json or automatically generated for the question if no label is provided (see label generation for [blocks](#questionssetsiblocksiilabel) and [items](#questionssetsiblocksiiinputoptionsiiilabel)), the second column will be the text of each question, and the third column will be the answers provided by the participant.
 
