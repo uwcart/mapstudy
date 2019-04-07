@@ -946,7 +946,7 @@ When troubleshooting database issues, ensure your version of PHP is up to date a
 -extension=php_mbstring.dll\
 -extension=php_exif.dll\
 -extension=php_pdo_pgsql.dll\
--extension=php_pgsql.dll\
+-extension=php_pgsql.dll
 
 The application will automatically generate the following tables:
 
