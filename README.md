@@ -942,11 +942,11 @@ A database is the recommended way to store the form and interaction data created
 
 When troubleshooting database issues, ensure your version of PHP is up to date and the following PHP extensions are enabled in the php.ini file:
 
--extension=php_curl.dll.   
--extension=php_mbstring.dll.   
--extension=php_exif.dll.   
--extension=php_pdo_pgsql.dll.   
--extension=php_pgsql.dll.   
+-extension=php_curl.dll\
+-extension=php_mbstring.dll\
+-extension=php_exif.dll\
+-extension=php_pdo_pgsql.dll\
+-extension=php_pgsql.dll\
 
 The application will automatically generate the following tables:
 
